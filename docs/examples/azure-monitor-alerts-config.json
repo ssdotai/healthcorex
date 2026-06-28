@@ -27,7 +27,7 @@
     }
   },
   "variables": {
-    "alertPrefix": "[concat('CloudHealthOffice-', uniqueString(resourceGroup().id))]"
+    "alertPrefix": "[concat('HealthCoreX-', uniqueString(resourceGroup().id))]"
   },
   "resources": [
     {

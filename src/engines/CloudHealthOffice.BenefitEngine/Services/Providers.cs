@@ -1,7 +1,7 @@
-using CloudHealthOffice.BenefitEngine.Domain;
-using CloudHealthOffice.BenefitEngine.Models;
+using HealthCoreX.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Models;
 
-namespace CloudHealthOffice.BenefitEngine.Services;
+namespace HealthCoreX.BenefitEngine.Services;
 
 // ═══════════════════════════════════════════════════════════════════
 // PROVIDER INTERFACES

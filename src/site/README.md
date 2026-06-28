@@ -1,6 +1,6 @@
 # Cloud Health Office - Static Website
 
-**Last Updated:** February 11, 2026 - v4.0.0 Release
+**Last Updated:** July 2026
 
 This directory contains the Cloud Health Office marketing website with platform assessment, insights, and documentation.
 
@@ -10,6 +10,18 @@ The site build injects the Google Analytics tag for measurement ID `G-H1HCD5EYPN
 To override the default ID, set the `GOOGLE_ANALYTICS_ID` environment variable when running the build (e.g. `GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX npm run build`).
 Setting `GOOGLE_ANALYTICS_ID` to an empty string disables analytics injection entirely.
 
+## Founding Partner Form
+
+The homepage founding partner application posts to Formspree at
+`https://formspree.io/f/xgojygon`. To override the endpoint for a preview or
+environment-specific form, set `FORMSPREE_FOUNDING_PARTNER_ENDPOINT` to the full
+Formspree endpoint before running `npm run build`.
+
+Configure the Formspree form recipient/workflow in the Formspree dashboard to send
+submissions to `partners@HealthCoreX.com`. The static site includes that
+mailbox in the form payload and fallback messages, but Formspree controls final
+email routing from the form settings.
+
 ## Structure
 
 ```
@@ -17,7 +29,7 @@ site/
 ├── index.html              # Homepage with hero and Calendly integration
 ├── login.html              # Login/registration page with multi-tenant Entra ID
 ├── platform.html           # Platform overview and capabilities
-├── insights.html           # Market insights with Magic Quadrant visualization
+├── insights.html           # Market and engineering insights
 ├── assessment.html         # Generated from assets/cho-assessment.md
 ├── css/
 │   └── sentinel.css        # Sentinel theme styling (Absolute black, neon cyan/green)
@@ -25,9 +37,7 @@ site/
 │   ├── auth.js             # Authentication helper library
 │   ├── markdown-converter.js  # Build script to convert .md to .html
 │   └── validate-accessibility.js
-├── graphics/
-│   ├── MQ_Objective_GartnerBlue.svg
-│   └── MQ_Objective_Minimalist.svg
+├── graphics/               # Logos, product diagrams, and platform visuals
 ├── assets/
 │   └── cho-assessment.md   # Source Markdown for assessment page
 ├── staticwebapp.config.json  # Azure Static Web Apps configuration
@@ -252,7 +262,7 @@ AZURE_AD_CLIENT_ID=<application-client-id>
 AZURE_AD_CLIENT_SECRET=<client-secret-value>
 
 # Optional: Custom domain configuration
-AZURE_STATIC_WEB_APP_URL=https://cloudhealthoffice.com
+AZURE_STATIC_WEB_APP_URL=https://HealthCoreX.com
 ```
 
 ## Building the Site
@@ -276,7 +286,7 @@ This will:
 The assessment page is generated from `assets/cho-assessment.md`:
 
 ```bash
-cd /home/runner/work/cloudhealthoffice/cloudhealthoffice
+cd /home/runner/work/HealthCoreX/HealthCoreX
 npm run build:site
 ```
 
@@ -332,7 +342,7 @@ The site is automatically deployed to Azure Static Web Apps when changes are pus
 - Triggers on push to `main` branch (paths: `site/**`)
 - Authenticates with Azure via OIDC (no secrets in code)
 - Deploys to Static Web App using deployment token
-- Configures custom domain `cloudhealthoffice.com`
+- Configures custom domain `HealthCoreX.com`
 
 ### Manual Deployment
 
@@ -445,7 +455,7 @@ Update the `<nav>` section in all HTML files:
     <li><a href="insights.html">Insights</a></li>
     <li><a href="assessment.html">Assessment</a></li>
     <li><a href="new-page.html">New Page</a></li>
-    <li><a href="https://github.com/aurelianware/cloudhealthoffice">GitHub</a></li>
+    <li><a href="https://github.com/aurelianware/HealthCoreX">GitHub</a></li>
   </ul>
 </nav>
 ```
@@ -481,7 +491,7 @@ GitHub Actions will automatically deploy to Azure Static Web Apps.
 
 ## Custom Domain Configuration
 
-The site is configured for `cloudhealthoffice.com` custom domain.
+The site is configured for `HealthCoreX.com` custom domain.
 
 ### DNS Records Required
 
@@ -537,7 +547,7 @@ lighthouse http://localhost:8000 --view
 
 All content must follow the Sentinel brand guidelines:
 
-- [ ] Uses Sentinel logo (docs/images/logo-cloudhealthoffice-sentinel-primary.svg)
+- [ ] Uses Sentinel logo (docs/images/logo-HealthCoreX-sentinel-primary.svg)
 - [ ] Backgrounds are absolute black (#000000)
 - [ ] Headings use Segoe UI Bold
 - [ ] Color scheme: Cyan (#00ffff) and Green (#00ff88)
@@ -567,7 +577,7 @@ node site/js/markdown-converter.js
 
 ```bash
 # Check GitHub Actions logs
-# Go to: https://github.com/aurelianware/cloudhealthoffice/actions
+# Go to: https://github.com/aurelianware/HealthCoreX/actions
 
 # Verify secrets are configured
 # Settings → Secrets and variables → Actions
@@ -600,7 +610,7 @@ az staticwebapp deploy --name <swa-name> --resource-group <rg-name> --source ./s
 ## Contact
 
 For questions or issues:
-- **GitHub Issues:** https://github.com/aurelianware/cloudhealthoffice/issues
+- **GitHub Issues:** https://github.com/aurelianware/HealthCoreX/issues
 - **Email:** mark@aurelianware.com
 
 ---

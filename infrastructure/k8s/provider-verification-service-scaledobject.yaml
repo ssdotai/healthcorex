@@ -7,13 +7,13 @@ apiVersion: http.keda.sh/v1alpha1
 kind: HTTPScaledObject
 metadata:
   name: provider-verification-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: provider-verification-service
     component: verification
 spec:
   hosts:
-  - api.cloudhealthoffice.com
+  - api.HealthCoreX.com
   pathPrefixes:
   - /api/v1/providers
   scaleTargetRef:

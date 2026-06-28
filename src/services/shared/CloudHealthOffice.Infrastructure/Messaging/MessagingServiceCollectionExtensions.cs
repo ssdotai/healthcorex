@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.Infrastructure.Messaging;
+namespace HealthCoreX.Infrastructure.Messaging;
 
 /// <summary>
 /// Registers <see cref="IMessageBus"/> and resolves the backend from
@@ -46,7 +46,7 @@ public static class MessagingServiceCollectionExtensions
         services.AddSingleton<IMessageBus>(sp =>
         {
             var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
-            var logger = loggerFactory.CreateLogger("CloudHealthOffice.Infrastructure.Messaging");
+            var logger = loggerFactory.CreateLogger("HealthCoreX.Infrastructure.Messaging");
 
             logger.LogInformation(
                 "IMessageBus={Backend} ({Reason})",

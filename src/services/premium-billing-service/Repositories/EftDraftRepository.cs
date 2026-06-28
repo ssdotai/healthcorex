@@ -24,7 +24,7 @@ public class EftDraftRepository : IEftDraftRepository
 
     public EftDraftRepository(CosmosClient cosmosClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         _container = cosmosClient.GetContainer(databaseName, "EftDrafts");
         _httpContextAccessor = httpContextAccessor;
     }

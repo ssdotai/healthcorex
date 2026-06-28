@@ -1,7 +1,7 @@
 # Cloud Health Office - Pricing (ARCHIVED)
 
 > **ARCHIVED — This document is outdated and retained for historical reference only.**
-> Public pricing is no longer listed. Contact [sales@cloudhealthoffice.com](mailto:sales@cloudhealthoffice.com)
+> Public pricing is no longer listed. Contact [sales@HealthCoreX.com](mailto:sales@HealthCoreX.com)
 > for current commercial licensing information.
 
 ~~**Transparent, predictable pricing. No hidden fees. No vendor lock-in.**~~
@@ -14,8 +14,8 @@
 
 | Feature | **Starter** | **Professional** | **Enterprise** |
 |---------|-------------|------------------|----------------|
-| **Monthly Price** | [Contact sales](mailto:sales@cloudhealthoffice.com) | [Contact sales](mailto:sales@cloudhealthoffice.com) | [Contact sales](mailto:sales@cloudhealthoffice.com) |
-| **Annual Price** | [Contact sales](mailto:sales@cloudhealthoffice.com) | [Contact sales](mailto:sales@cloudhealthoffice.com) | [Contact sales](mailto:sales@cloudhealthoffice.com) |
+| **Monthly Price** | [Contact sales](mailto:sales@HealthCoreX.com) | [Contact sales](mailto:sales@HealthCoreX.com) | [Contact sales](mailto:sales@HealthCoreX.com) |
+| **Annual Price** | [Contact sales](mailto:sales@HealthCoreX.com) | [Contact sales](mailto:sales@HealthCoreX.com) | [Contact sales](mailto:sales@HealthCoreX.com) |
 | **Payers Supported** | 1-3 | 4-10 | Unlimited |
 | **Monthly Transactions** | 10,000 | 100,000 | Unlimited |
 | **Storage Included** | 100 GB | 500 GB | 1 TB |
@@ -34,11 +34,11 @@ All plans include generous base limits. If you exceed your plan limits, we charg
 
 | Resource | Overage Price | Billing Increment |
 |----------|---------------|-------------------|
-| **Transactions** | [Contact sales](mailto:sales@cloudhealthoffice.com) | Per transaction |
-| **Storage** | [Contact sales](mailto:sales@cloudhealthoffice.com) | Per GB over limit |
-| **Support Requests** | [Contact sales](mailto:sales@cloudhealthoffice.com) | Ad-hoc requests (non-Enterprise) |
+| **Transactions** | [Contact sales](mailto:sales@HealthCoreX.com) | Per transaction |
+| **Storage** | [Contact sales](mailto:sales@HealthCoreX.com) | Per GB over limit |
+| **Support Requests** | [Contact sales](mailto:sales@HealthCoreX.com) | Ad-hoc requests (non-Enterprise) |
 
-[Contact sales](mailto:sales@cloudhealthoffice.com) for overage pricing details.
+[Contact sales](mailto:sales@HealthCoreX.com) for overage pricing details.
 
 ---
 
@@ -55,7 +55,7 @@ Need more than Enterprise tier? We offer:
 
 **Pricing:** Custom quote based on your requirements.
 
-📧 **Contact:** [enterprise@cloudhealthoffice.com](mailto:enterprise@cloudhealthoffice.com)
+📧 **Contact:** [enterprise@HealthCoreX.com](mailto:enterprise@HealthCoreX.com)
 
 ---
 
@@ -68,7 +68,7 @@ Need more than Enterprise tier? We offer:
 - Email support
 - Migrate to paid plan anytime
 
-🚀 **[Start Free Trial](https://portal.cloudhealthoffice.com)**
+🚀 **[Start Free Trial](https://portal.HealthCoreX.com)**
 
 ---
 
@@ -105,7 +105,7 @@ Need more than Enterprise tier? We offer:
 **A:** We'll send a warning at 80% usage. You can upgrade or pay overage fees ($0.05/transaction). No service interruption.
 
 ### Q: Can I cancel anytime?
-**A:** Yes. No contracts. No penalties. Cancel via portal or email support@cloudhealthoffice.com.
+**A:** Yes. No contracts. No penalties. Cancel via portal or email support@HealthCoreX.com.
 
 ### Q: Do you prorate refunds?
 **A:** Yes. Cancel mid-month and receive prorated refund for unused days (minus transaction fees).
@@ -131,11 +131,11 @@ Need more than Enterprise tier? We offer:
 
 ## 🚀 Ready to Get Started?
 
-1. **[Start Free Trial](https://portal.cloudhealthoffice.com)** - 30 days, no credit card
-2. **[Schedule Demo](https://calendly.com/cloudhealthoffice/demo)** - 30-minute live walkthrough
-3. **[Contact Sales](https://portal.cloudhealthoffice.com/contact-sales)** - Enterprise inquiries
+1. **[Start Free Trial](https://portal.HealthCoreX.com)** - 30 days, no credit card
+2. **[Schedule Demo](https://calendly.com/HealthCoreX/demo)** - 30-minute live walkthrough
+3. **[Contact Sales](https://portal.HealthCoreX.com/contact-sales)** - Enterprise inquiries
 
-**Questions?** Email [sales@cloudhealthoffice.com](mailto:sales@cloudhealthoffice.com) or call 1-800-CHO-SAAS (1-800-246-7227)
+**Questions?** Email [sales@HealthCoreX.com](mailto:sales@HealthCoreX.com) or call 1-800-CHO-SAAS (1-800-246-7227)
 
 ---
 

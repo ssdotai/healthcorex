@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace CloudHealthOffice.BenefitEngine.Domain;
+namespace HealthCoreX.BenefitEngine.Domain;
 
 /// <summary>
 /// Declarative gate that restricts when a benefit applies to a given

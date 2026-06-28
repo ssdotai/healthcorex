@@ -1,6 +1,6 @@
-using CloudHealthOffice.ClaimsScrubEngine.Models;
+using HealthCoreX.ClaimsScrubEngine.Models;
 
-namespace CloudHealthOffice.ClaimsScrubEngine.Services;
+namespace HealthCoreX.ClaimsScrubEngine.Services;
 
 /// <summary>
 /// Claims scrub validation rule engine.

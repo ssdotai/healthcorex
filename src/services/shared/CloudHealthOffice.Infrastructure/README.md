@@ -1,4 +1,4 @@
-# CloudHealthOffice.Infrastructure
+# HealthCoreX.Infrastructure
 
 Shared infrastructure library that extracts common patterns duplicated across all Cloud Health Office microservices into a single reusable package.
 
@@ -48,7 +48,7 @@ if (!string.IsNullOrEmpty(mongoConnectionString))
     builder.Services.AddScoped<MongoDB.Driver.IMongoDatabase>(sp =>
     {
         var client = sp.GetRequiredService<MongoDB.Driver.IMongoClient>();
-        var dbName = builder.Configuration["MongoDb:DatabaseName"] ?? "CloudHealthOffice";
+        var dbName = builder.Configuration["MongoDb:DatabaseName"] ?? "HealthCoreX";
         return client.GetDatabase(dbName);
     });
     builder.Services.AddScoped<IClaimRepository, ClaimRepositoryMongo>();
@@ -95,10 +95,10 @@ app.MapHealthChecks("/health");
 app.Run();
 ```
 
-### After (with CloudHealthOffice.Infrastructure)
+### After (with HealthCoreX.Infrastructure)
 
 ```csharp
-using CloudHealthOffice.Infrastructure.Extensions;
+using HealthCoreX.Infrastructure.Extensions;
 using ClaimsService.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -135,7 +135,7 @@ app.Run();
 1. **Add project reference** to your service's `.csproj`:
    ```xml
    <ItemGroup>
-     <ProjectReference Include="../shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj" />
+     <ProjectReference Include="../shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj" />
    </ItemGroup>
    ```
 
@@ -156,7 +156,7 @@ app.Run();
    var tenantId = HttpContext.Items["TenantId"]?.ToString();
 
    // After
-   using CloudHealthOffice.Infrastructure.Middleware;
+   using HealthCoreX.Infrastructure.Middleware;
    var tenantId = HttpContext.GetTenantId();
    ```
 
@@ -191,7 +191,7 @@ builder.Services.AddChoInfrastructure(builder.Configuration, options =>
     {
         cors.AddPolicy("Production", policy =>
         {
-            policy.WithOrigins("https://app.cloudhealthoffice.com")
+            policy.WithOrigins("https://app.HealthCoreX.com")
                   .AllowAnyMethod()
                   .AllowAnyHeader();
         });

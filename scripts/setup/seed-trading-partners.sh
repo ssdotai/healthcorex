@@ -6,9 +6,9 @@ echo "=============================================="
 echo ""
 
 # Configuration
-RESOURCE_GROUP="prod-cloudhealthoffice-rg"
-COSMOS_ACCOUNT="cloudhealthoffice-cosmos"
-DATABASE="CloudHealthOffice"
+RESOURCE_GROUP="prod-HealthCoreX-rg"
+COSMOS_ACCOUNT="HealthCoreX-cosmos"
+DATABASE="HealthCoreX"
 CONTAINER="TradingPartners"
 
 # Check if container exists, create if not
@@ -478,7 +478,7 @@ echo "    --name $CONTAINER \\"
 echo "    --query-text \"SELECT * FROM c\""
 echo ""
 echo "Or use the trading-partner-service API:"
-echo "  kubectl -n cloudhealthoffice port-forward svc/trading-partner-service 8080:80"
+echo "  kubectl -n HealthCoreX port-forward svc/trading-partner-service 8080:80"
 echo "  curl http://localhost:8080/api/TradingPartners/tenant/bcbs-florida"
 echo ""
 echo "JSON files location: $TEMP_DIR"

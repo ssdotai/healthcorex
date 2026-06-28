@@ -1,8 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Output;
+namespace HealthCoreX.BenchmarkClaimGenerator.Output;
 
 /// <summary>
 /// Writes the corpus as FHIR R4 Bundle resources.

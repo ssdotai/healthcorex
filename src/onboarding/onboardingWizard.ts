@@ -36,7 +36,7 @@ export async function runOnboardingWizard() {
     console.log("Company registered:", responses.companyName);
     console.log("Contact email:", responses.contactEmail);
     // Extend: Simulate 837 claim generation, add PHI redaction in logs, etc.
-    console.log("Onboarding complete! See docs at: https://github.com/aurelianware/cloudhealthoffice/wiki/Onboarding");
+    console.log("Onboarding complete! See docs at: https://github.com/aurelianware/HealthCoreX/wiki/Onboarding");
   } catch (err) {
     console.error("Error during onboarding:", err);
     console.error("Please check your Azure credentials or visit docs for troubleshooting.");

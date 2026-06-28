@@ -18,7 +18,7 @@ public sealed class CosmosCredentialingEventRepository : ICredentialingEventRepo
         CosmosClient client,
         IConfiguration configuration)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         var containerName = configuration["CosmosDb:CredentialingEventsContainer"]
             ?? "CredentialingEvents";
         _container = client.GetContainer(databaseName, containerName);

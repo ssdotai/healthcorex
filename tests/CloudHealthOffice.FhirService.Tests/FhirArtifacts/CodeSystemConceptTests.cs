@@ -2,7 +2,7 @@ using FluentAssertions;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 
-namespace CloudHealthOffice.FhirService.Tests.FhirArtifacts;
+namespace HealthCoreX.FhirService.Tests.FhirArtifacts;
 
 /// <summary>
 /// Asserts each CHO CodeSystem enumerates the exact concept codes required

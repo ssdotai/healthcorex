@@ -2,7 +2,7 @@
 
 `IMessageBus` is the Cloud Health Office async-messaging abstraction. One
 interface, three interchangeable backends, lives in
-[`CloudHealthOffice.Infrastructure.Messaging`](../../src/services/shared/CloudHealthOffice.Infrastructure/Messaging/).
+[`HealthCoreX.Infrastructure.Messaging`](../../src/services/shared/HealthCoreX.Infrastructure/Messaging/).
 Production runs on Azure Service Bus; dev and test run on an in-process
 channel.
 
@@ -40,7 +40,7 @@ await sub.StartAsync(stoppingToken);
 
 One topic, multiple named subscriptions, each subscription gets its own
 copy of every message. Pass `SubscriptionName` to
-[`SubscriptionOptions`](../../src/services/shared/CloudHealthOffice.Infrastructure/Messaging/IMessageBus.cs).
+[`SubscriptionOptions`](../../src/services/shared/HealthCoreX.Infrastructure/Messaging/IMessageBus.cs).
 
 ```csharp
 bus.Subscribe<MemberEligibilityChanged>(
@@ -151,7 +151,7 @@ If you're adding Service Bus to a new service:
 2. **Do not** register your own `ServiceBusClient` — the bus owns the
    client lifecycle.
 3. Do not add `Azure.Messaging.ServiceBus` to your service's `.csproj`.
-   It lives in `CloudHealthOffice.Infrastructure` and you get it
+   It lives in `HealthCoreX.Infrastructure` and you get it
    transitively.
 4. Add an entry to
    [`provision-servicebus-queues.sh`](../../scripts/azure/provision-servicebus-queues.sh)
@@ -189,7 +189,7 @@ Quick decision tree:
 
 ## Observability
 
-Every send and receive is a span under the `CloudHealthOffice`
+Every send and receive is a span under the `HealthCoreX`
 `ActivitySource`. Producer spans are `ActivityKind.Producer`; consumer
 spans are `ActivityKind.Consumer`. W3C trace context is injected as a
 `traceparent` application property on send and restored on receive so
@@ -203,5 +203,5 @@ PHI scrubbing is global via `PhiScrubbingSpanProcessor`. It strips
 prohibited attributes on export, but the convention still stands:
 prefer not to put raw member IDs or claim IDs in span tags in the first
 place. Hash them via
-[`ChoActivitySource.HashIdentifier`](../../src/services/shared/CloudHealthOffice.Infrastructure/Observability/ChoActivitySource.cs)
+[`ChoActivitySource.HashIdentifier`](../../src/services/shared/HealthCoreX.Infrastructure/Observability/ChoActivitySource.cs)
 if you need to trace through.

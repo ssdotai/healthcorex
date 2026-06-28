@@ -1,6 +1,6 @@
 using BenefitPlanService.Models;
 using BenefitPlanService.Repositories;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 using Microsoft.Extensions.Options;
 
 namespace BenefitPlanService.Services;

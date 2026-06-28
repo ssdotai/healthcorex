@@ -11,7 +11,7 @@
                     ┌───────────────┼───────────────┐
                     │               │               │
                     ▼               ▼               ▼
-        cloudhealthoffice.com  www.cloudhealth  portal.cloudhealth
+        HealthCoreX.com  www.cloudhealth  portal.cloudhealth
                                 office.com        office.com
                                     │
                                     │ DNS Resolution
@@ -100,7 +100,7 @@
    │  │  ClusterIssuer: letsencrypt-prod                             │  │
    │  │  ┌────────────────────────────────────────────────────────┐  │  │
    │  │  │  ACME Server: https://acme-v02.api.letsencrypt.org     │  │  │
-   │  │  │  Email: admin@cloudhealthoffice.com                    │  │  │
+   │  │  │  Email: admin@HealthCoreX.com                    │  │  │
    │  │  │  Challenge: HTTP-01 (via NGINX ingress)                │  │  │
    │  │  └────────────────────────────────────────────────────────┘  │  │
    │  └──────────────────────┬───────────────────────────────────────┘  │
@@ -141,16 +141,16 @@
 └──────────────────────────────────────────────────────────────────────────────┘
 
 HTTP Request (Port 80):
-  https://cloudhealthoffice.com
+  https://HealthCoreX.com
        │
        ▼
   NGINX Ingress Controller
        │
        ▼
-  301 Redirect → https://cloudhealthoffice.com (Force HTTPS)
+  301 Redirect → https://HealthCoreX.com (Force HTTPS)
 
 HTTPS Request (Port 443):
-  https://cloudhealthoffice.com
+  https://HealthCoreX.com
        │
        ▼
   NGINX Ingress Controller (4.149.83.133:443)
@@ -193,17 +193,17 @@ Required DNS A Records:
 ┌─────────────────────────────┬──────┬───────────────┐
 │ Domain                      │ Type │ Value         │
 ├─────────────────────────────┼──────┼───────────────┤
-│ cloudhealthoffice.com       │  A   │ 4.149.83.133  │
-│ www.cloudhealthoffice.com   │  A   │ 4.149.83.133  │
-│ portal.cloudhealthoffice.com│  A   │ 4.149.83.133  │
+│ HealthCoreX.com       │  A   │ 4.149.83.133  │
+│ www.HealthCoreX.com   │  A   │ 4.149.83.133  │
+│ portal.HealthCoreX.com│  A   │ 4.149.83.133  │
 └─────────────────────────────┴──────┴───────────────┘
 
 Alternative: CNAME Records (if using subdomain delegation)
 ┌─────────────────────────────┬──────┬───────────────────────────┐
 │ Domain                      │ Type │ Value                     │
 ├─────────────────────────────┼──────┼───────────────────────────┤
-│ www.cloudhealthoffice.com   │ CNAME│ cloudhealthoffice.com     │
-│ portal.cloudhealthoffice.com│ CNAME│ cloudhealthoffice.com     │
+│ www.HealthCoreX.com   │ CNAME│ HealthCoreX.com     │
+│ portal.HealthCoreX.com│ CNAME│ HealthCoreX.com     │
 └─────────────────────────────┴──────┴───────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────────────────────────┐
@@ -220,7 +220,7 @@ Prerequisites Installation Order:
 6. → DNS A records configured and propagated
 7. → Cloud Health Office ingress resources deployed
 8. → Wait for TLS certificates to be issued (1-3 minutes)
-9. ✓ Access via https://cloudhealthoffice.com
+9. ✓ Access via https://HealthCoreX.com
 
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                         Quick Commands                                       │
@@ -239,11 +239,11 @@ kubectl describe ingress site-ingress -n cho-svcs
 kubectl logs -n cert-manager -l app=cert-manager --tail=50
 
 # Test HTTPS
-curl -I https://cloudhealthoffice.com
+curl -I https://HealthCoreX.com
 
 # View certificate details
-echo | openssl s_client -servername cloudhealthoffice.com \
-  -connect cloudhealthoffice.com:443 2>/dev/null | \
+echo | openssl s_client -servername HealthCoreX.com \
+  -connect HealthCoreX.com:443 2>/dev/null | \
   openssl x509 -noout -text
 
 ───────────────────────────────────────────────────────────────────────────────

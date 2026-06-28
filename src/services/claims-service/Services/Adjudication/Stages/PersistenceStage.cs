@@ -50,6 +50,19 @@ public sealed class PersistenceStage : IClaimAdjudicationStage
         ClaimAdjudicationContext context,
         CancellationToken ct)
     {
+        // Defect A fix — the orchestrator's Pend decision (NCCI/MUE, COB) was
+        // being computed correctly by upstream stages but never reached
+        // ClaimStatus: this repository call previously had no way to know a
+        // Pend had been decided. Resolve it here from every stage that ran
+        // BEFORE Persistence (Order=999, always last) using the same
+        // Reject>Deny>Pend>Pass precedence the orchestrator uses for the
+        // emitted event's Outcome (ClaimAdjudicationStageResult.ResolveOutcome).
+        // The repository uses a special one-way guard for Pend and the normal
+        // guarded transition path for terminal Pass/Deny/Reject.
+        var resolvedOutcome = ClaimAdjudicationStageResult.ResolveOutcome(context.StageResults);
+        var isPend = resolvedOutcome == ClaimAdjudicationOutcome.Pend;
+        var resolvedStatus = MapOutcomeToStatus(resolvedOutcome);
+
         try
         {
             var written = await _repository
@@ -59,7 +72,9 @@ public sealed class PersistenceStage : IClaimAdjudicationStage
                     context.AdjudicationResult,
                     context.LineAdjudicationResults,
                     ct,
-                    pendDetails: context.PendDetails)
+                    pendDetails: context.PendDetails,
+                    isPend: isPend,
+                    resolvedStatus: resolvedStatus)
                 .ConfigureAwait(false);
 
             if (!written)
@@ -91,4 +106,13 @@ public sealed class PersistenceStage : IClaimAdjudicationStage
 
     private static string SanitizeForLog(string? value) =>
         string.IsNullOrEmpty(value) ? string.Empty : value.Replace("\r", "").Replace("\n", "");
+
+    private static ClaimStatus MapOutcomeToStatus(ClaimAdjudicationOutcome outcome) => outcome switch
+    {
+        ClaimAdjudicationOutcome.Pass => ClaimStatus.Approved,
+        ClaimAdjudicationOutcome.Pend => ClaimStatus.Pended,
+        ClaimAdjudicationOutcome.Deny => ClaimStatus.Denied,
+        ClaimAdjudicationOutcome.Reject => ClaimStatus.Denied,
+        _ => throw new ArgumentOutOfRangeException(nameof(outcome), outcome, "Unexpected adjudication outcome."),
+    };
 }

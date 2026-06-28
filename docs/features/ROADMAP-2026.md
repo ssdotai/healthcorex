@@ -227,9 +227,9 @@ Throughput: 50,000 req/sec
 **Pricing Tiers**:
 | Tier | Monthly Price | Included | Target Segment |
 |------|---------------|----------|----------------|
-| **Starter** | [Contact sales](mailto:sales@cloudhealthoffice.com) | 3 payers, 25K transactions | Regional payers |
-| **Professional** | [Contact sales](mailto:sales@cloudhealthoffice.com) | 10 payers, 150K transactions | Mid-market |
-| **Enterprise** | [Contact sales](mailto:sales@cloudhealthoffice.com) | Unlimited | Large health plans |
+| **Starter** | [Contact sales](mailto:sales@HealthCoreX.com) | 3 payers, 25K transactions | Regional payers |
+| **Professional** | [Contact sales](mailto:sales@HealthCoreX.com) | 10 payers, 150K transactions | Mid-market |
+| **Enterprise** | [Contact sales](mailto:sales@HealthCoreX.com) | Unlimited | Large health plans |
 
 **Deliverables**:
 | Deliverable | Target Date | Status |
@@ -920,7 +920,7 @@ Throughput: 500,000 transactions/day
 
 ### Get Involved in the 2026 Roadmap
 
-1. **Feature Requests**: Submit via [GitHub Discussions](https://github.com/aurelianware/cloudhealthoffice/discussions)
+1. **Feature Requests**: Submit via [GitHub Discussions](https://github.com/aurelianware/HealthCoreX/discussions)
 2. **Vote on Priorities**: Upvote features in GitHub Issues
 3. **Join Community Calls**: Monthly calls announced on Discord
 4. **Contribute Code**: See [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -943,7 +943,7 @@ This roadmap is a living document. We review and update quarterly based on:
 **Product Team**: product@aurelianware.com  
 **Partnerships**: partnerships@aurelianware.com  
 **Community**: community@aurelianware.com  
-**GitHub**: [https://github.com/aurelianware/cloudhealthoffice](https://github.com/aurelianware/cloudhealthoffice)
+**GitHub**: [https://github.com/aurelianware/HealthCoreX](https://github.com/aurelianware/HealthCoreX)
 
 ---
 

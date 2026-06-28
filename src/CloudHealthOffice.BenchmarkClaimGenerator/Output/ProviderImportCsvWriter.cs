@@ -1,9 +1,9 @@
 using System.Text;
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Output;
+namespace HealthCoreX.BenchmarkClaimGenerator.Output;
 
 /// <summary>
 /// Generates CSV files for provider-service import endpoint consumption.

@@ -68,12 +68,12 @@ classes:
 
 - [FhirPatientProjectorTests](../../src/services/member-service/MemberService.Tests/Services/FhirPatientProjectorTests.cs)
   — member-service Patient projection.
-- [FhirPractitionerProjectorTests](../../tests/CloudHealthOffice.ProviderService.Tests/Services/FhirPractitionerProjectorTests.cs)
+- [FhirPractitionerProjectorTests](../../tests/HealthCoreX.ProviderService.Tests/Services/FhirPractitionerProjectorTests.cs)
   — provider-service Practitioner projection.
-- [FhirPractitionerRoleProjectorTests](../../tests/CloudHealthOffice.ProviderService.Tests/Services/FhirPractitionerRoleProjectorTests.cs)
+- [FhirPractitionerRoleProjectorTests](../../tests/HealthCoreX.ProviderService.Tests/Services/FhirPractitionerRoleProjectorTests.cs)
   — provider-service PractitionerRole projection.
 
-- [FhirOrganizationProjectorTests](../../tests/CloudHealthOffice.ProviderService.Tests/Services/FhirOrganizationProjectorTests.cs)
+- [FhirOrganizationProjectorTests](../../tests/HealthCoreX.ProviderService.Tests/Services/FhirOrganizationProjectorTests.cs)
   — provider-service Organization projection (both source entities).
 - [FhirInsurancePlanProjectorTests](../../src/services/benefit-plan-service/BenefitPlanService.Tests/Services/FhirInsurancePlanProjectorTests.cs)
   — benefit-plan-service InsurancePlan projection (capability BP 5.8).
@@ -99,7 +99,7 @@ follow-up bug rather than a CI regression.
 
 ## CHO-authored extensions
 
-CHO uses the canonical base `http://fhir.cloudhealthoffice.com/`. All
+CHO uses the canonical base `http://fhir.HealthCoreX.com/`. All
 CHO-authored profiles, code systems, value sets, and extensions live
 under this base.
 
@@ -150,7 +150,7 @@ Defined today (see
   FHIR CodeSystem covers SBC / EOC / SPD / MRF (Decision 3).
 
 A legacy URL
-`https://cloudhealthoffice.com/fhir/StructureDefinition/provider-verification`
+`https://HealthCoreX.com/fhir/StructureDefinition/provider-verification`
 is used by the NPPES-path enrichment in fhir-service today. The
 NPPES path retires after capability 5.9 ships. Do not introduce new
 uses of this URL.

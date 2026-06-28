@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.microsoft.com/partnercenter/schemas/offer/2021-11-01/offer.json",
   "offerMetadata": {
-    "offerId": "cloudhealthoffice",
+    "offerId": "HealthCoreX",
     "publisherId": "aurelianware",
     "offerVersion": "1.0.0",
     "createdDate": "2024-12-01T00:00:00Z",
@@ -13,7 +13,7 @@
     "description": "Cloud Health Office is the #1 open-source Azure-native platform for multi-payer EDI integration in healthcare. Deploy a complete HIPAA-compliant EDI solution in minutes, not months.\n\n## Key Capabilities\n\n### EDI Transaction Processing\n- **275 Attachments**: Clinical and administrative attachment processing\n- **277 RFAI**: Request for Additional Information workflows\n- **278 Authorizations**: Prior authorization requests and inquiries\n- **837 Claims**: Professional, Institutional, and Dental claims\n- **270/271 Eligibility**: Real-time eligibility verification\n\n### FHIR R4 Integration (CMS-0057-F Compliant)\n- Patient Access API\n- Provider Access API\n- Payer-to-Payer API\n- Prior Authorization API\n- Da Vinci IG support (PDex, PAS, CRD, DTR)\n\n### Zero-Code Payer Onboarding\n- Interactive configuration wizard\n- Config-to-Workflow generator\n- Deploy new payers in under 5 minutes\n\n### Enterprise Security\n- Premium Key Vault with HSM-backed keys\n- Private endpoints for PHI resources\n- PHI masking in logs\n- Customer-managed keys (BYOK)\n- 7-year data retention\n\n## Deployment Tiers\n\n**Sandbox**: Ideal for development and testing\n**Standard**: Production-ready with geo-redundant storage\n**Enterprise**: Maximum availability with zone redundancy\n\n## Why Cloud Health Office?\n\n- **Rapid Deployment**: Deploy in <5 minutes with one-click Azure deployment\n- **Backend Agnostic**: Integrates with claims adjudication systems such as and other core systems\n- **Open Source**: Apache 2.0 licensed, no vendor lock-in\n- **CMS-0057-F Ready**: Full compliance with interoperability mandates\n- **Cost Effective**: Pay only for what you use with Azure-native pricing",
     "summary": "Deploy HIPAA-compliant EDI integration (275, 277, 278, 837) with FHIR R4 APIs in minutes. Zero-code payer onboarding, CMS-0057-F compliant, Azure-native.",
     "searchResultsSummary": "HIPAA EDI platform: 275/277/278/837 processing, FHIR R4 APIs, CMS-0057-F compliant",
-    "gettingStartedInstructions": "## Quick Start\n\n1. Click 'Deploy to Azure' or 'Get it now'\n2. Select your Azure subscription and resource group\n3. Configure deployment settings (name, region, tier)\n4. Click Create and wait for deployment (~5 minutes)\n5. Access the Logic App to configure workflows\n6. Follow the post-deployment guide to configure trading partners\n\n## Documentation\n\n- [Quick Start Guide](https://github.com/aurelianware/cloudhealthoffice/blob/main/QUICKSTART.md)\n- [Deployment Guide](https://github.com/aurelianware/cloudhealthoffice/blob/main/DEPLOYMENT.md)\n- [Security Guide](https://github.com/aurelianware/cloudhealthoffice/blob/main/SECURITY.md)"
+    "gettingStartedInstructions": "## Quick Start\n\n1. Click 'Deploy to Azure' or 'Get it now'\n2. Select your Azure subscription and resource group\n3. Configure deployment settings (name, region, tier)\n4. Click Create and wait for deployment (~5 minutes)\n5. Access the Logic App to configure workflows\n6. Follow the post-deployment guide to configure trading partners\n\n## Documentation\n\n- [Quick Start Guide](https://github.com/aurelianware/HealthCoreX/blob/main/QUICKSTART.md)\n- [Deployment Guide](https://github.com/aurelianware/HealthCoreX/blob/main/DEPLOYMENT.md)\n- [Security Guide](https://github.com/aurelianware/HealthCoreX/blob/main/SECURITY.md)"
   },
   "offerProperties": {
     "categories": [
@@ -51,18 +51,18 @@
   "contacts": {
     "engineering": {
       "name": "Cloud Health Office Engineering",
-      "email": "engineering@cloudhealthoffice.com",
+      "email": "engineering@HealthCoreX.com",
       "phone": "+1-928-940-2410"
     },
     "support": {
       "name": "Cloud Health Office Support",
-      "email": "support@cloudhealthoffice.com",
+      "email": "support@HealthCoreX.com",
       "phone": "+1-928-940-2410",
-      "url": "https://support.cloudhealthoffice.com"
+      "url": "https://support.HealthCoreX.com"
     },
     "cspProgram": {
       "name": "Partner Program",
-      "email": "partners@cloudhealthoffice.com"
+      "email": "partners@HealthCoreX.com"
     }
   },
   "marketingAssets": {
@@ -131,14 +131,14 @@
     ]
   },
   "supportInformation": {
-    "publicDocumentUrl": "https://github.com/aurelianware/cloudhealthoffice",
-    "privacyPolicyUrl": "https://cloudhealthoffice.com/privacy",
-    "helpUrl": "https://docs.cloudhealthoffice.com",
-    "supportUrl": "https://support.cloudhealthoffice.com"
+    "publicDocumentUrl": "https://github.com/aurelianware/HealthCoreX",
+    "privacyPolicyUrl": "https://HealthCoreX.com/privacy",
+    "helpUrl": "https://docs.HealthCoreX.com",
+    "supportUrl": "https://support.HealthCoreX.com"
   },
   "plans": {
     "managedApplication": {
-      "planId": "cloudhealthoffice-managed",
+      "planId": "HealthCoreX-managed",
       "displayName": "Cloud Health Office - Managed Application",
       "summary": "Deploy the complete Cloud Health Office stack as an Azure Managed Application",
       "description": "Azure Managed Application deployment with full platform capabilities. Infrastructure is deployed to your Azure subscription with managed access for updates and support.",
@@ -148,7 +148,7 @@
         "freeTrialDays": 30
       },
       "technicalConfiguration": {
-        "packageUrl": "https://github.com/aurelianware/cloudhealthoffice/releases/latest/download/managed-app.zip",
+        "packageUrl": "https://github.com/aurelianware/HealthCoreX/releases/latest/download/managed-app.zip",
         "mainTemplate": "mainTemplate.json",
         "createUiDefinition": "createUiDefinition.json",
         "version": "1.0.0",
@@ -218,7 +218,7 @@
     {
       "name": "HIPAA Compliance",
       "description": "Implements HIPAA technical safeguards including encryption, access controls, audit logging, and breach notification procedures",
-      "documentUrl": "https://cloudhealthoffice.com/certifications/hipaa"
+      "documentUrl": "https://HealthCoreX.com/certifications/hipaa"
     },
     {
       "name": "Azure Certified",

@@ -4,10 +4,10 @@
   "metadata": {
     "description": "Cloud Health Office - Azure Managed Application. Complete HIPAA-compliant EDI integration platform deployed as a managed application.",
     "author": "Aurelianware",
-    "github": "https://github.com/aurelianware/cloudhealthoffice",
+    "github": "https://github.com/aurelianware/HealthCoreX",
     "marketplace": {
       "offerType": "Managed Application",
-      "planId": "cloudhealthoffice-managed",
+      "planId": "HealthCoreX-managed",
       "version": "1.0.0"
     }
   },
@@ -147,7 +147,7 @@
         }
       },
       "tags": {
-        "Project": "CloudHealthOffice",
+        "Project": "HealthCoreX",
         "ManagedApp": "true",
         "Tier": "[parameters('deploymentTier')]",
         "Organization": "[parameters('organizationName')]"
@@ -188,7 +188,7 @@
         "minimumTlsVersion": "1.2"
       },
       "tags": {
-        "Project": "CloudHealthOffice",
+        "Project": "HealthCoreX",
         "ManagedApp": "true"
       }
     },
@@ -282,7 +282,7 @@
         "retentionInDays": "[if(equals(parameters('deploymentTier'), 'Sandbox'), 30, 365)]"
       },
       "tags": {
-        "Project": "CloudHealthOffice",
+        "Project": "HealthCoreX",
         "ManagedApp": "true"
       }
     },
@@ -302,7 +302,7 @@
         "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
       ],
       "tags": {
-        "Project": "CloudHealthOffice",
+        "Project": "HealthCoreX",
         "ManagedApp": "true"
       }
     },
@@ -328,7 +328,7 @@
         }
       },
       "tags": {
-        "Project": "CloudHealthOffice",
+        "Project": "HealthCoreX",
         "ManagedApp": "true"
       }
     },
@@ -343,7 +343,7 @@
       },
       "properties": {},
       "tags": {
-        "Project": "CloudHealthOffice",
+        "Project": "HealthCoreX",
         "ManagedApp": "true"
       }
     },
@@ -369,7 +369,7 @@
         "enableAutomaticFailover": "[equals(parameters('deploymentTier'), 'Enterprise')]"
       },
       "tags": {
-        "Project": "CloudHealthOffice",
+        "Project": "HealthCoreX",
         "ManagedApp": "true"
       }
     },
@@ -377,13 +377,13 @@
       "condition": "[parameters('enableCosmosDb')]",
       "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
       "apiVersion": "2023-11-15",
-      "name": "[concat(variables('cosmosDbAccountName'), '/cloudhealthoffice')]",
+      "name": "[concat(variables('cosmosDbAccountName'), '/HealthCoreX')]",
       "dependsOn": [
         "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbAccountName'))]"
       ],
       "properties": {
         "resource": {
-          "id": "cloudhealthoffice"
+          "id": "HealthCoreX"
         }
       }
     },
@@ -391,9 +391,9 @@
       "condition": "[parameters('enableCosmosDb')]",
       "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
       "apiVersion": "2023-11-15",
-      "name": "[concat(variables('cosmosDbAccountName'), '/cloudhealthoffice/prior-authorizations')]",
+      "name": "[concat(variables('cosmosDbAccountName'), '/HealthCoreX/prior-authorizations')]",
       "dependsOn": [
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('cosmosDbAccountName'), 'cloudhealthoffice')]"
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('cosmosDbAccountName'), 'HealthCoreX')]"
       ],
       "properties": {
         "resource": {
@@ -412,9 +412,9 @@
       "condition": "[parameters('enableCosmosDb')]",
       "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
       "apiVersion": "2023-11-15",
-      "name": "[concat(variables('cosmosDbAccountName'), '/cloudhealthoffice/provider-directory')]",
+      "name": "[concat(variables('cosmosDbAccountName'), '/HealthCoreX/provider-directory')]",
       "dependsOn": [
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('cosmosDbAccountName'), 'cloudhealthoffice')]"
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('cosmosDbAccountName'), 'HealthCoreX')]"
       ],
       "properties": {
         "resource": {
@@ -446,7 +446,7 @@
         ]
       },
       "tags": {
-        "Project": "CloudHealthOffice",
+        "Project": "HealthCoreX",
         "ManagedApp": "true"
       }
     }

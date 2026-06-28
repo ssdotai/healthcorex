@@ -1,6 +1,6 @@
 using System.Text;
 using System.Text.Json;
-using CloudHealthOffice.Events;
+using HealthCoreX.Events;
 using Confluent.Kafka;
 
 namespace AccumulatorService.Services;

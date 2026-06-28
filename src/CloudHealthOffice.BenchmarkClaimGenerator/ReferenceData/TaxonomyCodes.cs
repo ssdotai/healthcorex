@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.BenchmarkClaimGenerator.ReferenceData;
+namespace HealthCoreX.BenchmarkClaimGenerator.ReferenceData;
 
 /// <summary>
 /// NUCC Healthcare Provider Taxonomy codes used for provider generation.

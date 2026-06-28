@@ -6,7 +6,7 @@
 # - Persistent storage
 # - Resource limits for Kubernetes
 #
-# Deploy: helm install cloudhealthoffice-kafka bitnami/kafka -f values.yaml -n kafka
+# Deploy: helm install HealthCoreX-kafka bitnami/kafka -f values.yaml -n kafka
 
 # Kafka cluster configuration
 replicaCount: 3
@@ -21,7 +21,7 @@ image:
 # Kraft mode (KRaft replaces ZooKeeper in Kafka 3.x)
 kraft:
   enabled: true
-  clusterId: "cloudhealthoffice-kafka-cluster"
+  clusterId: "HealthCoreX-kafka-cluster"
 
 # ZooKeeper (disabled when using KRaft)
 zookeeper:
@@ -50,7 +50,7 @@ auth:
     interbrokerMechanism: SCRAM-SHA-512
     jaas:
       clientUsers:
-        - cloudhealthoffice
+        - HealthCoreX
         - argo-workflows
         - monitoring
       clientPasswords: []  # Auto-generated if empty, or use existingSecret

@@ -5,11 +5,11 @@ using IdCardService.Adapters;
 using IdCardService.Middleware;
 using IdCardService.Repositories;
 using IdCardService.Services;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.HealthChecks;
-using CloudHealthOffice.Infrastructure.Json;
-using CloudHealthOffice.Infrastructure.Messaging;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Observability;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Azure.Cosmos;
@@ -22,7 +22,7 @@ builder.Configuration.AddAzureKeyVaultConfiguration(builder.Configuration);
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<TenantActionFilter>();
-}).AddCloudHealthOfficeJsonOptions();
+}).AddHealthCoreXJsonOptions();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -47,7 +47,7 @@ if (!string.IsNullOrEmpty(mongoConnectionString))
     builder.Services.AddScoped(sp =>
     {
         var client = sp.GetRequiredService<MongoDB.Driver.IMongoClient>();
-        var dbName = builder.Configuration["MongoDb:DatabaseName"] ?? "CloudHealthOffice";
+        var dbName = builder.Configuration["MongoDb:DatabaseName"] ?? "HealthCoreX";
         return client.GetDatabase(dbName);
     });
 

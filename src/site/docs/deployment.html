@@ -4,15 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Deployment Guide — Cloud Health Office Documentation</title>
-  <meta name="description" content="Deploy Cloud Health Office to production. SaaS signup in 5 minutes or self-hosted on AKS, EKS, or GKE with gated releases, Bicep IaC, Helm charts, and GitHub Actions CI/CD." />
-  <meta name="keywords" content="healthcare platform deployment, Kubernetes healthcare deployment, AKS EKS GKE health plan, HIPAA compliant deployment, healthcare payer infrastructure, Bicep IaC healthcare, Helm chart healthcare" />
-  <link rel="canonical" href="https://cloudhealthoffice.com/docs/deployment" />
+  <meta name="description" content="Deploy Cloud Health Office into a customer-owned environment for validation. Run locally or deploy on AKS, EKS, or GKE with gated releases, Bicep IaC, Helm charts, and GitHub Actions CI/CD." />
+  <meta name="keywords" content="healthcare platform deployment, Kubernetes healthcare deployment, AKS EKS GKE health plan, healthcare payer infrastructure, Bicep IaC healthcare, Helm chart healthcare" />
+  <link rel="canonical" href="https://HealthCoreX.com/docs/deployment" />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://cloudhealthoffice.com/docs/deployment" />
+  <meta property="og:url" content="https://HealthCoreX.com/docs/deployment" />
   <meta property="og:title" content="Deployment Guide — Cloud Health Office" />
-  <meta property="og:description" content="SaaS signup in 5 minutes or self-hosted on AKS, EKS, GKE with gated releases and HIPAA-compliant infrastructure." />
+  <meta property="og:description" content="Customer-owned deployment guidance for AKS, EKS, and GKE with gated releases and security controls for payer validation." />
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"TechArticle","headline":"Cloud Health Office Deployment Guide","description":"Deploy Cloud Health Office — SaaS or self-hosted on any Kubernetes cluster.","url":"https://cloudhealthoffice.com/docs/deployment","author":{"@type":"Organization","name":"Aurelianware, Inc."},"datePublished":"2026-03-24","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://cloudhealthoffice.com"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://cloudhealthoffice.com/docs"},{"@type":"ListItem","position":3,"name":"Deployment","item":"https://cloudhealthoffice.com/docs/deployment"}]}}
+  {"@context":"https://schema.org","@type":"TechArticle","headline":"Cloud Health Office Deployment Guide","description":"Deploy Cloud Health Office locally or into a customer-owned Kubernetes environment for validation.","url":"https://HealthCoreX.com/docs/deployment","author":{"@type":"Organization","name":"Aurelianware, Inc."},"datePublished":"2026-03-24","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://HealthCoreX.com"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://HealthCoreX.com/docs"},{"@type":"ListItem","position":3,"name":"Deployment","item":"https://HealthCoreX.com/docs/deployment"}]}}
   </script>
   <script async src="https://plausible.io/js/pa-JQNNrBf52mV2BxHPtkLAv.js"></script>
   <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)}</script>
@@ -23,7 +23,7 @@
 </head>
 <body>
   <a href="#main-content" class="skip-to-main">Skip to main content</a>
-  <nav><div class="nav-inner"><a href="/" class="nav-logo" aria-label="Home"><img src="/graphics/logo-cloudhealthoffice-sentinel-primary.svg" alt="" class="nav-logo-img" aria-hidden="true" /><span class="nav-logo-text">Cloud Health Office</span></a><div class="nav-right"><button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" id="mobileMenuToggle">&#9776;</button><ul id="mainNav"><li><a href="/solutions-payers">Solutions</a></li><li><a href="/cms-0057f-compliance">CMS Compliance</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/platform">Platform</a></li><li><a href="/docs" style="color:#00ffff;font-weight:bold;">Docs</a></li><li><a href="https://github.com/aurelianware/cloudhealthoffice" target="_blank" rel="noopener noreferrer">GitHub</a></li><li><a href="/contact" style="color:#00ffff;font-weight:bold;">Contact Sales</a></li></ul></div></div></nav>
+  <nav><div class="nav-inner"><a href="/" class="nav-logo" aria-label="Home"><img src="/graphics/logo-HealthCoreX-sentinel-primary.svg" alt="" class="nav-logo-img" aria-hidden="true" /><span class="nav-logo-text">Cloud Health Office</span></a><div class="nav-right"><button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" id="mobileMenuToggle">&#9776;</button><ul id="mainNav"><li><a href="/solutions-payers">Solutions</a></li><li><a href="/cms-0057f-compliance">CMS Compliance</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/platform">Platform</a></li><li><a href="/docs" style="color:#00ffff;font-weight:bold;">Docs</a></li><li><a href="https://github.com/aurelianware/HealthCoreX" target="_blank" rel="noopener noreferrer">GitHub</a></li><li><a href="/contact" style="color:#00ffff;font-weight:bold;">Contact Sales</a></li></ul></div></div></nav>
   <script>document.addEventListener('DOMContentLoaded',()=>{updateNavigation('#mainNav')});</script>
 
   <main id="main-content">
@@ -40,7 +40,7 @@
         <div class="docs-breadcrumb"><a href="/">Home</a><span class="sep">&#x25B8;</span><a href="/docs">Docs</a><span class="sep">&#x25B8;</span><span class="current">Deployment</span></div>
 
         <h1>Deployment Guide</h1>
-        <p class="docs-subtitle">Two paths to production: managed SaaS (live in 5 minutes) or self-hosted on your own Kubernetes cluster with full infrastructure control. Both paths include HIPAA-compliant infrastructure and zero-downtime deployments.</p>
+        <p class="docs-subtitle">Two deployment paths: managed SaaS or self-hosted on your own Kubernetes cluster with full infrastructure control. Both paths are designed for HIPAA-oriented infrastructure, security review, and controlled rollout.</p>
 
         <figure class="docs-diagram">
           <img src="/graphics/docs-deployment-pipeline.svg" alt="Deployment pipeline showing SaaS signup flow and self-hosted DEV → UAT → PROD gated release strategy with multi-cloud support" />
@@ -55,7 +55,7 @@
           <div class="step-body">
             <h3>Request access and start onboarding</h3>
 <pre><code><span class="code-comment"># Contact Sales to initiate pilot provisioning</span>
-<span class="code-comment"># https://cloudhealthoffice.com/contact</span>
+<span class="code-comment"># https://HealthCoreX.com/contact</span>
 
 <span class="code-comment"># Select tier: Starter | Professional | Enterprise (contact sales for pricing)</span>
 <span class="code-comment"># Tenant is provisioned and welcome email with credentials is sent within 1 business day</span></code></pre>
@@ -89,13 +89,13 @@ docker --version
 node --version</code></pre>
 
         <h2 id="local-dev">Local Development</h2>
-        <p>Start with Docker Compose for local development and testing. This runs MongoDB, Redis, and all core services locally. See the <a href="/docs/quickstart">Quick Start</a> for a complete walkthrough.</p>
+        <p>Start with local Kubernetes for development and testing. This runs MongoDB, Redis, the portal, FHIR, claims, payment, enrollment, provider, and supporting services in the same namespace and service-DNS shape used by production. See the <a href="/docs/quickstart">Quick Start</a> for a complete walkthrough.</p>
 
-<pre><code><span class="code-comment"># Start local stack</span>
-docker compose up -d
+<pre><code><span class="code-comment"># Start local Kubernetes platform</span>
+bash ./scripts/deploy-local.sh
 
 <span class="code-comment"># Verify health</span>
-curl -s http://localhost:5001/health</code></pre>
+kubectl get deployments -n HealthCoreX</code></pre>
 
         <h2 id="cicd">CI/CD Pipeline</h2>
         <p>The deployment pipeline uses GitHub Actions with OIDC authentication (no stored secrets) and environment protection rules for approval gates between stages.</p>
@@ -104,7 +104,7 @@ curl -s http://localhost:5001/health</code></pre>
         <table>
           <thead><tr><th>Stage</th><th>Trigger</th><th>What Happens</th></tr></thead>
           <tbody>
-            <tr><td><strong>CI</strong></td><td>Push to <code>main</code></td><td>Build, test (1,740 tests), security scan, Docker image build</td></tr>
+            <tr><td><strong>CI</strong></td><td>Push to <code>main</code></td><td>Build, automated test suite, security scan, Docker image build</td></tr>
             <tr><td><strong>DEV</strong></td><td>CI pass</td><td>Auto-deploy to DEV AKS, run E2E tests</td></tr>
             <tr><td><strong>UAT</strong></td><td>DEV pass + approval</td><td>Deploy to UAT, run integration tests, security validation</td></tr>
             <tr><td><strong>PROD</strong></td><td>UAT pass + approval</td><td>Blue-green deploy to PROD AKS, smoke tests, rollback-ready</td></tr>
@@ -118,7 +118,7 @@ az ad app federated-credential create \
   --parameters '{
     "name": "github-actions-main",
     "issuer": "https://token.actions.githubusercontent.com",
-    "subject": "repo:aurelianware/cloudhealthoffice:ref:refs/heads/main",
+    "subject": "repo:aurelianware/HealthCoreX:ref:refs/heads/main",
     "audiences": ["api://AzureADTokenExchange"]
   }'</code></pre>
 
@@ -140,8 +140,8 @@ az deployment sub create \
 helm repo add argo https://argoproj.github.io/argo-helm
 
 <span class="code-comment"># Deploy Cloud Health Office</span>
-helm install cloudhealthoffice ./infrastructure/helm/cloudhealthoffice \
-  --namespace cloudhealthoffice \
+helm install HealthCoreX ./infrastructure/helm/HealthCoreX \
+  --namespace HealthCoreX \
   --create-namespace \
   --values infrastructure/helm/values-prod.yaml</code></pre>
 
@@ -160,7 +160,7 @@ helm install cloudhealthoffice ./infrastructure/helm/cloudhealthoffice \
         <h3>Setup (Phase A &mdash; CI/CD Bridge)</h3>
 <pre><code><span class="code-comment"># 1. Provision Key Vault with RBAC, purge protection, and AKS network rules</span>
 ./scripts/setup-azure-keyvault.sh \
-  --resource-group rg-cloudhealthoffice-prod \
+  --resource-group rg-HealthCoreX-prod \
   --vault-name cho-app-kv \
   --aks-cluster cho-aks \
   --location eastus \
@@ -180,10 +180,10 @@ gh variable set KEY_VAULT_NAME -b 'cho-app-kv'
         <h3>Setup (Phase B &mdash; CSI Direct Mount)</h3>
 <pre><code><span class="code-comment"># 1. Install CSI driver add-on</span>
 az aks enable-addons --addons azure-keyvault-secrets-provider \
-  --name cho-aks --resource-group rg-cloudhealthoffice-prod
+  --name cho-aks --resource-group rg-HealthCoreX-prod
 
 <span class="code-comment"># 2. Enable OIDC issuer and Workload Identity</span>
-az aks update --name cho-aks --resource-group rg-cloudhealthoffice-prod \
+az aks update --name cho-aks --resource-group rg-HealthCoreX-prod \
   --enable-oidc-issuer --enable-workload-identity
 
 <span class="code-comment"># 3. Per-service: create managed identity, federated credential, and RBAC</span>
@@ -234,23 +234,23 @@ az aks update --name cho-aks --resource-group rg-cloudhealthoffice-prod \
 
         <div class="callout callout-info">
           <div class="callout-title">Full installation guide</div>
-          <p>For the complete per-service Workload Identity checklist with step-by-step commands for all 30 services, see <a href="https://github.com/aurelianware/cloudhealthoffice/blob/main/docs/AZURE-KEYVAULT-INSTALLATION.md" target="_blank" rel="noopener noreferrer">AZURE-KEYVAULT-INSTALLATION.md</a> on GitHub.</p>
+          <p>For the complete per-service Workload Identity checklist with step-by-step commands for all 30 services, see <a href="https://github.com/aurelianware/HealthCoreX/blob/main/docs/AZURE-KEYVAULT-INSTALLATION.md" target="_blank" rel="noopener noreferrer">AZURE-KEYVAULT-INSTALLATION.md</a> on GitHub.</p>
         </div>
 
         <h2 id="verification">Post-Deployment Verification</h2>
 <pre><code><span class="code-comment"># Health check all services</span>
-kubectl get pods -n cloudhealthoffice
-kubectl exec -it deploy/claims-service -n cloudhealthoffice -- curl -s localhost:5001/health
+kubectl get pods -n HealthCoreX
+kubectl exec -it deploy/claims-service -n HealthCoreX -- curl -s localhost:5001/health
 
 <span class="code-comment"># Run E2E test suite</span>
 npm run test:e2e -- --environment=prod
 
 <span class="code-comment"># Verify FHIR endpoints</span>
-curl https://api.cloudhealthoffice.com/fhir/r4/metadata | jq .status</code></pre>
+curl https://api.your-domain.example/fhir/r4/metadata | jq .status</code></pre>
 
         <div class="callout callout-info">
           <div class="callout-title">Full deployment reference</div>
-          <p>For the complete 3,000+ line deployment guide including secrets management, rollback procedures, and troubleshooting, see <a href="https://github.com/aurelianware/cloudhealthoffice/blob/main/docs/deployment/DEPLOYMENT.md" target="_blank" rel="noopener noreferrer">DEPLOYMENT.md</a> on GitHub.</p>
+          <p>For the complete 3,000+ line deployment guide including secrets management, rollback procedures, and troubleshooting, see <a href="https://github.com/aurelianware/HealthCoreX/blob/main/docs/deployment/DEPLOYMENT.md" target="_blank" rel="noopener noreferrer">DEPLOYMENT.md</a> on GitHub.</p>
         </div>
 
         <div class="docs-pager">

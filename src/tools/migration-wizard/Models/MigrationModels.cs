@@ -335,7 +335,7 @@ public class CosmosDbConfig
 {
     public string Endpoint { get; set; } = string.Empty;
     public string Key { get; set; } = string.Empty;
-    public string DatabaseName { get; set; } = "cloudhealthoffice";
+    public string DatabaseName { get; set; } = "HealthCoreX";
     public string MembersContainer { get; set; } = "Members";
     public string ProvidersContainer { get; set; } = "ProviderDirectory";
     public string BenefitPlansContainer { get; set; } = "BenefitPlans";
@@ -356,5 +356,5 @@ public class ApiManagementConfig
     public string SubscriptionId { get; set; } = string.Empty;
     public string RoutingKeyName { get; set; } = "backend-routing";
     public string LegacyBackendId { get; set; } = "legacy-backend";
-    public string CloudHealthOfficeBackendId { get; set; } = "cloudhealthoffice-backend";
+    public string HealthCoreXBackendId { get; set; } = "HealthCoreX-backend";
 }

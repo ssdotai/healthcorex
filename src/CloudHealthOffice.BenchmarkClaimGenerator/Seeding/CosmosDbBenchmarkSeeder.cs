@@ -1,9 +1,9 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
-using CloudHealthOffice.BenchmarkClaimGenerator.Output;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.Output;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Seeding;
+namespace HealthCoreX.BenchmarkClaimGenerator.Seeding;
 
 /// <summary>
 /// Cosmos DB adapter for the benchmark data seeder interface.
@@ -21,12 +21,12 @@ public class CosmosDbBenchmarkSeeder : IBenchmarkDataSeeder
     /// </summary>
     /// <param name="connectionString">Cosmos DB connection string.</param>
     /// <param name="tenantId">Tenant identifier.</param>
-    /// <param name="databaseName">Database name. Default: "cloudhealthoffice".</param>
+    /// <param name="databaseName">Database name. Default: "HealthCoreX".</param>
     /// <param name="logger">Optional logger.</param>
     public CosmosDbBenchmarkSeeder(
         string connectionString,
         string tenantId = "mcc-benchmark",
-        string databaseName = "cloudhealthoffice",
+        string databaseName = "HealthCoreX",
         ILogger? logger = null)
     {
         _seeder = new CosmosDbSeeder(connectionString, tenantId, databaseName, logger);

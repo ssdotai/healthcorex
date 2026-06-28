@@ -2,7 +2,7 @@ using FhirService.Mappers;
 using FhirService.Models;
 using FluentAssertions;
 
-namespace CloudHealthOffice.FhirService.Tests.Controllers;
+namespace HealthCoreX.FhirService.Tests.Controllers;
 
 // CS0618: ProviderDirectoryMapper.MapNppesToPractitioner / EnrichWithVerification
 // were marked [Obsolete] in capability 5.7 — Practitioner proxies to
@@ -36,7 +36,7 @@ public class ProviderDirectoryVerificationTests
         practitioner.Extension.Should().HaveCount(1);
 
         var ext = practitioner.Extension![0];
-        ext.Url.Should().Be("https://cloudhealthoffice.com/fhir/StructureDefinition/provider-verification");
+        ext.Url.Should().Be("https://HealthCoreX.com/fhir/StructureDefinition/provider-verification");
         ext.Extension.Should().Contain(e => e.Url == "integrityScore" && e.ValueInteger == 85);
         ext.Extension.Should().Contain(e => e.Url == "rating" && e.ValueString == "Clear");
         ext.Extension.Should().Contain(e => e.Url == "isExcluded" && e.ValueBoolean == false);

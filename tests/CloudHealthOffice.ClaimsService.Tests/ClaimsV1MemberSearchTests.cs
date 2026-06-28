@@ -7,7 +7,7 @@ using NSubstitute;
 using NSubstitute.ClearExtensions;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests;
+namespace HealthCoreX.ClaimsService.Tests;
 
 /// <summary>
 /// v1 member-scoped claims surface — covers the /api/v1/claims route,

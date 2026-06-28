@@ -23,7 +23,7 @@ to each `SecretClient.SetSecret` call. The logical version appears in:
    dual-read (fingerprinter candidates).
 
 The primitive is `RotatingKeyProvider`
-(`src/services/shared/CloudHealthOffice.Infrastructure/Configuration/`).
+(`src/services/shared/HealthCoreX.Infrastructure/Configuration/`).
 Consumers ask it for `GetKeyAsync(prefix, version, devConfigFallback)`
 and get cached key bytes; the cache is invalidated by
 `SecretRefreshService` on every `IConfiguration` reload, so new secret

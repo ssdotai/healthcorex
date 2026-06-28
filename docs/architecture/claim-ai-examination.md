@@ -62,7 +62,7 @@ public bool IsModifierAddressable() =>
 
 Calling the snapshot's helper directly from both sides eliminates
 filter drift — there's exactly one definition of "modifier-addressable",
-shipped in shared `CloudHealthOffice.Events`. Producer and consumer can
+shipped in shared `HealthCoreX.Events`. Producer and consumer can
 never disagree about scope.
 
 ### Why not `ModifierOverridePresent`?

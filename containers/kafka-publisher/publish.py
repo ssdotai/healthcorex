@@ -208,7 +208,7 @@ class KafkaPublisher:
             kafka_headers.extend([
                 ("x-correlation-id", str(uuid.uuid4()).encode('utf-8')),
                 ("x-timestamp", datetime.now(timezone.utc).isoformat().encode('utf-8')),
-                ("x-source", "cloudhealthoffice".encode('utf-8'))
+                ("x-source", "HealthCoreX".encode('utf-8'))
             ])
             
             # Send message

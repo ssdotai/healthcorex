@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Infrastructure.Caching;
+namespace HealthCoreX.Infrastructure.Caching;
 
 /// <summary>
 /// Explicit-disable no-op <see cref="ICacheProvider"/>. <see cref="GetAsync"/>

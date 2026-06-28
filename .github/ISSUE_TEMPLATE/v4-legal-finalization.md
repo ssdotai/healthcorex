@@ -317,12 +317,12 @@ Congrats on joining Cloud Health Office! We're excited to help you modernize EDI
 Here's how to get started:
 
 1. SFTP Credentials (attached PDF)
-   - Host: sftp.cloudhealthoffice.com
+   - Host: sftp.HealthCoreX.com
    - Username: [tenant-shortname]
    - Password: [secure-password]
 
 2. Portal Access
-   - URL: https://portal.cloudhealthoffice.com
+   - URL: https://portal.HealthCoreX.com
    - Login: Use your Azure AD credentials
 
 3. First Transaction Test
@@ -330,7 +330,7 @@ Here's how to get started:
    - Check portal for 277 status response (within 5 minutes)
 
 4. Support
-   - Email: support@cloudhealthoffice.com
+   - Email: support@HealthCoreX.com
    - Response SLA: 4 hours for Starter, 1 hour for Professional, 30 min for Enterprise
 
 Need help? Schedule a 30-minute onboarding call: [Calendly link]

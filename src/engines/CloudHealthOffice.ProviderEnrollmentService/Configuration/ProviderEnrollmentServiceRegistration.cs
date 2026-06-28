@@ -1,25 +1,25 @@
-using CloudHealthOffice.Infrastructure.Caching;
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Aggregator;
-using CloudHealthOffice.ProviderEnrollmentService.Cache;
-using CloudHealthOffice.ProviderEnrollmentService.Gates;
-using CloudHealthOffice.ProviderEnrollmentService.Lifecycle;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
-using CloudHealthOffice.ProviderEnrollmentService.Sources.California;
-using CloudHealthOffice.ProviderEnrollmentService.Sources.CrossState;
-using CloudHealthOffice.ProviderEnrollmentService.Sources.Florida;
-using CloudHealthOffice.ProviderEnrollmentService.Sources.NewYork;
-using CloudHealthOffice.ProviderEnrollmentService.Sources.Texas;
-using CloudHealthOffice.ProviderEnrollmentService.Workers;
+using HealthCoreX.Infrastructure.Caching;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Aggregator;
+using HealthCoreX.ProviderEnrollmentService.Cache;
+using HealthCoreX.ProviderEnrollmentService.Gates;
+using HealthCoreX.ProviderEnrollmentService.Lifecycle;
+using HealthCoreX.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Sources.California;
+using HealthCoreX.ProviderEnrollmentService.Sources.CrossState;
+using HealthCoreX.ProviderEnrollmentService.Sources.Florida;
+using HealthCoreX.ProviderEnrollmentService.Sources.NewYork;
+using HealthCoreX.ProviderEnrollmentService.Sources.Texas;
+using HealthCoreX.ProviderEnrollmentService.Workers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Configuration;
+namespace HealthCoreX.ProviderEnrollmentService.Configuration;
 
 /// <summary>
-/// DI registration for CloudHealthOffice.ProviderEnrollmentService.
+/// DI registration for HealthCoreX.ProviderEnrollmentService.
 ///
 /// ── Typical usage ─────────────────────────────────────────────────────────
 ///

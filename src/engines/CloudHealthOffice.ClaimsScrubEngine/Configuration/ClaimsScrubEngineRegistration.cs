@@ -1,9 +1,9 @@
-using CloudHealthOffice.ClaimsScrubEngine.Data;
-using CloudHealthOffice.ClaimsScrubEngine.Models;
-using CloudHealthOffice.ClaimsScrubEngine.Services;
+using HealthCoreX.ClaimsScrubEngine.Data;
+using HealthCoreX.ClaimsScrubEngine.Models;
+using HealthCoreX.ClaimsScrubEngine.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CloudHealthOffice.ClaimsScrubEngine.Configuration;
+namespace HealthCoreX.ClaimsScrubEngine.Configuration;
 
 /// <summary>
 /// DI registration for the Claims Scrub Engine.

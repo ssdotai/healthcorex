@@ -1,12 +1,13 @@
 using CHO.TerminologyService.Configuration;
 using CHO.TerminologyService.Data;
 using CHO.TerminologyService.Services;
+using CHO.TerminologyService.Services.CodeSystemCatalog;
 using CHO.TerminologyService.Services.Loaders;
 using CHO.TerminologyService.Services.Rules;
 using MongoDB.Driver;
 using Serilog;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
 // Secret provider (Azure Key Vault / none)
@@ -46,8 +47,10 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
 // Services
 // ──────────────────────────────────────────────────────
 builder.Services.AddSingleton<IConceptMapRepository, MongoConceptMapRepository>();
+builder.Services.AddSingleton<ICodeSystemCatalogRepository, MongoCodeSystemCatalogRepository>();
 builder.Services.AddSingleton<IContextRuleEngine, ContextRuleEngine>();
 builder.Services.AddSingleton<ITerminologyTranslationService, TerminologyTranslationService>();
+builder.Services.AddHostedService<CodeSystemCatalogSeedService>();
 
 // Map loaders (register all implementations)
 builder.Services.AddSingleton<IMapLoader, Rf2MapLoader>();
@@ -63,7 +66,7 @@ builder.Services.AddMapSyndication();
 // ASP.NET Core
 // ──────────────────────────────────────────────────────
 // NOTE: CHO.TerminologyService intentionally does NOT call
-// AddCloudHealthOfficeJsonOptions(). This is a FHIR ConceptMap/$translate
+// AddHealthCoreXJsonOptions(). This is a FHIR ConceptMap/$translate
 // service whose wire format follows FHIR conventions (numeric enum coding,
 // CamelCase + WhenWritingNull) rather than the platform default.
 // See docs/architecture/shared-json-options.md.
@@ -88,7 +91,7 @@ builder.Services.AddSwaggerGen(c =>
         {
             Name = "Aurelianware",
             Email = "markus@aurelianware.com",
-            Url = new Uri("https://cloudhealthoffice.com")
+            Url = new Uri("https://HealthCoreX.com")
         }
     });
 });

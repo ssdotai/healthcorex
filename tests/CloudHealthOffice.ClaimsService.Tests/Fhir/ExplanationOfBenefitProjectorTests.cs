@@ -4,7 +4,7 @@ using ClaimsService.Fhir;
 using ClaimsService.Models;
 using FluentAssertions;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Fhir;
+namespace HealthCoreX.ClaimsService.Tests.Fhir;
 
 /// <summary>
 /// Unit tests for the FHIR R4 ExplanationOfBenefit projector (capability
@@ -29,7 +29,7 @@ public class ExplanationOfBenefitProjectorTests
 
         json["resourceType"]!.GetValue<string>().Should().Be("ExplanationOfBenefit");
         json["use"]!.GetValue<string>().Should().Be("claim");
-        json["insurer"]!["display"]!.GetValue<string>().Should().Be("CloudHealthOffice");
+        json["insurer"]!["display"]!.GetValue<string>().Should().Be("HealthCoreX");
         json["patient"]!["reference"]!.GetValue<string>().Should().Be("Patient/MEM-1");
         json["provider"]!["identifier"]!["system"]!.GetValue<string>()
             .Should().Be("http://hl7.org/fhir/sid/us-npi");

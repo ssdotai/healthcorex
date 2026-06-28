@@ -1,7 +1,7 @@
 # NCCI / MUE Edits Enforcement Pipeline (Capability 5.7)
 
 > **Status — Phase 1, May 2026.** Replaces `NcciEditsStubStage` at
-> Order=400 with a real `CloudHealthOffice.NcciEngine`-backed
+> Order=400 with a real `HealthCoreX.NcciEngine`-backed
 > implementation. NCCI Column 1/Column 2 (PTP) bundling edits and MUE
 > (Medically Unlikely Edits) unit checks now run between
 > `BenefitCalculationStage` (300) and the COB stub (500). Failed edits
@@ -48,7 +48,7 @@ suggested CARC/RARC codes on the 835.
 
 ### D1 — In-process engine (no separate service)
 
-The engine ships as `CloudHealthOffice.NcciEngine` class library with a
+The engine ships as `HealthCoreX.NcciEngine` class library with a
 fluent registration extension:
 
 ```csharp
@@ -243,7 +243,7 @@ The original plan-phase Decision 15 contemplated stage-side modifier
 inspection on each affected line to set the snapshot's
 `ModifierOverridePresent`. Plan audit found this is unnecessary — the
 engine pre-filters override-present cases before emitting failures (see
-[`NcciEditService.cs`](../../src/engines/CloudHealthOffice.NcciEngine/Services/NcciEditService.cs):
+[`NcciEditService.cs`](../../src/engines/HealthCoreX.NcciEngine/Services/NcciEditService.cs):
 the `if (overridePresent) return;` short-circuit at the top of
 `EvaluatePairEdit`). For any failure in the result list, the engine
 has already determined that no override modifier applied — so the

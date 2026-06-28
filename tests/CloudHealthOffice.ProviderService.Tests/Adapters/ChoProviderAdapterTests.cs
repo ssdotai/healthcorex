@@ -1,9 +1,9 @@
-using CloudHealthOffice.ProviderService.Tests.Fakes;
+using HealthCoreX.ProviderService.Tests.Fakes;
 using Microsoft.Extensions.Logging.Abstractions;
 using ProviderService.Adapters;
 using ProviderService.Models;
 
-namespace CloudHealthOffice.ProviderService.Tests.Adapters;
+namespace HealthCoreX.ProviderService.Tests.Adapters;
 
 /// <summary>
 /// Verifies the CHO pass-through adapter against the in-memory repository.

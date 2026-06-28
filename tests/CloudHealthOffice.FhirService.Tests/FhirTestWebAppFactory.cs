@@ -1,11 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using CloudHealthOffice.PriorAuthRuleEngine.Abstractions;
-using CloudHealthOffice.PriorAuthRuleEngine.Domain;
-using CloudHealthOffice.PriorAuthRuleEngine.Models;
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Gates;
+using HealthCoreX.PriorAuthRuleEngine.Abstractions;
+using HealthCoreX.PriorAuthRuleEngine.Domain;
+using HealthCoreX.PriorAuthRuleEngine.Models;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Gates;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SecurityClaim = System.Security.Claims.Claim;
 
-namespace CloudHealthOffice.FhirService.Tests;
+namespace HealthCoreX.FhirService.Tests;
 
 /// <summary>
 /// WebApplicationFactory for fhir-service integration tests that overrides JWT Bearer
@@ -50,7 +50,7 @@ public class FhirTestWebAppFactory : WebApplicationFactory<Program>
             services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
             {
                 // Disable OIDC discovery entirely so the test host never makes network
-                // calls to the real issuer (https://auth.cloudhealthoffice.com).
+                // calls to the real issuer (https://auth.HealthCoreX.com).
                 // Authority must be cleared before nulling ConfigurationManager because
                 // the lazy getter recreates it from Authority if Authority is still set.
                 options.Authority = null;
@@ -139,7 +139,7 @@ public class FhirTestWebAppFactory : WebApplicationFactory<Program>
               "\"use\":\"claim\"," +
               "\"type\":{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/claim-type\",\"code\":\"professional\"}]}," +
               $"\"patient\":{{\"reference\":\"Patient/{patientId}\"}}," +
-              "\"insurer\":{\"display\":\"CloudHealthOffice\"}," +
+              "\"insurer\":{\"display\":\"HealthCoreX\"}," +
               "\"provider\":{\"display\":\"Test Provider\"}," +
               "\"created\":\"2026-01-15T00:00:00Z\"," +
               "\"outcome\":\"complete\"," +

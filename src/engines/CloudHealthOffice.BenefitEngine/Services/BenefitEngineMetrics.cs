@@ -1,18 +1,18 @@
 using System.Diagnostics.Metrics;
 
-namespace CloudHealthOffice.BenefitEngine.Services;
+namespace HealthCoreX.BenefitEngine.Services;
 
 /// <summary>
 /// Engine-internal counters that don't depend on
-/// <c>CloudHealthOffice.Infrastructure</c> (the engine project sits
+/// <c>HealthCoreX.Infrastructure</c> (the engine project sits
 /// below the shared infra assembly). All instruments share the
-/// canonical <c>"CloudHealthOffice"</c> meter name so OpenTelemetry /
+/// canonical <c>"HealthCoreX"</c> meter name so OpenTelemetry /
 /// Prometheus exporters need only one subscription regardless of
 /// which assembly defines the instrument.
 /// </summary>
 internal static class BenefitEngineMetrics
 {
-    private const string MeterName = "CloudHealthOffice";
+    private const string MeterName = "HealthCoreX";
 
     private static readonly Meter Meter = new(MeterName,
         typeof(BenefitEngineMetrics).Assembly.GetName().Version?.ToString() ?? "0.0.0");

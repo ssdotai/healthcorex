@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.Infrastructure.Licensing;
+namespace HealthCoreX.Infrastructure.Licensing;
 
 /// <summary>
 /// Lightweight production license check for Cloud Health Office.
@@ -20,7 +20,7 @@ namespace CloudHealthOffice.Infrastructure.Licensing;
 ///
 /// Configuration:
 ///   Environment variable: CHO_LICENSE_KEY
-///   appsettings.json:     "CloudHealthOffice": { "LicenseKey": "..." }
+///   appsettings.json:     "HealthCoreX": { "LicenseKey": "..." }
 /// </summary>
 public class LicenseCheckMiddleware
 {
@@ -46,7 +46,7 @@ public class LicenseCheckMiddleware
 
         // Check for license key from env var or config
         var licenseKey = Environment.GetEnvironmentVariable("CHO_LICENSE_KEY")
-                      ?? configuration["CloudHealthOffice:LicenseKey"];
+                      ?? configuration["HealthCoreX:LicenseKey"];
 
         _hasLicenseKey = !string.IsNullOrWhiteSpace(licenseKey);
 
@@ -55,7 +55,7 @@ public class LicenseCheckMiddleware
             _logger.LogWarning(
                 "Cloud Health Office is running in {Environment} without a production license. " +
                 "A commercial license is required for production use. " +
-                "Set CHO_LICENSE_KEY or see https://cloudhealthoffice.com/docs/commercial-licensing",
+                "Set CHO_LICENSE_KEY or see https://HealthCoreX.com/docs/commercial-licensing",
                 _environment);
         }
         else if (_isProduction && _hasLicenseKey)
@@ -90,8 +90,8 @@ public class LicenseCheckMiddleware
             {
                 _logger.LogWarning(
                     "LICENSING: Cloud Health Office requires a commercial license for production use. " +
-                    "Visit https://cloudhealthoffice.com/docs/commercial-licensing or " +
-                    "contact licensing@cloudhealthoffice.com");
+                    "Visit https://HealthCoreX.com/docs/commercial-licensing or " +
+                    "contact licensing@HealthCoreX.com");
             }
         }
 

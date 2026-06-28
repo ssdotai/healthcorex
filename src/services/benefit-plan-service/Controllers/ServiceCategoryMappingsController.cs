@@ -2,7 +2,7 @@ using BenefitPlanService.HostedServices;
 using BenefitPlanService.Middleware;
 using BenefitPlanService.Models;
 using BenefitPlanService.Repositories;
-using CloudHealthOffice.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 

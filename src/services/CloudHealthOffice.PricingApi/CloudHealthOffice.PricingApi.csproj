@@ -4,14 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>CloudHealthOffice.PricingApi</RootNamespace>
-    <AssemblyName>CloudHealthOffice.PricingApi</AssemblyName>
+    <RootNamespace>HealthCoreX.PricingApi</RootNamespace>
+    <AssemblyName>HealthCoreX.PricingApi</AssemblyName>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <AzureCosmosDisableNewtonsoftJsonCheck>true</AzureCosmosDisableNewtonsoftJsonCheck>
     <Version>1.0.0</Version>
     <Authors>Aurelianware, Inc.</Authors>
     <Company>Aurelianware, Inc.</Company>
-    <Product>CloudHealthOffice Claims Pricing API</Product>
+    <Product>HealthCoreX Claims Pricing API</Product>
     <Description>Vendor-neutral claims repricing API supporting Medicare RBRVS, OPPS, and MS-DRG fee schedules.</Description>
   </PropertyGroup>
 
@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\shared\CloudHealthOffice.Infrastructure\CloudHealthOffice.Infrastructure.csproj" />
+    <ProjectReference Include="..\shared\HealthCoreX.Infrastructure\HealthCoreX.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

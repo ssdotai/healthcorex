@@ -24,7 +24,7 @@ metadata:
   labels:
     app.kubernetes.io/name: x12-270-ingest
     app.kubernetes.io/component: edi-processing
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
     hipaa.compliance: "required"
   annotations:
     description: "X12 270 eligibility inquiry ingestion and 271 response generation"
@@ -75,9 +75,9 @@ spec:
         value: "processed/271"
       # Service endpoints
       - name: eligibility-service-endpoint
-        value: "http://eligibility-service.cloudhealthoffice.svc.cluster.local/api/eligibility"
+        value: "http://eligibility-service.HealthCoreX.svc.cluster.local/api/eligibility"
       - name: trading-partner-service-endpoint
-        value: "http://trading-partner-service.cloudhealthoffice.svc.cluster.local/api/TradingPartners"
+        value: "http://trading-partner-service.HealthCoreX.svc.cluster.local/api/TradingPartners"
       # Kafka
       - name: kafka-topic
         value: "eligibility-requests"

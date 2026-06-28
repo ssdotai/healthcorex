@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Models;
+namespace HealthCoreX.BenchmarkClaimGenerator.Models;
 
 /// <summary>
 /// Represents a synthetic member/subscriber for benchmark claim generation.
@@ -50,6 +50,26 @@ public class SyntheticMember
 
     /// <summary>X12 834 maintenance type code (021=Addition, 024=Cancel, 001=Change).</summary>
     public string MaintenanceTypeCode { get; set; } = "021";
+
+    /// <summary>
+    /// Retroactive effective date of a benefit-plan/coverage change (X12 834
+    /// maintenance type code 001), when this member record represents a
+    /// correction recorded after claims with earlier service dates may have
+    /// already been submitted. Null for members with no pending retroactive
+    /// change.
+    /// </summary>
+    public DateTime? PlanChangeEffectiveDate { get; set; }
+
+    /// <summary>
+    /// Medicaid "medically needy" spend-down liability for the member's
+    /// current budget period: incurred medical expense required before
+    /// Medicaid activates. Null for members not enrolled under a spend-down
+    /// eligibility category.
+    /// </summary>
+    public decimal? MedicaidSpendDownLiabilityAmount { get; set; }
+
+    /// <summary>Amount incurred so far toward <see cref="MedicaidSpendDownLiabilityAmount"/>.</summary>
+    public decimal MedicaidSpendDownAmountMet { get; set; }
 
     /// <summary>Line of business (STAR, CHIP, STAR+PLUS, STAR Kids, STAR Health, Commercial, Medicare).</summary>
     public string LineOfBusiness { get; set; } = "STAR";

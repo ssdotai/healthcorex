@@ -42,4 +42,20 @@ public class ResolvedMember
 
     public DateTime? EffectiveDate { get; init; }
     public DateTime? TerminationDate { get; init; }
+
+    /// <summary>
+    /// Retroactive effective date of a benefit-plan/coverage change recorded
+    /// after the fact. Null unless member-service has a pending retroactive
+    /// correction on file for this member.
+    /// </summary>
+    public DateTime? PlanChangeEffectiveDate { get; init; }
+
+    /// <summary>
+    /// Medicaid spend-down liability for the member's current budget period.
+    /// Null for members not enrolled under a spend-down eligibility category.
+    /// </summary>
+    public decimal? MedicaidSpendDownLiabilityAmount { get; init; }
+
+    /// <summary>Amount incurred so far toward <see cref="MedicaidSpendDownLiabilityAmount"/>.</summary>
+    public decimal MedicaidSpendDownAmountMet { get; init; }
 }

@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/saas-offer/1.0.0/saas-offer.json",
-  "offerId": "cloudhealthoffice-saas",
+  "offerId": "HealthCoreX-saas",
   "publisherId": "aurelianware",
   "version": "1.0.0",
   "metadata": {
@@ -212,24 +212,24 @@
     }
   ],
   "technicalConfiguration": {
-    "landingPageUrl": "https://cloudhealthoffice.com/saas/landing",
-    "connectionWebhookUrl": "https://cloudhealthoffice.com/saas/webhook",
+    "landingPageUrl": "https://HealthCoreX.com/saas/landing",
+    "connectionWebhookUrl": "https://HealthCoreX.com/saas/webhook",
     "azureActiveDirectoryTenantId": "{tenantId}",
     "azureActiveDirectoryApplicationId": "{applicationId}",
     "supportsMarketplaceMeteringService": true,
     "supportsSubscriptionNotifications": true
   },
   "legalTerms": {
-    "privacyPolicyUrl": "https://cloudhealthoffice.com/privacy",
-    "termsOfServiceUrl": "https://cloudhealthoffice.com/terms",
-    "slaUrl": "https://cloudhealthoffice.com/sla",
-    "hipaaComplianceUrl": "https://cloudhealthoffice.com/hipaa"
+    "privacyPolicyUrl": "https://HealthCoreX.com/privacy",
+    "termsOfServiceUrl": "https://HealthCoreX.com/terms",
+    "slaUrl": "https://HealthCoreX.com/sla",
+    "hipaaComplianceUrl": "https://HealthCoreX.com/hipaa"
   },
   "supportConfiguration": {
-    "supportUrl": "https://support.cloudhealthoffice.com",
-    "supportEmail": "support@cloudhealthoffice.com",
+    "supportUrl": "https://support.HealthCoreX.com",
+    "supportEmail": "support@HealthCoreX.com",
     "supportPhone": "+1-928-940-2410",
-    "engineeringContactEmail": "engineering@cloudhealthoffice.com",
-    "publicDocumentationUrl": "https://docs.cloudhealthoffice.com"
+    "engineeringContactEmail": "engineering@HealthCoreX.com",
+    "publicDocumentationUrl": "https://docs.HealthCoreX.com"
   }
 }

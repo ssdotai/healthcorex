@@ -21,12 +21,12 @@ Cloud Health Office has **strong technical foundations** but is **NOT production
 ### ✅ **Strengths (Production-Ready)**
 
 #### 1.1 Core Platform Architecture
-- **10 microservices** deployed and running on AKS (cloudhealthoffice namespace)
+- **10 microservices** deployed and running on AKS (HealthCoreX namespace)
   - Member, Coverage, Claims, Eligibility, Authorization, Provider, Benefit Plan, Reference Data, Sponsor, Claims Scrubbing
   - All services healthy (28h uptime, 1/1 pods ready)
 - **18 container images** built automatically via GitHub Actions
   - Services + Portal + Site + 6 utility containers
-  - Pushed to `ghcr.io/aurelianware/cloudhealthoffice-*:latest`
+  - Pushed to `ghcr.io/aurelianware/HealthCoreX-*:latest`
 - **Kubernetes orchestration** with Argo Workflows + Kafka messaging
 - **PostgreSQL database** deployed (postgres-0 pod running)
 
@@ -82,11 +82,11 @@ Cloud Health Office has **strong technical foundations** but is **NOT production
 ### ✅ **Strengths**
 
 #### 2.1 Pricing Model Defined
-- **SaaS Model**: [Contact sales](mailto:sales@cloudhealthoffice.com) (member count + transaction volume)
-- **BYOS Model**: [Contact sales](mailto:sales@cloudhealthoffice.com) for one-time + monthly support pricing
+- **SaaS Model**: [Contact sales](mailto:sales@HealthCoreX.com) (member count + transaction volume)
+- **BYOS Model**: [Contact sales](mailto:sales@HealthCoreX.com) for one-time + monthly support pricing
 - **Subscription tiers** documented:
-  - Starter: [Contact sales](mailto:sales@cloudhealthoffice.com), 10k claims/mo, 5 users
-  - Professional: [Contact sales](mailto:sales@cloudhealthoffice.com), 100k claims/mo, 25 users
+  - Starter: [Contact sales](mailto:sales@HealthCoreX.com), 10k claims/mo, 5 users
+  - Professional: [Contact sales](mailto:sales@HealthCoreX.com), 100k claims/mo, 25 users
   - Enterprise: Custom, unlimited, dedicated CSM
 
 #### 2.2 Marketing Assets
@@ -227,7 +227,7 @@ Cloud Health Office has **strong technical foundations** but is **NOT production
   - Test restore procedure
   - Document RTO/RPO
 - [ ] **Customer support**
-  - Set up support email (support@cloudhealthoffice.com)
+  - Set up support email (support@HealthCoreX.com)
   - Create Zendesk/Intercom account
   - Build internal support portal
 
@@ -369,7 +369,7 @@ Cloud Health Office has **strong technical foundations** but is **NOT production
 
 ### **Priority 3: Operational Readiness (3-5 days)**
 8. **Configure Prometheus + Grafana** → Per-tenant dashboards
-9. **Set up support email** → support@cloudhealthoffice.com with ticketing
+9. **Set up support email** → support@HealthCoreX.com with ticketing
 10. **Document backup/restore** → Test Cosmos DB restore procedure
 
 ---
@@ -470,7 +470,7 @@ Cloud Health Office has **strong technical foundations** but is **NOT production
 - [ ] Automated Cosmos DB backups
 - [ ] Test backup restore procedure
 - [ ] Document on-call runbooks
-- [ ] Set up support@cloudhealthoffice.com
+- [ ] Set up support@HealthCoreX.com
 
 ### **Sprint 4: Beta Launch (Week 4)**
 - [ ] Sign first beta customer

@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.LoadTests;
+namespace HealthCoreX.LoadTests;
 
 /// <summary>
 /// Centralized configuration for load test scenarios.

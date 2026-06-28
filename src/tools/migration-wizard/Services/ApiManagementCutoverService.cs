@@ -52,7 +52,7 @@ public class ApiManagementCutoverService
             result.PreviousBackendId = currentConfig.CurrentBackendId;
 
             // Step 3: Update Named Value (routing key)
-            var updateSuccess = await UpdateRoutingKeyAsync(token, _config.CloudHealthOfficeBackendId, cancellationToken);
+            var updateSuccess = await UpdateRoutingKeyAsync(token, _config.HealthCoreXBackendId, cancellationToken);
             if (!updateSuccess)
             {
                 result.Success = false;
@@ -62,7 +62,7 @@ public class ApiManagementCutoverService
 
             // Step 4: Verify the change
             var verifiedConfig = await GetCurrentRoutingConfigAsync(token, cancellationToken);
-            if (verifiedConfig.CurrentBackendId != _config.CloudHealthOfficeBackendId)
+            if (verifiedConfig.CurrentBackendId != _config.HealthCoreXBackendId)
             {
                 result.Success = false;
                 result.ErrorMessage = "Routing key update verification failed";
@@ -70,11 +70,11 @@ public class ApiManagementCutoverService
             }
 
             result.Success = true;
-            result.NewBackendId = _config.CloudHealthOfficeBackendId;
+            result.NewBackendId = _config.HealthCoreXBackendId;
             result.CompletedAt = DateTime.UtcNow;
 
             _logger.LogInformation("Cutover completed successfully. Traffic now routed to {BackendId}", 
-                _config.CloudHealthOfficeBackendId);
+                _config.HealthCoreXBackendId);
 
             return result;
         }
@@ -160,7 +160,7 @@ public class ApiManagementCutoverService
             {
                 IsConfigured = true,
                 CurrentBackendId = config.CurrentBackendId,
-                IsRoutedToCloudHealthOffice = config.CurrentBackendId == _config.CloudHealthOfficeBackendId,
+                IsRoutedToHealthCoreX = config.CurrentBackendId == _config.HealthCoreXBackendId,
                 LastUpdated = config.LastUpdated
             };
         }
@@ -319,7 +319,7 @@ public class RoutingStatus
 {
     public bool IsConfigured { get; set; }
     public string? CurrentBackendId { get; set; }
-    public bool IsRoutedToCloudHealthOffice { get; set; }
+    public bool IsRoutedToHealthCoreX { get; set; }
     public DateTime? LastUpdated { get; set; }
     public string? ErrorMessage { get; set; }
 }

@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Portal.Services;
+namespace HealthCoreX.Portal.Services;
 
 /// <summary>
 /// Thrown when a backend service is unreachable or returns a transport-level error.

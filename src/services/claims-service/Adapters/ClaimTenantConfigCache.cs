@@ -55,7 +55,7 @@ public class ClaimTenantConfigCache
         try
         {
             var tenantUrl = _configuration["Services:TenantService"]
-                ?? "http://tenant-service.cloudhealthoffice/api/v1";
+                ?? "http://tenant-service.HealthCoreX/api/v1";
             var httpClient = _httpClientFactory.CreateClient(HttpClientName);
             // Encode the tenantId path segment defensively — the value flows
             // from JWT/header via TenantMiddleware, and a crafted id with '/'

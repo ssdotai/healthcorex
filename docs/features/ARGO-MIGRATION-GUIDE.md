@@ -47,16 +47,16 @@ Deploy new infrastructure alongside existing Logic Apps.
 
 ```bash
 # Create namespace
-kubectl create namespace cloudhealthoffice
+kubectl create namespace HealthCoreX
 
 # Install Argo Workflows
 helm repo add argo https://argoproj.github.io/argo-helm
-helm install argo-workflows argo/argo-workflows -n cloudhealthoffice \
+helm install argo-workflows argo/argo-workflows -n HealthCoreX \
   --set controller.parallelism=10 \
   --set server.enabled=true
 
 # Install Argo Events
-helm install argo-events argo/argo-events -n cloudhealthoffice
+helm install argo-events argo/argo-events -n HealthCoreX
 
 # Install Kafka (or configure external)
 helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -71,26 +71,26 @@ kubectl apply -f kafka/topics.yaml
 ```bash
 # Build all containers
 cd containers/x12-parser
-docker build -t cloudhealthoffice/x12-parser:latest .
+docker build -t HealthCoreX/x12-parser:latest .
 
 cd ../x12-encoder
-docker build -t cloudhealthoffice/x12-encoder:latest .
+docker build -t HealthCoreX/x12-encoder:latest .
 
 cd ../sftp-fetcher
-docker build -t cloudhealthoffice/sftp-fetcher:latest .
+docker build -t HealthCoreX/sftp-fetcher:latest .
 
 cd ../metadata-extractor
-docker build -t cloudhealthoffice/metadata-extractor:latest .
+docker build -t HealthCoreX/metadata-extractor:latest .
 
 cd ../kafka-publisher
-docker build -t cloudhealthoffice/kafka-publisher:latest .
+docker build -t HealthCoreX/kafka-publisher:latest .
 
 # Push to registry
-docker push cloudhealthoffice/x12-parser:latest
-docker push cloudhealthoffice/x12-encoder:latest
-docker push cloudhealthoffice/sftp-fetcher:latest
-docker push cloudhealthoffice/metadata-extractor:latest
-docker push cloudhealthoffice/kafka-publisher:latest
+docker push HealthCoreX/x12-parser:latest
+docker push HealthCoreX/x12-encoder:latest
+docker push HealthCoreX/sftp-fetcher:latest
+docker push HealthCoreX/metadata-extractor:latest
+docker push HealthCoreX/kafka-publisher:latest
 ```
 
 ### Phase 3: Deploy Secrets and ConfigMaps
@@ -100,22 +100,22 @@ docker push cloudhealthoffice/kafka-publisher:latest
 kubectl create secret generic clearinghouse-sftp-secret \
   --from-literal=username=$SFTP_USERNAME \
   --from-literal=password=$SFTP_PASSWORD \
-  -n cloudhealthoffice
+  -n HealthCoreX
 
 kubectl create secret generic kafka-sasl-secret \
   --from-literal=mechanism=SCRAM-SHA-512 \
   --from-literal=username=$KAFKA_USERNAME \
   --from-literal=password=$KAFKA_PASSWORD \
-  -n cloudhealthoffice
+  -n HealthCoreX
 
 kubectl create secret generic claims-backend-api-secret \
   --from-literal=token=$CLAIMS_BACKEND_API_TOKEN \
-  -n cloudhealthoffice
+  -n HealthCoreX
 
 kubectl create secret generic s3-credentials-secret \
   --from-literal=access-key-id=$AWS_ACCESS_KEY_ID \
   --from-literal=secret-access-key=$AWS_SECRET_ACCESS_KEY \
-  -n cloudhealthoffice
+  -n HealthCoreX
 
 # Apply ConfigMaps
 kubectl apply -f k8s/configmaps/
@@ -148,7 +148,7 @@ Run both systems in parallel to verify output parity.
 ./migration/parallel-run.sh --percentage 10
 
 # Monitor both systems
-watch kubectl get workflows -n cloudhealthoffice
+watch kubectl get workflows -n HealthCoreX
 ```
 
 ### Phase 6: Traffic Migration
@@ -244,7 +244,7 @@ az keyvault secret show --name claims-backend-api-token --vault-name myvault --q
 # Create Kubernetes Secret
 kubectl create secret generic claims-backend-api-secret \
   --from-literal=token=<exported-value> \
-  -n cloudhealthoffice
+  -n HealthCoreX
 ```
 
 ## Monitoring Migration
@@ -274,8 +274,8 @@ If issues arise during migration:
 
 1. **Stop Argo Event Sources**
    ```bash
-   kubectl delete eventsource sftp-polling -n cloudhealthoffice
-   kubectl delete eventsource kafka-events -n cloudhealthoffice
+   kubectl delete eventsource sftp-polling -n HealthCoreX
+   kubectl delete eventsource kafka-events -n HealthCoreX
    ```
 
 2. **Re-enable Logic App Triggers**
@@ -296,17 +296,17 @@ If issues arise during migration:
 
 ```bash
 # Check events
-kubectl describe workflow <workflow-name> -n cloudhealthoffice
+kubectl describe workflow <workflow-name> -n HealthCoreX
 
 # Check pod status
-kubectl get pods -n cloudhealthoffice -l workflows.argoproj.io/workflow=<workflow-name>
+kubectl get pods -n HealthCoreX -l workflows.argoproj.io/workflow=<workflow-name>
 ```
 
 #### SFTP Connection Failures
 
 ```bash
 # Test SFTP connectivity
-kubectl run sftp-test --rm -it --image=cloudhealthoffice/sftp-fetcher \
+kubectl run sftp-test --rm -it --image=HealthCoreX/sftp-fetcher \
   --env="SFTP_HOST=sftp.clearinghouse.example.com" \
   --env="SFTP_USERNAME=$USER" \
   -- --list-only
@@ -336,5 +336,5 @@ Target metrics to validate migration success:
 ## Support
 
 For migration assistance:
-- GitHub Issues: https://github.com/aurelianware/cloudhealthoffice/issues
-- Documentation: https://docs.cloudhealthoffice.com
+- GitHub Issues: https://github.com/aurelianware/HealthCoreX/issues
+- Documentation: https://docs.HealthCoreX.com

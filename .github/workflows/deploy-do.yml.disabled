@@ -13,8 +13,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: aurelianware/cloudhealthoffice-site
-  NAMESPACE: cloudhealthoffice
+  IMAGE_NAME: aurelianware/HealthCoreX-site
+  NAMESPACE: HealthCoreX
 
 jobs:
   deploy-do:
@@ -24,7 +24,7 @@ jobs:
       packages: read
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
@@ -58,7 +58,7 @@ jobs:
           kubectl apply -f infra/k8s/member-service-deployment.yaml
 
           # Portal application (Blazor Server – replaces static site)
-          kubectl apply -f src/portal/CloudHealthOffice.Portal/k8s/portal-deployment.yaml
+          kubectl apply -f src/portal/HealthCoreX.Portal/k8s/portal-deployment.yaml
 
           # Remove old static site ingress from cho-svcs namespace (conflicts with new portal ingress)
           kubectl delete ingress site-ingress -n cho-svcs --ignore-not-found=true

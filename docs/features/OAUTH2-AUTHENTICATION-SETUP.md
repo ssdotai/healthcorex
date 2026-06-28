@@ -23,14 +23,14 @@ Cloud Health Office uses **Azure AD multi-tenant authentication** with JWT beare
 az ad app create \
   --display-name "Cloud Health Office API" \
   --sign-in-audience "AzureADMultipleOrgs" \
-  --identifier-uris "api://cloudhealthoffice" \
-  --web-redirect-uris "https://cloudhealthoffice.com/signin-oidc" \
+  --identifier-uris "api://HealthCoreX" \
+  --web-redirect-uris "https://HealthCoreX.com/signin-oidc" \
   --enable-id-token-issuance true \
   --enable-access-token-issuance true
 ```
 
 **Sign-in audience**: `AzureADMultipleOrgs` (any organizational Azure AD tenant)  
-**Application ID URI**: `api://cloudhealthoffice` (same for all services)
+**Application ID URI**: `api://HealthCoreX` (same for all services)
 
 ### 2. Expose API Scopes
 
@@ -38,26 +38,26 @@ Create scopes for different operations across all microservices:
 
 **Authorization Service:**
 ```
-api://cloudhealthoffice/Authorization.Read
-api://cloudhealthoffice/Authorization.ReadWrite
+api://HealthCoreX/Authorization.Read
+api://HealthCoreX/Authorization.ReadWrite
 ```
 
 **Attachment Service:**
 ```
-api://cloudhealthoffice/Attachments.Upload
-api://cloudhealthoffice/Attachments.Download
-api://cloudhealthoffice/Attachments.ReadWrite
+api://HealthCoreX/Attachments.Upload
+api://HealthCoreX/Attachments.Download
+api://HealthCoreX/Attachments.ReadWrite
 ```
 
 **Eligibility Service:**
 ```
-api://cloudhealthoffice/Eligibility.Query
+api://HealthCoreX/Eligibility.Query
 ```
 
 **Claims Service:**
 ```
-api://cloudhealthoffice/Claims.Submit
-api://cloudhealthoffice/Claims.Read
+api://HealthCoreX/Claims.Submit
+api://HealthCoreX/Claims.Read
 ```
 
 **Why Single App Registration?**
@@ -114,7 +114,7 @@ Configure `tenant_id` claim mapping:
     "Instance": "https://login.microsoftonline.com/",
     "TenantId": "common",
     "ClientId": "<YOUR_CLIENT_ID>",
-    "Audience": "api://cloudhealthoffice"
+    "Audience": "api://HealthCoreX"
   }
 }
 ```
@@ -127,10 +127,10 @@ public async Task<ActionResult> SubmitAuthorization(...)
 
 **Kubernetes Secret:**
 ```bash
-kubectl -n cloudhealthoffice create secret generic azure-ad-config \
+kubectl -n HealthCoreX create secret generic azure-ad-config \
   --from-literal=AzureAd__ClientId='<CLIENT_ID>' \
   --from-literal=AzureAd__TenantId='common' \
-  --from-literal=AzureAd__Audience='api://cloudhealthoffice'
+  --from-literal=AzureAd__Audience='api://HealthCoreX'
 ```
 
 ### attachment-service
@@ -142,7 +142,7 @@ kubectl -n cloudhealthoffice create secret generic azure-ad-config \
     "Instance": "https://login.microsoftonline.com/",
     "TenantId": "common",
     "ClientId": "<SAME_CLIENT_ID>",
-    "Audience": "api://cloudhealthoffice"
+    "Audience": "api://HealthCoreX"
   }
 }
 ```
@@ -161,7 +161,7 @@ public async Task<ActionResult> UploadAttachment(...)
 ```json
 {
   "iss": "https://login.microsoftonline.com/{tenant-id}/v2.0",
-  "aud": "api://cloudhealthoffice",
+  "aud": "api://HealthCoreX",
   "sub": "user-object-id",
   "tid": "organization-azure-ad-tenant-id",
   "oid": "user-object-id",
@@ -176,7 +176,7 @@ public async Task<ActionResult> UploadAttachment(...)
 ```
 
 **Key Claims:**
-- `aud`: `api://cloudhealthoffice` (same for all services)
+- `aud`: `api://HealthCoreX` (same for all services)
 - `scp`: Space-separated list of granted scopes
 - `roles`: App roles assigned to user
 
@@ -209,8 +209,8 @@ using Microsoft.Identity.Web.UI;
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
     .EnableTokenAcquisitionToCallDownstreamApi(new[] {
-        "api://cloudhealthoffice-authorization/Authorization.ReadWrite",
-        "api://cloudhealthoffice-attachments/Attachments.Upload"
+        "api://HealthCoreX-authorization/Authorization.ReadWrite",
+        "api://HealthCoreX-attachments/Attachments.Upload"
     })
     .AddInMemoryTokenCaches();
 
@@ -234,7 +234,7 @@ public class AuthorizationsController : Controller
     public async Task<IActionResult> SubmitAuthorization(Authorization auth)
     {
         var accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(new[] {
-            "api://cloudhealthoffice-authorization/Authorization.ReadWrite"
+            "api://HealthCoreX-authorization/Authorization.ReadWrite"
         });
 
         _httpClient.DefaultRequestHeaders.Authorization = 
@@ -265,14 +265,14 @@ const msalInstance = new PublicClientApplication(msalConfig);
 
 // Acquire token
 const tokenRequest = {
-  scopes: ["api://cloudhealthoffice-authorization/Authorization.ReadWrite"]
+  scopes: ["api://HealthCoreX-authorization/Authorization.ReadWrite"]
 };
 
 const response = await msalInstance.acquireTokenSilent(tokenRequest);
 const accessToken = response.accessToken;
 
 // Call API
-fetch("https://api.cloudhealthoffice.com/api/Authorizations", {
+fetch("https://api.HealthCoreX.com/api/Authorizations", {
   method: "POST",
   headers: {
     "Authorization": `Bearer ${accessToken}`,
@@ -336,19 +336,19 @@ curl -H "X-Tenant-ID: blueshield-ca" \
 # Using Azure CLI
 az login
 az account get-access-token \
-  --resource api://cloudhealthoffice-authorization \
+  --resource api://HealthCoreX-authorization \
   --query accessToken -o tsv
 ```
 
 ### Test API Call
 
 ```bash
-TOKEN=$(az account get-access-token --resource api://cloudhealthoffice-authorization --query accessToken -o tsv)
+TOKEN=$(az account get-access-token --resource api://HealthCoreX-authorization --query accessToken -o tsv)
 
 curl -H "Authorization: Bearer $TOKEN" \
      -H "Content-Type: application/json" \
      -d @test-auth-request.json \
-     https://api.cloudhealthoffice.com/api/Authorizations
+     https://api.HealthCoreX.com/api/Authorizations
 ```
 
 ### Validate Token

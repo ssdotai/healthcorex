@@ -1,21 +1,23 @@
 using ClaimsService.Adapters;
 using ClaimsService.EDI.Florida;
+using ClaimsService.HostedServices;
 using ClaimsService.Models;
 using ClaimsService.Repositories;
 using ClaimsService.Services;
-using CloudHealthOffice.BenefitEngine.Services;
-using CloudHealthOffice.NcciEngine.Persistence;
+using HealthCoreX.BenefitEngine.Services;
+using HealthCoreX.NcciEngine.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 
-namespace CloudHealthOffice.ClaimsService.Tests;
+namespace HealthCoreX.ClaimsService.Tests;
 
 public class ClaimsApiFactory : WebApplicationFactory<Program>
 {
     public IClaimRepository ClaimRepository { get; } = Substitute.For<IClaimRepository>();
+    public IMassAdjudicationRunRepository MassAdjudicationRunRepository { get; } = Substitute.For<IMassAdjudicationRunRepository>();
     public IClaimAcknowledgmentService AcknowledgmentService { get; } = Substitute.For<IClaimAcknowledgmentService>();
     public IAiExaminationAuditRepository AuditRepository { get; } = Substitute.For<IAiExaminationAuditRepository>();
     public IClaimSubmissionService SubmissionService { get; } = Substitute.For<IClaimSubmissionService>();
@@ -24,6 +26,7 @@ public class ClaimsApiFactory : WebApplicationFactory<Program>
     public IClaimFinalizationService FinalizationService { get; } = Substitute.For<IClaimFinalizationService>();
     public IClaimAdjustmentRepository AdjustmentRepository { get; } = Substitute.For<IClaimAdjustmentRepository>();
     public IClaimAdjustmentService AdjustmentService { get; } = Substitute.For<IClaimAdjustmentService>();
+    public IClaimImportTransactionRepository ImportTransactionRepository { get; } = Substitute.For<IClaimImportTransactionRepository>();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -48,6 +51,7 @@ public class ClaimsApiFactory : WebApplicationFactory<Program>
             // Remove real repository, services, and adapter registrations.
             var descriptorsToRemove = services
                 .Where(d => d.ServiceType == typeof(IClaimRepository)
+                         || d.ServiceType == typeof(IMassAdjudicationRunRepository)
                          || d.ServiceType == typeof(IClaimAcknowledgmentService)
                          || d.ServiceType == typeof(IProviderService)
                          || d.ServiceType == typeof(ITenantComplianceConfigService)
@@ -56,6 +60,7 @@ public class ClaimsApiFactory : WebApplicationFactory<Program>
                          || d.ServiceType == typeof(IClaimFinalizationService)
                          || d.ServiceType == typeof(IClaimAdjustmentService)
                          || d.ServiceType == typeof(IClaimAdjustmentRepository)
+                         || d.ServiceType == typeof(IClaimImportTransactionRepository)
                          || d.ServiceType == typeof(IClaimAdapter)
                          || d.ServiceType == typeof(ClaimAdapterFactory)
                          || d.ServiceType == typeof(ClaimTenantConfigCache))
@@ -77,8 +82,10 @@ public class ClaimsApiFactory : WebApplicationFactory<Program>
                          || d.ServiceType.FullName?.Contains("Mongo") == true
                          || d.ImplementationType?.FullName?.Contains("Cosmos") == true
                          || d.ImplementationType?.FullName?.Contains("Mongo") == true
-                         || d.ImplementationType?.FullName?.Contains("ClaimVersionEventIndexInitializer") == true
-                         || d.ImplementationType?.FullName?.Contains("ClaimAdjustmentIndexInitializer") == true)
+                         || d.ImplementationType == typeof(ClaimIndexInitializer)
+                         || d.ImplementationType == typeof(MassAdjudicationRunIndexInitializer)
+                         || d.ImplementationType == typeof(ClaimVersionEventIndexInitializer)
+                         || d.ImplementationType == typeof(ClaimAdjustmentIndexInitializer))
                 .ToList();
 
             foreach (var descriptor in cosmosDescriptors)
@@ -112,6 +119,7 @@ public class ClaimsApiFactory : WebApplicationFactory<Program>
             services.AddSingleton(Substitute.For<IBenefitCalculationEngine>());
 
             services.AddSingleton(ClaimRepository);
+            services.AddSingleton(MassAdjudicationRunRepository);
             services.AddSingleton(AcknowledgmentService);
             services.AddSingleton(Substitute.For<IProviderService>());
             services.AddSingleton(Substitute.For<ITenantComplianceConfigService>());
@@ -120,6 +128,7 @@ public class ClaimsApiFactory : WebApplicationFactory<Program>
             services.AddSingleton(FinalizationService);
             services.AddSingleton(AdjustmentRepository);
             services.AddSingleton(AdjustmentService);
+            services.AddSingleton(ImportTransactionRepository);
 
             // 5.7 — NcciEngine's repository implementation got removed by
             // the Cosmos/Mongo filter above. The engine's INcciEditService

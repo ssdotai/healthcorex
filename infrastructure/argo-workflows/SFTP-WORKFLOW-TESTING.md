@@ -11,18 +11,18 @@ This guide demonstrates deploying and running Argo Workflows that interact with 
 kubectl apply -f argo-workflows/sftp-test-workflow.yaml
 
 # Verify deployment
-kubectl get workflowtemplate -n cloudhealthoffice
+kubectl get workflowtemplate -n HealthCoreX
 ```
 
 ### 2. Run the Workflow
 
 ```bash
 # Submit workflow manually
-argo submit argo-workflows/sftp-test-workflow.yaml -n cloudhealthoffice --watch
+argo submit argo-workflows/sftp-test-workflow.yaml -n HealthCoreX --watch
 
 # Or run with custom parameters
 argo submit argo-workflows/sftp-test-workflow.yaml \
-  -n cloudhealthoffice \
+  -n HealthCoreX \
   -p sftp-host="sftp-service.cho-sftp.svc.cluster.local" \
   -p test-filename="custom-test-$(date +%s).x12" \
   --watch
@@ -32,16 +32,16 @@ argo submit argo-workflows/sftp-test-workflow.yaml \
 
 ```bash
 # List recent workflows
-argo list -n cloudhealthoffice
+argo list -n HealthCoreX
 
 # Watch specific workflow
-argo watch sftp-test-workflow-xxxxx -n cloudhealthoffice
+argo watch sftp-test-workflow-xxxxx -n HealthCoreX
 
 # Get workflow logs
-argo logs sftp-test-workflow-xxxxx -n cloudhealthoffice
+argo logs sftp-test-workflow-xxxxx -n HealthCoreX
 
 # View in UI
-argo server -n cloudhealthoffice
+argo server -n HealthCoreX
 # Then open: http://localhost:2746
 ```
 
@@ -110,8 +110,8 @@ kubectl logs -n argo deployment/workflow-controller
 
 **Check service account permissions:**
 ```bash
-kubectl get sa argo-workflow-sa -n cloudhealthoffice
-kubectl describe sa argo-workflow-sa -n cloudhealthoffice
+kubectl get sa argo-workflow-sa -n HealthCoreX
+kubectl describe sa argo-workflow-sa -n HealthCoreX
 ```
 
 ### Permission Denied on SFTP
@@ -137,10 +137,10 @@ The workflow includes a CronWorkflow that runs daily at 2 AM:
 
 ```bash
 # View scheduled workflows
-kubectl get cronworkflow -n cloudhealthoffice
+kubectl get cronworkflow -n HealthCoreX
 
 # Manually trigger a cron workflow
-kubectl create job --from=cronjob/sftp-test-schedule sftp-manual-test -n cloudhealthoffice
+kubectl create job --from=cronjob/sftp-test-schedule sftp-manual-test -n HealthCoreX
 ```
 
 ## Production Workflows
@@ -156,10 +156,10 @@ For production EDI processing, see:
 ```bash
 # Submit workflow with production parameters
 argo submit argo-workflows/x12-278-ingest.yaml \
-  -n cloudhealthoffice \
+  -n HealthCoreX \
   -p sftp-host="sftp-service.cho-sftp.svc.cluster.local" \
   -p sftp-folder="/upload/278" \
-  -p claims-backend-api-endpoint="http://claims-api.cloudhealthoffice.svc.cluster.local/api/v1/claims/278" \
+  -p claims-backend-api-endpoint="http://claims-api.HealthCoreX.svc.cluster.local/api/v1/claims/278" \
   --watch
 ```
 
@@ -168,7 +168,7 @@ argo submit argo-workflows/x12-278-ingest.yaml \
 ```bash
 # Poll for new status files
 argo submit argo-workflows/x12-277-rfai.yaml \
-  -n cloudhealthoffice \
+  -n HealthCoreX \
   -p sftp-host="sftp-service.cho-sftp.svc.cluster.local" \
   -p sftp-folder="/download/277" \
   -p file-pattern="STATUS_*.x12" \
@@ -200,11 +200,11 @@ If you prefer Azure Logic Apps over Argo Workflows:
 
 ```bash
 # Success rate (last 24h)
-argo list -n cloudhealthoffice --completed --since 24h | grep Succeeded | wc -l
-argo list -n cloudhealthoffice --completed --since 24h | wc -l
+argo list -n HealthCoreX --completed --since 24h | grep Succeeded | wc -l
+argo list -n HealthCoreX --completed --since 24h | wc -l
 
 # Average duration
-argo list -n cloudhealthoffice --completed --since 24h -o json | jq '.[] | .status.finishedAt - .status.startedAt'
+argo list -n HealthCoreX --completed --since 24h -o json | jq '.[] | .status.finishedAt - .status.startedAt'
 ```
 
 ### Setup Prometheus Alerts
@@ -214,9 +214,9 @@ Add to `monitoring/prometheus-rules.yaml`:
 ```yaml
 - alert: SFTPWorkflowFailureRate
   expr: |
-    sum(rate(argo_workflow_status_phase{phase="Failed",namespace="cloudhealthoffice"}[5m])) 
+    sum(rate(argo_workflow_status_phase{phase="Failed",namespace="HealthCoreX"}[5m])) 
     / 
-    sum(rate(argo_workflow_status_phase{namespace="cloudhealthoffice"}[5m])) 
+    sum(rate(argo_workflow_status_phase{namespace="HealthCoreX"}[5m])) 
     > 0.1
   for: 10m
   labels:
@@ -255,13 +255,13 @@ Add to `monitoring/prometheus-rules.yaml`:
 
 ```bash
 # Remove workflow template
-kubectl delete workflowtemplate sftp-test-workflow -n cloudhealthoffice
+kubectl delete workflowtemplate sftp-test-workflow -n HealthCoreX
 
 # Remove cron workflow
-kubectl delete cronworkflow sftp-test-schedule -n cloudhealthoffice
+kubectl delete cronworkflow sftp-test-schedule -n HealthCoreX
 
 # Clean up completed workflows
-argo delete -n cloudhealthoffice --completed
+argo delete -n HealthCoreX --completed
 ```
 
 ### Delete All SFTP Infrastructure

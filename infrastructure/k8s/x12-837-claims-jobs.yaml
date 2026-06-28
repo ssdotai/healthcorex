@@ -8,7 +8,7 @@ metadata:
   name: x12-837p-upload-job
   namespace: cho-workflows
   labels:
-    app: cloudhealthoffice
+    app: HealthCoreX
     component: edi-837p-upload
     hipaa-compliance: required
 spec:
@@ -41,7 +41,7 @@ spec:
                     name: sftp-credentials
                     key: password
               - name: BACKEND_API_URL
-                value: "http://backend-api.cloudhealthoffice.svc.cluster.local/api/v1"
+                value: "http://backend-api.HealthCoreX.svc.cluster.local/api/v1"
               - name: BACKEND_API_TOKEN
                 valueFrom:
                   secretKeyRef:
@@ -181,7 +181,7 @@ spec:
                     name: sftp-credentials
                     key: password
               - name: BACKEND_API_URL
-                value: "http://backend-api.cloudhealthoffice.svc.cluster.local/api/v1"
+                value: "http://backend-api.HealthCoreX.svc.cluster.local/api/v1"
             command: ["/bin/sh", "-c", "echo 'X12 837I Institutional Claims - Similar to 837P but for facilities'; exit 0"]
             volumeMounts:
               - name: work-volume

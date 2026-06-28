@@ -93,7 +93,7 @@
 - **A4** - Not found
 
 **Integration Points**:
-- Claims Service: `http://claims-service.cloudhealthoffice.svc.cluster.local/api/claims`
+- Claims Service: `http://claims-service.HealthCoreX.svc.cluster.local/api/claims`
 - Trading Partner Service: Dynamic path resolution
 - Kafka: Event publishing for downstream processing
 - Azure Blob Storage: HIPAA-compliant archival
@@ -130,7 +130,7 @@
 **Changes**:
 - Added `x12-276-parser` to build matrix
 - Container builds automatically on push to main
-- Pushed to: `ghcr.io/aurelianware/cloudhealthoffice-x12-276-parser:latest`
+- Pushed to: `ghcr.io/aurelianware/HealthCoreX-x12-276-parser:latest`
 
 **Build Verification**:
 ```bash
@@ -138,7 +138,7 @@
 gh run list --workflow=docker-build.yml --limit 1
 
 # Verify image exists
-docker pull ghcr.io/aurelianware/cloudhealthoffice-x12-276-parser:latest
+docker pull ghcr.io/aurelianware/HealthCoreX-x12-276-parser:latest
 ```
 
 ---
@@ -258,7 +258,7 @@ git push origin main
 gh run watch
 
 # Verify image
-docker pull ghcr.io/aurelianware/cloudhealthoffice-x12-276-parser:latest
+docker pull ghcr.io/aurelianware/HealthCoreX-x12-276-parser:latest
 ```
 
 ### 2. Deploy Workflows
@@ -269,8 +269,8 @@ kubectl apply -f argo-workflows/x12-276-ingest.yaml
 kubectl apply -f argo-workflows/x12-277-claim-status.yaml
 
 # Verify
-kubectl get workflowtemplates -n cloudhealthoffice | grep 276
-kubectl get workflowtemplates -n cloudhealthoffice | grep 277
+kubectl get workflowtemplates -n HealthCoreX | grep 276
+kubectl get workflowtemplates -n HealthCoreX | grep 277
 ```
 
 ### 3. Deploy Argo Events
@@ -283,8 +283,8 @@ kubectl apply -f argo-events/sftp-event-source.yaml
 kubectl apply -f argo-events/sensors/sftp-sensor.yaml
 
 # Verify
-kubectl get eventsources -n cloudhealthoffice
-kubectl get sensors -n cloudhealthoffice
+kubectl get eventsources -n HealthCoreX
+kubectl get sensors -n HealthCoreX
 ```
 
 ### 4. Create SFTP Folders
@@ -308,7 +308,7 @@ cd /home/bcbs-florida/availity/prod/inbound/276
 put test-x12-276-claim-status-request.edi
 
 # Wait for processing (15 minutes max)
-argo list -n cloudhealthoffice | grep 276-ingest
+argo list -n HealthCoreX | grep 276-ingest
 
 # Check 277 response
 cd /home/bcbs-florida/availity/prod/outbound/277
@@ -338,16 +338,16 @@ cat output.json | jq '.inquiries[0].claims[0].claim_number'
 
 ```bash
 # Submit workflow manually
-argo submit -n cloudhealthoffice --from workflowtemplate/x12-276-ingest \
+argo submit -n HealthCoreX --from workflowtemplate/x12-276-ingest \
   --parameter tenant-id=bcbs-florida \
   --parameter trading-partner-id=availity \
   --parameter environment=prod
 
 # Watch execution
-argo watch -n cloudhealthoffice @latest
+argo watch -n HealthCoreX @latest
 
 # Check logs
-argo logs -n cloudhealthoffice @latest
+argo logs -n HealthCoreX @latest
 ```
 
 ### System Test: Full Pipeline
@@ -372,23 +372,23 @@ argo logs -n cloudhealthoffice @latest
 
 ```bash
 # Check workflow success rate
-kubectl get workflows -n cloudhealthoffice -l workflows.argoproj.io/workflow-template=x12-276-ingest
+kubectl get workflows -n HealthCoreX -l workflows.argoproj.io/workflow-template=x12-276-ingest
 
 # Failed workflows
-kubectl get workflows -n cloudhealthoffice -l workflows.argoproj.io/workflow-template=x12-276-ingest,workflows.argoproj.io/phase=Failed
+kubectl get workflows -n HealthCoreX -l workflows.argoproj.io/workflow-template=x12-276-ingest,workflows.argoproj.io/phase=Failed
 
 # Average duration
-argo list -n cloudhealthoffice | grep 276-ingest
+argo list -n HealthCoreX | grep 276-ingest
 ```
 
 ### Event Metrics
 
 ```bash
 # Check sensor status
-kubectl get sensors -n cloudhealthoffice sftp-sensor -o yaml
+kubectl get sensors -n HealthCoreX sftp-sensor -o yaml
 
 # Event source status
-kubectl get eventsources -n cloudhealthoffice sftp-polling -o yaml
+kubectl get eventsources -n HealthCoreX sftp-polling -o yaml
 ```
 
 ---

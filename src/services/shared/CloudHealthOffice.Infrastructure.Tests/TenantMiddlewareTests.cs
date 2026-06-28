@@ -1,12 +1,12 @@
 using System.Security.Claims;
 using System.Text.Json;
-using CloudHealthOffice.Infrastructure.Middleware;
-using CloudHealthOffice.Infrastructure.Models;
+using HealthCoreX.Infrastructure.Middleware;
+using HealthCoreX.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.Infrastructure.Tests;
+namespace HealthCoreX.Infrastructure.Tests;
 
 public class TenantMiddlewareTests
 {

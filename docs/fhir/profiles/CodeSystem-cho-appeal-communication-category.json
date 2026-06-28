@@ -1,7 +1,7 @@
 {
   "resourceType": "CodeSystem",
   "id": "cho-appeal-communication-category",
-  "url": "http://fhir.cloudhealthoffice.com/CodeSystem/cho-appeal-communication-category",
+  "url": "http://fhir.HealthCoreX.com/CodeSystem/cho-appeal-communication-category",
   "version": "1.0.0",
   "name": "ChoAppealCommunicationCategory",
   "title": "CHO Appeal Communication Category",

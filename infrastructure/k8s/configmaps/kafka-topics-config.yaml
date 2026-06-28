@@ -5,14 +5,14 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kafka-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app.kubernetes.io/name: kafka-config
     app.kubernetes.io/component: config
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
 data:
   # Kafka connection settings
-  bootstrap-servers: "cloudhealthoffice-kafka-bootstrap.kafka:9092"
+  bootstrap-servers: "HealthCoreX-kafka-bootstrap.kafka:9092"
   security-protocol: "SASL_SSL"
   
   # Topic names
@@ -79,11 +79,11 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: s3-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app.kubernetes.io/name: s3-config
     app.kubernetes.io/component: config
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
 data:
   bucket: "hipaa-attachments"
   region: "us-east-1"
@@ -101,11 +101,11 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: backend-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app.kubernetes.io/name: backend-config
     app.kubernetes.io/component: config
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
 data:
   api-url: "https://backend.api.local"
   link-attachment-endpoint: "/claims/link-attachment"

@@ -1,7 +1,7 @@
 using BenefitPlanService.Models;
 using BenefitPlanService.Services;
 
-namespace CloudHealthOffice.BenefitPlanService.Tests;
+namespace HealthCoreX.BenefitPlanService.Tests;
 
 public class PlanDocumentValidationTests
 {

@@ -128,7 +128,7 @@ Enable production EDI exchanges with major clearinghouses to process real X12 tr
   ```yaml
   - name: submit-to-availity
     container:
-      image: ghcr.io/aurelianware/cloudhealthoffice-sftp-publisher:latest
+      image: ghcr.io/aurelianware/HealthCoreX-sftp-publisher:latest
       env:
         - name: SFTP_HOST
           value: "sftp.availity.com"

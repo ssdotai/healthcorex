@@ -10,7 +10,7 @@ public class RfaiRepositoryCosmos : IRfaiRepository
 
     public RfaiRepositoryCosmos(CosmosClient cosmosClient, IConfiguration configuration, ILogger<RfaiRepositoryCosmos> logger)
     {
-        var database  = configuration["CosmosDb:DatabaseName"]  ?? "CloudHealthOffice";
+        var database  = configuration["CosmosDb:DatabaseName"]  ?? "HealthCoreX";
         var container = configuration["CosmosDb:RfaiContainer"] ?? "RfaiCases";
         _container = cosmosClient.GetContainer(database, container);
         _logger = logger;

@@ -1,8 +1,8 @@
 # Cloud Health Office — Positioning
 
-**Audience:** internal teams, partners, and evaluators deciding how Cloud Health Office (CHO) fits into their roadmap. Payer-facing pitch materials should derive from this document and not contradict it.
+**Audience:** internal teams, partners, and evaluators deciding how Cloud Health Office fits into their roadmap. Payer-facing pitch materials should derive from this document and not contradict it.
 
-**Last updated:** April 2026
+**Last updated:** July 2026
 
 ## Summary
 
@@ -25,7 +25,7 @@ The rest of this document is the evidence and the honest disclosure that back th
 
 ### What we offer
 
-Free, no-signup-required healthcare data utilities accessible directly from cloudhealthoffice.com. Currently:
+Free, no-signup-required healthcare data utilities accessible directly from HealthCoreX.com. Currently:
 
 - **Fee Schedule Lookup** — search Medicare RBRVS, OPPS APC, and MS-DRG rates for any procedure or diagnosis code, with full RVU breakdown.
 - **Free-tier Claims Repricing** — claims repricing against Medicare fee schedules, with no credit card required for the free tier.
@@ -67,7 +67,7 @@ Transactional Services deliver specific healthcare calculations dramatically che
 
 ### What's shipped today
 
-- **Claims Repricing API** — full engine, Stripe tier definitions in place, landing page at cloudhealthoffice.com, SEO-optimized.
+- **Claims Repricing API** — full engine, Stripe tier definitions in place, landing page at HealthCoreX.com, SEO-optimized.
 - **Rate metering and quota enforcement** — infrastructure in place; enforces free-tier and paid-tier boundaries.
 
 ### Customer-surface activation gap (honest disclosure)
@@ -104,10 +104,10 @@ For customers who are not yet ready for Platform Engagement, Managed Data Servic
 
 ### What's shipped today
 
-- **TMPPM ingestion pipeline** — PDF extraction with hybrid regex + LLM confidence scoring, tenant-scoped persistence in Cosmos DB. Tooling and test corpus in place at `tools/CloudHealthOffice.TmppmIngestionService/`.
-- **Provider Verification Engine** — multi-source integrity scoring shipped as `src/engines/CloudHealthOffice.ProviderVerificationEngine/`.
+- **TMPPM ingestion pipeline** — PDF extraction with hybrid regex + LLM confidence scoring, tenant-scoped persistence in Cosmos DB. Tooling and test corpus in place at `tools/HealthCoreX.TmppmIngestionService/`.
+- **Provider Verification Engine** — multi-source integrity scoring shipped as `src/engines/HealthCoreX.ProviderVerificationEngine/`.
 - **Terminology service infrastructure** — FHIR ConceptMap and `$translate` operation scaffolded via `src/services/CHO.TerminologyService/`.
-- **Fee Schedule Engine** — rate resolution across RBRVS / OPPS / MS-DRG / custom fee schedules shipped as `src/engines/CloudHealthOffice.FeeScheduleEngine/`.
+- **Fee Schedule Engine** — rate resolution across RBRVS / OPPS / MS-DRG / custom fee schedules shipped as `src/engines/HealthCoreX.FeeScheduleEngine/`.
 
 ### Productization status (honest disclosure)
 
@@ -134,7 +134,7 @@ Platform Engagement engages customers at three layers, each a coherent offering 
 
 #### What we claim
 
-A production-ready CMS-0057-F compliance surface that deploys alongside any existing core admin system (QNXT, HealthEdge, Facets, or home-grown) without touching the customer's adjudication path.
+An evidence-backed CMS-0057-F readiness surface that deploys alongside any existing core admin system (QNXT, HealthEdge, Facets, or home-grown) without touching the customer's adjudication path, then supports customer validation and attestation work.
 
 Layer 1 covers the CMS-0057-F interoperability surface end-to-end:
 
@@ -150,7 +150,7 @@ Everything ships as a Helm chart into an existing Kubernetes cluster or Azure AK
 #### Evidence shipped today
 
 - `fhir-service` exposes `/fhir/r4/metadata` with a CapabilityStatement that advertises the four appeal profiles and the `$cho-appeal-submit` operation (PR #680).
-- Four CHO-authored FHIR profiles under `http://fhir.cloudhealthoffice.com/StructureDefinition/` (PR #677):
+- Four CHO-authored FHIR profiles under `http://fhir.HealthCoreX.com/StructureDefinition/` (PR #677):
   - `cho-appeal-task`
   - `cho-appeal-communication`
   - `cho-appeal-document-reference`
@@ -195,9 +195,9 @@ The appeals four-PR sequence — the lighthouse Layer 2 proof point:
 
 The pattern that enables future domain replacements:
 
-- **Operating Mode (Augment / Replace / Legacy)** — `src/engines/CloudHealthOffice.OperatingMode/` — per-tenant, per-claim-type configuration. `AugmentResult<T>` wraps every calculation with CHO-result, legacy-result, and discrepancies, so shadow mode is safe by construction. See `docs/architecture/OPERATING-MODE.md`.
+- **Operating Mode (Augment / Replace / Legacy)** — `src/engines/HealthCoreX.OperatingMode/` — per-tenant, per-claim-type configuration. `AugmentResult<T>` wraps every calculation with CHO-result, legacy-result, and discrepancies, so shadow mode is safe by construction. See `docs/architecture/OPERATING-MODE.md`.
 - **`IFhirDataAdapter`** in `fhir-service` — the abstraction that lets each domain service be rendered as FHIR independently, without forcing all domains to ship their FHIR façade on the same schedule.
-- **`CloudHealthOffice.Appeals.Contracts`** — shared NuGet-style project under `src/services/shared/` — the template for cross-service DTO sharing, generalizable to every future domain.
+- **`HealthCoreX.Appeals.Contracts`** — shared NuGet-style project under `src/services/shared/` — the template for cross-service DTO sharing, generalizable to every future domain.
 - **Argo workflows for the full X12 ingress set** — 270/271/275/276/277/278/834/837 — so when a domain service is ready to take over, the EDI ingress path is already in place.
 
 #### Who enters here
@@ -240,8 +240,9 @@ EDI coverage via Argo workflows: 270/271/275/276/277/278/834/837.
 - Argo-orchestrated adjudication workflow (`infrastructure/argo-workflows/claims-adjudication-workflow.yaml`) wiring the pipeline end-to-end.
 - Per-tenant multi-tenancy enforced across services, databases (Cosmos DB partitions), secrets (Key Vault namespacing), and Kafka topics.
 - Portal under `src/portal/` for operational workflows across tenants, services, and operating modes.
-- `fhir-service` CapabilityStatement advertising CHO-authored profiles in addition to US Core.
+- `fhir-service` CapabilityStatement advertising Cloud Health Office-authored profiles in addition to US Core.
 - Observability stack (OpenTelemetry with PHI-scrubbing SpanProcessor, merged in PR #666) applied across services.
+- Million Claim Challenge local Kubernetes validation: a clean full 1,000,000-claim run (episode 15, seed 20260725) with all 1,000,000 claims processed, zero platform failures, 129,981/130,000 workflow checks matched (19 mismatched, 0 unsupported, 0 observation timeouts), and payment gate 20,000/20,000 exact within $0.01. The run completed at 123.81 claims/sec with 957 ms P95 and 1,290 ms P99 latency in local Docker Desktop Kubernetes with Docker allocated 18 CPUs and roughly 23.4 GiB memory. This is a local validation benchmark, not a production cloud benchmark. Part 7 added the portal Mass Adjudication console so run summaries, unsupported rows, mismatches, payment delta, and claim-level evidence are visible inside the product.
 
 #### Who enters here
 
@@ -253,7 +254,7 @@ Three concrete personas — all three are real:
 
 #### What Layer 3 honestly is today
 
-Cloud Health Office is a full cloud-native CAPS platform, production-ready today for new entrants and greenfield deployments. For established payers, we recommend entering through Layer 1 or Layer 2 and progressing to Layer 3 on your timeline.
+Cloud Health Office is a full cloud-native CAPS platform with a working adjudication path, inspectable benchmark evidence, and an explicit hardening backlog. For new entrants and greenfield deployments, it is ready for customer-owned validation. For established payers, we recommend entering through Layer 1 or Layer 2 and progressing to Layer 3 on your timeline.
 
 Gaps we are closing deliberately:
 
@@ -280,14 +281,20 @@ Specific indicative PMPM ranges and ARR projections are documented in `docs/sale
 
 ## Million Claim Challenge
 
-The Million Claim Challenge is an open-source benchmarking asset that sits across all four product lines as credibility infrastructure.
+The Million Claim Challenge is a source-available benchmarking asset (BSL 1.1, same as the rest of the Cloud Health Office codebase) that sits across all four product lines as credibility infrastructure.
 
 We generate a stratified synthetic corpus of 1,000,000 healthcare claims — professional CMS-1500, institutional UB-04, dental ADA, and named edge-case scenarios — with pre-computed expected adjudication outcomes. Any claims adjudication engine can be benchmarked against the corpus and scored against the expected outcomes.
 
+Latest Cloud Health Office proof point (episode 15): in local Docker Desktop Kubernetes with Docker allocated 18 CPUs and roughly 23.4 GiB memory, Cloud Health Office processed the full 1,000,000-claim corpus with zero platform failures, 129,981/130,000 workflow checks matched (19 mismatched, 0 unsupported scenarios), and a payment-amount gate of 20,000/20,000 exact within $0.01. The run completed at 123.81 claims/sec with 957 ms P95 latency and 1,290 ms P99 latency. This is intentionally framed as local validation, not a production cloud benchmark. Its value is that throughput, tail latency, platform reliability, workflow correctness, and payment accuracy are measured together at full corpus scale.
+
+The published result should not be overstated. This is the first clean run across the entire 1,000,000-claim corpus and all 29 named edge-case scenarios (previous runs validated smaller breadth slices) — getting here required fixing an undocumented Redis `maxmemory` ceiling that only surfaced under sustained load past ~950,000 claims (768MB → 3GB; see episode 15 notes). The payment-amount gate is now a formal pass/fail check, not just diagnostic, and passed exactly. 19 residual workflow mismatches out of 130,000 checks remain open for triage. The next proof priority is closing those 19 mismatches and repeating the full-corpus run to confirm the fix holds, before treating 1M as a repeatable baseline rather than a one-time clean pass.
+
 ### What we offer
 
-- `src/CloudHealthOffice.BenchmarkClaimGenerator/` — full .NET 8 library for parallel corpus generation.
-- `/docs/million-claim-challenge` — public landing page at cloudhealthoffice.com describing the benchmark.
+- `src/HealthCoreX.BenchmarkClaimGenerator/` — full .NET 8 library for parallel corpus generation.
+- `/docs/million-claim-challenge` — public landing page at HealthCoreX.com describing the benchmark.
+- Portal Mass Adjudication console — operator-facing run evidence with claim-level drilldown, validation-status filtering, human-readable MCC claim IDs, and evidence-first sampling for failures, observation failures, mismatches, unsupported rows, and slow claims.
+- `docs/million-claim-challenge/podcast/` — repeatable podcast packet workflow for turning Medium articles, pull requests, benchmark results, screenshots, and project context into Adobe Podcast / Acrobat Generate Podcast source material.
 - Reference data coverage across procedure codes, diagnosis codes, dental codes, taxonomy codes, modifier sets, revenue codes, network tiers, and benefit plan templates.
 - Dedicated Cosmos DB seeder scaffold (`CosmosDbSeeder`) for running the corpus against production-shape infrastructure — provides document-shape and adapter wiring; actual Cosmos DB persistence requires a concrete implementation or separate package (the base `WriteDocumentsAsync` is a no-op stub by design).
 
@@ -303,7 +310,7 @@ This is not a marketing exercise. It is an industry contribution that — if it 
 
 Think of the four product lines as a progression of investment and relationship depth:
 
-**Public Tools** sit at the outermost ring. Anyone can use them. They cost nothing; they generate traffic, credibility, and top-of-funnel leads. A developer evaluating healthcare-tech options finds the free fee schedule lookup through search, uses it, bookmarks cloudhealthoffice.com, remembers the brand.
+**Public Tools** sit at the outermost ring. Anyone can use them. They cost nothing; they generate traffic, credibility, and top-of-funnel leads. A developer evaluating healthcare-tech options finds the free fee schedule lookup through search, uses it, bookmarks HealthCoreX.com, remembers the brand.
 
 **Transactional Services** sit one ring in. Developers graduate naturally from the free tier when their usage grows or their integration stabilizes. A small-plan IT team using the Claims Repricing API for monthly rate validation has converted from "curious evaluator" to "paying customer" without a sales conversation.
 
@@ -355,19 +362,19 @@ We are not in an active acquisition process. We are building the platform with t
 
 ## Canonical Facts
 
-*Last verified: April 2026*
+*Last verified: July 2026*
 
-These are the ground-truth numbers for CHO as of the most recent verification. Any artifact citing service counts, engine counts, test counts, or documentation volume should reconcile to this section. When these numbers drift from reality, update this section first; derivative artifacts then reconcile to it.
+These are the ground-truth numbers for Cloud Health Office as of the most recent verification. Any artifact citing service counts, engine counts, test counts, or documentation volume should reconcile to this section. When these numbers drift from reality, update this section first; derivative artifacts then reconcile to it.
 
 | Metric | Value | Source |
 | --- | --- | --- |
-| Services | 36 | `src/services/*/` excluding `shared/` |
+| Service projects | 36 | `src/services/*/`, including shared projects such as contracts, infrastructure, and events |
 | Adjudication/rules engines | 9 | BenefitEngine, FeeScheduleEngine, NcciEngine, CobEngine, RiskAdjustmentEngine, EncounterEngine, ClaimsScrubEngine, PriorAuthRuleEngine, ProviderVerificationEngine |
 | Supporting engine projects | 4 | DocumentStore, OperatingMode, ProviderEnrollmentService, enrollment-wiring |
-| Test projects | 44 | `*.Tests.csproj` files |
-| Test methods | ~2,800 | xUnit Facts + Theories |
-| Production C# lines | ~136,000 | Excluding tests, bin, obj |
-| Documentation lines | ~94,000 | Markdown under `docs/` |
+| Test projects | 45 | `*.Tests.csproj` files |
+| Test methods | ~4,100 | xUnit Facts + Theories |
+| Production C# lines | ~190,000 | Excluding tests, bin, obj, and migrations |
+| Documentation lines | ~108,000 | Markdown and text under `docs/` |
 | Pricing framework | PMPM-based, pilot-specific | See FINANCIAL-MODEL.md for indicative ranges |
 
 Verification procedure documented at `scripts/verify-canonical-facts.sh` (to be created in a follow-up PR). Numbers should be re-verified at each major release and when the Canonical Facts section is cited by another artifact.

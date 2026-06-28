@@ -59,7 +59,7 @@ fi
 
 # Fallback to defaults if auto-detection failed
 REPO_OWNER="${REPO_OWNER:-aurelianware}"
-REPO_NAME="${REPO_NAME:-cloudhealthoffice}"
+REPO_NAME="${REPO_NAME:-HealthCoreX}"
 EXPECTED_BRANCH="main"
 
 # Variables

@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Models;
+namespace HealthCoreX.BenchmarkClaimGenerator.Models;
 
 /// <summary>
 /// Represents a synthetic rendering or billing provider for benchmark claim generation.

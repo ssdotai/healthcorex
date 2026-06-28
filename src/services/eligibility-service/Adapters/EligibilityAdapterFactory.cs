@@ -85,7 +85,7 @@ public class EligibilityAdapterFactory
         try
         {
             var tenantUrl = _configuration["Services:TenantService"]
-                ?? "http://tenant-service.cloudhealthoffice/api/v1";
+                ?? "http://tenant-service.HealthCoreX/api/v1";
             var httpClient = _httpClientFactory.CreateClient("EligibilityDefault");
             var response = await httpClient.GetAsync(
                 $"{tenantUrl}/tenants/{tenantId}", ct);

@@ -3,14 +3,14 @@ using ClaimsService.Models;
 using ClaimsService.Models.Adjudication;
 using ClaimsService.Services.Adjudication.Mapping;
 using Microsoft.Extensions.Options;
-using EngineModels = CloudHealthOffice.NcciEngine.Models;
-using EngineServices = CloudHealthOffice.NcciEngine.Services;
+using EngineModels = HealthCoreX.NcciEngine.Models;
+using EngineServices = HealthCoreX.NcciEngine.Services;
 
 namespace ClaimsService.Services.Adjudication.Stages;
 
 /// <summary>
 /// Capability 5.7 — replaces <see cref="NcciEditsStubStage"/>. Drives every
-/// adjudicated claim through <c>CloudHealthOffice.NcciEngine</c> for NCCI
+/// adjudicated claim through <c>HealthCoreX.NcciEngine</c> for NCCI
 /// Column 1/Column 2 (PTP) bundling edits and MUE (Medically Unlikely
 /// Edits) unit checks. Runs at <see cref="Order"/> = 400 — between
 /// BenefitCalculationStage (300) and CoB (500) — so post-edit

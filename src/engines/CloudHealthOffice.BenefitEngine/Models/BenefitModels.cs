@@ -1,6 +1,7 @@
-namespace CloudHealthOffice.BenefitEngine.Models;
+namespace HealthCoreX.BenefitEngine.Models;
 
-using CloudHealthOffice.BenefitEngine.Domain;
+using System.Text.Json.Serialization;
+using HealthCoreX.BenefitEngine.Domain;
 
 // ═══════════════════════════════════════════════════════════════════
 // REQUEST
@@ -12,6 +13,7 @@ public record BenefitResolutionRequest
     public string SubscriberId { get; init; } = default!;
     public Guid BenefitPlanId { get; init; }
     public DateOnly ServiceDate { get; init; }
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public NetworkTier NetworkTier { get; init; }
     public List<ClaimLineInput> Lines { get; init; } = [];
     public Dictionary<int, decimal> AllowedAmounts { get; init; } = [];
@@ -119,6 +121,7 @@ public record BenefitResolutionResult
     public List<LineBenefitResult> Lines { get; init; } = [];
     public ClaimTotals Totals { get; init; } = new();
     public List<AccumulatorState> AccumulatorSnapshot { get; init; } = [];
+    public IReadOnlyDictionary<string, double> Timings { get; init; } = new Dictionary<string, double>();
 
     /// <summary>
     /// When DRG/per-diem pricing is used, this contains the claim-level

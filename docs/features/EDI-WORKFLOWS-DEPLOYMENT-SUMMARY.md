@@ -118,7 +118,7 @@ x12-837d-upload-job      0 3 * * *       False     0
    ```bash
    # Update API URL
    kubectl set env cronjob/x12-277-download-job \
-     BACKEND_API_URL=https://api.cloudhealthoffice.com/v1 \
+     BACKEND_API_URL=https://api.HealthCoreX.com/v1 \
      -n cho-workflows
    
    # Update API token

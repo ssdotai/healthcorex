@@ -94,7 +94,7 @@ This change relies on `System.Text.Json` polymorphism, which is the
 serializer used by:
 
 - ASP.NET Core's HTTP MVC pipeline (configured in `Program.cs` via
-  `AddCloudHealthOfficeJsonOptions`).
+  `AddHealthCoreXJsonOptions`).
 - The in-memory test fake `InMemoryBenefitPlanRepository`, which clones
   every store / fetch with `JsonSerializerOptions(JsonSerializerDefaults.Web)`.
 

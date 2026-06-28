@@ -61,10 +61,10 @@ public class LaunchContextController : ControllerBase
     /// GET /connect/authorize
     ///   ?response_type=code
     ///   &amp;client_id=cho-ehr-app
-    ///   &amp;redirect_uri=https://portal.cloudhealthoffice.com/smart/callback
+    ///   &amp;redirect_uri=https://portal.HealthCoreX.com/smart/callback
     ///   &amp;scope=launch/patient launch/encounter openid user/*.read
     ///   &amp;launch=abc123...
-    ///   &amp;iss=https://api.cloudhealthoffice.com/fhir/r4
+    ///   &amp;iss=https://api.HealthCoreX.com/fhir/r4
     /// </code>
     /// </remarks>
     [HttpPost]

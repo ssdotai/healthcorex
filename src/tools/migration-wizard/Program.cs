@@ -57,7 +57,7 @@ static void ConfigureMigrationServices(IServiceCollection services, IConfigurati
     {
         Endpoint = configuration["CosmosDb:Endpoint"] ?? string.Empty,
         Key = configuration["CosmosDb:Key"] ?? string.Empty,
-        DatabaseName = configuration["CosmosDb:DatabaseName"] ?? "cloudhealthoffice",
+        DatabaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX",
         MembersContainer = configuration["CosmosDb:MembersContainer"] ?? "Members",
         ProvidersContainer = configuration["CosmosDb:ProvidersContainer"] ?? "ProviderDirectory",
         BenefitPlansContainer = configuration["CosmosDb:BenefitPlansContainer"] ?? "BenefitPlans",
@@ -74,7 +74,7 @@ static void ConfigureMigrationServices(IServiceCollection services, IConfigurati
         SubscriptionId = configuration["ApiManagement:SubscriptionId"] ?? string.Empty,
         RoutingKeyName = configuration["ApiManagement:RoutingKeyName"] ?? "backend-routing",
         LegacyBackendId = configuration["ApiManagement:LegacyBackendId"] ?? "legacy-backend",
-        CloudHealthOfficeBackendId = configuration["ApiManagement:CloudHealthOfficeBackendId"] ?? "cloudhealthoffice-backend"
+        HealthCoreXBackendId = configuration["ApiManagement:HealthCoreXBackendId"] ?? "HealthCoreX-backend"
     };
     services.AddSingleton(apimConfig);
     services.AddSingleton<ApiManagementCutoverService>();

@@ -26,7 +26,7 @@ public class CapitationStatementRepository : ICapitationStatementRepository
         IHttpContextAccessor httpContextAccessor,
         ILogger<CapitationStatementRepository> logger)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         _container = cosmosClient.GetContainer(databaseName, "CapitationStatements");
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;

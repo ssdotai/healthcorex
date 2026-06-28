@@ -127,7 +127,7 @@ Note: Resolution targets are goals, not guarantees. Complex issues may require l
 
 ### 5.1 Support Portal
 
-**URL**: https://support.cloudhealthoffice.com
+**URL**: https://support.HealthCoreX.com
 
 The primary channel for all support requests. Features:
 
@@ -139,7 +139,7 @@ The primary channel for all support requests. Features:
 
 ### 5.2 Email Support
 
-**Address**: support@cloudhealthoffice.com
+**Address**: support@HealthCoreX.com
 
 Available for all plans. Emails create tickets automatically.
 
@@ -224,7 +224,7 @@ Issues are automatically escalated based on:
 ### 7.3 How to Escalate
 
 - Update ticket with "ESCALATION REQUEST" and reason
-- Email: escalations@cloudhealthoffice.com
+- Email: escalations@HealthCoreX.com
 - Phone (Enterprise): Contact your TAM directly
 - Reference ticket number in all communications
 
@@ -282,11 +282,11 @@ Provider will:
 
 ### 10.1 Self-Service Resources
 
-- **Documentation Portal**: https://docs.cloudhealthoffice.com
-- **Knowledge Base**: https://support.cloudhealthoffice.com/kb
-- **API Reference**: https://api.cloudhealthoffice.com/docs
-- **GitHub Repository**: https://github.com/aurelianware/cloudhealthoffice
-- **Community Forums**: https://community.cloudhealthoffice.com
+- **Documentation Portal**: https://docs.HealthCoreX.com
+- **Knowledge Base**: https://support.HealthCoreX.com/kb
+- **API Reference**: https://api.HealthCoreX.com/docs
+- **GitHub Repository**: https://github.com/aurelianware/HealthCoreX
+- **Community Forums**: https://community.HealthCoreX.com
 
 ### 10.2 Training (Available Separately)
 
@@ -379,7 +379,7 @@ After ticket resolution:
 
 - Ticket comments: Direct feedback on specific issues
 - Survey responses: Post-resolution feedback
-- Email: feedback@cloudhealthoffice.com
+- Email: feedback@HealthCoreX.com
 - TAM conversations: Strategic feedback (Enterprise)
 
 ## 14. Changes to Support Terms
@@ -394,11 +394,11 @@ Customers will be notified via email to designated support contacts.
 
 ## 15. Contact Information
 
-**Support Portal**: https://support.cloudhealthoffice.com  
-**Support Email**: support@cloudhealthoffice.com  
+**Support Portal**: https://support.HealthCoreX.com  
+**Support Email**: support@HealthCoreX.com  
 **Phone (Professional/Enterprise)**: +1-928-940-2410  
-**Escalations**: escalations@cloudhealthoffice.com  
-**Feedback**: feedback@cloudhealthoffice.com
+**Escalations**: escalations@HealthCoreX.com  
+**Feedback**: feedback@HealthCoreX.com
 
 ---
 

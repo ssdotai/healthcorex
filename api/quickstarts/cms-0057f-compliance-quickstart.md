@@ -28,8 +28,8 @@ The **CMS Interoperability and Prior Authorization Final Rule (CMS-0057-F)** req
 
 ```bash
 # Clone the repository
-git clone https://github.com/aurelianware/cloudhealthoffice.git
-cd cloudhealthoffice
+git clone https://github.com/aurelianware/HealthCoreX.git
+cd HealthCoreX
 
 # Install dependencies
 npm install
@@ -97,10 +97,10 @@ Overall Compliance Score: 100%
 
 Open in browser:
 
-- **Patient Access API**: https://petstore.swagger.io/?url=https://raw.githubusercontent.com/aurelianware/cloudhealthoffice/main/api/openapi/patient-access-api.yaml
-- **Provider Access API**: https://petstore.swagger.io/?url=https://raw.githubusercontent.com/aurelianware/cloudhealthoffice/main/api/openapi/provider-access-api.yaml
-- **Payer-to-Payer API**: https://petstore.swagger.io/?url=https://raw.githubusercontent.com/aurelianware/cloudhealthoffice/main/api/openapi/payer-to-payer-api.yaml
-- **Prior Auth API**: https://petstore.swagger.io/?url=https://raw.githubusercontent.com/aurelianware/cloudhealthoffice/main/api/openapi/prior-auth-api.yaml
+- **Patient Access API**: https://petstore.swagger.io/?url=https://raw.githubusercontent.com/aurelianware/HealthCoreX/main/api/openapi/patient-access-api.yaml
+- **Provider Access API**: https://petstore.swagger.io/?url=https://raw.githubusercontent.com/aurelianware/HealthCoreX/main/api/openapi/provider-access-api.yaml
+- **Payer-to-Payer API**: https://petstore.swagger.io/?url=https://raw.githubusercontent.com/aurelianware/HealthCoreX/main/api/openapi/payer-to-payer-api.yaml
+- **Prior Auth API**: https://petstore.swagger.io/?url=https://raw.githubusercontent.com/aurelianware/HealthCoreX/main/api/openapi/prior-auth-api.yaml
 
 ## What's Covered
 
@@ -139,7 +139,7 @@ No need to rebuild your core systems - just add FHIR API layer on top!
 # Deploy to Azure
 cd infrastructure/azure
 az deployment group create \
-  --resource-group rg-cloudhealthoffice \
+  --resource-group rg-HealthCoreX \
   --template-file main.bicep \
   --parameters @main.parameters.json
 
@@ -151,7 +151,7 @@ az deployment group create \
 
 ```bash
 # Deploy with Helm
-cd helm/cloudhealthoffice
+cd helm/HealthCoreX
 helm install cho . --namespace healthcare --create-namespace
 
 # Verify deployment
@@ -199,7 +199,7 @@ npm run generate:compliance-report
 
 2. **Review checklist:** See `docs/compliance/CMS-0057-F-CHECKLIST.md`
 
-3. **Get support:** Email compliance@cloudhealthoffice.com
+3. **Get support:** Email compliance@HealthCoreX.com
 
 ## Common Issues
 
@@ -243,10 +243,10 @@ npm run validate:x12-schemas
 
 ## Support
 
-- 🐛 **Issues:** [GitHub Issues](https://github.com/aurelianware/cloudhealthoffice/issues)
-- 💬 **Discussions:** [GitHub Discussions](https://github.com/aurelianware/cloudhealthoffice/discussions)
-- 📧 **Email:** support@cloudhealthoffice.com
-- 📅 **Office Hours:** Tuesdays 2-3pm ET ([Book a call](https://calendly.com/cloudhealthoffice))
+- 🐛 **Issues:** [GitHub Issues](https://github.com/aurelianware/HealthCoreX/issues)
+- 💬 **Discussions:** [GitHub Discussions](https://github.com/aurelianware/HealthCoreX/discussions)
+- 📧 **Email:** support@HealthCoreX.com
+- 📅 **Office Hours:** Tuesdays 2-3pm ET ([Book a call](https://calendly.com/HealthCoreX))
 
 ---
 

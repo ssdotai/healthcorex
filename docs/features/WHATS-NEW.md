@@ -21,7 +21,7 @@ Cloud Health Office v3.0.0 delivers multi-cloud independence, commercial launch 
 **Get Started**:
 ```bash
 # Deploy with Helm
-helm install cloudhealthoffice ./helm/cloudhealthoffice \
+helm install HealthCoreX ./helm/HealthCoreX \
   --set vault.enabled=true \
   --set vault.type=hashicorp
 
@@ -47,9 +47,9 @@ kubectl apply -f argo-workflows/
 
 | Tier         | Price      | 837 Claims Included |
 |--------------|------------|---------------------|
-| Starter      | [Contact sales](mailto:sales@cloudhealthoffice.com) | 1,000               |
-| Professional | [Contact sales](mailto:sales@cloudhealthoffice.com) | 10,000              |
-| Enterprise   | [Contact sales](mailto:sales@cloudhealthoffice.com) | 50,000              |
+| Starter      | [Contact sales](mailto:sales@HealthCoreX.com) | 1,000               |
+| Professional | [Contact sales](mailto:sales@HealthCoreX.com) | 10,000              |
+| Enterprise   | [Contact sales](mailto:sales@HealthCoreX.com) | 50,000              |
 
 **Documentation**: [marketplace/README.md](./marketplace/)
 
@@ -455,8 +455,8 @@ See: [ROADMAP.md](./ROADMAP.md)
 ## 🤝 Need Help?
 
 - 📖 [Complete Documentation](./FEATURES.md)
-- 🐛 [Report Issues](https://github.com/aurelianware/cloudhealthoffice/issues)
-- 💬 [Community Discussions](https://github.com/aurelianware/cloudhealthoffice/discussions)
+- 🐛 [Report Issues](https://github.com/aurelianware/HealthCoreX/issues)
+- 💬 [Community Discussions](https://github.com/aurelianware/HealthCoreX/discussions)
 - 📧 Email: support@aurelianware.com
 
 ---

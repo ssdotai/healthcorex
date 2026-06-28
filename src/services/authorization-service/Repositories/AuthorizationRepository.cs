@@ -35,7 +35,7 @@ public class AuthorizationRepository : IAuthorizationRepository
         IHttpContextAccessor httpContextAccessor,
         ILogger<AuthorizationRepository> logger)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         var containerName = configuration["CosmosDb:ContainerName"] ?? "Authorizations";
 
         _container = cosmosClient.GetContainer(databaseName, containerName);

@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Infrastructure.Configuration;
+namespace HealthCoreX.Infrastructure.Configuration;
 
 /// <summary>
 /// A no-op <see cref="ISecretProvider"/> used when <see cref="SecretProviderType.None"/> is configured.

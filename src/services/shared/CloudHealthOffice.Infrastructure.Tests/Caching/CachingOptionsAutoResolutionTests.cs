@@ -1,9 +1,9 @@
-using CloudHealthOffice.Infrastructure.Caching;
+using HealthCoreX.Infrastructure.Caching;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace CloudHealthOffice.Infrastructure.Tests.Caching;
+namespace HealthCoreX.Infrastructure.Tests.Caching;
 
 public class CachingOptionsAutoResolutionTests
 {

@@ -1,10 +1,10 @@
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Workers;
+namespace HealthCoreX.ProviderEnrollmentService.Workers;
 
 /// <summary>
 /// Nightly batch sync worker — pulls fresh enrollment data from all state sources.

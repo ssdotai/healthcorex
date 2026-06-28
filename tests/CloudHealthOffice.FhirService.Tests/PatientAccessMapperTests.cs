@@ -2,7 +2,7 @@ using FluentAssertions;
 using FhirService.Mappers;
 using FhirService.Models;
 
-namespace CloudHealthOffice.FhirService.Tests;
+namespace HealthCoreX.FhirService.Tests;
 
 /// <summary>
 /// Unit tests for PatientAccessMapper — port of the TypeScript

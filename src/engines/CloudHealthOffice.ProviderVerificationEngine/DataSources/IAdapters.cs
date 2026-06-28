@@ -1,6 +1,6 @@
-namespace CloudHealthOffice.ProviderVerificationEngine.DataSources;
+namespace HealthCoreX.ProviderVerificationEngine.DataSources;
 
-using CloudHealthOffice.ProviderVerificationEngine.Models;
+using HealthCoreX.ProviderVerificationEngine.Models;
 
 // ─────────────────────────────────────────────────────────────────
 // Adapter Interfaces — one per public data source

@@ -1,6 +1,6 @@
-using CloudHealthOffice.Infrastructure.Caching;
+using HealthCoreX.Infrastructure.Caching;
 
-namespace CloudHealthOffice.Infrastructure.Tests.Caching;
+namespace HealthCoreX.Infrastructure.Tests.Caching;
 
 /// <summary>
 /// Shared contract every <see cref="ICacheProvider"/> implementation must pass.

@@ -1,15 +1,16 @@
 using System.Net;
 using System.Net.Http.Json;
 using ClaimsService.Adapters;
+using ClaimsService.HostedServices;
 using ClaimsService.Models;
 using ClaimsService.Repositories;
 using ClaimsService.Services;
 using ClaimsService.Services.Adjudication;
 using ClaimsService.Services.Resolution;
-using CloudHealthOffice.BenefitEngine.Models;
-using CloudHealthOffice.BenefitEngine.Services;
-using CloudHealthOffice.Infrastructure.Messaging;
-using CloudHealthOffice.NcciEngine.Persistence;
+using HealthCoreX.BenefitEngine.Models;
+using HealthCoreX.BenefitEngine.Services;
+using HealthCoreX.Infrastructure.Messaging;
+using HealthCoreX.NcciEngine.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Integration;
+namespace HealthCoreX.ClaimsService.Tests.Integration;
 
 /// <summary>
 /// End-to-end coverage for capability 5.5: POST <c>/api/v1/claims</c>
@@ -153,12 +154,23 @@ public class AdjudicationEndToEndTests : IAsyncLifetime
                     Arg.Any<string>(), Arg.Any<DateTime>())
                 .Returns(_ => _lastCreated);
 
+            // Explicitly matches all projection parameters (not just the leading 5) —
+            // this test's pipeline runs the real CoordinationOfBenefitsStage
+            // against the real HttpCoverageClient, which is unreachable in
+            // this test host and degrades to a Pend (Decision 7, default
+            // CobMode=PendForSecondary). PersistenceStage now resolves that
+            // to isPend=true and passes non-null PendDetails, so a stub that
+            // only specified the first 5 args (implicitly matching
+            // pendDetails=null/isPend=false) would silently stop matching.
             Repository.UpdateAdjudicationProjectionAsync(
                     Arg.Any<string>(),
                     Arg.Any<string>(),
                     Arg.Any<AdjudicationResult>(),
                     Arg.Any<IReadOnlyList<LineAdjudicationResult>>(),
-                    Arg.Any<CancellationToken>())
+                    Arg.Any<CancellationToken>(),
+                    Arg.Any<PendDetails?>(),
+                    Arg.Any<bool>(),
+                    Arg.Any<ClaimStatus?>())
                 .Returns(ci =>
                 {
                     ProjectionWrites.Add(new ProjectionWrite(
@@ -188,8 +200,10 @@ public class AdjudicationEndToEndTests : IAsyncLifetime
                              || d.ServiceType.FullName?.Contains("Mongo") == true
                              || d.ImplementationType?.FullName?.Contains("Cosmos") == true
                              || d.ImplementationType?.FullName?.Contains("Mongo") == true
-                             || d.ImplementationType?.FullName?.Contains("ClaimVersionEventIndexInitializer") == true
-                             || d.ImplementationType?.FullName?.Contains("ClaimAdjustmentIndexInitializer") == true
+                             || d.ImplementationType == typeof(ClaimIndexInitializer)
+                             || d.ImplementationType == typeof(MassAdjudicationRunIndexInitializer)
+                             || d.ImplementationType == typeof(ClaimVersionEventIndexInitializer)
+                             || d.ImplementationType == typeof(ClaimAdjustmentIndexInitializer)
                              || d.ServiceType == typeof(IClaimVersionEventPublisher)
                              || d.ServiceType == typeof(IBenefitCalculationEngine)
                              || d.ServiceType == typeof(IBenefitPlanResolver)
@@ -212,6 +226,13 @@ public class AdjudicationEndToEndTests : IAsyncLifetime
                 // get invoked.
                 services.AddSingleton(Substitute.For<IClaimAdjustmentRepository>());
                 services.AddSingleton(Substitute.For<IClaimAdjustmentService>());
+
+                // ClaimImportTransactionRepositoryMongo is caught by the
+                // "Mongo" substring filter above (nothing 837-related runs
+                // in this test — it only exercises POST /api/v1/claims —
+                // but ClaimsV1Controller's constructor still needs every
+                // dependency resolvable to construct the controller at all).
+                services.AddSingleton(Substitute.For<IClaimImportTransactionRepository>());
 
                 // 5.7 — NcciEngine's repository implementation gets removed
                 // by the Cosmos/Mongo filter above. INcciEditService still

@@ -5,11 +5,11 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: trading-partners-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app.kubernetes.io/name: trading-partners-config
     app.kubernetes.io/component: config
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
 data:
   # Clearinghouse trading partner (clearinghouse)
   clearinghouse-id: "030240928"

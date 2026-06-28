@@ -1,4 +1,4 @@
-using CloudHealthOffice.Appeals.Contracts;
+using HealthCoreX.Appeals.Contracts;
 using FhirService.Models;
 using FhirService.Services;
 using Hl7.Fhir.Model;

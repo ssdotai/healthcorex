@@ -1,10 +1,10 @@
-using CloudHealthOffice.Portal.Infrastructure;
+using HealthCoreX.Portal.Infrastructure;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Xml.Linq;
 
-namespace CloudHealthOffice.Portal.Tests.Infrastructure;
+namespace HealthCoreX.Portal.Tests.Infrastructure;
 
 public class InfrastructureTests
 {

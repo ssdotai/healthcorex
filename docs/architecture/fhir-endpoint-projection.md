@@ -74,7 +74,7 @@ codes are FHIR-protocol-shaped (`hl7-fhir-rest`, `direct-project`,
 `dicom-*`).
 
 CHO publishes a CodeSystem
-`http://fhir.cloudhealthoffice.com/CodeSystem/endpoint-connection-type`
+`http://fhir.HealthCoreX.com/CodeSystem/endpoint-connection-type`
 with one code, `static-document`. Emit it as the sole coding under
 `Endpoint.connectionType`. A future capability swaps in a standard
 code if HL7 publishes one. Misusing `hl7-fhir-rest` for a PDF link
@@ -91,7 +91,7 @@ documents.
 ### Decision 3 — `payloadType` codings
 
 CHO publishes a CodeSystem
-`http://fhir.cloudhealthoffice.com/CodeSystem/plan-document-type`
+`http://fhir.HealthCoreX.com/CodeSystem/plan-document-type`
 with one code per `PlanDocumentType` enum value:
 
 | Enum | Code | Display |

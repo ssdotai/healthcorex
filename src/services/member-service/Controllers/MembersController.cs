@@ -231,6 +231,9 @@ public class MembersController : ControllerBase
             Status = EnrollmentStatus.Pending,
             MaintenanceTypeCode = request.MaintenanceTypeCode,
             MaintenanceReasonCode = request.MaintenanceReasonCode,
+            PlanChangeEffectiveDate = request.PlanChangeEffectiveDate,
+            MedicaidSpendDownLiabilityAmount = request.MedicaidSpendDownLiabilityAmount,
+            MedicaidSpendDownAmountMet = request.MedicaidSpendDownAmountMet,
             EmploymentStatus = request.EmploymentStatus,
             TobaccoUser = request.TobaccoUser,
             IsStudent = request.IsStudent,
@@ -407,7 +410,7 @@ public class MembersController : ControllerBase
     {
         var problem = new ProblemDetails
         {
-            Type = "https://cloudhealthoffice.com/problems/member-alert-block",
+            Type = "https://HealthCoreX.com/problems/member-alert-block",
             Title = "Action blocked by active member alert",
             Status = StatusCodes.Status409Conflict,
             Detail = block.Reason
@@ -757,7 +760,7 @@ public class MembersController : ControllerBase
     {
         var problem = new ProblemDetails
         {
-            Type = "https://cloudhealthoffice.com/problems/downstream-unavailable",
+            Type = "https://HealthCoreX.com/problems/downstream-unavailable",
             Title = "Downstream service unavailable",
             Status = StatusCodes.Status503ServiceUnavailable,
             Detail = ex.Detail ?? ex.Message
@@ -840,6 +843,9 @@ public class CreateMemberRequest
     public DateTime? TerminationDate { get; set; }
     public string? MaintenanceTypeCode { get; set; }
     public string? MaintenanceReasonCode { get; set; }
+    public DateTime? PlanChangeEffectiveDate { get; set; }
+    public decimal? MedicaidSpendDownLiabilityAmount { get; set; }
+    public decimal MedicaidSpendDownAmountMet { get; set; }
     public EmploymentStatus? EmploymentStatus { get; set; }
     public bool? TobaccoUser { get; set; }
     public bool? IsStudent { get; set; }

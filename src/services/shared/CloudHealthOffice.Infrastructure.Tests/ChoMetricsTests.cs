@@ -1,14 +1,14 @@
 using System.Diagnostics.Metrics;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 
-namespace CloudHealthOffice.Infrastructure.Tests;
+namespace HealthCoreX.Infrastructure.Tests;
 
 public class ChoMetricsTests
 {
     [Fact]
-    public void MeterName_IsCloudHealthOffice()
+    public void MeterName_IsHealthCoreX()
     {
-        ChoMetrics.MeterName.Should().Be("CloudHealthOffice");
+        ChoMetrics.MeterName.Should().Be("HealthCoreX");
     }
 
     [Fact]

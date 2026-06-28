@@ -1,7 +1,7 @@
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Models;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Gates;
+namespace HealthCoreX.ProviderEnrollmentService.Gates;
 
 /// <summary>
 /// No-op gate — always passes. Used as a fallback when the full

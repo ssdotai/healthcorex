@@ -8,7 +8,7 @@ using NSubstitute;
 using NSubstitute.ClearExtensions;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests;
+namespace HealthCoreX.ClaimsService.Tests;
 
 /// <summary>
 /// Capability 5.3 deprecation coverage for the legacy

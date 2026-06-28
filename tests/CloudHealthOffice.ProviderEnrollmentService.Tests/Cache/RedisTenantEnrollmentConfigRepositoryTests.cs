@@ -1,13 +1,13 @@
-using CloudHealthOffice.Infrastructure.Caching;
-using CloudHealthOffice.ProviderEnrollmentService.Cache;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.Infrastructure.Caching;
+using HealthCoreX.ProviderEnrollmentService.Cache;
+using HealthCoreX.ProviderEnrollmentService.Models;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Tests.Cache;
+namespace HealthCoreX.ProviderEnrollmentService.Tests.Cache;
 
 /// <summary>
 /// Post-A.7.2 tests: the decorator now delegates to <see cref="ICacheProvider"/>

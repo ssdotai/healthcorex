@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
 
-namespace CloudHealthOffice.Infrastructure.Tests;
+namespace HealthCoreX.Infrastructure.Tests;
 
 /// <summary>
 /// WebApplicationFactory variant used by <see cref="ObservabilityTestHelper"/>.

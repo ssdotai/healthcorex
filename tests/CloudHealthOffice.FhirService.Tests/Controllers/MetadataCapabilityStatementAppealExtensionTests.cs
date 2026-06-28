@@ -3,7 +3,7 @@ using FluentAssertions;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 
-namespace CloudHealthOffice.FhirService.Tests.Controllers;
+namespace HealthCoreX.FhirService.Tests.Controllers;
 
 /// <summary>
 /// Verifies that the CapabilityStatement advertises the FHIR conformance
@@ -53,10 +53,10 @@ public class MetadataCapabilityStatementAppealExtensionTests : IClassFixture<Fhi
     /// each declaring its cho-appeal-* supportedProfile.
     /// </summary>
     [Theory]
-    [InlineData("Task", "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-task")]
-    [InlineData("Communication", "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-communication")]
-    [InlineData("DocumentReference", "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-document-reference")]
-    [InlineData("ClaimResponse", "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-claim-response")]
+    [InlineData("Task", "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-task")]
+    [InlineData("Communication", "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-communication")]
+    [InlineData("DocumentReference", "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-document-reference")]
+    [InlineData("ClaimResponse", "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-claim-response")]
     public async Task Appeal_projection_resources_are_advertised_with_read_search_and_profile(
         string resourceType, string profileUrl)
     {
@@ -79,7 +79,7 @@ public class MetadataCapabilityStatementAppealExtensionTests : IClassFixture<Fhi
         var cs = await GetCapabilityStatement();
         cs.Rest[0].Operation.Should().Contain(o =>
             o.Name == "cho-appeal-submit" &&
-            o.Definition == "http://fhir.cloudhealthoffice.com/OperationDefinition/cho-appeal-submit");
+            o.Definition == "http://fhir.HealthCoreX.com/OperationDefinition/cho-appeal-submit");
     }
 
     [Fact]

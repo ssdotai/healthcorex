@@ -30,4 +30,4 @@ Disallow: /Error/
 Disallow: /_blazor
 Disallow: /_framework
 
-Sitemap: https://portal.cloudhealthoffice.com/sitemap.xml
+Sitemap: https://portal.HealthCoreX.com/sitemap.xml

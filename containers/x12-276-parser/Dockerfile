@@ -3,15 +3,15 @@
 #
 # HIPAA Transaction: 005010X212 - Health Care Claim Status Request
 #
-# Build: docker build -t ghcr.io/aurelianware/cloudhealthoffice-x12-276-parser:latest .
-# Run: docker run -v /data:/data ghcr.io/aurelianware/cloudhealthoffice-x12-276-parser /data/input.edi
+# Build: docker build -t ghcr.io/aurelianware/HealthCoreX-x12-276-parser:latest .
+# Run: docker run -v /data:/data ghcr.io/aurelianware/HealthCoreX-x12-276-parser /data/input.edi
 
 FROM python:3.11-slim
 
 LABEL org.opencontainers.image.title="Cloud Health Office X12 276 Parser"
 LABEL org.opencontainers.image.description="HIPAA X12 276 Claim Status Inquiry parser"
 LABEL org.opencontainers.image.vendor="Aurelianware"
-LABEL org.opencontainers.image.source="https://github.com/aurelianware/cloudhealthoffice"
+LABEL org.opencontainers.image.source="https://github.com/aurelianware/HealthCoreX"
 
 # Security: Run as non-root user
 RUN groupadd -r x12parser && useradd -r -g x12parser x12parser

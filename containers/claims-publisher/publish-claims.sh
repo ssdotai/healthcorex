@@ -5,8 +5,8 @@
 set -e
 
 CLAIMS_DIR=${CLAIMS_DIR:-"/work/claims"}
-CLAIMS_SERVICE_URL=${CLAIMS_SERVICE_URL:-"http://claims-service.cloudhealthoffice.svc.cluster.local:8080"}
-KAFKA_BOOTSTRAP_SERVERS=${KAFKA_BOOTSTRAP_SERVERS:-"cloudhealthoffice-kafka-bootstrap.kafka:9092"}
+CLAIMS_SERVICE_URL=${CLAIMS_SERVICE_URL:-"http://claims-service.HealthCoreX.svc.cluster.local:8080"}
+KAFKA_BOOTSTRAP_SERVERS=${KAFKA_BOOTSTRAP_SERVERS:-"HealthCoreX-kafka-bootstrap.kafka:9092"}
 KAFKA_TOPIC=${KAFKA_TOPIC:-"claims-adjudication"}
 TENANT_ID=${TENANT_ID:-"default-payer"}
 

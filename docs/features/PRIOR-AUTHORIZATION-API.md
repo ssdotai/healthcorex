@@ -551,7 +551,7 @@ Per HIPAA and CMS requirements:
 import { createOrchestrationConfig } from './prior-auth-api';
 
 const config = createOrchestrationConfig(
-  'https://cloudhealthoffice.azurewebsites.net',
+  'https://HealthCoreX.azurewebsites.net',
   'prod'
 );
 

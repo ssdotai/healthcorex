@@ -2,17 +2,17 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: idcard-service-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 data:
   ASPNETCORE_ENVIRONMENT: "Production"
-  MongoDb__DatabaseName: "cloudhealthoffice"
-  Services__MemberService: "http://member-service.cloudhealthoffice/api/v1"
-  Services__CoverageService: "http://coverage-service.cloudhealthoffice/api/v1"
-  Services__SponsorService: "http://sponsor-service.cloudhealthoffice/api/v1"
-  Services__BenefitPlanService: "http://benefit-plan-service.cloudhealthoffice/api/v1"
-  Services__MemberDocumentService: "http://member-document-service.cloudhealthoffice/api/v1"
-  Services__EligibilityService: "http://eligibility-service.cloudhealthoffice/api"
-  Services__TenantService: "http://tenant-service.cloudhealthoffice/api/v1"
+  MongoDb__DatabaseName: "HealthCoreX"
+  Services__MemberService: "http://member-service.HealthCoreX/api/v1"
+  Services__CoverageService: "http://coverage-service.HealthCoreX/api/v1"
+  Services__SponsorService: "http://sponsor-service.HealthCoreX/api/v1"
+  Services__BenefitPlanService: "http://benefit-plan-service.HealthCoreX/api/v1"
+  Services__MemberDocumentService: "http://member-document-service.HealthCoreX/api/v1"
+  Services__EligibilityService: "http://eligibility-service.HealthCoreX/api"
+  Services__TenantService: "http://tenant-service.HealthCoreX/api/v1"
   IdCard__SigningKeySecretPrefix: "idcard-signing-key"
   IdCard__CurrentKeyVersion: "v1"
   IdCard__AcceptedKeyVersions__0: "v1"
@@ -27,7 +27,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: idcard-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: idcard-service
     tier: backend
@@ -44,7 +44,7 @@ spec:
     spec:
       containers:
       - name: idcard-service
-        image: choacrhy6h2vdulfru6.azurecr.io/cloudhealthoffice-idcard-service:latest
+        image: choacrhy6h2vdulfru6.azurecr.io/HealthCoreX-idcard-service:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -111,7 +111,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: idcard-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: idcard-service
 spec:

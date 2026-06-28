@@ -1,7 +1,7 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
-using CloudHealthOffice.BenchmarkClaimGenerator.ReferenceData;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.ReferenceData;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Generators;
+namespace HealthCoreX.BenchmarkClaimGenerator.Generators;
 
 /// <summary>
 /// Generates CMS-1500 professional claims with realistic variation across

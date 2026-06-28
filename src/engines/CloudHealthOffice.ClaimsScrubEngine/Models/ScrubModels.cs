@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.ClaimsScrubEngine.Models;
+namespace HealthCoreX.ClaimsScrubEngine.Models;
 
 // ============================================================================
 // X12 837 Claim Types
@@ -97,6 +97,13 @@ public record ClaimSubscriber
 
 public record ClaimPatient
 {
+    /// <summary>
+    /// The dependent's own member id (2010CA NM109), distinct from the
+    /// subscriber's. Null when the source 837 doesn't carry one — some
+    /// payers expect demographic matching instead, which this DTO does
+    /// not attempt to resolve.
+    /// </summary>
+    public string? MemberId { get; init; }
     public string FirstName { get; init; } = default!;
     public string LastName { get; init; } = default!;
     public string? MiddleName { get; init; }

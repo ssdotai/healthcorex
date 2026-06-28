@@ -1,11 +1,11 @@
 using System.Globalization;
-using CloudHealthOffice.PricingApi.Data;
-using CloudHealthOffice.PricingApi.Models;
+using HealthCoreX.PricingApi.Data;
+using HealthCoreX.PricingApi.Models;
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 
-namespace CloudHealthOffice.PricingApi.Services;
+namespace HealthCoreX.PricingApi.Services;
 
 /// <summary>
 /// Seeds Medicare fee schedule data from CMS public data files.

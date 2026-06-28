@@ -1,7 +1,7 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Generators;
-using CloudHealthOffice.BenchmarkClaimGenerator.ReferenceData;
+using HealthCoreX.BenchmarkClaimGenerator.Generators;
+using HealthCoreX.BenchmarkClaimGenerator.ReferenceData;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Tests;
+namespace HealthCoreX.BenchmarkClaimGenerator.Tests;
 
 public class ProfessionalClaimGeneratorTests
 {

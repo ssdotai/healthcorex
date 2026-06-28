@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.BenchmarkClaimGenerator.ReferenceData;
+namespace HealthCoreX.BenchmarkClaimGenerator.ReferenceData;
 
 /// <summary>
 /// Provides reference data (code sets, provider lists, etc.) for claim generation.

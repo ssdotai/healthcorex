@@ -26,8 +26,8 @@ echo "✅ Azure CLI found and authenticated"
 echo ""
 
 # Configuration
-read -p "Resource Group name [rg-cloudhealthoffice]: " RESOURCE_GROUP
-RESOURCE_GROUP=${RESOURCE_GROUP:-rg-cloudhealthoffice}
+read -p "Resource Group name [rg-HealthCoreX]: " RESOURCE_GROUP
+RESOURCE_GROUP=${RESOURCE_GROUP:-rg-HealthCoreX}
 
 read -p "AKS Cluster name [cho-aks-cluster]: " CLUSTER_NAME
 CLUSTER_NAME=${CLUSTER_NAME:-cho-aks-cluster}
@@ -74,7 +74,7 @@ az group create \
   --location "$LOCATION" \
   --tags \
     Environment=Production \
-    Application=CloudHealthOffice \
+    Application=HealthCoreX \
     Compliance=HIPAA \
     ManagedBy=Terraform \
   --output table
@@ -103,7 +103,7 @@ az aks create \
   --tier standard \
   --tags \
     Environment=Production \
-    Application=CloudHealthOffice \
+    Application=HealthCoreX \
     Compliance=HIPAA \
   --output table
 

@@ -3,7 +3,7 @@ using PaymentService.Models;
 using PaymentService.Services;
 using Xunit;
 
-namespace CloudHealthOffice.Edi.Tests;
+namespace HealthCoreX.Edi.Tests;
 
 public class EraGeneratorServiceTests
 {

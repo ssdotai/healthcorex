@@ -4,7 +4,7 @@ using ClaimsService.Models.Adjudication;
 using ClaimsService.Models.Messaging;
 using ClaimsService.Services;
 using ClaimsService.Services.Resolution;
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Messaging;
 using Microsoft.Extensions.Options;
 
 namespace ClaimsService.Services.Adjudication;
@@ -21,6 +21,7 @@ public sealed class ClaimAdjudicationOrchestrator : IClaimAdjudicationOrchestrat
     private readonly ClaimAdapterFactory _adapterFactory;
     private readonly IBenefitPlanResolver _planResolver;
     private readonly IMemberResolver _memberResolver;
+    private readonly ICoverageResolver _coverageResolver;
     private readonly IReadOnlyList<IClaimAdjudicationStage> _stages;
     private readonly IClaimVersionEventPublisher _eventPublisher;
     private readonly IMessageBus _messageBus;
@@ -33,6 +34,7 @@ public sealed class ClaimAdjudicationOrchestrator : IClaimAdjudicationOrchestrat
         ClaimAdapterFactory adapterFactory,
         IBenefitPlanResolver planResolver,
         IMemberResolver memberResolver,
+        ICoverageResolver coverageResolver,
         IEnumerable<IClaimAdjudicationStage> stages,
         IClaimVersionEventPublisher eventPublisher,
         IMessageBus messageBus,
@@ -44,6 +46,7 @@ public sealed class ClaimAdjudicationOrchestrator : IClaimAdjudicationOrchestrat
         _adapterFactory = adapterFactory;
         _planResolver = planResolver;
         _memberResolver = memberResolver;
+        _coverageResolver = coverageResolver;
         _stages = stages.OrderBy(s => s.Order).ToList();
         _eventPublisher = eventPublisher;
         _messageBus = messageBus;
@@ -93,15 +96,11 @@ public sealed class ClaimAdjudicationOrchestrator : IClaimAdjudicationOrchestrat
             return;
         }
 
-        // Idempotency: the version already has adjudication data → skip
-        // and complete the message. This catches Service Bus redeliveries
-        // after a previous successful adjudication that crashed before
-        // completing the message (Decision 12). Any non-null
-        // AdjudicationResult — including denials with AllowedAmount=0 —
-        // counts; the bypass write only fires after a stage produces an
-        // outcome, so its presence is a reliable "pipeline already ran"
-        // marker.
-        if (claim.AdjudicationResult is not null)
+        // Idempotency: a version with a meaningful terminal adjudication
+        // projection can be skipped on redelivery. Some submit paths hydrate
+        // an empty zero-valued AdjudicationResult placeholder on Submitted
+        // claims; that is not evidence the async pipeline already ran.
+        if (HasMeaningfulAdjudicationProjection(claim))
         {
             _logger.LogInformation(
                 "Claim {ClaimVersionId} already adjudicated; skipping pipeline run",
@@ -118,6 +117,27 @@ public sealed class ClaimAdjudicationOrchestrator : IClaimAdjudicationOrchestrat
             CorrelationId = message.CorrelationId ?? messageContext.CorrelationId,
         };
 
+        // The X12 837 on-ramp (ClaimsV1Controller.ImportRaw837 ->
+        // X12837ClaimMapper) deliberately leaves BenefitPlanId blank rather
+        // than guessing — resolve it from the member's active coverage here,
+        // before plan resolution below, so a correctly-enrolled member's
+        // claim still reaches BenefitCalculationStage with a real plan
+        // instead of rejecting on "missing BenefitPlanId". Claims that
+        // already carry a BenefitPlanId (JSON /import, MCC) are untouched.
+        if (string.IsNullOrWhiteSpace(claim.BenefitPlanId) && !string.IsNullOrWhiteSpace(claim.MemberId))
+        {
+            var resolvedPlanId = await _coverageResolver
+                .ResolveBenefitPlanIdAsync(
+                    message.TenantId, claim.MemberId, claim.ServiceDateFrom,
+                    MapInsuranceLineCode(claim.ClaimType), ct)
+                .ConfigureAwait(false);
+
+            if (!string.IsNullOrWhiteSpace(resolvedPlanId))
+            {
+                claim.BenefitPlanId = resolvedPlanId;
+            }
+        }
+
         if (!string.IsNullOrWhiteSpace(claim.BenefitPlanId))
         {
             context.ResolvedPlan = await _planResolver
@@ -133,6 +153,39 @@ public sealed class ClaimAdjudicationOrchestrator : IClaimAdjudicationOrchestrat
 
         await RunPipelineAsync(context, ct).ConfigureAwait(false);
         await EmitAdjudicatedEventAsync(context, ct).ConfigureAwait(false);
+    }
+
+    private static bool HasMeaningfulAdjudicationProjection(AdapterClaim claim)
+    {
+        var result = claim.AdjudicationResult;
+        if (result is null)
+        {
+            return false;
+        }
+
+        if (claim.Status is ClaimStatus.Approved
+            or ClaimStatus.Denied
+            or ClaimStatus.Paid
+            or ClaimStatus.PartiallyPaid
+            or ClaimStatus.Pended
+            or ClaimStatus.Voided)
+        {
+            return true;
+        }
+
+        return !string.IsNullOrWhiteSpace(result.NetworkTier)
+            || result.AllowedAmount != 0
+            || result.DeductibleAmount != 0
+            || result.CoinsuranceAmount != 0
+            || result.CopayAmount != 0
+            || result.PatientResponsibility != 0
+            || result.PayerPayment != 0
+            || !string.IsNullOrWhiteSpace(result.DenialReasonCode)
+            || !string.IsNullOrWhiteSpace(result.DenialReason)
+            || result.AdjustmentReasons.Count > 0
+            || result.RemarkCodes.Count > 0
+            || !string.IsNullOrWhiteSpace(result.CheckNumber)
+            || result.PaymentDate.HasValue;
     }
 
     private async Task RunPipelineAsync(ClaimAdjudicationContext context, CancellationToken ct)
@@ -294,16 +347,12 @@ public sealed class ClaimAdjudicationOrchestrator : IClaimAdjudicationOrchestrat
         // PersistenceStage, whose Reject (e.g.
         // UpdateAdjudicationProjectionAsync returned false) MUST surface
         // on the emitted event so subscribers don't see a Pass for a
-        // claim whose adjudication never persisted.
-        var results = context.StageResults;
-
-        if (results.Any(r => r.Outcome == ClaimAdjudicationOutcome.Reject))
-            return ClaimAdjudicationOutcome.Reject;
-        if (results.Any(r => r.Outcome == ClaimAdjudicationOutcome.Deny))
-            return ClaimAdjudicationOutcome.Deny;
-        if (results.Any(r => r.Outcome == ClaimAdjudicationOutcome.Pend))
-            return ClaimAdjudicationOutcome.Pend;
-        return ClaimAdjudicationOutcome.Pass;
+        // claim whose adjudication never persisted. Called here AFTER
+        // every stage including Persistence has run (see
+        // ClaimAdjudicationStageResult.ResolveOutcome, the shared
+        // precedence rule; PersistenceStage itself calls it one stage
+        // earlier to decide the ClaimStatus.Pended projection).
+        return ClaimAdjudicationStageResult.ResolveOutcome(context.StageResults);
     }
 
     private bool IsEnabled(IClaimAdjudicationStage stage)
@@ -312,6 +361,20 @@ public sealed class ClaimAdjudicationOrchestrator : IClaimAdjudicationOrchestrat
         if (_options.EnabledStages is null || _options.EnabledStages.Count == 0) return true;
         return !_options.EnabledStages.TryGetValue(stage.Name, out var enabled) || enabled;
     }
+
+    /// <summary>
+    /// Maps a claim's type to coverage-service's InsuranceLineCode filter
+    /// (HLT/DEN/VIS/LIF) so active-coverage resolution matches the right
+    /// line when a member carries more than one. Professional and
+    /// Institutional both mean medical (HLT) — the distinction is
+    /// place-of-care, not benefit line.
+    /// </summary>
+    private static string? MapInsuranceLineCode(ClaimType claimType) => claimType switch
+    {
+        ClaimType.Professional or ClaimType.Institutional => "HLT",
+        ClaimType.Dental => "DEN",
+        _ => null,
+    };
 
     private static string SanitizeForLog(string? value) =>
         string.IsNullOrEmpty(value) ? string.Empty : value.Replace("\r", "").Replace("\n", "");

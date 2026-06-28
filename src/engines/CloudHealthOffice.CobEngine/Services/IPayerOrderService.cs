@@ -1,6 +1,6 @@
-using CloudHealthOffice.CobEngine.Domain;
+using HealthCoreX.CobEngine.Domain;
 
-namespace CloudHealthOffice.CobEngine.Services;
+namespace HealthCoreX.CobEngine.Services;
 
 /// <summary>
 /// Determines payer sequence (primary / secondary / tertiary) for a coverage

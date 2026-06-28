@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Server.Circuits;
 
-namespace CloudHealthOffice.Portal.Infrastructure;
+namespace HealthCoreX.Portal.Infrastructure;
 
 /// <summary>
 /// Logs every Blazor circuit lifecycle event at Debug level so that circuit

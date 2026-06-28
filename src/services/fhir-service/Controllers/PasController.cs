@@ -7,7 +7,7 @@ using FhirService.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 
 namespace FhirService.Controllers;
 

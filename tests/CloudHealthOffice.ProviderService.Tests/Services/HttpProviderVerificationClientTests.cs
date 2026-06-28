@@ -2,7 +2,7 @@ using System.Net;
 using Microsoft.Extensions.Logging.Abstractions;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Services;
+namespace HealthCoreX.ProviderService.Tests.Services;
 
 /// <summary>
 /// Coverage for <see cref="HttpProviderVerificationClient"/>'s failure

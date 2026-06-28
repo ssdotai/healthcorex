@@ -3,7 +3,7 @@ using FluentAssertions;
 using ProviderService.Models;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Services;
+namespace HealthCoreX.ProviderService.Tests.Services;
 
 /// <summary>
 /// Capability 5.8 — FHIR PractitionerRole projection unit tests. Mirrors
@@ -244,7 +244,7 @@ public class FhirPractitionerRoleProjectorTests
         var result = _projector.Project(participation, BuildProvider(), BuildOrganization())!;
         var extension = result["extension"]!.AsArray()[0]!.AsObject();
         extension["url"]!.GetValue<string>().Should().Be(
-            "http://fhir.cloudhealthoffice.com/StructureDefinition/practitionerrole-panel-gating");
+            "http://fhir.HealthCoreX.com/StructureDefinition/practitionerrole-panel-gating");
 
         var inner = extension["extension"]!.AsArray();
         var urls = inner.Select(n => n!["url"]!.GetValue<string>()).ToList();

@@ -1,4 +1,4 @@
-using CloudHealthOffice.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Configuration;
 using IdCardService.Models;
 using IdCardService.Repositories;
 using IdCardService.Services;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 
-namespace CloudHealthOffice.IdCardService.Tests;
+namespace HealthCoreX.IdCardService.Tests;
 
 internal static class TestFixtures
 {

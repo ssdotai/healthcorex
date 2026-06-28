@@ -1,6 +1,6 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Generators;
+namespace HealthCoreX.BenchmarkClaimGenerator.Generators;
 
 /// <summary>
 /// Generates synthetic fee schedules with Medicaid-level rates for benchmark testing.

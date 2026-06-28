@@ -1,6 +1,6 @@
-@using CloudHealthOffice.Portal.Services
-@using CloudHealthOffice.Portal.Formatters
-@using CloudHealthOffice.Portal.Shared
+@using HealthCoreX.Portal.Services
+@using HealthCoreX.Portal.Formatters
+@using HealthCoreX.Portal.Shared
 @inject IMemberService MemberService
 @inject ICoverageService CoverageService
 @inject IBenefitPlanService BenefitPlanService
@@ -1443,7 +1443,7 @@
     private List<MemberDocumentSummary> _memberDocuments = new();
     private List<IdCardHistoryView> _idCards = new();
     private bool _loadingIdCards;
-    private List<CloudHealthOffice.Portal.Services.EnrollmentEvent> _enrollmentEvents = new();
+    private List<HealthCoreX.Portal.Services.EnrollmentEvent> _enrollmentEvents = new();
     private string? _eventsContinuationToken;
     private string _eventTypeFilter = string.Empty;
     private DateTime? _eventFromFilter;

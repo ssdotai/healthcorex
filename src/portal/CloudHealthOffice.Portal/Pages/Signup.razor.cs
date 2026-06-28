@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace CloudHealthOffice.Portal.Pages;
+namespace HealthCoreX.Portal.Pages;
 
 [AllowAnonymous]
 public class SignupModel : PageModel

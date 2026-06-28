@@ -63,7 +63,7 @@ This calculator is anchored to CHO's Platform Engagement product line, which is 
 
 #### Cloud Health Office Path
 
-Contact [sales@cloudhealthoffice.com](mailto:sales@cloudhealthoffice.com) for current PMPM pricing. Platform Engagement is deployed into the customer's own Azure subscription; CHO licensing is PMPM and covers the CHO platform, compliance surface, and managed updates — not the underlying Azure compute and storage, which run in the customer's environment.
+Contact [sales@HealthCoreX.com](mailto:sales@HealthCoreX.com) for current PMPM pricing. Platform Engagement is deployed into the customer's own Azure subscription; CHO licensing is PMPM and covers the CHO platform, compliance surface, and managed updates — not the underlying Azure compute and storage, which run in the customer's environment.
 
 **Pricing Model:**
 - **PMPM Licensing**: Covers CHO platform access, compliance surface, and managed updates per layer
@@ -77,7 +77,7 @@ Contact [sales@cloudhealthoffice.com](mailto:sales@cloudhealthoffice.com) for cu
 
 ### TCO Comparison by Organization Size
 
-Cloud Health Office delivers **85–98% savings** compared to custom development or enterprise vendor alternatives across all organization sizes. Contact [sales@cloudhealthoffice.com](mailto:sales@cloudhealthoffice.com) for a custom TCO analysis tailored to your organization.
+Cloud Health Office delivers **85–98% savings** compared to custom development or enterprise vendor alternatives across all organization sizes. Contact [sales@HealthCoreX.com](mailto:sales@HealthCoreX.com) for a custom TCO analysis tailored to your organization.
 
 ### Hidden Costs Avoided
 
@@ -321,14 +321,14 @@ Example:
 Total Annual Benefit = Platform Savings + Labor Savings + Call Center Savings + Risk Value
 ROI = (Total Annual Benefit / Annual Cloud Health Office Investment) × 100
 
-Contact sales@cloudhealthoffice.com for a personalized ROI analysis.
+Contact sales@HealthCoreX.com for a personalized ROI analysis.
 ```
 
 ### Sample ROI Scenarios
 
 #### Sample ROI Scenarios
 
-ROI varies by organization size. Contact [sales@cloudhealthoffice.com](mailto:sales@cloudhealthoffice.com) for a personalized ROI analysis based on your organization's member count, claims volume, and current EDI spend.
+ROI varies by organization size. Contact [sales@HealthCoreX.com](mailto:sales@HealthCoreX.com) for a personalized ROI analysis based on your organization's member count, claims volume, and current EDI spend.
 
 Typical benefits include:
 - **Platform cost savings** vs. legacy EDI vendors
@@ -359,7 +359,7 @@ For organizations seeking CMS-0057-F compliance with minimal investment and maxi
 2. **Contact us for production licensing** — tiered pricing scaled to your organization
 3. **Platform Engagement deploys into your Azure subscription** — CHO PMPM covers licensing; Azure infrastructure costs are visible to your FinOps team and billed directly by Microsoft
 
-Contact [sales@cloudhealthoffice.com](mailto:sales@cloudhealthoffice.com) for commercial licensing.
+Contact [sales@HealthCoreX.com](mailto:sales@HealthCoreX.com) for commercial licensing.
 
 **Payback Period**: Less than 1 month for most organizations
 

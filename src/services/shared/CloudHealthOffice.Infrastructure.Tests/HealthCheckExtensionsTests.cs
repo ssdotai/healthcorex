@@ -1,9 +1,9 @@
-using CloudHealthOffice.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 
-namespace CloudHealthOffice.Infrastructure.Tests;
+namespace HealthCoreX.Infrastructure.Tests;
 
 public class HealthCheckExtensionsTests
 {

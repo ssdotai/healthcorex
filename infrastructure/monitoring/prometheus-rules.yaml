@@ -4,39 +4,39 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: cloudhealthoffice-alerts
+  name: HealthCoreX-alerts
   namespace: monitoring
   labels:
-    app.kubernetes.io/name: cloudhealthoffice-alerts
+    app.kubernetes.io/name: HealthCoreX-alerts
     app.kubernetes.io/component: monitoring
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
     prometheus: kube-prometheus
     release: prometheus
 spec:
   groups:
     # Workflow failure alerts
-    - name: cloudhealthoffice.workflow.rules
+    - name: HealthCoreX.workflow.rules
       interval: 30s
       rules:
         # Alert on workflow failures
         - alert: ArgoWorkflowFailed
           expr: |
-            sum(increase(argo_workflows_count{status="Failed",namespace="cloudhealthoffice"}[5m])) > 0
+            sum(increase(argo_workflows_count{status="Failed",namespace="HealthCoreX"}[5m])) > 0
           for: 5m
           labels:
             severity: critical
             team: edi-processing
           annotations:
-            summary: "Argo Workflow failed in cloudhealthoffice namespace"
+            summary: "Argo Workflow failed in HealthCoreX namespace"
             description: "{{ $value }} workflow(s) have failed in the last 5 minutes"
-            runbook_url: "https://docs.cloudhealthoffice.com/runbooks/workflow-failure"
+            runbook_url: "https://docs.HealthCoreX.com/runbooks/workflow-failure"
         
         # Alert on workflow running too long
         - alert: ArgoWorkflowRunningTooLong
           expr: |
-            argo_workflows_count{status="Running",namespace="cloudhealthoffice"} > 0
+            argo_workflows_count{status="Running",namespace="HealthCoreX"} > 0
             and
-            time() - argo_workflow_start_time{namespace="cloudhealthoffice"} > 1800
+            time() - argo_workflow_start_time{namespace="HealthCoreX"} > 1800
           for: 5m
           labels:
             severity: warning
@@ -48,7 +48,7 @@ spec:
         # Alert on high workflow queue
         - alert: ArgoWorkflowQueueHigh
           expr: |
-            sum(argo_workflows_count{status="Pending",namespace="cloudhealthoffice"}) > 10
+            sum(argo_workflows_count{status="Pending",namespace="HealthCoreX"}) > 10
           for: 10m
           labels:
             severity: warning
@@ -58,7 +58,7 @@ spec:
             description: "{{ $value }} workflows are pending execution"
 
     # Kafka consumer lag alerts
-    - name: cloudhealthoffice.kafka.rules
+    - name: HealthCoreX.kafka.rules
       interval: 30s
       rules:
         # Alert on high consumer lag
@@ -98,13 +98,13 @@ spec:
             description: "Dead letter queue has {{ $value }} messages - investigate failed processing"
 
     # X12 processing alerts
-    - name: cloudhealthoffice.x12.rules
+    - name: HealthCoreX.x12.rules
       interval: 30s
       rules:
         # Alert on X12 parsing errors
         - alert: X12ParsingErrorsHigh
           expr: |
-            sum(rate(x12_parse_errors_total{namespace="cloudhealthoffice"}[15m])) > 0.1
+            sum(rate(x12_parse_errors_total{namespace="HealthCoreX"}[15m])) > 0.1
           for: 15m
           labels:
             severity: warning
@@ -116,7 +116,7 @@ spec:
         # Alert on low processing throughput
         - alert: X12ProcessingThroughputLow
           expr: |
-            sum(rate(x12_transactions_processed_total{namespace="cloudhealthoffice"}[1h])) < 1
+            sum(rate(x12_transactions_processed_total{namespace="HealthCoreX"}[1h])) < 1
           for: 2h
           labels:
             severity: info
@@ -128,7 +128,7 @@ spec:
         # Alert on 277 generation failures
         - alert: X12_277GenerationFailed
           expr: |
-            sum(increase(x12_277_generation_errors_total{namespace="cloudhealthoffice"}[1h])) > 5
+            sum(increase(x12_277_generation_errors_total{namespace="HealthCoreX"}[1h])) > 5
           for: 1h
           labels:
             severity: critical
@@ -138,13 +138,13 @@ spec:
             description: "{{ $value }} 277 generation failures in the last hour"
 
     # SFTP connectivity alerts
-    - name: cloudhealthoffice.sftp.rules
+    - name: HealthCoreX.sftp.rules
       interval: 60s
       rules:
         # Alert on SFTP connection failures
         - alert: SFTPConnectionFailed
           expr: |
-            sum(increase(sftp_connection_failures_total{namespace="cloudhealthoffice"}[15m])) > 3
+            sum(increase(sftp_connection_failures_total{namespace="HealthCoreX"}[15m])) > 3
           for: 15m
           labels:
             severity: critical
@@ -156,7 +156,7 @@ spec:
         # Alert on SFTP latency
         - alert: SFTPLatencyHigh
           expr: |
-            histogram_quantile(0.95, sum(rate(sftp_operation_duration_seconds_bucket{namespace="cloudhealthoffice"}[5m])) by (le)) > 30
+            histogram_quantile(0.95, sum(rate(sftp_operation_duration_seconds_bucket{namespace="HealthCoreX"}[5m])) by (le)) > 30
           for: 10m
           labels:
             severity: warning
@@ -166,13 +166,13 @@ spec:
             description: "95th percentile SFTP operation latency is {{ $value | humanizeDuration }}"
 
     # SLA monitoring
-    - name: cloudhealthoffice.sla.rules
+    - name: HealthCoreX.sla.rules
       interval: 60s
       rules:
         # Alert on 275 processing SLA breach
         - alert: X12_275ProcessingSLABreach
           expr: |
-            histogram_quantile(0.95, sum(rate(x12_275_processing_duration_seconds_bucket{namespace="cloudhealthoffice"}[1h])) by (le)) > 120
+            histogram_quantile(0.95, sum(rate(x12_275_processing_duration_seconds_bucket{namespace="HealthCoreX"}[1h])) by (le)) > 120
           for: 30m
           labels:
             severity: critical
@@ -184,7 +184,7 @@ spec:
         # Alert on end-to-end latency
         - alert: EDIEndToEndLatencyHigh
           expr: |
-            histogram_quantile(0.99, sum(rate(edi_end_to_end_duration_seconds_bucket{namespace="cloudhealthoffice"}[1h])) by (le, transaction_type)) > 300
+            histogram_quantile(0.99, sum(rate(edi_end_to_end_duration_seconds_bucket{namespace="HealthCoreX"}[1h])) by (le, transaction_type)) > 300
           for: 30m
           labels:
             severity: warning

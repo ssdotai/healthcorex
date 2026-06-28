@@ -1,7 +1,7 @@
-using CloudHealthOffice.PriorAuthRuleEngine.Domain;
-using CloudHealthOffice.PriorAuthRuleEngine.Models;
+using HealthCoreX.PriorAuthRuleEngine.Domain;
+using HealthCoreX.PriorAuthRuleEngine.Models;
 
-namespace CloudHealthOffice.PriorAuthRuleEngine.SeedRules;
+namespace HealthCoreX.PriorAuthRuleEngine.SeedRules;
 
 /// <summary>
 /// Platform-level seed rules for Texas Medicaid managed care programs.

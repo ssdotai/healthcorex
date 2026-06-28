@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using AttachmentService.Models;
 using AttachmentService.Repositories;
 using AttachmentService.Services;
-using CloudHealthOffice.DocumentStore;
+using HealthCoreX.DocumentStore;
 using System.Security.Cryptography;
 
 namespace AttachmentService.Controllers;

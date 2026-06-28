@@ -1,13 +1,13 @@
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Cache;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Cache;
+using HealthCoreX.ProviderEnrollmentService.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Renci.SshNet;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Sources.Texas;
+namespace HealthCoreX.ProviderEnrollmentService.Sources.Texas;
 
 /// <summary>
 /// Texas Medicaid PEMS (Provider Enrollment and Management System).

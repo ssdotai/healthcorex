@@ -54,7 +54,7 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "expr": "sum(increase(x12_transactions_processed_total{namespace=\"cloudhealthoffice\",transaction_type=\"275\"}[24h]))",
+          "expr": "sum(increase(x12_transactions_processed_total{namespace=\"HealthCoreX\",transaction_type=\"275\"}[24h]))",
           "legendFormat": "275 Attachments"
         }
       ],
@@ -82,7 +82,7 @@
       },
       "targets": [
         {
-          "expr": "sum(increase(x12_transactions_processed_total{namespace=\"cloudhealthoffice\",transaction_type=\"278\"}[24h]))",
+          "expr": "sum(increase(x12_transactions_processed_total{namespace=\"HealthCoreX\",transaction_type=\"278\"}[24h]))",
           "legendFormat": "278 Auth Requests"
         }
       ],
@@ -110,7 +110,7 @@
       },
       "targets": [
         {
-          "expr": "sum(increase(x12_transactions_processed_total{namespace=\"cloudhealthoffice\",transaction_type=\"277\"}[24h]))",
+          "expr": "sum(increase(x12_transactions_processed_total{namespace=\"HealthCoreX\",transaction_type=\"277\"}[24h]))",
           "legendFormat": "277 RFAI Responses"
         }
       ],
@@ -146,7 +146,7 @@
       },
       "targets": [
         {
-          "expr": "100 * (1 - sum(rate(x12_parse_errors_total{namespace=\"cloudhealthoffice\"}[24h])) / sum(rate(x12_transactions_processed_total{namespace=\"cloudhealthoffice\"}[24h])))",
+          "expr": "100 * (1 - sum(rate(x12_parse_errors_total{namespace=\"HealthCoreX\"}[24h])) / sum(rate(x12_transactions_processed_total{namespace=\"HealthCoreX\"}[24h])))",
           "legendFormat": "Success Rate"
         }
       ],
@@ -190,7 +190,7 @@
       },
       "targets": [
         {
-          "expr": "sum(rate(x12_transactions_processed_total{namespace=\"cloudhealthoffice\"}[5m])) by (transaction_type) * 60",
+          "expr": "sum(rate(x12_transactions_processed_total{namespace=\"HealthCoreX\"}[5m])) by (transaction_type) * 60",
           "legendFormat": "{{transaction_type}}"
         }
       ],
@@ -241,11 +241,11 @@
       },
       "targets": [
         {
-          "expr": "histogram_quantile(0.95, sum(rate(x12_processing_duration_seconds_bucket{namespace=\"cloudhealthoffice\"}[5m])) by (le, transaction_type))",
+          "expr": "histogram_quantile(0.95, sum(rate(x12_processing_duration_seconds_bucket{namespace=\"HealthCoreX\"}[5m])) by (le, transaction_type))",
           "legendFormat": "{{transaction_type}} p95"
         },
         {
-          "expr": "histogram_quantile(0.50, sum(rate(x12_processing_duration_seconds_bucket{namespace=\"cloudhealthoffice\"}[5m])) by (le, transaction_type))",
+          "expr": "histogram_quantile(0.50, sum(rate(x12_processing_duration_seconds_bucket{namespace=\"HealthCoreX\"}[5m])) by (le, transaction_type))",
           "legendFormat": "{{transaction_type}} p50"
         }
       ],
@@ -289,7 +289,7 @@
       },
       "targets": [
         {
-          "expr": "sum(increase(argo_workflows_count{namespace=\"cloudhealthoffice\"}[1h])) by (status)",
+          "expr": "sum(increase(argo_workflows_count{namespace=\"HealthCoreX\"}[1h])) by (status)",
           "legendFormat": "{{status}}"
         }
       ],
@@ -351,7 +351,7 @@
   "refresh": "30s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["cloudhealthoffice", "edi", "x12", "hipaa"],
+  "tags": ["HealthCoreX", "edi", "x12", "hipaa"],
   "templating": {
     "list": [
       {
@@ -374,7 +374,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "Cloud Health Office - X12 Processing Overview",
-  "uid": "cloudhealthoffice-x12-overview",
+  "uid": "HealthCoreX-x12-overview",
   "version": 1,
   "weekStart": ""
 }

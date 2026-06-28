@@ -1,16 +1,16 @@
 using System.Collections.Concurrent;
 using System.Diagnostics.Metrics;
 
-namespace CloudHealthOffice.Infrastructure.Observability;
+namespace HealthCoreX.Infrastructure.Observability;
 
 /// <summary>
 /// Custom metrics for Cloud Health Office services.
-/// All meters share a single "CloudHealthOffice" meter so Prometheus/OTLP
+/// All meters share a single "HealthCoreX" meter so Prometheus/OTLP
 /// exporters only need one subscription.
 /// </summary>
 public static class ChoMetrics
 {
-    public const string MeterName = "CloudHealthOffice";
+    public const string MeterName = "HealthCoreX";
 
     private static readonly Meter Meter = new(MeterName, GetAssemblyVersion());
 

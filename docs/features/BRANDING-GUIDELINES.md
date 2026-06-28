@@ -18,7 +18,7 @@ The Sentinel brand embodies:
 
 ### Primary Logo
 
-**File**: `docs/images/logo-cloudhealthoffice-sentinel-primary.png.svg`
+**File**: `docs/images/logo-HealthCoreX-sentinel-primary.png.svg`
 
 **Specifications**:
 - Dimensions: 800x400 pixels
@@ -38,7 +38,7 @@ The Sentinel brand embodies:
 **Centered on absolute black backgrounds**:
 ```html
 <div style="background: #000000; text-align: center; padding: 40px;">
-  <img src="docs/images/logo-cloudhealthoffice-sentinel-primary.png.svg" 
+  <img src="docs/images/logo-HealthCoreX-sentinel-primary.png.svg" 
        alt="Cloud Health Office Sentinel" 
        style="max-width: 600px;">
   <p style="color: #00ff88; font-style: italic;">Just emerged from the void</p>
@@ -235,7 +235,7 @@ All references to the following have been removed:
 <div align="center">
   <picture>
     <img alt="Cloud Health Office Sentinel" 
-         src="docs/images/logo-cloudhealthoffice-sentinel-primary.png.svg" 
+         src="docs/images/logo-HealthCoreX-sentinel-primary.png.svg" 
          width="800">
   </picture>
   
@@ -253,7 +253,7 @@ All references to the following have been removed:
 ```html
 <header style="background: #000000; border-bottom: 2px solid #00ffff;">
   <div class="logo">
-    <img src="docs/images/logo-cloudhealthoffice-sentinel-primary.png.svg" 
+    <img src="docs/images/logo-HealthCoreX-sentinel-primary.png.svg" 
          alt="Cloud Health Office Sentinel">
     Cloud Health Office
   </div>
@@ -290,7 +290,7 @@ All new content must include:
 
 Before publishing any content:
 
-- [ ] Uses Sentinel logo (docs/images/logo-cloudhealthoffice-sentinel-primary.png.svg)
+- [ ] Uses Sentinel logo (docs/images/logo-HealthCoreX-sentinel-primary.png.svg)
 - [ ] Backgrounds are absolute black (#000000)
 - [ ] Headings use Segoe UI Bold
 - [ ] Color scheme: Cyan (#00ffff) and Green (#00ff88)

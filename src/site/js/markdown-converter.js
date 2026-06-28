@@ -68,7 +68,7 @@ function generateHtmlPage(title, content, filename) {
       <li><a href="pricing.html">Pricing</a></li>
       <li><a href="platform.html">Platform</a></li>
       <li><a href="release-notes.html">Versions</a></li>
-      <li><a href="https://github.com/aurelianware/cloudhealthoffice" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      <li><a href="https://github.com/aurelianware/HealthCoreX" target="_blank" rel="noopener noreferrer">GitHub</a></li>
     </ul>
   </nav>
   <script>
@@ -81,7 +81,7 @@ function generateHtmlPage(title, content, filename) {
   <main id="main-content">
     <div class="hero circuit-veins">
       <div class="hero-content">
-        <img src="https://github.com/aurelianware/cloudhealthoffice/raw/main/docs/images/logo-cloudhealthoffice-sentinel-primary.svg" 
+        <img src="https://github.com/aurelianware/HealthCoreX/raw/main/docs/images/logo-HealthCoreX-sentinel-primary.svg" 
              alt="Cloud Health Office Sentinel Logo"
              style="max-width: 500px; height: auto; margin: 20px 0;">
       </div>
@@ -94,11 +94,11 @@ function generateHtmlPage(title, content, filename) {
 
       <section class="cta-section">
         <h2>Ready to Transform Your Payer Operations?</h2>
-        <p>The sequence is immutable. Legacy EDI integration is now optional.</p>
+        <p>Compliance first. Progressive modernization next.</p>
         <div style="margin-top: 30px;">
           <a href="platform.html" class="button">Platform Overview</a>
-          <a href="https://portal.cloudhealthoffice.com/contact-sales" class="button button-green" target="_blank" rel="noopener noreferrer">Contact Sales</a>
-          <a href="https://github.com/aurelianware/cloudhealthoffice" class="button button-secondary" target="_blank" rel="noopener noreferrer">Clone Repository</a>
+          <a href="/contact" class="button button-green" target="_blank" rel="noopener noreferrer">Contact Sales</a>
+          <a href="https://github.com/aurelianware/HealthCoreX" class="button button-secondary" target="_blank" rel="noopener noreferrer">Clone Repository</a>
         </div>
       </section>
     </div>
@@ -107,11 +107,11 @@ function generateHtmlPage(title, content, filename) {
   <footer>
     <p>
       <strong>Cloud Health Office v1.0.0 — The Sentinel</strong><br>
-      Capabilities beyond question. Systems that do not fail.
+      Source-available healthcare payer infrastructure.
     </p>
     <p>
       BSL 1.1 • Not affiliated with third-party vendors • © 2026 Aurelianware<br>
-      <a href="https://github.com/aurelianware/cloudhealthoffice">GitHub</a> • 
+      <a href="https://github.com/aurelianware/HealthCoreX">GitHub</a> • 
       <a href="mailto:mark@aurelianware.com">Contact</a>
     </p>
   </footer>

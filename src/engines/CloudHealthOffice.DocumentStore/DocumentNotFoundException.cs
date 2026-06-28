@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.DocumentStore;
+namespace HealthCoreX.DocumentStore;
 
 /// <summary>
 /// Thrown by <see cref="IDocumentStore.DownloadAsync"/> when the requested

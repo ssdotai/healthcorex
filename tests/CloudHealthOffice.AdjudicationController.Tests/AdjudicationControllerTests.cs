@@ -4,23 +4,23 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using BenefitPlanService.Controllers;
 using BenefitPlanService.Services;
-using CloudHealthOffice.BenefitEngine.Domain;
-using CloudHealthOffice.BenefitEngine.Models;
-using CloudHealthOffice.BenefitEngine.Services;
-using CloudHealthOffice.FeeScheduleEngine.Domain;
-using CloudHealthOffice.FeeScheduleEngine.Models;
-using CloudHealthOffice.FeeScheduleEngine.Services;
-using CloudHealthOffice.NcciEngine.Models;
-using CloudHealthOffice.NcciEngine.Services;
-using CloudHealthOffice.ClaimsScrubEngine.Models;
-using CloudHealthOffice.ClaimsScrubEngine.Services;
-using CloudHealthOffice.OperatingMode;
-using CloudHealthOffice.PriorAuthRuleEngine.Abstractions;
-using CloudHealthOffice.PriorAuthRuleEngine.Domain;
-using CloudHealthOffice.PriorAuthRuleEngine.Models;
-using CloudHealthOffice.PriorAuthRuleEngine.Persistence;
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Gates;
+using HealthCoreX.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Models;
+using HealthCoreX.BenefitEngine.Services;
+using HealthCoreX.FeeScheduleEngine.Domain;
+using HealthCoreX.FeeScheduleEngine.Models;
+using HealthCoreX.FeeScheduleEngine.Services;
+using HealthCoreX.NcciEngine.Models;
+using HealthCoreX.NcciEngine.Services;
+using HealthCoreX.ClaimsScrubEngine.Models;
+using HealthCoreX.ClaimsScrubEngine.Services;
+using HealthCoreX.OperatingMode;
+using HealthCoreX.PriorAuthRuleEngine.Abstractions;
+using HealthCoreX.PriorAuthRuleEngine.Domain;
+using HealthCoreX.PriorAuthRuleEngine.Models;
+using HealthCoreX.PriorAuthRuleEngine.Persistence;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Gates;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +29,7 @@ using Microsoft.Extensions.Hosting;
 using NSubstitute;
 using StackExchange.Redis;
 
-namespace CloudHealthOffice.AdjudicationController.Tests;
+namespace HealthCoreX.AdjudicationController.Tests;
 
 public class AdjudicationControllerTests : IClassFixture<AdjudicationControllerTests.Factory>
 {
@@ -37,7 +37,7 @@ public class AdjudicationControllerTests : IClassFixture<AdjudicationControllerT
     private static readonly Guid PlanId = Guid.Parse("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
 
     // Match the server's wire format (string enums via JsonStringEnumConverter
-    // registered by AddCloudHealthOfficeJsonOptions).
+    // registered by AddHealthCoreXJsonOptions).
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web)
     {
         Converters = { new JsonStringEnumConverter() }
@@ -292,13 +292,14 @@ public class AdjudicationControllerTests : IClassFixture<AdjudicationControllerT
 
     private void SetupNewPipelineDefaults()
     {
-        // PriorAuthRuleEngine: default to Pend (no auth required, pass through)
+        // PriorAuthRuleEngine: default to a no-match Pend, which is not a
+        // prior-auth-required decision and lets adjudication pass through.
         _factory.PriorAuthEngine
             .EvaluateAsync(Arg.Any<PaRuleContext>(), Arg.Any<CancellationToken>())
             .Returns(new PaRuleDecision
             {
                 Outcome = PaDecisionOutcome.Pend,
-                FiringRuleId = "none",
+                FiringRuleId = "NoRuleMatch",
                 FiringRuleName = "No rules matched",
                 ResolvedRuleSetKey = "test"
             });
@@ -312,7 +313,11 @@ public class AdjudicationControllerTests : IClassFixture<AdjudicationControllerT
         // (added in capability 5.10) defaults to false; only AdminInvestigation
         // callers opt in. Stub matches any value for forward compatibility.
         _factory.ProviderIntegrityGate
-            .CheckAsync(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<CancellationToken>())
+            .CheckAsync(
+                Arg.Any<string>(),
+                Arg.Any<string?>(),
+                Arg.Any<bool>(),
+                Arg.Any<CancellationToken>())
             .Returns(new ProviderIntegrityResult { Passed = true, Rating = "Clear", IntegrityScore = 95 });
 
         // TerminologyCrosswalkClient: passthrough (no translations)
@@ -380,6 +385,184 @@ public class AdjudicationControllerTests : IClassFixture<AdjudicationControllerT
         // Accumulators present
         Assert.NotNull(result.Accumulators);
         Assert.NotEmpty(result.Accumulators);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // Adjudicate provider integrity outcomes — a confirmed exclusion must
+    // be distinguished from "could not confidently verify" (manual review
+    // required, verification unavailable, or a defensive Passed=false with
+    // neither flag set). Only IsExcluded may report PROVIDER_EXCLUDED.
+    // ═══════════════════════════════════════════════════════════════
+
+    [Fact]
+    public async Task Adjudicate_ProviderExcluded_Returns422WithProviderExcluded()
+    {
+        SetupNewPipelineDefaults();
+        SetupScrubPass();
+        SetupNcciPass();
+        _factory.ProviderIntegrityGate
+            .CheckAsync(Arg.Any<string>(), Arg.Any<string?>(), Arg.Any<bool>(), Arg.Any<CancellationToken>())
+            .Returns(new ProviderIntegrityResult
+            {
+                Passed = false,
+                IsExcluded = true,
+                Rating = "Blocked",
+                IntegrityScore = 0,
+                DenialCode = "B7",
+                DenialReason = "Provider is excluded from federal healthcare programs",
+            });
+
+        using var client = CreateClientWithTenant();
+        var response = await client.PostAsJsonAsync("/api/v1/adjudication/adjudicate", MakeAdjudicationRequest());
+
+        Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
+        using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+        var root = body.RootElement;
+        Assert.Equal("PROVIDER_EXCLUDED", root.GetProperty("error").GetString());
+        Assert.Equal("B7", root.GetProperty("carc").GetString());
+    }
+
+    [Fact]
+    public async Task Adjudicate_ProviderRequiresManualReview_Returns422WithoutProviderExcluded()
+    {
+        SetupNewPipelineDefaults();
+        SetupScrubPass();
+        SetupNcciPass();
+        _factory.ProviderIntegrityGate
+            .CheckAsync(Arg.Any<string>(), Arg.Any<string?>(), Arg.Any<bool>(), Arg.Any<CancellationToken>())
+            .Returns(new ProviderIntegrityResult
+            {
+                Passed = false,
+                IsExcluded = false,
+                RequiresManualReview = true,
+                Rating = "Unknown",
+                DenialCode = "PROVIDER_VERIFICATION_UNAVAILABLE",
+                DenialReason = "Provider verification could not reach a confident determination; manual review required",
+            });
+
+        using var client = CreateClientWithTenant();
+        var response = await client.PostAsJsonAsync("/api/v1/adjudication/adjudicate", MakeAdjudicationRequest());
+
+        Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
+        using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+        var root = body.RootElement;
+        Assert.NotEqual("PROVIDER_EXCLUDED", root.GetProperty("error").GetString());
+        Assert.Equal("PROVIDER_VERIFICATION_UNAVAILABLE", root.GetProperty("error").GetString());
+    }
+
+    [Fact]
+    public async Task Adjudicate_ProviderVerificationUnavailable_Returns422WithoutProviderExcluded()
+    {
+        SetupNewPipelineDefaults();
+        SetupScrubPass();
+        SetupNcciPass();
+        _factory.ProviderIntegrityGate
+            .CheckAsync(Arg.Any<string>(), Arg.Any<string?>(), Arg.Any<bool>(), Arg.Any<CancellationToken>())
+            .Returns(new ProviderIntegrityResult
+            {
+                Passed = false,
+                IsExcluded = false,
+                RequiresManualReview = true,
+                Rating = "Unknown",
+                DenialCode = "PROVIDER_VERIFICATION_UNAVAILABLE",
+                DenialReason = "Provider integrity could not be verified against any data source; manual review required",
+            });
+
+        using var client = CreateClientWithTenant();
+        var response = await client.PostAsJsonAsync("/api/v1/adjudication/adjudicate", MakeAdjudicationRequest());
+
+        Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
+        using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+        var root = body.RootElement;
+        Assert.NotEqual("PROVIDER_EXCLUDED", root.GetProperty("error").GetString());
+        Assert.Equal(
+            "Provider integrity could not be verified against any data source; manual review required",
+            root.GetProperty("message").GetString());
+    }
+
+    [Fact]
+    public async Task Adjudicate_ProviderIntegrityDefensiveFalseWithNoFlags_Returns422WithoutProviderExcluded()
+    {
+        // Belt-and-suspenders: even a gate result with Passed=false and
+        // neither IsExcluded nor RequiresManualReview set must never be
+        // reported as a confirmed exclusion.
+        SetupNewPipelineDefaults();
+        SetupScrubPass();
+        SetupNcciPass();
+        _factory.ProviderIntegrityGate
+            .CheckAsync(Arg.Any<string>(), Arg.Any<string?>(), Arg.Any<bool>(), Arg.Any<CancellationToken>())
+            .Returns(new ProviderIntegrityResult { Passed = false });
+
+        using var client = CreateClientWithTenant();
+        var response = await client.PostAsJsonAsync("/api/v1/adjudication/adjudicate", MakeAdjudicationRequest());
+
+        Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
+        using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+        var root = body.RootElement;
+        Assert.NotEqual("PROVIDER_EXCLUDED", root.GetProperty("error").GetString());
+        Assert.Equal("PROVIDER_VERIFICATION_UNAVAILABLE", root.GetProperty("error").GetString());
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // GET /api/v1/adjudication/provider-integrity/{npi} — standalone,
+    // side-effect-free integrity check exposed for claims-service's
+    // ProviderIntegrityStage (closes the gap where calculate-benefits
+    // never checked federal exclusion at all).
+    // ═══════════════════════════════════════════════════════════════
+
+    [Fact]
+    public async Task CheckProviderIntegrity_DelegatesToGate_ReturnsResultVerbatim()
+    {
+        _factory.ProviderIntegrityGate
+            .CheckAsync("1234567890", TenantId, forceRefresh: false, Arg.Any<CancellationToken>())
+            .Returns(new ProviderIntegrityResult
+            {
+                Passed = false,
+                IsExcluded = true,
+                Rating = "Blocked",
+                IntegrityScore = 0,
+                DenialCode = "B7",
+                DenialReason = "Provider is excluded from federal healthcare programs",
+            });
+
+        using var client = CreateClientWithTenant();
+
+        var response = await client.GetAsync("/api/v1/adjudication/provider-integrity/1234567890");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var result = await response.Content.ReadFromJsonAsync<ProviderIntegrityResult>(Json);
+        Assert.NotNull(result);
+        Assert.False(result!.Passed);
+        Assert.True(result.IsExcluded);
+        Assert.Equal("B7", result.DenialCode);
+    }
+
+    [Fact]
+    public async Task Adjudicate_ServiceDateAfterMemberTermination_ReturnsCarc27WithoutPricing()
+    {
+        SetupNewPipelineDefaults();
+        SetupScrubPass();
+        SetupNcciPass();
+
+        using var client = CreateClientWithTenant();
+        var request = MakeAdjudicationRequest() with
+        {
+            MemberEffectiveDate = new DateOnly(2025, 1, 1),
+            MemberTerminationDate = new DateOnly(2026, 1, 14),
+            MemberEnrollmentStatus = "Active",
+        };
+
+        var response = await client.PostAsJsonAsync("/api/v1/adjudication/adjudicate", request);
+
+        Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
+
+        using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+        var root = body.RootElement;
+        Assert.Equal("CARC_27", root.GetProperty("error").GetString());
+        Assert.Equal("27", root.GetProperty("carc").GetString());
+        Assert.Equal(
+            "Service date after member coverage termination date",
+            root.GetProperty("message").GetString());
     }
 
     // ═══════════════════════════════════════════════════════════════

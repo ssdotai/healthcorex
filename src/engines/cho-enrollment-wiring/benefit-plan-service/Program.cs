@@ -3,17 +3,17 @@ using BenefitPlanService.Middleware;
 using BenefitPlanService.Repositories;
 using BenefitPlanService.Services;
 using MongoDB.Driver;
-using CloudHealthOffice.BenefitEngine.Services;
-using CloudHealthOffice.BenefitEngine.Configuration;
-using CloudHealthOffice.BenefitEngine.Persistence;
+using HealthCoreX.BenefitEngine.Services;
+using HealthCoreX.BenefitEngine.Configuration;
+using HealthCoreX.BenefitEngine.Persistence;
 using StackExchange.Redis;
-using CloudHealthOffice.FeeScheduleEngine.Configuration;
-using CloudHealthOffice.ClaimsScrubEngine.Configuration;
-using CloudHealthOffice.NcciEngine.Configuration;
-using CloudHealthOffice.Infrastructure.HealthChecks;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.ProviderEnrollmentService.Configuration;  // ← NEW
-using CloudHealthOffice.PriorAuthRuleEngine.Configuration;         // ← NEW
+using HealthCoreX.FeeScheduleEngine.Configuration;
+using HealthCoreX.ClaimsScrubEngine.Configuration;
+using HealthCoreX.NcciEngine.Configuration;
+using HealthCoreX.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.ProviderEnrollmentService.Configuration;  // ← NEW
+using HealthCoreX.PriorAuthRuleEngine.Configuration;         // ← NEW
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,9 +66,9 @@ builder.Services.AddHttpClient<IClaimsAccumulatorSource, ClaimsServiceAccumulato
 });
 
 builder.Services.AddBenefitEngine().UseRedisAccumulatorService();
-builder.Services.AddScoped<CloudHealthOffice.BenefitEngine.Services.IBenefitPlanProvider,
+builder.Services.AddScoped<HealthCoreX.BenefitEngine.Services.IBenefitPlanProvider,
                            BenefitPlanService.Services.ChoBenefitPlanProvider>();
-builder.Services.AddScoped<CloudHealthOffice.BenefitEngine.Services.IServiceCategoryMappingRepository,
+builder.Services.AddScoped<HealthCoreX.BenefitEngine.Services.IServiceCategoryMappingRepository,
                            BenefitPlanService.Services.NullServiceCategoryMappingRepository>();
 builder.Services.AddFeeScheduleEngine().UseRepositoriesFromConfiguration(builder.Configuration);
 builder.Services.AddClaimsScrubEngine();
@@ -139,7 +139,7 @@ builder.Services.AddCors(options => options.AddPolicy("AllowAll",
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
-app.UseMiddleware<CloudHealthOffice.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
+app.UseMiddleware<HealthCoreX.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseMiddleware<TenantMiddleware>();

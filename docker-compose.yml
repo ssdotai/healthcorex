@@ -243,7 +243,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - MongoDb__ConnectionString=mongodb://mongo:27017
-      - MongoDb__DatabaseName=CloudHealthOffice
+      - MongoDb__DatabaseName=HealthCoreX
       - CoverageService__BaseUrl=http://coverage-service:8080
       - ProviderService__BaseUrl=http://provider-service:8080
       - RiskAdjustmentService__BaseUrl=http://risk-adjustment-service:8080
@@ -261,7 +261,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - MongoDb__ConnectionString=mongodb://mongo:27017
-      - MongoDb__DatabaseName=CloudHealthOffice
+      - MongoDb__DatabaseName=HealthCoreX
     depends_on:
       mongo:
         condition: service_healthy
@@ -276,7 +276,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - MongoDb__ConnectionString=mongodb://mongo:27017
-      - MongoDb__DatabaseName=CloudHealthOffice
+      - MongoDb__DatabaseName=HealthCoreX
     depends_on:
       mongo:
         condition: service_healthy
@@ -472,7 +472,7 @@ services:
   pricing-api:
     build:
       context: .
-      dockerfile: src/services/CloudHealthOffice.PricingApi/Dockerfile
+      dockerfile: src/services/HealthCoreX.PricingApi/Dockerfile
     ports:
       - "5017:8080"
     environment:

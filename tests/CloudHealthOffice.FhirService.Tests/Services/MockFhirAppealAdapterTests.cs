@@ -1,8 +1,8 @@
-using CloudHealthOffice.Appeals.Contracts;
+using HealthCoreX.Appeals.Contracts;
 using FhirService.Services;
 using FluentAssertions;
 
-namespace CloudHealthOffice.FhirService.Tests.Services;
+namespace HealthCoreX.FhirService.Tests.Services;
 
 /// <summary>
 /// Regression guard for tenant-scoping on the mock adapter seed.

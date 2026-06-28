@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
-namespace CloudHealthOffice.EligibilityService.Tests;
+namespace HealthCoreX.EligibilityService.Tests;
 
 public class BatchEligibilityServiceTests
 {

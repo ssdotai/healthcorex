@@ -1,6 +1,6 @@
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Fakes;
+namespace HealthCoreX.ProviderService.Tests.Fakes;
 
 /// <summary>
 /// In-memory <see cref="IProviderVerificationClient"/>. Tests register

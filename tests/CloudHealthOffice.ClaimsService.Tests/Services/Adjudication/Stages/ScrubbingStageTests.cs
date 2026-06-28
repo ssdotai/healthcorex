@@ -3,13 +3,13 @@ using ClaimsService.Models.Adjudication;
 using ClaimsService.Services.Adjudication;
 using ClaimsService.Services.Adjudication.Stages;
 using ClaimsService.Services.Resolution;
-using EngineModels = CloudHealthOffice.ClaimsScrubEngine.Models;
-using EngineServices = CloudHealthOffice.ClaimsScrubEngine.Services;
+using EngineModels = HealthCoreX.ClaimsScrubEngine.Models;
+using EngineServices = HealthCoreX.ClaimsScrubEngine.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Services.Adjudication.Stages;
+namespace HealthCoreX.ClaimsService.Tests.Services.Adjudication.Stages;
 
 /// <summary>
 /// Capability 5.4 — behavior coverage for <see cref="ScrubbingStage"/>:

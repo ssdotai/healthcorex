@@ -1,11 +1,11 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using CloudHealthOffice.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Json;
 using ProviderService.Models;
 using ProviderService.Models.CredentialingPayloads;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Services;
+namespace HealthCoreX.ProviderService.Tests.Services;
 
 /// <summary>
 /// Pure-function coverage for <see cref="CredentialingProjector"/> across
@@ -294,7 +294,7 @@ public class CredentialingProjectorTests
 
     private static JsonObject? Serialize<T>(T payload) where T : class
     {
-        var json = JsonSerializer.Serialize(payload, CloudHealthOfficeJsonOptions.DefaultOptions);
+        var json = JsonSerializer.Serialize(payload, HealthCoreXJsonOptions.DefaultOptions);
         return JsonNode.Parse(json) as JsonObject;
     }
 }

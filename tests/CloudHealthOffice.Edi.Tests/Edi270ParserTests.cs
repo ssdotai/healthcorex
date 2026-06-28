@@ -2,7 +2,7 @@ using EligibilityService.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace CloudHealthOffice.Edi.Tests;
+namespace HealthCoreX.Edi.Tests;
 
 public class Edi270ParserTests
 {

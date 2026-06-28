@@ -17,7 +17,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\engines\CloudHealthOffice.ClaimsScrubEngine\CloudHealthOffice.ClaimsScrubEngine.csproj" />
+    <ProjectReference Include="..\..\src\engines\HealthCoreX.ClaimsScrubEngine\HealthCoreX.ClaimsScrubEngine.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="Xunit" />

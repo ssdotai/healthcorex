@@ -1,4 +1,4 @@
-using CloudHealthOffice.OperatingMode;
+using HealthCoreX.OperatingMode;
 using TenantService.Models;
 
 namespace TenantService.Services;

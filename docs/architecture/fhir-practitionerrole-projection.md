@@ -142,7 +142,7 @@ and 404 on read).
 ### Panel-gating extension
 
 A single grouped extension at the canonical URL
-`http://fhir.cloudhealthoffice.com/StructureDefinition/practitionerrole-panel-gating`,
+`http://fhir.HealthCoreX.com/StructureDefinition/practitionerrole-panel-gating`,
 with sub-extensions:
 
 | sub-extension URL          | Source                                  | Type           |
@@ -249,18 +249,18 @@ separate Phase 2 capability and unblocked once 5.9 ships Organization.
 
 ## Tests
 
-- [`FhirPractitionerRoleProjectorTests`](../../tests/CloudHealthOffice.ProviderService.Tests/Services/FhirPractitionerRoleProjectorTests.cs)
+- [`FhirPractitionerRoleProjectorTests`](../../tests/HealthCoreX.ProviderService.Tests/Services/FhirPractitionerRoleProjectorTests.cs)
   — projection correctness, US Core profile structure, edge cases
   (legacy NetworkId-null returns null, Organization-type provider
   returns null, terminated participation emits `period.end` and
   `active=false`, panel-gating extensions emit only when populated),
   composite-id round-trip, determinism check.
-- [`FhirPractitionerRoleControllerTests`](../../tests/CloudHealthOffice.ProviderService.Tests/Controllers/FhirPractitionerRoleControllerTests.cs)
+- [`FhirPractitionerRoleControllerTests`](../../tests/HealthCoreX.ProviderService.Tests/Controllers/FhirPractitionerRoleControllerTests.cs)
   — endpoint behavior, search-parameter semantics
   (practitioner / organization / specialty conjunction), composite-id
   encode/decode round-trip, FHIR OperationOutcome shapes on errors,
   tenant scoping.
-- [`ProviderDirectoryControllerPractitionerRoleProxyTests`](../../tests/CloudHealthOffice.FhirService.Tests/Controllers/ProviderDirectoryControllerPractitionerRoleProxyTests.cs)
+- [`ProviderDirectoryControllerPractitionerRoleProxyTests`](../../tests/HealthCoreX.FhirService.Tests/Controllers/ProviderDirectoryControllerPractitionerRoleProxyTests.cs)
   — fhir-service proxy verifies status / body / content-type
   pass-through, 5xx → 502, NPPES + verification clients NOT touched on
   the PractitionerRole path.

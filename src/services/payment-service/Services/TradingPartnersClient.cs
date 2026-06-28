@@ -29,7 +29,7 @@ public interface ITradingPartnersClient
 }
 
 /// <summary>
-/// Subset of <c>CloudHealthOffice.TradingPartnerService.Models.TradingPartner</c>
+/// Subset of <c>HealthCoreX.TradingPartnerService.Models.TradingPartner</c>
 /// exposed to payment-service. Carries the X12 envelope identifiers
 /// needed for ISA/GS construction. BPR banking detail still flows from
 /// payment-service configuration (Era:Payer*/Payee* keys) — Phase 1

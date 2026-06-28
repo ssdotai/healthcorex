@@ -24,6 +24,11 @@ public interface IProviderIntegrityGate
     /// Resolve the integrity result for <paramref name="npi"/>.
     /// </summary>
     /// <param name="npi">Provider NPI.</param>
+    /// <param name="tenantId">
+    /// Tenant id to forward to provider-service and
+    /// provider-verification-service. When null, no tenant header is
+    /// forwarded.
+    /// </param>
     /// <param name="forceRefresh">
     /// When <c>true</c> the cached-projection short-circuit is bypassed
     /// and the gate calls <c>provider-verification-service</c> directly.
@@ -33,6 +38,7 @@ public interface IProviderIntegrityGate
     /// <param name="ct">Cancellation token.</param>
     Task<ProviderIntegrityResult> CheckAsync(
         string npi,
+        string? tenantId = null,
         bool forceRefresh = false,
         CancellationToken ct = default);
 }
@@ -49,6 +55,20 @@ public record ProviderIntegrityResult
 
     /// <summary>True when the provider appears on OIG/LEIE or SAM.gov exclusion lists.</summary>
     public bool IsExcluded { get; init; }
+
+    /// <summary>
+    /// True when the gate could not reach a confident pass/exclude
+    /// determination -- either because no data source was reachable, or
+    /// because the live verification service itself reported a
+    /// <c>Failed</c> or <c>ManualReviewRequired</c> status. Distinct from
+    /// <see cref="IsExcluded"/>: an excluded provider is a confirmed
+    /// finding; a claim for a provider with this flag set could not be
+    /// verified either way and should be held for human review rather than
+    /// silently denied as excluded or silently paid. <see cref="Passed"/>
+    /// is <c>false</c> whenever this is <c>true</c> -- adjudication never
+    /// pays a claim it could not verify.
+    /// </summary>
+    public bool RequiresManualReview { get; init; }
 
     /// <summary>CARC code when denied (e.g., "B7" for provider excluded from federal programs).</summary>
     public string? DenialCode { get; init; }

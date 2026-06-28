@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Services.Resolution;
+namespace HealthCoreX.ClaimsService.Tests.Services.Resolution;
 
 /// <summary>
 /// Capability 5.8 — caching behaviour for the COB client. Mirrors

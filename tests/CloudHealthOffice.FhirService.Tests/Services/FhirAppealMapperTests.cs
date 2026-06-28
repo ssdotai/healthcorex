@@ -1,10 +1,10 @@
-using CloudHealthOffice.Appeals.Contracts;
+using HealthCoreX.Appeals.Contracts;
 using FhirService.Services;
 using FluentAssertions;
 using Hl7.Fhir.Model;
 using FhirTask = Hl7.Fhir.Model.Task;
 
-namespace CloudHealthOffice.FhirService.Tests.Services;
+namespace HealthCoreX.FhirService.Tests.Services;
 
 public class FhirAppealMapperTests
 {

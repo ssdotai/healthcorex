@@ -2,7 +2,7 @@
 
 `ICacheProvider` is the Cloud Health Office cache abstraction. One
 interface, three interchangeable backends, lives in
-[`CloudHealthOffice.Infrastructure.Caching`](../../src/services/shared/CloudHealthOffice.Infrastructure/Caching/).
+[`HealthCoreX.Infrastructure.Caching`](../../src/services/shared/HealthCoreX.Infrastructure/Caching/).
 Production runs on Redis; dev and test run on `IMemoryCache`.
 
 ## What this is — and isn't
@@ -68,7 +68,7 @@ the abstraction.
 
 ### 1. `RedisAccumulatorService` (BenefitEngine)
 
-[`Redisaccumulatorservice.cs`](../../src/engines/CloudHealthOffice.BenefitEngine/Services/Redisaccumulatorservice.cs)
+[`Redisaccumulatorservice.cs`](../../src/engines/HealthCoreX.BenefitEngine/Services/Redisaccumulatorservice.cs)
 uses Redis hashes with `HINCRBYFLOAT` to accumulate member deductible /
 out-of-pocket-max totals as claims finalize. The operation MUST be
 server-side atomic: two concurrent claim adjudications for the same
@@ -84,7 +84,7 @@ implement.
 
 ### 2. `RedisPaRuleRepository.DeleteAsync` (PriorAuthRuleEngine)
 
-[`PaRuleRepository.cs`](../../src/engines/CloudHealthOffice.PriorAuthRuleEngine/Persistence/PaRuleRepository.cs)
+[`PaRuleRepository.cs`](../../src/engines/HealthCoreX.PriorAuthRuleEngine/Persistence/PaRuleRepository.cs)
 moves K/V operations (read, set, exact-key invalidate on upsert /
 bulk-upsert) onto `ICacheProvider`. The `DeleteAsync(ruleId, stateCode)`
 path is the exception: the cache is keyed on

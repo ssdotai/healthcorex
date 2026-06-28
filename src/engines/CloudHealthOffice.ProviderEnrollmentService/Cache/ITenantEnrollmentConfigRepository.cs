@@ -1,6 +1,6 @@
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Models;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Cache;
+namespace HealthCoreX.ProviderEnrollmentService.Cache;
 
 /// <summary>
 /// Storage interface for per-tenant enrollment configuration.

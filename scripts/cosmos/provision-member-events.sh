@@ -18,7 +18,7 @@
 #   scripts/cosmos/provision-member-events.sh \
 #     --account my-cosmos \
 #     --resource-group rg-cho \
-#     --database CloudHealthOffice \
+#     --database HealthCoreX \
 #     [--container member-events] \
 #     [--throughput 400]
 #

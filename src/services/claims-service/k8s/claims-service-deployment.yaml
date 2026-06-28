@@ -2,21 +2,28 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: claims-service-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 data:
   ASPNETCORE_ENVIRONMENT: "Production"
-  MongoDb__DatabaseName: "cloudhealthoffice"
+  MongoDb__DatabaseName: "HealthCoreX"
+  Services__BenefitPlanService: "http://benefit-plan-service"
+  Services__CoverageService: "http://coverage-service"
+  Services__MemberService: "http://member-service"
+  Services__ProviderService: "http://provider-service"
+  Services__AuthorizationService: "http://authorization-service"
+  Services__BenefitPlanServiceTimeoutSeconds: "5"
+  Messaging__AdjudicationMaxConcurrentCalls: "32"
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: claims-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: claims-service
     tier: backend
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: claims-service
@@ -28,8 +35,8 @@ spec:
     spec:
       containers:
       - name: claims-service
-        image: choacrhy6h2vdulfru6.azurecr.io/cloudhealthoffice-claims-service:latest
-        imagePullPolicy: Always
+        image: choacrhy6h2vdulfru6.azurecr.io/HealthCoreX-claims-service:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
           name: http
@@ -50,6 +57,41 @@ spec:
             configMapKeyRef:
               name: claims-service-config
               key: MongoDb__DatabaseName
+        - name: Services__BenefitPlanService
+          valueFrom:
+            configMapKeyRef:
+              name: claims-service-config
+              key: Services__BenefitPlanService
+        - name: Services__CoverageService
+          valueFrom:
+            configMapKeyRef:
+              name: claims-service-config
+              key: Services__CoverageService
+        - name: Services__MemberService
+          valueFrom:
+            configMapKeyRef:
+              name: claims-service-config
+              key: Services__MemberService
+        - name: Services__ProviderService
+          valueFrom:
+            configMapKeyRef:
+              name: claims-service-config
+              key: Services__ProviderService
+        - name: Services__AuthorizationService
+          valueFrom:
+            configMapKeyRef:
+              name: claims-service-config
+              key: Services__AuthorizationService
+        - name: Services__BenefitPlanServiceTimeoutSeconds
+          valueFrom:
+            configMapKeyRef:
+              name: claims-service-config
+              key: Services__BenefitPlanServiceTimeoutSeconds
+        - name: Messaging__AdjudicationMaxConcurrentCalls
+          valueFrom:
+            configMapKeyRef:
+              name: claims-service-config
+              key: Messaging__AdjudicationMaxConcurrentCalls
         - name: Redis__ConnectionString
           valueFrom:
             secretKeyRef:
@@ -57,11 +99,11 @@ spec:
               key: connectionString
         resources:
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 1000m
+            memory: 256Mi
           limits:
-            cpu: 500m
-            memory: 512Mi
+            cpu: 4000m
+            memory: 2048Mi
         livenessProbe:
           httpGet:
             path: /health/live
@@ -81,7 +123,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: claims-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: claims-service
 spec:

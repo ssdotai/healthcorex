@@ -1,10 +1,10 @@
-using CloudHealthOffice.ProviderService.Tests.Fakes;
+using HealthCoreX.ProviderService.Tests.Fakes;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using ProviderService.Models;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Services;
+namespace HealthCoreX.ProviderService.Tests.Services;
 
 /// <summary>
 /// Capability 5.6 — single-membership lookup behaviour for

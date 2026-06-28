@@ -4,26 +4,26 @@ WORKDIR /repo
 
 # Copy csproj files and restore (preserves layer caching)
 COPY src/services/benefit-plan-service/benefit-plan-service.csproj src/services/benefit-plan-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/engines/CloudHealthOffice.BenefitEngine/CloudHealthOffice.BenefitEngine.csproj src/engines/CloudHealthOffice.BenefitEngine/
-COPY src/engines/CloudHealthOffice.OperatingMode/CloudHealthOffice.OperatingMode.csproj src/engines/CloudHealthOffice.OperatingMode/
-COPY src/engines/CloudHealthOffice.FeeScheduleEngine/CloudHealthOffice.FeeScheduleEngine.csproj src/engines/CloudHealthOffice.FeeScheduleEngine/
-COPY src/engines/CloudHealthOffice.ClaimsScrubEngine/CloudHealthOffice.ClaimsScrubEngine.csproj src/engines/CloudHealthOffice.ClaimsScrubEngine/
-COPY src/engines/CloudHealthOffice.NcciEngine/CloudHealthOffice.NcciEngine.csproj src/engines/CloudHealthOffice.NcciEngine/
-COPY src/engines/CloudHealthOffice.ProviderEnrollmentService/CloudHealthOffice.ProviderEnrollmentService.csproj src/engines/CloudHealthOffice.ProviderEnrollmentService/
-COPY src/engines/CloudHealthOffice.PriorAuthRuleEngine/CloudHealthOffice.PriorAuthRuleEngine.csproj src/engines/CloudHealthOffice.PriorAuthRuleEngine/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
+COPY src/engines/HealthCoreX.BenefitEngine/HealthCoreX.BenefitEngine.csproj src/engines/HealthCoreX.BenefitEngine/
+COPY src/engines/HealthCoreX.OperatingMode/HealthCoreX.OperatingMode.csproj src/engines/HealthCoreX.OperatingMode/
+COPY src/engines/HealthCoreX.FeeScheduleEngine/HealthCoreX.FeeScheduleEngine.csproj src/engines/HealthCoreX.FeeScheduleEngine/
+COPY src/engines/HealthCoreX.ClaimsScrubEngine/HealthCoreX.ClaimsScrubEngine.csproj src/engines/HealthCoreX.ClaimsScrubEngine/
+COPY src/engines/HealthCoreX.NcciEngine/HealthCoreX.NcciEngine.csproj src/engines/HealthCoreX.NcciEngine/
+COPY src/engines/HealthCoreX.ProviderEnrollmentService/HealthCoreX.ProviderEnrollmentService.csproj src/engines/HealthCoreX.ProviderEnrollmentService/
+COPY src/engines/HealthCoreX.PriorAuthRuleEngine/HealthCoreX.PriorAuthRuleEngine.csproj src/engines/HealthCoreX.PriorAuthRuleEngine/
 RUN dotnet restore src/services/benefit-plan-service/benefit-plan-service.csproj
 
 # Copy source code and build
 COPY src/services/benefit-plan-service/ src/services/benefit-plan-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/engines/CloudHealthOffice.BenefitEngine/ src/engines/CloudHealthOffice.BenefitEngine/
-COPY src/engines/CloudHealthOffice.OperatingMode/ src/engines/CloudHealthOffice.OperatingMode/
-COPY src/engines/CloudHealthOffice.FeeScheduleEngine/ src/engines/CloudHealthOffice.FeeScheduleEngine/
-COPY src/engines/CloudHealthOffice.ClaimsScrubEngine/ src/engines/CloudHealthOffice.ClaimsScrubEngine/
-COPY src/engines/CloudHealthOffice.NcciEngine/ src/engines/CloudHealthOffice.NcciEngine/
-COPY src/engines/CloudHealthOffice.ProviderEnrollmentService/ src/engines/CloudHealthOffice.ProviderEnrollmentService/
-COPY src/engines/CloudHealthOffice.PriorAuthRuleEngine/ src/engines/CloudHealthOffice.PriorAuthRuleEngine/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
+COPY src/engines/HealthCoreX.BenefitEngine/ src/engines/HealthCoreX.BenefitEngine/
+COPY src/engines/HealthCoreX.OperatingMode/ src/engines/HealthCoreX.OperatingMode/
+COPY src/engines/HealthCoreX.FeeScheduleEngine/ src/engines/HealthCoreX.FeeScheduleEngine/
+COPY src/engines/HealthCoreX.ClaimsScrubEngine/ src/engines/HealthCoreX.ClaimsScrubEngine/
+COPY src/engines/HealthCoreX.NcciEngine/ src/engines/HealthCoreX.NcciEngine/
+COPY src/engines/HealthCoreX.ProviderEnrollmentService/ src/engines/HealthCoreX.ProviderEnrollmentService/
+COPY src/engines/HealthCoreX.PriorAuthRuleEngine/ src/engines/HealthCoreX.PriorAuthRuleEngine/
 # benefit-plan-service.csproj declares <Content Include="..\..\..\schemas\..."> for
 # the SystemDefaultMappingSeeder seed bundle (BP 5.6) and the AcaLimitsProvider OOP
 # limits file (BP 5.7); MSBuild copies them to the build output via

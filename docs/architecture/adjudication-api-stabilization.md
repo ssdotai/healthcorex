@@ -277,12 +277,12 @@ related-encounter predicates.
 
 | File | Role |
 |------|------|
-| `src/engines/CloudHealthOffice.BenefitEngine/Domain/BenefitRulePredicate.cs` | Predicate model + evaluator + context, moved into the engine domain so the engine can reference it without a circular dependency on benefit-plan-service. |
-| `src/engines/CloudHealthOffice.BenefitEngine/Services/ServiceCategoryResolver.cs` | Effective-date filtering + `serviceDate` parameter on `ResolveAsync`. |
-| `src/engines/CloudHealthOffice.BenefitEngine/Services/BenefitRuleGate.cs` | New `IBenefitRuleGate` + default implementation; the predicate-aware benefit selector. |
-| `src/engines/CloudHealthOffice.BenefitEngine/Services/BenefitCalculationEngine.cs` | Routes through the rule gate after category resolution; threads `request.ServiceDate` into the resolver. |
-| `src/engines/CloudHealthOffice.BenefitEngine/Services/Providers.cs` | `BenefitCategoryConfig.Predicate` field, `GetFirstCategory` / `GetCategories` lookup pair. |
-| `src/engines/CloudHealthOffice.BenefitEngine/Services/BenefitEngineMetrics.cs` | Engine-side counters for the SCM-window-filter and skipped-no-context paths. |
-| `src/engines/CloudHealthOffice.BenefitEngine/Models/BenefitModels.cs` | `MemberContext` record + `BenefitResolutionRequest.Member` field. |
+| `src/engines/HealthCoreX.BenefitEngine/Domain/BenefitRulePredicate.cs` | Predicate model + evaluator + context, moved into the engine domain so the engine can reference it without a circular dependency on benefit-plan-service. |
+| `src/engines/HealthCoreX.BenefitEngine/Services/ServiceCategoryResolver.cs` | Effective-date filtering + `serviceDate` parameter on `ResolveAsync`. |
+| `src/engines/HealthCoreX.BenefitEngine/Services/BenefitRuleGate.cs` | New `IBenefitRuleGate` + default implementation; the predicate-aware benefit selector. |
+| `src/engines/HealthCoreX.BenefitEngine/Services/BenefitCalculationEngine.cs` | Routes through the rule gate after category resolution; threads `request.ServiceDate` into the resolver. |
+| `src/engines/HealthCoreX.BenefitEngine/Services/Providers.cs` | `BenefitCategoryConfig.Predicate` field, `GetFirstCategory` / `GetCategories` lookup pair. |
+| `src/engines/HealthCoreX.BenefitEngine/Services/BenefitEngineMetrics.cs` | Engine-side counters for the SCM-window-filter and skipped-no-context paths. |
+| `src/engines/HealthCoreX.BenefitEngine/Models/BenefitModels.cs` | `MemberContext` record + `BenefitResolutionRequest.Member` field. |
 | `src/services/benefit-plan-service/Services/ChoBenefitPlanProvider.cs` | Projects `Benefit.Rules[0]` onto `BenefitCategoryConfig.Predicate`; emits the multi-rule truncated counter. |
 | `src/services/benefit-plan-service/Controllers/ServiceCategoryMappingsController.cs` | 400 on `EffectiveEnd < EffectiveStart`. |

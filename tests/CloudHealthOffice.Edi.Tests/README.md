@@ -1,4 +1,4 @@
-# CloudHealthOffice.Edi.Tests
+# HealthCoreX.Edi.Tests
 
 Purpose: regression protection for X12 serialization/parsing paths where subtle format issues can cause trading-partner rejection.
 

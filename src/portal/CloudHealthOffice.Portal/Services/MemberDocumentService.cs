@@ -1,7 +1,7 @@
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace CloudHealthOffice.Portal.Services;
+namespace HealthCoreX.Portal.Services;
 
 public class MemberDocumentService : IMemberDocumentService
 {

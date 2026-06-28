@@ -1,4 +1,4 @@
-using CloudHealthOffice.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Configuration;
 
 namespace PersonalRepresentativeService.Tests.Fakes;
 

@@ -1,12 +1,12 @@
 using System.Diagnostics;
-using CloudHealthOffice.PriorAuthRuleEngine.Abstractions;
-using CloudHealthOffice.PriorAuthRuleEngine.Domain;
-using CloudHealthOffice.PriorAuthRuleEngine.Models;
-using CloudHealthOffice.PriorAuthRuleEngine.Persistence;
+using HealthCoreX.PriorAuthRuleEngine.Abstractions;
+using HealthCoreX.PriorAuthRuleEngine.Domain;
+using HealthCoreX.PriorAuthRuleEngine.Models;
+using HealthCoreX.PriorAuthRuleEngine.Persistence;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace CloudHealthOffice.PriorAuthRuleEngine.Services;
+namespace HealthCoreX.PriorAuthRuleEngine.Services;
 
 /// <summary>
 /// Resolves the applicable rule set for a PA request and evaluates rules

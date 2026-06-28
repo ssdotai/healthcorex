@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace CloudHealthOffice.TradingPartnerService.Models;
+namespace HealthCoreX.TradingPartnerService.Models;
 
 public class TradingPartner
 {

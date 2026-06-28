@@ -1,7 +1,7 @@
 {
   "resourceType": "CodeSystem",
   "id": "cho-appeal-line-of-business",
-  "url": "http://fhir.cloudhealthoffice.com/CodeSystem/cho-appeal-line-of-business",
+  "url": "http://fhir.HealthCoreX.com/CodeSystem/cho-appeal-line-of-business",
   "version": "1.0.0",
   "name": "ChoAppealLineOfBusiness",
   "title": "CHO Appeal Line of Business",

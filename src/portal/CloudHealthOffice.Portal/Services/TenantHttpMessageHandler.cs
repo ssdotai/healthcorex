@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Portal.Services;
+namespace HealthCoreX.Portal.Services;
 
 /// <summary>
 /// HTTP message handler that adds the X-Tenant-ID header to all outgoing requests.

@@ -1,7 +1,7 @@
 using System.Text.Json;
-using CloudHealthOffice.Infrastructure.Models;
+using HealthCoreX.Infrastructure.Models;
 
-namespace CloudHealthOffice.Infrastructure.Tests;
+namespace HealthCoreX.Infrastructure.Tests;
 
 public class StandardErrorResponseTests
 {

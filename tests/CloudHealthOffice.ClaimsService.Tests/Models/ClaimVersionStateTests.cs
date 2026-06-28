@@ -2,7 +2,7 @@ using ClaimsService.Models;
 using FluentAssertions;
 using System.Text.Json;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Models;
+namespace HealthCoreX.ClaimsService.Tests.Models;
 
 /// <summary>
 /// PR #705 enum convention: <c>Unknown=0</c> as default, JSON wire format

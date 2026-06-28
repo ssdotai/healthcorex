@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Services;
+namespace HealthCoreX.ClaimsService.Tests.Services;
 
 /// <summary>
 /// Mongo-backed claim-version event publisher: idempotency on duplicate

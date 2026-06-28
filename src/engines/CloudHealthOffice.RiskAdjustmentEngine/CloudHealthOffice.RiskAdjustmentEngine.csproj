@@ -3,11 +3,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>CloudHealthOffice.RiskAdjustmentEngine</RootNamespace>
+    <RootNamespace>HealthCoreX.RiskAdjustmentEngine</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>CloudHealthOffice.RiskAdjustmentEngine.Tests</_Parameter1>
+      <_Parameter1>HealthCoreX.RiskAdjustmentEngine.Tests</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
   <ItemGroup>

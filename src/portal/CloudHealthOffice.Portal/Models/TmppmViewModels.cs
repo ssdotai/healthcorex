@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Portal.Models;
+namespace HealthCoreX.Portal.Models;
 
 public class TmppmPaRuleViewModel
 {

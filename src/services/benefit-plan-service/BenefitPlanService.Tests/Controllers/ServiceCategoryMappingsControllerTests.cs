@@ -4,7 +4,7 @@ using BenefitPlanService.Middleware;
 using BenefitPlanService.Models;
 using BenefitPlanService.Repositories;
 using BenefitPlanService.Tests.Fakes;
-using CloudHealthOffice.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Domain;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

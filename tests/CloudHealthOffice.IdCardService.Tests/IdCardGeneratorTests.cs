@@ -2,7 +2,7 @@ using IdCardService.Models;
 using IdCardService.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.IdCardService.Tests;
+namespace HealthCoreX.IdCardService.Tests;
 
 public class IdCardGeneratorTests
 {

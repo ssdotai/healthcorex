@@ -1,6 +1,6 @@
-using CloudHealthOffice.FeeScheduleEngine.Models;
+using HealthCoreX.FeeScheduleEngine.Models;
 
-namespace CloudHealthOffice.FeeScheduleEngine.Persistence;
+namespace HealthCoreX.FeeScheduleEngine.Persistence;
 
 /// <summary>
 /// Storage interface for fee schedules and their procedure lines.

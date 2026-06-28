@@ -2,7 +2,7 @@ using System.Text.Json.Nodes;
 using ClaimsExaminerService.Models;
 using ClaimsExaminerService.Services.Anthropic;
 using ClaimsExaminerService.Services.Events;
-using CloudHealthOffice.Events;
+using HealthCoreX.Events;
 
 namespace ClaimsExaminerService.Services.Examiner;
 

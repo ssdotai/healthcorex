@@ -1,9 +1,9 @@
 using System.Security.Cryptography;
-using CloudHealthOffice.PricingApi.Data;
-using CloudHealthOffice.PricingApi.Models;
+using HealthCoreX.PricingApi.Data;
+using HealthCoreX.PricingApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CloudHealthOffice.PricingApi.Controllers;
+namespace HealthCoreX.PricingApi.Controllers;
 
 /// <summary>
 /// Public self-service signup for free-tier API keys.

@@ -101,7 +101,7 @@ This document outlines the strategic vision and planned enhancements for the Clo
 3. **Enterprise**: Unlimited payers, unlimited transactions
 4. **Custom**: Quote-based - White-label, dedicated infrastructure
 
-[Contact sales](mailto:sales@cloudhealthoffice.com) for pricing on all tiers.
+[Contact sales](mailto:sales@HealthCoreX.com) for pricing on all tiers.
 
 #### 3. Enhanced Analytics & Dashboards 📊
 **Priority**: Medium  

@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.BenefitEngine.Domain;
+namespace HealthCoreX.BenefitEngine.Domain;
 
 // ═══════════════════════════════════════════════════════════════════
 // PLAN-LEVEL CONFIGURATION

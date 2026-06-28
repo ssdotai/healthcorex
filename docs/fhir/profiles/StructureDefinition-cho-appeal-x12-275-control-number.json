@@ -1,7 +1,7 @@
 {
   "resourceType": "StructureDefinition",
   "id": "cho-appeal-x12-275-control-number",
-  "url": "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-x12-275-control-number",
+  "url": "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-x12-275-control-number",
   "version": "1.0.0",
   "name": "ChoAppealX12_275ControlNumber",
   "title": "CHO Appeal X12 275 Control Number",
@@ -29,7 +29,7 @@
       {
         "id": "Extension.url",
         "path": "Extension.url",
-        "fixedUri": "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-x12-275-control-number"
+        "fixedUri": "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-x12-275-control-number"
       },
       {
         "id": "Extension.value[x]",

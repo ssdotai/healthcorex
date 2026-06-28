@@ -8,7 +8,7 @@ namespace FhirService.Services;
 /// </summary>
 public static class ChoFhirCanonicalUrls
 {
-    public const string Base                    = "http://fhir.cloudhealthoffice.com/";
+    public const string Base                    = "http://fhir.HealthCoreX.com/";
     public const string StructureDefinitionBase = Base + "StructureDefinition/";
     public const string OperationDefinitionBase = Base + "OperationDefinition/";
     public const string CodeSystemBase          = Base + "CodeSystem/";

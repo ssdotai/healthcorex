@@ -1,13 +1,13 @@
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Aggregator;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Aggregator;
+using HealthCoreX.ProviderEnrollmentService.Models;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Tests;
+namespace HealthCoreX.ProviderEnrollmentService.Tests;
 
 public class MultiStateEnrollmentAggregatorTests
 {

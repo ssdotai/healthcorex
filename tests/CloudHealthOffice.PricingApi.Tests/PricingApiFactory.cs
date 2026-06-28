@@ -1,12 +1,12 @@
-using CloudHealthOffice.PricingApi.Data;
-using CloudHealthOffice.PricingApi.Services;
+using HealthCoreX.PricingApi.Data;
+using HealthCoreX.PricingApi.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.PricingApi.Tests;
+namespace HealthCoreX.PricingApi.Tests;
 
 /// <summary>
 /// WebApplicationFactory for PricingApi smoke tests.

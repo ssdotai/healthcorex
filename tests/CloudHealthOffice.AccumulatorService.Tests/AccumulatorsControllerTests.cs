@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CloudHealthOffice.AccumulatorService.Tests;
+namespace HealthCoreX.AccumulatorService.Tests;
 
 /// <summary>
 /// Integration tests for AccumulatorsController via WebApplicationFactory.

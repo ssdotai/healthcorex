@@ -82,25 +82,25 @@ Create cross-platform mobile apps (iOS/Android) for on-the-go access to member a
 
 ```bash
 # Create solution
-dotnet new sln -n CloudHealthOfficeMobile
+dotnet new sln -n HealthCoreXMobile
 
 # Create member app
-dotnet new maui -n CloudHealthOffice.MemberApp
-dotnet sln add CloudHealthOffice.MemberApp/CloudHealthOffice.MemberApp.csproj
+dotnet new maui -n HealthCoreX.MemberApp
+dotnet sln add HealthCoreX.MemberApp/HealthCoreX.MemberApp.csproj
 
 # Create provider app
-dotnet new maui -n CloudHealthOffice.ProviderApp
-dotnet sln add CloudHealthOffice.ProviderApp/CloudHealthOffice.ProviderApp.csproj
+dotnet new maui -n HealthCoreX.ProviderApp
+dotnet sln add HealthCoreX.ProviderApp/HealthCoreX.ProviderApp.csproj
 
 # Create shared library
-dotnet new classlib -n CloudHealthOffice.Mobile.Shared
-dotnet sln add CloudHealthOffice.Mobile.Shared/CloudHealthOffice.Mobile.Shared.csproj
+dotnet new classlib -n HealthCoreX.Mobile.Shared
+dotnet sln add HealthCoreX.Mobile.Shared/HealthCoreX.Mobile.Shared.csproj
 ```
 
 **Project Structure:**
 ```
 mobile/
-├── CloudHealthOffice.MemberApp/
+├── HealthCoreX.MemberApp/
 │   ├── Platforms/
 │   │   ├── Android/
 │   │   └── iOS/
@@ -110,13 +110,13 @@ mobile/
 │   │   └── PriorAuthPage.xaml
 │   ├── ViewModels/
 │   └── Services/
-├── CloudHealthOffice.ProviderApp/
+├── HealthCoreX.ProviderApp/
 │   ├── Pages/
 │   │   ├── ClaimSubmissionPage.xaml
 │   │   ├── DirectoryPage.xaml
 │   │   └── PerformancePage.xaml
 │   └── ViewModels/
-└── CloudHealthOffice.Mobile.Shared/
+└── HealthCoreX.Mobile.Shared/
     ├── Models/ (Claim, Member, Coverage - reuse from services)
     ├── Services/
     │   ├── IApiClient.cs
@@ -131,7 +131,7 @@ mobile/
 #### 1.2 Install Packages
 
 ```xml
-<!-- CloudHealthOffice.MemberApp.csproj -->
+<!-- HealthCoreX.MemberApp.csproj -->
 <ItemGroup>
   <PackageReference Include="Microsoft.Identity.Client" Version="4.57.0" />
   <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0" />
@@ -148,7 +148,7 @@ mobile/
 #### 2.1 Azure AD B2C Integration
 
 ```csharp
-// CloudHealthOffice.Mobile.Shared/Services/AuthService.cs
+// HealthCoreX.Mobile.Shared/Services/AuthService.cs
 using Microsoft.Identity.Client;
 
 public class AuthService : IAuthService
@@ -159,9 +159,9 @@ public class AuthService : IAuthService
     {
         _pca = PublicClientApplicationBuilder
             .Create("member-app-client-id")
-            .WithB2CAuthority("https://cloudhealthofficemembers.b2clogin.com/tfp/cloudhealthofficemembers.onmicrosoft.com/B2C_1_susi")
+            .WithB2CAuthority("https://HealthCoreXmembers.b2clogin.com/tfp/HealthCoreXmembers.onmicrosoft.com/B2C_1_susi")
             .WithRedirectUri("msal{client-id}://auth")
-            .WithIosKeychainSecurityGroup("com.cloudhealthoffice.memberapp")
+            .WithIosKeychainSecurityGroup("com.HealthCoreX.memberapp")
             .Build();
     }
     
@@ -374,7 +374,7 @@ public class NotificationService
     public async Task StartAsync(string memberId)
     {
         _hubConnection = new HubConnectionBuilder()
-            .WithUrl("https://api.cloudhealthoffice.com/hubs/claimstatus", options =>
+            .WithUrl("https://api.HealthCoreX.com/hubs/claimstatus", options =>
             {
                 options.AccessTokenProvider = async () => await GetAccessTokenAsync();
             })
@@ -502,7 +502,7 @@ public class SubscriptionService
         // Android: Use Google Play Billing
         
         #if IOS
-        var product = await GetProductAsync("com.cloudhealthoffice.premium");
+        var product = await GetProductAsync("com.HealthCoreX.premium");
         var payment = SKPayment.PaymentWithProduct(product);
         SKPaymentQueue.DefaultQueue.AddPayment(payment);
         #elif ANDROID
@@ -551,7 +551,7 @@ jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
 - Name: Cloud Health Office - Member Portal
 - Category: Medical
 - Content Rating: Everyone
-- Privacy Policy: https://cloudhealthoffice.com/privacy
+- Privacy Policy: https://HealthCoreX.com/privacy
 
 ## Testing
 

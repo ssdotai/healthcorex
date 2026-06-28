@@ -1,18 +1,20 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 using ClaimsService.Models;
 using ClaimsService.Repositories;
 using ClaimsService.Services;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests;
+namespace HealthCoreX.ClaimsService.Tests;
 
 public class ClaimsControllerTests : IClassFixture<ClaimsApiFactory>
 {
     private readonly ClaimsApiFactory _factory;
     private readonly HttpClient _client;
     private readonly IClaimRepository _repo;
+    private readonly IMassAdjudicationRunRepository _massRunRepo;
     private readonly IClaimAcknowledgmentService _ackService;
     private readonly IClaimSubmissionService _submissionService;
 
@@ -20,6 +22,7 @@ public class ClaimsControllerTests : IClassFixture<ClaimsApiFactory>
     {
         _factory = factory;
         _repo = factory.ClaimRepository;
+        _massRunRepo = factory.MassAdjudicationRunRepository;
         _ackService = factory.AcknowledgmentService;
         _submissionService = factory.SubmissionService;
         _client = factory.CreateClient();
@@ -150,11 +153,84 @@ public class ClaimsControllerTests : IClassFixture<ClaimsApiFactory>
     }
 
     [Fact]
+    public async Task GetClaimById_EnrichesDiagnosisMetadataForDisplay()
+    {
+        var claim = CreateValidClaim();
+        claim.Id = "claim-dx";
+        claim.DiagnosisCodes = new List<DiagnosisCode>
+        {
+            new() { Code = "K08.1" },
+            new() { Code = "M79.3", CodeQualifier = "", PointerNumber = 2 }
+        };
+
+        _repo.GetByIdAsync("claim-dx").Returns(claim);
+
+        var response = await _client.GetAsync("/api/claims/claim-dx");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var returned = await response.Content.ReadFromJsonAsync<Claim>();
+        Assert.NotNull(returned);
+        Assert.Equal("Complete loss of teeth", returned!.DiagnosisCodes[0].Description);
+        Assert.Equal("ABK", returned.DiagnosisCodes[0].CodeQualifier);
+        Assert.Equal(1, returned.DiagnosisCodes[0].PointerNumber);
+        Assert.Equal("Panniculitis, unspecified", returned.DiagnosisCodes[1].Description);
+        Assert.Equal("ABF", returned.DiagnosisCodes[1].CodeQualifier);
+        Assert.Equal(2, returned.DiagnosisCodes[1].PointerNumber);
+    }
+
+    [Fact]
     public async Task GetClaimById_NonexistentClaim_Returns404()
     {
         _repo.GetByIdAsync("nonexistent").Returns((Claim?)null);
 
         var response = await _client.GetAsync("/api/claims/nonexistent");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetAdjudicationDetail_AdjudicatedClaim_ReturnsProjection()
+    {
+        var claim = CreateValidClaim();
+        claim.Id = "claim-adj-1";
+        claim.Status = ClaimStatus.Approved;
+        claim.AdjudicationResult = new AdjudicationResult
+        {
+            NetworkTier = "InNetwork",
+            AllowedAmount = 100m,
+            DeductibleAmount = 10m,
+            CoinsuranceAmount = 5m,
+            CopayAmount = 20m,
+            PatientResponsibility = 35m,
+            PayerPayment = 65m
+        };
+        claim.ClaimLines[0].AdjudicationResult = new LineAdjudicationResult
+        {
+            AllowedAmount = 100m,
+            PaidAmount = 65m,
+            PatientResponsibility = 35m
+        };
+        _repo.GetByIdAsync("claim-adj-1").Returns(claim);
+
+        var response = await _client.GetAsync("/api/claims/claim-adj-1/adjudication-detail");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var returned = await response.Content.ReadFromJsonAsync<AdjudicationTransparencyData>();
+        Assert.NotNull(returned);
+        Assert.NotEmpty(returned!.Steps);
+        Assert.Single(returned.FeeScheduleResults);
+        Assert.Equal(65m, returned.BenefitCalculation!.PlanPayment);
+    }
+
+    [Fact]
+    public async Task GetAdjudicationDetail_MissingProjection_Returns404()
+    {
+        var claim = CreateValidClaim();
+        claim.Id = "claim-unadjudicated";
+        _repo.GetByIdAsync("claim-unadjudicated").Returns(claim);
+
+        var response = await _client.GetAsync("/api/claims/claim-unadjudicated/adjudication-detail");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -206,6 +282,91 @@ public class ClaimsControllerTests : IClassFixture<ClaimsApiFactory>
         Assert.NotNull(results);
         Assert.Equal(2, results.Count);
         Assert.All(results, c => Assert.Equal("MEM-001", c.MemberId));
+    }
+
+    [Fact]
+    public async Task SearchClaimsPost_ByRunId_ReturnsClaimsFromMassAdjudicationRun()
+    {
+        var runId = $"run-{Guid.NewGuid():N}";
+        var claim = CreateValidClaim();
+        claim.Id = "submitted-claim-1";
+        claim.ClaimNumber = "MCC-P-0000001";
+
+        _massRunRepo.GetAsync("test-tenant", runId, Arg.Any<CancellationToken>())
+            .Returns(new MassAdjudicationRunSummary
+            {
+                Id = runId,
+                Run = new MassAdjudicationRunMetadata { TenantId = "test-tenant" }
+            });
+        _massRunRepo.ListSubmittedClaimIdsAsync("test-tenant", runId, Arg.Any<CancellationToken>())
+            .Returns(new List<string> { "submitted-claim-1", "submitted-claim-2" });
+        _repo.SearchByIdsAsync(
+                Arg.Any<IReadOnlyCollection<string>>(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                1,
+                25)
+            .Returns((new List<Claim> { claim }, 1));
+
+        var response = await _client.PostAsJsonAsync("/api/claims/search", new ClaimSearchBody
+        {
+            RunId = runId,
+            PageNumber = 1,
+            PageSize = 25
+        });
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        using var doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+        Assert.Equal(1, doc.RootElement.GetProperty("totalCount").GetInt32());
+        var claims = doc.RootElement.GetProperty("claims");
+        Assert.Equal("MCC-P-0000001", claims[0].GetProperty("claimNumber").GetString());
+
+        await _repo.Received(1).SearchByIdsAsync(
+            Arg.Is<IReadOnlyCollection<string>>(ids => ids.Contains("submitted-claim-1") && ids.Contains("submitted-claim-2")),
+            null,
+            null,
+            null,
+            null,
+            null,
+            1,
+            25);
+    }
+
+    [Fact]
+    public async Task SearchClaimsPost_StandardSearch_ReturnsFullTotalCount()
+    {
+        var claim = CreateValidClaim();
+        claim.Id = "page-claim-1";
+        claim.ClaimNumber = "MCC-P-0000001";
+
+        _repo.SearchWithCountAsync(
+                "MEM-001",
+                null,
+                null,
+                null,
+                null,
+                null,
+                2,
+                1)
+            .Returns((new List<Claim> { claim }, 3));
+
+        var response = await _client.PostAsJsonAsync("/api/claims/search", new ClaimSearchBody
+        {
+            MemberId = "MEM-001",
+            PageNumber = 2,
+            PageSize = 1
+        });
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        using var doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+        Assert.Equal(3, doc.RootElement.GetProperty("totalCount").GetInt32());
+        Assert.Equal(2, doc.RootElement.GetProperty("pageNumber").GetInt32());
+        Assert.Equal(1, doc.RootElement.GetProperty("claims").GetArrayLength());
     }
 
     // ═══════════════════════════════════════════════════════════════════

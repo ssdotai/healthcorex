@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.RiskAdjustmentEngine.Domain;
+namespace HealthCoreX.RiskAdjustmentEngine.Domain;
 
 // ═══════════════════════════════════════════════════════════════════
 // ENUMS

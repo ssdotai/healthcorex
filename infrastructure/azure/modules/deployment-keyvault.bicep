@@ -63,7 +63,7 @@ param tags object = {
   Purpose: 'DeploymentSecrets'
   Compliance: 'HIPAA'
   ManagedBy: 'Bicep'
-  Repository: 'aurelianware/cloudhealthoffice'
+  Repository: 'aurelianware/HealthCoreX'
 }
 
 // =========================

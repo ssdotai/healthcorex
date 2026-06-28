@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CloudHealthOffice.Infrastructure.Json;
+namespace HealthCoreX.Infrastructure.Json;
 
 /// <summary>
 /// Shared MVC JSON conventions for Cloud Health Office services.
@@ -20,14 +20,14 @@ namespace CloudHealthOffice.Infrastructure.Json;
 ///     on the wire). A repo-wide change would break contracts.
 ///   - DefaultIgnoreCondition — same reason.
 /// </summary>
-public static class CloudHealthOfficeJsonOptions
+public static class HealthCoreXJsonOptions
 {
     /// <summary>
     /// Registers <see cref="JsonStringEnumConverter"/> on the MVC JSON options.
     /// Call on the result of <c>AddControllers()</c>:
     /// <code>
     /// builder.Services.AddControllers()
-    ///     .AddCloudHealthOfficeJsonOptions();
+    ///     .AddHealthCoreXJsonOptions();
     /// </code>
     /// </summary>
     /// <param name="builder">The MVC builder to configure.</param>
@@ -39,7 +39,7 @@ public static class CloudHealthOfficeJsonOptions
     /// When <c>false</c> (the default), enum names are emitted exactly as
     /// declared (e.g. <c>"MedicareFeeSchedule"</c>).
     /// </param>
-    public static IMvcBuilder AddCloudHealthOfficeJsonOptions(
+    public static IMvcBuilder AddHealthCoreXJsonOptions(
         this IMvcBuilder builder,
         bool camelCaseEnums = false)
     {

@@ -5,7 +5,7 @@ using ClaimsService.Repositories;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests;
+namespace HealthCoreX.ClaimsService.Tests;
 
 /// <summary>
 /// Endpoint-level tests for the AI Claims Examiner integration on claims-service:

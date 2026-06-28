@@ -2,19 +2,19 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using CloudHealthOffice.ProviderVerificationEngine.Models;
+using HealthCoreX.ProviderVerificationEngine.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.Hosting;
 using Xunit;
 
-namespace CloudHealthOffice.ProviderVerificationEngine.Tests;
+namespace HealthCoreX.ProviderVerificationEngine.Tests;
 
-public class ApiIntegrationTests : IClassFixture<WebApplicationFactory<CloudHealthOffice.ProviderVerificationService.Program>>
+public class ApiIntegrationTests : IClassFixture<WebApplicationFactory<HealthCoreX.ProviderVerificationService.Program>>
 {
     private readonly HttpClient _client;
-    private readonly WebApplicationFactory<CloudHealthOffice.ProviderVerificationService.Program> _factory;
+    private readonly WebApplicationFactory<HealthCoreX.ProviderVerificationService.Program> _factory;
 
-    public ApiIntegrationTests(WebApplicationFactory<CloudHealthOffice.ProviderVerificationService.Program> factory)
+    public ApiIntegrationTests(WebApplicationFactory<HealthCoreX.ProviderVerificationService.Program> factory)
     {
         _factory = factory.WithWebHostBuilder(builder =>
         {

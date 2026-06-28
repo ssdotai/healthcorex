@@ -103,8 +103,8 @@ Root Configuration
 
 #### `logo` (string, uri format, optional)
 **Description**: URL to payer logo  
-**Requirements**: 800x400px PNG/SVG recommended (Cloud Health Office Sentinel branding available at docs/images/logo-cloudhealthoffice-sentinel-primary.png.svg)  
-**Example**: `"https://example.com/logo.png"` or `"docs/images/logo-cloudhealthoffice-sentinel-primary.png.svg"`
+**Requirements**: 800x400px PNG/SVG recommended (Cloud Health Office Sentinel branding available at docs/images/logo-HealthCoreX-sentinel-primary.png.svg)  
+**Example**: `"https://example.com/logo.png"` or `"docs/images/logo-HealthCoreX-sentinel-primary.png.svg"`
 
 #### `tradingPartnerId` (string, optional)
 **Description**: Trading partner ID for connectivity  

@@ -1,11 +1,15 @@
+using HealthCoreX.PriorAuthRuleEngine.Abstractions;
+using HealthCoreX.PriorAuthRuleEngine.Domain;
+using HealthCoreX.PriorAuthRuleEngine.Models;
 using FhirService.Models;
 using FhirService.Services;
 using FluentAssertions;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 
-namespace CloudHealthOffice.FhirService.Tests.Services;
+namespace HealthCoreX.FhirService.Tests.Services;
 
 public class CrdCodeClassificationTests
 {
@@ -26,12 +30,29 @@ public class CrdCodeClassificationTests
         httpClientFactory
             .Setup(f => f.CreateClient("TerminologyService"))
             .Returns(terminologyClient);
+        var priorAuthRuleEngine = new Mock<IPriorAuthRuleEngine>();
+        priorAuthRuleEngine
+            .Setup(e => e.EvaluateAsync(It.IsAny<PaRuleContext>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new PaRuleDecision
+            {
+                Outcome = PaDecisionOutcome.Pend,
+                FiringRuleId = "NoRuleMatch",
+                FiringRuleName = "NoRuleMatch",
+                ResolvedRuleSetKey = "platform/TX/Medicaid/any",
+            });
 
         return new CrdService(
             httpClientFactory.Object,
+            priorAuthRuleEngine.Object,
             Options.Create(config),
+            new CrdClassificationStore(CreateMemoryCache()),
             new Mock<ILogger<CrdService>>().Object);
     }
+
+    private static MemoryCache CreateMemoryCache() => new(new MemoryCacheOptions
+    {
+        SizeLimit = 1024,
+    });
 
     [Fact]
     public async Task EvaluateAsync_UsesHashSetLookup_AuthRequired()

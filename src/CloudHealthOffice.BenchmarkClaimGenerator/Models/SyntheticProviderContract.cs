@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Models;
+namespace HealthCoreX.BenchmarkClaimGenerator.Models;
 
 /// <summary>
 /// Represents a provider contract with fee schedule assignment.

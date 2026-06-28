@@ -10,7 +10,7 @@ spec:
     # Production Let's Encrypt server
     server: https://acme-v02.api.letsencrypt.org/directory
     # Email for certificate expiration notifications
-    email: admin@cloudhealthoffice.com
+    email: admin@HealthCoreX.com
     # Secret to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt-prod-account-key
@@ -35,7 +35,7 @@ spec:
   acme:
     # Staging Let's Encrypt server (use for testing)
     server: https://acme-staging-v02.api.letsencrypt.org/directory
-    email: admin@cloudhealthoffice.com
+    email: admin@HealthCoreX.com
     privateKeySecretRef:
       name: letsencrypt-staging-account-key
     solvers:

@@ -6,8 +6,8 @@ This guide explains how to configure Kubernetes ingress with HTTPS/TLS for the C
 
 ## Architecture
 
-- **Website**: Static marketing site at `cloudhealthoffice.com` and `www.cloudhealthoffice.com`
-- **Portal**: ASP.NET Core application at `portal.cloudhealthoffice.com`
+- **Website**: Static marketing site at `HealthCoreX.com` and `www.HealthCoreX.com`
+- **Portal**: ASP.NET Core application at `portal.HealthCoreX.com`
 - **Ingress Controller**: NGINX Ingress Controller
 - **TLS Certificates**: Automated via cert-manager and Let's Encrypt
 - **External IP**: 4.149.83.133 (configured on ingress controller LoadBalancer)
@@ -66,22 +66,22 @@ Add the following DNS A records:
 
 | Domain                         | Type | Value         | TTL  |
 |--------------------------------|------|---------------|------|
-| cloudhealthoffice.com          | A    | 4.149.83.133  | 300  |
-| www.cloudhealthoffice.com      | A    | 4.149.83.133  | 300  |
-| portal.cloudhealthoffice.com   | A    | 4.149.83.133  | 300  |
+| HealthCoreX.com          | A    | 4.149.83.133  | 300  |
+| www.HealthCoreX.com      | A    | 4.149.83.133  | 300  |
+| portal.HealthCoreX.com   | A    | 4.149.83.133  | 300  |
 
 **Verify DNS propagation:**
 
 ```bash
 # Check that DNS is resolving correctly
-nslookup cloudhealthoffice.com
-nslookup www.cloudhealthoffice.com
-nslookup portal.cloudhealthoffice.com
+nslookup HealthCoreX.com
+nslookup www.HealthCoreX.com
+nslookup portal.HealthCoreX.com
 
 # Or use dig
-dig +short cloudhealthoffice.com
-dig +short www.cloudhealthoffice.com
-dig +short portal.cloudhealthoffice.com
+dig +short HealthCoreX.com
+dig +short www.HealthCoreX.com
+dig +short portal.HealthCoreX.com
 ```
 
 All should return: **4.149.83.133**
@@ -93,7 +93,7 @@ All should return: **4.149.83.133**
 This creates the Let's Encrypt certificate issuer:
 
 ```bash
-cd /home/runner/work/cloudhealthoffice/cloudhealthoffice
+cd /home/runner/work/HealthCoreX/HealthCoreX
 
 # Apply ClusterIssuer for production Let's Encrypt
 kubectl apply -f k8s/cert-manager-issuer.yaml
@@ -115,13 +115,13 @@ The site and portal services have been updated from LoadBalancer to ClusterIP si
 kubectl apply -f site/k8s/site-deployment.yaml
 
 # Apply updated portal deployment
-kubectl apply -f portal/CloudHealthOffice.Portal/k8s/portal-deployment.yaml
+kubectl apply -f portal/HealthCoreX.Portal/k8s/portal-deployment.yaml
 ```
 
 **Verify services:**
 
 ```bash
-kubectl get svc -n cloudhealthoffice
+kubectl get svc -n HealthCoreX
 # site and portal should show TYPE: ClusterIP (not LoadBalancer)
 ```
 
@@ -140,7 +140,7 @@ kubectl apply -f k8s/portal-ingress.yaml
 **Verify ingress:**
 
 ```bash
-kubectl get ingress -n cloudhealthoffice
+kubectl get ingress -n HealthCoreX
 # Should show site-ingress and portal-ingress with your domain names
 ```
 
@@ -150,12 +150,12 @@ cert-manager will automatically request TLS certificates from Let's Encrypt:
 
 ```bash
 # Watch certificate requests
-kubectl get certificate -n cloudhealthoffice
-kubectl get certificaterequest -n cloudhealthoffice
+kubectl get certificate -n HealthCoreX
+kubectl get certificaterequest -n HealthCoreX
 
 # Check certificate details
-kubectl describe certificate site-tls-secret -n cloudhealthoffice
-kubectl describe certificate portal-tls-secret -n cloudhealthoffice
+kubectl describe certificate site-tls-secret -n HealthCoreX
+kubectl describe certificate portal-tls-secret -n HealthCoreX
 
 # View cert-manager logs
 kubectl logs -n cert-manager -l app=cert-manager -f
@@ -173,11 +173,11 @@ Once certificates are issued (status: Ready), test HTTPS access:
 
 ```bash
 # Test website
-curl -I https://cloudhealthoffice.com
-curl -I https://www.cloudhealthoffice.com
+curl -I https://HealthCoreX.com
+curl -I https://www.HealthCoreX.com
 
 # Test portal
-curl -I https://portal.cloudhealthoffice.com
+curl -I https://portal.HealthCoreX.com
 ```
 
 **Expected response:**
@@ -185,7 +185,7 @@ curl -I https://portal.cloudhealthoffice.com
 - Headers showing `Strict-Transport-Security`, `X-Content-Type-Options`, etc.
 
 **Browser test:**
-1. Open https://cloudhealthoffice.com in a browser
+1. Open https://HealthCoreX.com in a browser
 2. Check for green padlock icon (secure connection)
 3. View certificate details - should show Let's Encrypt Authority
 
@@ -193,7 +193,7 @@ curl -I https://portal.cloudhealthoffice.com
 
 ### Site Ingress (k8s/site-ingress.yaml)
 
-- **Hosts**: cloudhealthoffice.com, www.cloudhealthoffice.com
+- **Hosts**: HealthCoreX.com, www.HealthCoreX.com
 - **TLS Secret**: site-tls-secret
 - **Backend Service**: site:80
 - **Features**:
@@ -203,7 +203,7 @@ curl -I https://portal.cloudhealthoffice.com
 
 ### Portal Ingress (k8s/portal-ingress.yaml)
 
-- **Host**: portal.cloudhealthoffice.com
+- **Host**: portal.HealthCoreX.com
 - **TLS Secret**: portal-tls-secret
 - **Backend Service**: portal:80
 - **Features**:
@@ -217,7 +217,7 @@ curl -I https://portal.cloudhealthoffice.com
 - **Production Issuer**: letsencrypt-prod
 - **Staging Issuer**: letsencrypt-staging (for testing)
 - **Challenge Type**: HTTP-01 (via NGINX ingress)
-- **Email**: admin@cloudhealthoffice.com (update as needed)
+- **Email**: admin@HealthCoreX.com (update as needed)
 
 ## Troubleshooting
 
@@ -227,7 +227,7 @@ If certificates remain in "Issuing" state for more than 5 minutes:
 
 ```bash
 # Check certificate request details
-kubectl describe certificaterequest -n cloudhealthoffice
+kubectl describe certificaterequest -n HealthCoreX
 
 # Check cert-manager logs for errors
 kubectl logs -n cert-manager -l app=cert-manager --tail=100
@@ -255,7 +255,7 @@ cert-manager.io/cluster-issuer: letsencrypt-staging
 
 ```bash
 # Check ingress annotations
-kubectl get ingress site-ingress -n cloudhealthoffice -o yaml
+kubectl get ingress site-ingress -n HealthCoreX -o yaml
 
 # Verify these annotations are present:
 # nginx.ingress.kubernetes.io/ssl-redirect: "true"
@@ -268,16 +268,16 @@ This indicates the backend service is unreachable:
 
 ```bash
 # Check pod status
-kubectl get pods -n cloudhealthoffice -l app=site
-kubectl get pods -n cloudhealthoffice -l app=portal
+kubectl get pods -n HealthCoreX -l app=site
+kubectl get pods -n HealthCoreX -l app=portal
 
 # Check service endpoints
-kubectl get endpoints -n cloudhealthoffice site
-kubectl get endpoints -n cloudhealthoffice portal
+kubectl get endpoints -n HealthCoreX site
+kubectl get endpoints -n HealthCoreX portal
 
 # View pod logs
-kubectl logs -n cloudhealthoffice -l app=site
-kubectl logs -n cloudhealthoffice -l app=portal
+kubectl logs -n HealthCoreX -l app=site
+kubectl logs -n HealthCoreX -l app=portal
 ```
 
 ### Certificate Renewal
@@ -287,12 +287,12 @@ Let's Encrypt certificates are valid for 90 days. cert-manager automatically ren
 **Check renewal status:**
 
 ```bash
-kubectl get certificate -n cloudhealthoffice
+kubectl get certificate -n HealthCoreX
 # Check NOT AFTER column for expiration date
 
 # Force renewal (if needed)
-kubectl delete secret site-tls-secret -n cloudhealthoffice
-kubectl delete certificate site-tls-secret -n cloudhealthoffice
+kubectl delete secret site-tls-secret -n HealthCoreX
+kubectl delete certificate site-tls-secret -n HealthCoreX
 kubectl apply -f k8s/site-ingress.yaml
 ```
 
@@ -335,7 +335,7 @@ Edit `k8s/cert-manager-issuer.yaml` and update the email address:
 ```yaml
 spec:
   acme:
-    email: your-new-email@cloudhealthoffice.com
+    email: your-new-email@HealthCoreX.com
 ```
 
 Then apply:
@@ -377,12 +377,12 @@ kubectl port-forward -n cert-manager svc/cert-manager 9402:9402
 
 **Check ingress status:**
 ```bash
-kubectl get ingress -n cloudhealthoffice
+kubectl get ingress -n HealthCoreX
 ```
 
 **Check certificates:**
 ```bash
-kubectl get certificate -n cloudhealthoffice
+kubectl get certificate -n HealthCoreX
 ```
 
 **View ingress controller logs:**
@@ -392,11 +392,11 @@ kubectl logs -n ingress-nginx -l app.kubernetes.io/component=controller -f
 
 **Test HTTPS:**
 ```bash
-curl -I https://cloudhealthoffice.com
-curl -I https://portal.cloudhealthoffice.com
+curl -I https://HealthCoreX.com
+curl -I https://portal.HealthCoreX.com
 ```
 
 **View TLS certificate details:**
 ```bash
-echo | openssl s_client -servername cloudhealthoffice.com -connect cloudhealthoffice.com:443 2>/dev/null | openssl x509 -noout -dates
+echo | openssl s_client -servername HealthCoreX.com -connect HealthCoreX.com:443 2>/dev/null | openssl x509 -noout -dates
 ```

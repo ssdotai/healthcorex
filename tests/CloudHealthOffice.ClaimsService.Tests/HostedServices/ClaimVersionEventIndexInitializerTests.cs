@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.ClaimsService.Tests.HostedServices;
+namespace HealthCoreX.ClaimsService.Tests.HostedServices;
 
 /// <summary>
 /// The hosted index initializer must create the two unique indexes that the

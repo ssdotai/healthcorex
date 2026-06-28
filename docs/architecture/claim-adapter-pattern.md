@@ -163,7 +163,7 @@ concern in capability 5.3.
 
 ## Testing
 
-The adapter tests live at `tests/CloudHealthOffice.ClaimsService.Tests/Adapters/`:
+The adapter tests live at `tests/HealthCoreX.ClaimsService.Tests/Adapters/`:
 
 - `ClaimAdapterFactoryTests` — tenant routing, case-insensitive
   match, fallback on HTTP failure, fallback on unknown platform,

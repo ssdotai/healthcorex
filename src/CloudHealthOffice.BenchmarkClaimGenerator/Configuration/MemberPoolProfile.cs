@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Configuration;
+namespace HealthCoreX.BenchmarkClaimGenerator.Configuration;
 
 /// <summary>
 /// Configuration parameters controlling synthetic member pool generation.

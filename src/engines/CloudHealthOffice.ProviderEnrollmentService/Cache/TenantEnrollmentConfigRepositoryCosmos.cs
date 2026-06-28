@@ -1,9 +1,9 @@
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Models;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Cache;
+namespace HealthCoreX.ProviderEnrollmentService.Cache;
 
 /// <summary>
 /// Cosmos DB implementation of ITenantEnrollmentConfigRepository.
@@ -26,7 +26,7 @@ public sealed class TenantEnrollmentConfigRepositoryCosmos : ITenantEnrollmentCo
         IConfiguration configuration,
         ILogger<TenantEnrollmentConfigRepositoryCosmos> logger)
     {
-        var databaseName  = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName  = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         var containerName = configuration["ProviderEnrollmentService:TenantConfigContainer"]
                             ?? "enrollment-tenant-config";
 

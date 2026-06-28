@@ -2,12 +2,12 @@ using ClaimsService.Models;
 using ClaimsService.Repositories;
 using ClaimsService.Services;
 using ClaimsService.Services.Adjudication;
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Messaging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Services;
+namespace HealthCoreX.ClaimsService.Tests.Services;
 
 /// <summary>
 /// Capability 5.12b — covers <see cref="ClaimAdjustmentService"/>'s

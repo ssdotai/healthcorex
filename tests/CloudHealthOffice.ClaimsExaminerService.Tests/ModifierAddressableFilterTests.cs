@@ -1,9 +1,9 @@
 using ClaimsExaminerService.Models;
 using ClaimsExaminerService.Services.Examiner;
-using CloudHealthOffice.Events;
+using HealthCoreX.Events;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsExaminerService.Tests;
+namespace HealthCoreX.ClaimsExaminerService.Tests;
 
 /// <summary>
 /// V1 of the AI Claims Examiner only acts on edits where a -59/X{EPSU} modifier

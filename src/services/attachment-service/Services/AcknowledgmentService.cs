@@ -15,7 +15,7 @@ public class AcknowledgmentService : IAcknowledgmentService
         AcknowledgmentGeneratorService generator,
         ILogger<AcknowledgmentService> logger)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         var containerName = configuration["CosmosDb:TradingPartnersContainerName"] ?? "TradingPartners";
         _tradingPartnersContainer = cosmosClient.GetContainer(databaseName, containerName);
         _generator = generator;

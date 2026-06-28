@@ -1,11 +1,11 @@
-using CloudHealthOffice.Infrastructure.Caching;
-using CloudHealthOffice.PriorAuthRuleEngine.Abstractions;
-using CloudHealthOffice.PriorAuthRuleEngine.Models;
-using CloudHealthOffice.PriorAuthRuleEngine.Persistence;
-using CloudHealthOffice.PriorAuthRuleEngine.Rules;
-using CloudHealthOffice.PriorAuthRuleEngine.Rules.Platform;
-using CloudHealthOffice.PriorAuthRuleEngine.SeedRules;
-using CloudHealthOffice.PriorAuthRuleEngine.Services;
+using HealthCoreX.Infrastructure.Caching;
+using HealthCoreX.PriorAuthRuleEngine.Abstractions;
+using HealthCoreX.PriorAuthRuleEngine.Models;
+using HealthCoreX.PriorAuthRuleEngine.Persistence;
+using HealthCoreX.PriorAuthRuleEngine.Rules;
+using HealthCoreX.PriorAuthRuleEngine.Rules.Platform;
+using HealthCoreX.PriorAuthRuleEngine.SeedRules;
+using HealthCoreX.PriorAuthRuleEngine.Services;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,10 +15,10 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using StackExchange.Redis;
 
-namespace CloudHealthOffice.PriorAuthRuleEngine.Configuration;
+namespace HealthCoreX.PriorAuthRuleEngine.Configuration;
 
 /// <summary>
-/// DI registration for CloudHealthOffice.PriorAuthRuleEngine.
+/// DI registration for HealthCoreX.PriorAuthRuleEngine.
 ///
 /// ── Typical usage ─────────────────────────────────────────────────────────
 ///

@@ -1,6 +1,6 @@
-using CloudHealthOffice.PriorAuthRuleEngine.Abstractions;
-using CloudHealthOffice.PriorAuthRuleEngine.Domain;
-using CloudHealthOffice.PriorAuthRuleEngine.Models;
+using HealthCoreX.PriorAuthRuleEngine.Abstractions;
+using HealthCoreX.PriorAuthRuleEngine.Domain;
+using HealthCoreX.PriorAuthRuleEngine.Models;
 
 namespace FhirService.Services;
 

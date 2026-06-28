@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace CloudHealthOffice.Edi.Tests;
+namespace HealthCoreX.Edi.Tests;
 
 /// <summary>
 /// Shared helpers for parsing and asserting X12 EDI segments in tests.

@@ -1,5 +1,5 @@
-using CloudHealthOffice.ProviderService.Tests.Fakes;
-using CloudHealthOffice.ProviderService.Tests.TestHelpers;
+using HealthCoreX.ProviderService.Tests.Fakes;
+using HealthCoreX.ProviderService.Tests.TestHelpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -8,7 +8,7 @@ using ProviderService.Models;
 using ProviderService.Repositories;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.HostedServices;
+namespace HealthCoreX.ProviderService.Tests.HostedServices;
 
 /// <summary>
 /// Coverage for <see cref="IntegrityProjectionWorker"/>'s sweep loop:

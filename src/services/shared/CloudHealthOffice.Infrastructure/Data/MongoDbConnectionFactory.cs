@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.Infrastructure.Data;
+namespace HealthCoreX.Infrastructure.Data;
 
 /// <summary>
 /// Tenant-aware MongoDB connection factory. Resolves database names scoped by tenant ID
@@ -22,7 +22,7 @@ public class MongoDbConnectionFactory
     {
         _client = client;
         _httpContextAccessor = httpContextAccessor;
-        _baseDatabaseName = configuration["MongoDb:DatabaseName"] ?? "CloudHealthOffice";
+        _baseDatabaseName = configuration["MongoDb:DatabaseName"] ?? "HealthCoreX";
         _useTenantScoping = configuration.GetValue<bool>("MongoDb:UseTenantScoping", false);
     }
 

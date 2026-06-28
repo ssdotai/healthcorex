@@ -1,8 +1,8 @@
-using CloudHealthOffice.CobEngine.Domain;
-using CloudHealthOffice.CobEngine.Services;
+using HealthCoreX.CobEngine.Domain;
+using HealthCoreX.CobEngine.Services;
 using Xunit;
 
-namespace CloudHealthOffice.CobEngine.Tests;
+namespace HealthCoreX.CobEngine.Tests;
 
 public class CobCalculationServiceTests
 {

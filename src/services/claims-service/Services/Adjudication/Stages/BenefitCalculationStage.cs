@@ -1,8 +1,8 @@
 using ClaimsService.Models;
 using ClaimsService.Services.Resolution;
-using CloudHealthOffice.BenefitEngine.Domain;
-using CloudHealthOffice.BenefitEngine.Models;
-using CloudHealthOffice.BenefitEngine.Services;
+using HealthCoreX.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Models;
+using HealthCoreX.BenefitEngine.Services;
 using ClaimsAdj = ClaimsService.Models.AdjudicationResult;
 using ClaimsLineAdj = ClaimsService.Models.LineAdjudicationResult;
 
@@ -36,18 +36,51 @@ namespace ClaimsService.Services.Adjudication.Stages;
 public sealed class BenefitCalculationStage : IClaimAdjudicationStage
 {
     public const string StageName = "BenefitCalculation";
+    public const string MemberNotEligibleCarc = "27";
+    public const string PriorAuthorizationRequiredCode = "197";
+    public const string PriorAuthorizationRequiredReason = "Prior authorization required but not provided";
+    public const string PriorAuthorizationInvalidReason = "Prior authorization is not valid for this claim";
+
+    /// <summary>
+    /// <see cref="PendDetails.PendCode"/> value for claims pended because a
+    /// retroactive benefit-plan/coverage change (X12 834 maintenance type
+    /// code 001) was recorded with an effective date on or before the
+    /// claim's own service date -- the plan in force on the service date
+    /// can't be trusted without reconciliation.
+    /// </summary>
+    public const string RetroactivePlanChangePendCode = "RETROELIG";
+
+    /// <summary>
+    /// <see cref="PendDetails.PendCode"/> value for claims pended because the
+    /// claim carries an X12 837 CLM11 related-causes code (auto accident,
+    /// employment, or other accident) -- potential third-party liability
+    /// requires subrogation investigation before the claim can pay.
+    /// </summary>
+    public const string SubrogationReviewPendCode = "SUBRO";
+
+    /// <summary>
+    /// <see cref="PendDetails.PendCode"/> value for claims pended because the
+    /// member is enrolled under a Medicaid "medically needy" spend-down
+    /// eligibility category and has not yet incurred enough medical expense
+    /// in the current budget period to meet their spend-down liability --
+    /// Medicaid coverage isn't confirmed active for this period yet.
+    /// </summary>
+    public const string MedicaidSpendDownPendCode = "SPENDDOWN";
 
     private readonly IBenefitCalculationEngine _engine;
     private readonly IMemberResolver _memberResolver;
+    private readonly IAuthorizationValidationClient _authorizationValidationClient;
     private readonly ILogger<BenefitCalculationStage> _logger;
 
     public BenefitCalculationStage(
         IBenefitCalculationEngine engine,
         IMemberResolver memberResolver,
+        IAuthorizationValidationClient authorizationValidationClient,
         ILogger<BenefitCalculationStage> logger)
     {
         _engine = engine;
         _memberResolver = memberResolver;
+        _authorizationValidationClient = authorizationValidationClient;
         _logger = logger;
     }
 
@@ -74,6 +107,67 @@ public sealed class BenefitCalculationStage : IClaimAdjudicationStage
             return ClaimAdjudicationStageResult.Reject(
                 StageName,
                 $"BenefitPlanId '{claim.BenefitPlanId}' is not a GUID and benefit-plan-service did not resolve a Guid id.");
+        }
+
+        if (!IsMemberEligibleForServiceDate(context.ResolvedMember, claim.ServiceDateFrom, out var eligibilityReason))
+        {
+            context.AdjudicationResult.DenialReasonCode = MemberNotEligibleCarc;
+            context.AdjudicationResult.DenialReason = eligibilityReason;
+
+            return ClaimAdjudicationStageResult.Deny(
+                StageName,
+                eligibilityReason);
+        }
+
+        if (HasUnreconciledRetroactivePlanChange(context.ResolvedMember, claim.ServiceDateFrom, out var pendReason))
+        {
+            context.PendDetails = new PendDetails
+            {
+                PendCode = RetroactivePlanChangePendCode,
+                PendReason = pendReason,
+                PendedAt = DateTime.UtcNow,
+            };
+
+            return ClaimAdjudicationStageResult.Pend(StageName, pendReason);
+        }
+
+        if (HasUnreviewedSubrogationIndicator(claim, out var subrogationReason))
+        {
+            context.PendDetails = new PendDetails
+            {
+                PendCode = SubrogationReviewPendCode,
+                PendReason = subrogationReason,
+                PendedAt = DateTime.UtcNow,
+            };
+
+            return ClaimAdjudicationStageResult.Pend(StageName, subrogationReason);
+        }
+
+        if (HasUnmetMedicaidSpendDown(context.ResolvedMember, out var spendDownReason))
+        {
+            context.PendDetails = new PendDetails
+            {
+                PendCode = MedicaidSpendDownPendCode,
+                PendReason = spendDownReason,
+                PendedAt = DateTime.UtcNow,
+            };
+
+            return ClaimAdjudicationStageResult.Pend(StageName, spendDownReason);
+        }
+
+        var priorAuthorizationDenialReason = await ResolvePriorAuthorizationDenialReasonAsync(
+            context.TenantId,
+            claim,
+            ct).ConfigureAwait(false);
+
+        if (priorAuthorizationDenialReason is not null)
+        {
+            context.AdjudicationResult.DenialReasonCode = PriorAuthorizationRequiredCode;
+            context.AdjudicationResult.DenialReason = priorAuthorizationDenialReason;
+
+            return ClaimAdjudicationStageResult.Deny(
+                StageName,
+                priorAuthorizationDenialReason);
         }
 
         var subscriberId = await ResolveSubscriberIdAsync(context, ct).ConfigureAwait(false);
@@ -111,6 +205,157 @@ public sealed class BenefitCalculationStage : IClaimAdjudicationStage
     {
         if (resolved?.PlanGuid is Guid resolvedGuid) return resolvedGuid;
         return Guid.TryParse(benefitPlanId, out var parsed) ? parsed : null;
+    }
+
+    private static bool IsMemberEligibleForServiceDate(
+        ResolvedMember? member,
+        DateTime serviceDate,
+        out string reason)
+    {
+        var serviceDay = serviceDate.Date;
+
+        if (member?.EffectiveDate is DateTime effectiveDate
+            && serviceDay < effectiveDate.Date)
+        {
+            reason = "Service date before member coverage effective date";
+            return false;
+        }
+
+        if (member?.TerminationDate is DateTime terminationDate
+            && serviceDay > terminationDate.Date)
+        {
+            reason = "Service date after member coverage termination date";
+            return false;
+        }
+
+        if (!string.IsNullOrWhiteSpace(member?.EnrollmentStatus)
+            && !member.EnrollmentStatus.Equals("Active", StringComparison.OrdinalIgnoreCase)
+            && !member.EnrollmentStatus.Equals("Terminated", StringComparison.OrdinalIgnoreCase))
+        {
+            reason = $"Member status is {member.EnrollmentStatus}";
+            return false;
+        }
+
+        if (member?.EnrollmentStatus?.Equals("Terminated", StringComparison.OrdinalIgnoreCase) is true
+            && member.TerminationDate is null)
+        {
+            reason = "Member coverage terminated";
+            return false;
+        }
+
+        reason = "Active coverage";
+        return true;
+    }
+
+    private static bool HasUnreconciledRetroactivePlanChange(
+        ResolvedMember? member,
+        DateTime serviceDate,
+        out string reason)
+    {
+        if (member?.PlanChangeEffectiveDate is DateTime planChangeEffectiveDate
+            && serviceDate.Date >= planChangeEffectiveDate.Date)
+        {
+            reason =
+                $"Member has a retroactive benefit-plan change effective {planChangeEffectiveDate.Date:yyyy-MM-dd}; " +
+                "the plan in force on the service date requires reconciliation before this claim can adjudicate.";
+            return true;
+        }
+
+        reason = string.Empty;
+        return false;
+    }
+
+    private static readonly HashSet<string> RecognizedRelatedCausesCodes = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "AA", // Auto Accident
+        "EM", // Employment
+        "OA", // Other Accident
+    };
+
+    private static bool HasUnreviewedSubrogationIndicator(AdapterClaim claim, out string reason)
+    {
+        if (!string.IsNullOrWhiteSpace(claim.RelatedCausesCode)
+            && RecognizedRelatedCausesCodes.Contains(claim.RelatedCausesCode))
+        {
+            reason =
+                $"Claim carries related-causes code '{claim.RelatedCausesCode}'; potential third-party " +
+                "liability requires subrogation investigation before this claim can adjudicate.";
+            return true;
+        }
+
+        reason = string.Empty;
+        return false;
+    }
+
+    private static bool HasUnmetMedicaidSpendDown(ResolvedMember? member, out string reason)
+    {
+        if (member?.MedicaidSpendDownLiabilityAmount is decimal liability
+            && member.MedicaidSpendDownAmountMet < liability)
+        {
+            reason =
+                $"Member has a Medicaid spend-down liability of {liability:C} for the current budget " +
+                $"period and has incurred {member.MedicaidSpendDownAmountMet:C} toward it; coverage is " +
+                "not yet confirmed active for this period.";
+            return true;
+        }
+
+        reason = string.Empty;
+        return false;
+    }
+
+    internal static bool RequiresPriorAuthorizationDenial(AdapterClaim claim)
+    {
+        return RequiresPriorAuthorizationValidation(claim)
+            && string.IsNullOrWhiteSpace(claim.PriorAuthorizationNumber);
+    }
+
+    private async Task<string?> ResolvePriorAuthorizationDenialReasonAsync(
+        string tenantId,
+        AdapterClaim claim,
+        CancellationToken ct)
+    {
+        if (!RequiresPriorAuthorizationValidation(claim))
+        {
+            return null;
+        }
+
+        if (string.IsNullOrWhiteSpace(claim.PriorAuthorizationNumber))
+        {
+            return PriorAuthorizationRequiredReason;
+        }
+
+        var procedureCode = claim.ClaimLines
+            .OrderBy(line => line.LineNumber)
+            .Select(line => line.ProcedureCode)
+            .FirstOrDefault(code => !string.IsNullOrWhiteSpace(code));
+        var providerNpi = string.IsNullOrWhiteSpace(claim.RenderingProviderNPI)
+            ? claim.BillingProviderNPI
+            : claim.RenderingProviderNPI;
+
+        var validation = await _authorizationValidationClient.ValidateAsync(
+                tenantId,
+                claim.PriorAuthorizationNumber,
+                procedureCode,
+                claim.ServiceDateFrom,
+                providerNpi,
+                ct)
+            .ConfigureAwait(false);
+
+        if (validation is null || validation.IsValid)
+        {
+            return null;
+        }
+
+        return string.IsNullOrWhiteSpace(validation.ValidationMessage)
+            ? PriorAuthorizationInvalidReason
+            : validation.ValidationMessage;
+    }
+
+    private static bool RequiresPriorAuthorizationValidation(AdapterClaim claim)
+    {
+        return claim.ClaimType is ClaimsService.Models.ClaimType.Institutional
+            && claim.LineOfBusiness is LineOfBusiness.Medicaid
+            && string.Equals(claim.PlaceOfServiceCode, "21", StringComparison.OrdinalIgnoreCase);
     }
 
     private async Task<string> ResolveSubscriberIdAsync(
@@ -274,8 +519,8 @@ public sealed class BenefitCalculationStage : IClaimAdjudicationStage
             CopayAmount = totals.TotalCopay,
             PatientResponsibility = totals.TotalMemberResponsibility,
             PayerPayment = totals.TotalPlanPaid,
-            DenialReasonCode = result.Success ? existing.DenialReasonCode : result.DenialReasonCode,
-            DenialReason = result.Success ? existing.DenialReason : result.DenialReasonDescription,
+            DenialReasonCode = result.Success ? null : result.DenialReasonCode,
+            DenialReason = result.Success ? null : result.DenialReasonDescription,
             AdjustmentReasons = existing.AdjustmentReasons,
             RemarkCodes = existing.RemarkCodes,
             CheckNumber = existing.CheckNumber,

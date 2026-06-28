@@ -1,10 +1,10 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Configuration;
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
-using CloudHealthOffice.BenchmarkClaimGenerator.ReferenceData;
+using HealthCoreX.BenchmarkClaimGenerator.Configuration;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.ReferenceData;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Generators;
+namespace HealthCoreX.BenchmarkClaimGenerator.Generators;
 
 /// <summary>
 /// Generates a pool of synthetic providers (individual + organizational) with

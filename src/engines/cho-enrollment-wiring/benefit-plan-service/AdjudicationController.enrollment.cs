@@ -21,8 +21,8 @@
 //   }
 // ─────────────────────────────────────────────────────────────────
 
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Models;
 using Microsoft.AspNetCore.Mvc;
 
 // ── Endpoint ──────────────────────────────────────────────────────

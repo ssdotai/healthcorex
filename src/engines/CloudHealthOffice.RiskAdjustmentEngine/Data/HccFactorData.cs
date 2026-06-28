@@ -1,6 +1,6 @@
-using CloudHealthOffice.RiskAdjustmentEngine.Domain;
+using HealthCoreX.RiskAdjustmentEngine.Domain;
 
-namespace CloudHealthOffice.RiskAdjustmentEngine.Data;
+namespace HealthCoreX.RiskAdjustmentEngine.Data;
 
 /// <summary>
 /// Relative factors and demographic coefficients for the CMS-HCC v28 model

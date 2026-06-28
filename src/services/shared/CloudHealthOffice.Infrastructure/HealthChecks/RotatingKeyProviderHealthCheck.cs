@@ -1,7 +1,7 @@
-using CloudHealthOffice.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Configuration;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace CloudHealthOffice.Infrastructure.HealthChecks;
+namespace HealthCoreX.Infrastructure.HealthChecks;
 
 /// <summary>
 /// Verifies that every (secretPrefix, versions) pair a host service cares

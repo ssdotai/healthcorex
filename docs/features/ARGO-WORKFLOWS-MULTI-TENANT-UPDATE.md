@@ -155,7 +155,7 @@ All SFTP fetch/upload steps must construct full paths:
 ```yaml
 - name: fetch-from-sftp
   container:
-    image: cloudhealthoffice/sftp-client:latest
+    image: HealthCoreX/sftp-client:latest
     command: ["/bin/sh", "-c"]
     args:
       - |
@@ -170,7 +170,7 @@ All SFTP fetch/upload steps must construct full paths:
 ```yaml
 - name: fetch-from-sftp
   container:
-    image: cloudhealthoffice/sftp-client:latest
+    image: HealthCoreX/sftp-client:latest
     command: ["/bin/sh", "-c"]
     args:
       - |
@@ -203,7 +203,7 @@ Workflows should query Trading Partner Service for routing metadata:
       - |
         curl -s \
           -H "X-Tenant-ID: {{workflow.parameters.tenant-id}}" \
-          http://trading-partner-service.cloudhealthoffice/api/trading-partners/{{workflow.parameters.trading-partner-id}} \
+          http://trading-partner-service.HealthCoreX/api/trading-partners/{{workflow.parameters.trading-partner-id}} \
           > /tmp/partner-config.json
         
         # Extract SFTP paths
@@ -294,7 +294,7 @@ spec:
 ```bash
 # Submit 837 ingest workflow with tenant + trading partner
 argo submit \
-  -n cloudhealthoffice \
+  -n HealthCoreX \
   --from workflowtemplate/x12-837-ingest \
   -p tenant-id="bcbs-florida" \
   -p trading-partner-id="availity" \
@@ -302,7 +302,7 @@ argo submit \
 
 # Submit 276 claim status with different partner
 argo submit \
-  -n cloudhealthoffice \
+  -n HealthCoreX \
   --from workflowtemplate/x12-276-claim-status-request \
   -p tenant-id="bcbs-florida" \
   -p trading-partner-id="change-healthcare" \
@@ -312,7 +312,7 @@ argo submit \
 ### Verify Path Construction
 ```bash
 # Get workflow logs
-argo logs -n cloudhealthoffice @latest
+argo logs -n HealthCoreX @latest
 
 # Check SFTP paths in workflow
 # Should see: /tenants/bcbs-florida/availity/inbound/837/

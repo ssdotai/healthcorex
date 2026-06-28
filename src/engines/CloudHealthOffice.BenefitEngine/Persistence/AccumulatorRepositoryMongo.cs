@@ -1,9 +1,9 @@
-using CloudHealthOffice.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.BenefitEngine.Persistence;
+namespace HealthCoreX.BenefitEngine.Persistence;
 
 /// <summary>
 /// MongoDB-backed accumulator repository.

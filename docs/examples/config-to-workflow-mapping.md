@@ -155,7 +155,7 @@ To test different configurations:
 
 1. **Update workflow parameters** via Kubernetes ConfigMap or Helm values:
    ```bash
-   kubectl -n cloudhealthoffice edit configmap ecs-config
+   kubectl -n HealthCoreX edit configmap ecs-config
    # Set includeFinancialFields=false, then restart the ECS pod
    ```
 
@@ -165,7 +165,7 @@ To test different configurations:
      -H "Authorization: Bearer $TOKEN" \
      -H "Content-Type: application/json" \
      -d @test-request.json \
-     https://api.cloudhealthoffice.com/api/ecs/summary-search
+     https://api.<your-domain>/api/ecs/summary-search
    ```
 
 3. **Validate Response** contains/excludes expected fields:

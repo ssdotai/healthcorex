@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Infrastructure.Caching;
+namespace HealthCoreX.Infrastructure.Caching;
 
 /// <summary>
 /// Decorator that routes every <see cref="ICacheProvider"/> call through

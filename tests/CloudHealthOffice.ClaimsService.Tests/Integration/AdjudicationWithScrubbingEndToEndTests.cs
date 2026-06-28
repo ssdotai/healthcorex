@@ -7,9 +7,9 @@ using ClaimsService.Services;
 using ClaimsService.Services.Adjudication;
 using ClaimsService.Services.Adjudication.Stages;
 using ClaimsService.Services.Resolution;
-using CloudHealthOffice.ClaimsScrubEngine.Configuration;
-using CloudHealthOffice.ClaimsScrubEngine.Services;
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.ClaimsScrubEngine.Configuration;
+using HealthCoreX.ClaimsScrubEngine.Services;
+using HealthCoreX.Infrastructure.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -17,12 +17,12 @@ using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Integration;
+namespace HealthCoreX.ClaimsService.Tests.Integration;
 
 /// <summary>
 /// Capability 5.4 — pipeline-level integration that wires the REAL
 /// <see cref="ScrubbingStage"/> backed by the REAL
-/// <c>CloudHealthOffice.ClaimsScrubEngine</c> with default rules.
+/// <c>HealthCoreX.ClaimsScrubEngine</c> with default rules.
 /// Verifies the cross-stage contract: clean claim flows through to
 /// PersistenceStage; structurally invalid claim short-circuits with
 /// <c>Reject</c>.
@@ -34,6 +34,7 @@ public class AdjudicationWithScrubbingEndToEndTests
     private readonly IClaimAdapter _adapter = Substitute.For<IClaimAdapter>();
     private readonly IBenefitPlanResolver _planResolver = Substitute.For<IBenefitPlanResolver>();
     private readonly IMemberResolver _memberResolver = Substitute.For<IMemberResolver>();
+    private readonly ICoverageResolver _coverageResolver = Substitute.For<ICoverageResolver>();
     private readonly IClaimVersionEventPublisher _eventPublisher = Substitute.For<IClaimVersionEventPublisher>();
     private readonly IMessageBus _messageBus = Substitute.For<IMessageBus>();
     private readonly ClaimAdapterFactory _factory;
@@ -166,6 +167,7 @@ public class AdjudicationWithScrubbingEndToEndTests
             _factory,
             _planResolver,
             _memberResolver,
+            _coverageResolver,
             new IClaimAdjudicationStage[] { scrubbing, persistence },
             _eventPublisher,
             _messageBus,

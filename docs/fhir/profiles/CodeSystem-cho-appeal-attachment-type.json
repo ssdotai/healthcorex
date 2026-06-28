@@ -1,7 +1,7 @@
 {
   "resourceType": "CodeSystem",
   "id": "cho-appeal-attachment-type",
-  "url": "http://fhir.cloudhealthoffice.com/CodeSystem/cho-appeal-attachment-type",
+  "url": "http://fhir.HealthCoreX.com/CodeSystem/cho-appeal-attachment-type",
   "version": "1.0.0",
   "name": "ChoAppealAttachmentType",
   "title": "CHO Appeal Attachment Type",

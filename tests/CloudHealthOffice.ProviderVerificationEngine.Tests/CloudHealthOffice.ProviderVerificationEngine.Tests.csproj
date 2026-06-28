@@ -19,7 +19,7 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\engines\CloudHealthOffice.ProviderVerificationEngine\CloudHealthOffice.ProviderVerificationEngine.csproj" />
-    <ProjectReference Include="..\..\src\services\provider-verification-service\CloudHealthOffice.ProviderVerificationService.csproj" />
+    <ProjectReference Include="..\..\src\engines\HealthCoreX.ProviderVerificationEngine\HealthCoreX.ProviderVerificationEngine.csproj" />
+    <ProjectReference Include="..\..\src\services\provider-verification-service\HealthCoreX.ProviderVerificationService.csproj" />
   </ItemGroup>
 </Project>

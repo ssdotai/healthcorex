@@ -1,7 +1,7 @@
 {
   "resourceType": "ValueSet",
   "id": "cho-appeal-task-status",
-  "url": "http://fhir.cloudhealthoffice.com/ValueSet/cho-appeal-task-status",
+  "url": "http://fhir.HealthCoreX.com/ValueSet/cho-appeal-task-status",
   "version": "1.0.0",
   "name": "ChoAppealTaskStatusVS",
   "title": "CHO Appeal Task Status Value Set",

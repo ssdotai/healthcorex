@@ -3,7 +3,7 @@ using FluentAssertions;
 using ProviderService.Models;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Services;
+namespace HealthCoreX.ProviderService.Tests.Services;
 
 /// <summary>
 /// Capability 5.9 — FHIR Organization projection unit tests. Covers both

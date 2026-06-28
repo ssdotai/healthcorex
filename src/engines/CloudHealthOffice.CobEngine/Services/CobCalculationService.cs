@@ -1,6 +1,6 @@
-using CloudHealthOffice.CobEngine.Domain;
+using HealthCoreX.CobEngine.Domain;
 
-namespace CloudHealthOffice.CobEngine.Services;
+namespace HealthCoreX.CobEngine.Services;
 
 /// <summary>
 /// Implements the two standard COB calculation models used in commercial health insurance.

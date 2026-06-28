@@ -5,7 +5,7 @@ using MongoDB.Driver;
 using ProviderService.Models;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Services;
+namespace HealthCoreX.ProviderService.Tests.Services;
 
 /// <summary>
 /// Mongo-backed publisher: idempotency on duplicate <see cref="ProviderVersionEvent.EventId"/>

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
-namespace CloudHealthOffice.Infrastructure.Caching;
+namespace HealthCoreX.Infrastructure.Caching;
 
 /// <summary>
 /// Registers <see cref="ICacheProvider"/> and resolves the backend from
@@ -79,7 +79,7 @@ public static class CachingServiceCollectionExtensions
         services.AddSingleton<ICacheProvider>(sp =>
         {
             var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
-            var logger        = loggerFactory.CreateLogger("CloudHealthOffice.Infrastructure.Caching");
+            var logger        = loggerFactory.CreateLogger("HealthCoreX.Infrastructure.Caching");
 
             logger.LogInformation(
                 "ICacheProvider={Backend} ({Reason})",

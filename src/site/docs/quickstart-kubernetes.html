@@ -3,33 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kubernetes Quick Start — Cloud Health Office Documentation</title>
-  <meta name="description" content="Run the full Cloud Health Office platform on Docker Desktop Kubernetes — the same architecture, namespaces, and manifests used in production on Azure AKS. Under 15 minutes." />
+  <title>Kubernetes Reference — Cloud Health Office Documentation</title>
+  <meta name="description" content="Run the full Cloud Health Office platform on Docker Desktop Kubernetes with the same service shape, namespace, and reference manifests used for cloud deployment evaluation. Under 15 minutes." />
   <meta name="keywords" content="Cloud Health Office Kubernetes, local Kubernetes development, Docker Desktop Kubernetes, healthcare payer platform k8s, microservices local deployment, CMS-0057-F Kubernetes" />
-  <link rel="canonical" href="https://cloudhealthoffice.com/docs/quickstart-kubernetes" />
+  <link rel="canonical" href="https://HealthCoreX.com/docs/quickstart-kubernetes" />
 
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://cloudhealthoffice.com/docs/quickstart-kubernetes" />
-  <meta property="og:title" content="Kubernetes Quick Start — Cloud Health Office" />
-  <meta property="og:description" content="Deploy Cloud Health Office to local Kubernetes with the same architecture as production. 36 microservices, MongoDB, Redis — identical to Azure AKS." />
+  <meta property="og:url" content="https://HealthCoreX.com/docs/quickstart-kubernetes" />
+  <meta property="og:title" content="Kubernetes Reference — Cloud Health Office" />
+  <meta property="og:description" content="Deploy Cloud Health Office to local Kubernetes with production-shaped microservices, MongoDB, Redis, and reference cloud-deployment patterns." />
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "Cloud Health Office Kubernetes Quick Start",
-    "description": "Step-by-step guide to deploying Cloud Health Office on Docker Desktop Kubernetes — matching the production Azure AKS architecture.",
-    "url": "https://cloudhealthoffice.com/docs/quickstart-kubernetes",
+    "headline": "Cloud Health Office Kubernetes Reference",
+    "description": "Step-by-step guide to deploying Cloud Health Office on Docker Desktop Kubernetes with production-shaped services and reference cloud-deployment patterns.",
+    "url": "https://HealthCoreX.com/docs/quickstart-kubernetes",
     "author": { "@type": "Organization", "name": "Aurelianware, Inc." },
-    "publisher": { "@type": "Organization", "name": "Cloud Health Office", "url": "https://cloudhealthoffice.com" },
+    "publisher": { "@type": "Organization", "name": "Cloud Health Office", "url": "https://HealthCoreX.com" },
     "datePublished": "2026-04-04",
     "proficiencyLevel": "Intermediate",
     "breadcrumb": {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cloudhealthoffice.com" },
-        { "@type": "ListItem", "position": 2, "name": "Docs", "item": "https://cloudhealthoffice.com/docs" },
-        { "@type": "ListItem", "position": 3, "name": "Kubernetes Quick Start", "item": "https://cloudhealthoffice.com/docs/quickstart-kubernetes" }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://HealthCoreX.com" },
+        { "@type": "ListItem", "position": 2, "name": "Docs", "item": "https://HealthCoreX.com/docs" },
+        { "@type": "ListItem", "position": 3, "name": "Kubernetes Reference", "item": "https://HealthCoreX.com/docs/quickstart-kubernetes" }
       ]
     }
   }
@@ -48,7 +48,7 @@
   <nav>
     <div class="nav-inner">
       <a href="/" class="nav-logo" aria-label="Cloud Health Office Home">
-        <img src="/graphics/logo-cloudhealthoffice-sentinel-primary.svg" alt="" class="nav-logo-img" aria-hidden="true" />
+        <img src="/graphics/logo-HealthCoreX-sentinel-primary.svg" alt="" class="nav-logo-img" aria-hidden="true" />
         <span class="nav-logo-text">Cloud Health Office</span>
       </a>
       <div class="nav-right">
@@ -59,7 +59,7 @@
           <li><a href="/pricing">Pricing</a></li>
           <li><a href="/platform">Platform</a></li>
           <li><a href="/docs" style="color:#00ffff; font-weight:bold;">Docs</a></li>
-          <li><a href="https://github.com/aurelianware/cloudhealthoffice" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="https://github.com/aurelianware/HealthCoreX" target="_blank" rel="noopener noreferrer">GitHub</a></li>
           <li><a href="/contact" style="color:#00ffff; font-weight:bold;">Contact Sales</a></li>
         </ul>
       </div>
@@ -77,8 +77,8 @@
             <div class="docs-sidebar-section-title">Getting Started</div>
             <ul>
               <li><a href="/docs">Docs Home</a></li>
-              <li><a href="/docs/quickstart">Quick Start (Docker)</a></li>
-              <li><a href="/docs/quickstart-kubernetes" class="active">Quick Start (Kubernetes)</a></li>
+              <li><a href="/docs/quickstart">Quick Start</a></li>
+              <li><a href="/docs/quickstart-kubernetes" class="active">Kubernetes Reference</a></li>
             </ul>
           </div>
           <div class="docs-sidebar-section">
@@ -99,7 +99,7 @@
               <li><a href="#step-4">4. Access the Platform</a></li>
               <li><a href="#step-5">5. Seed &amp; Test</a></li>
               <li><a href="#step-6">6. Verify System Health</a></li>
-              <li><a href="#production-comparison">Production Comparison</a></li>
+              <li><a href="#deployment-comparison">Deployment Comparison</a></li>
               <li><a href="#common-tasks">Common Tasks</a></li>
               <li><a href="#troubleshooting">Troubleshooting</a></li>
               <li><a href="#tear-down">Tear Down</a></li>
@@ -134,17 +134,17 @@
           <span class="sep">&#x25B8;</span>
           <a href="/docs">Docs</a>
           <span class="sep">&#x25B8;</span>
-          <span class="current">Kubernetes Quick Start</span>
+          <span class="current">Kubernetes Reference</span>
         </div>
 
-        <h1>Kubernetes Quick Start</h1>
+        <h1>Kubernetes Reference</h1>
         <p class="docs-subtitle">
-          Run the full Cloud Health Office platform on Docker Desktop Kubernetes &mdash; the same architecture, namespaces, services, and manifests used in production on Azure AKS. No Azure account needed.
+          Run the full Cloud Health Office platform on Docker Desktop Kubernetes &mdash; the same service shape, namespace, and reference manifests used for cloud-deployment evaluation. No Azure account needed.
         </p>
 
         <div class="callout callout-info">
-          <div class="callout-title">Docker Compose vs Kubernetes</div>
-          <p>The <a href="/docs/quickstart">Docker Compose Quick Start</a> is faster for API testing and claims adjudication. This guide gives you the <strong>full production-equivalent Kubernetes deployment</strong> &mdash; same namespace layout, DNS, secrets, ConfigMaps, and health probes as Azure AKS.</p>
+          <div class="callout-title">Quick Start vs Reference</div>
+          <p>The <a href="/docs/quickstart">primary Quick Start</a> is the shortest local Kubernetes path. This reference guide adds deeper troubleshooting, teardown, resource guidance, and common kubectl workflows for the same production-shaped local deployment.</p>
         </div>
 
         <!-- What You Get -->
@@ -155,15 +155,15 @@
             <tr><th>Component</th><th>Count</th><th>Notes</th></tr>
           </thead>
           <tbody>
-            <tr><td>Microservices</td><td>25</td><td>Claims, Members, Eligibility, Payments, FHIR, Appeals, Capitation, etc.</td></tr>
-            <tr><td>Portal</td><td>1</td><td>Blazor Server UI &mdash; same as <code>portal.cloudhealthoffice.com</code></td></tr>
+            <tr><td>Microservices</td><td>30+</td><td>Claims, Members, Eligibility, Payments, FHIR, Appeals, Capitation, encounters, provider workflows, and supporting services.</td></tr>
+            <tr><td>Portal</td><td>1</td><td>Blazor Server UI you can expose on your own portal host after deployment</td></tr>
             <tr><td>MongoDB</td><td>1</td><td>StatefulSet with persistent storage</td></tr>
             <tr><td>Redis</td><td>1</td><td>Data-protection key store and caching</td></tr>
-            <tr><td>Namespace</td><td><code>cloudhealthoffice</code></td><td>Matches production layout</td></tr>
+            <tr><td>Namespace</td><td><code>HealthCoreX</code></td><td>Matches the reference cloud layout</td></tr>
           </tbody>
         </table>
 
-        <p>All services communicate over Kubernetes DNS (<code>service-name.cloudhealthoffice</code>) &mdash; identical to production.</p>
+        <p>All services communicate over Kubernetes DNS (<code>service-name.HealthCoreX</code>) &mdash; the same service-discovery pattern used by the reference cloud deployment.</p>
 
         <!-- Prerequisites -->
         <h2 id="prerequisites">Prerequisites</h2>
@@ -184,7 +184,7 @@
 
         <div class="callout callout-warning">
           <div class="callout-title">Resource requirements</div>
-          <p>The full platform runs 25+ pods. Allocate at least <strong>4 CPU cores</strong> and <strong>8 GB memory</strong> in Docker Desktop (Settings &gt; Resources). First build pulls .NET 8 SDK + runtime images &mdash; budget ~8 GB disk for images.</p>
+          <p>The full platform runs 30+ pods. Allocate at least <strong>6 CPU cores</strong> and <strong>16 GB memory</strong>; <strong>24 GB</strong> is recommended in Docker Desktop (Settings &gt; Resources). First build pulls .NET 8 SDK + runtime images &mdash; budget ~8 GB disk for images.</p>
         </div>
 
         <!-- Step 1 -->
@@ -231,7 +231,7 @@ kubectl cluster-info
           <div class="step-body">
             <h3>One command deploys the entire platform</h3>
 <pre><code>./scripts/deploy-local.sh</code></pre>
-            <p>This builds Docker images for all 25 services + portal, creates the <code>cloudhealthoffice</code> namespace, deploys MongoDB and Redis, creates all Kubernetes secrets, seeds demo data, and deploys all microservices using the same k8s manifests as production.</p>
+            <p>This builds Docker images for all 30+ services plus the portal, creates the <code>HealthCoreX</code> namespace, deploys MongoDB and Redis, creates local Kubernetes secrets, seeds demo data, and deploys the microservices using the repository's reference manifests with local patches.</p>
             <p><strong>First run:</strong> ~10&ndash;15 minutes (image builds). <strong>Subsequent runs:</strong> ~2 minutes.</p>
 
             <table>
@@ -244,7 +244,7 @@ kubectl cluster-info
 
             <h3>Watch the rollout</h3>
             <p>In a separate terminal:</p>
-<pre><code>watch kubectl get pods -n cloudhealthoffice</code></pre>
+<pre><code>watch kubectl get pods -n HealthCoreX</code></pre>
             <p>All pods should reach <code>Running</code> / <code>1/1 Ready</code> within 2&ndash;3 minutes after images are built.</p>
           </div>
         </div>
@@ -258,18 +258,18 @@ kubectl cluster-info
             <h3>Port-forward to access services locally</h3>
             <p>Services run inside the cluster on ClusterIP. Use port-forwarding to reach them (open each in a separate terminal, or append <code>&amp;</code> to background):</p>
 <pre><code><span class="code-comment"># Portal (Blazor Server UI)</span>
-kubectl port-forward -n cloudhealthoffice svc/portal 8080:80
+kubectl port-forward -n HealthCoreX svc/portal 8080:80
 
 <span class="code-comment"># Core API services</span>
-kubectl port-forward -n cloudhealthoffice svc/claims-service 5001:80
-kubectl port-forward -n cloudhealthoffice svc/benefit-plan-service 5002:80
-kubectl port-forward -n cloudhealthoffice svc/member-service 5003:80
-kubectl port-forward -n cloudhealthoffice svc/provider-service 5004:80
-kubectl port-forward -n cloudhealthoffice svc/eligibility-service 5005:80
-kubectl port-forward -n cloudhealthoffice svc/payment-service 5006:80
+kubectl port-forward -n HealthCoreX svc/claims-service 5001:80
+kubectl port-forward -n HealthCoreX svc/benefit-plan-service 5002:80
+kubectl port-forward -n HealthCoreX svc/member-service 5003:80
+kubectl port-forward -n HealthCoreX svc/provider-service 5004:80
+kubectl port-forward -n HealthCoreX svc/eligibility-service 5005:80
+kubectl port-forward -n HealthCoreX svc/payment-service 5006:80
 
 <span class="code-comment"># MongoDB (for direct access)</span>
-kubectl port-forward -n cloudhealthoffice svc/mongodb 27017:27017</code></pre>
+kubectl port-forward -n HealthCoreX svc/mongodb 27017:27017</code></pre>
 
             <table>
               <thead><tr><th>Service</th><th>Local URL</th></tr></thead>
@@ -297,8 +297,8 @@ kubectl port-forward -n cloudhealthoffice svc/mongodb 27017:27017</code></pre>
 <pre><code>CLAIMS_URL=http://localhost:5001 \
 BENEFIT_URL=http://localhost:5002 \
 ./scripts/seed-local.sh --tenant demo</code></pre>
-            <p>This seeds NCCI edits, creates a benefit plan, submits a claim, runs adjudication, executes a payment batch, and downloads an 835 ERA file &mdash; the complete claims lifecycle.</p>
-            <p>For a step-by-step walkthrough with individual curl commands, see the <a href="/docs/quickstart">Docker Quick Start guide</a> (steps 3&ndash;7 work identically after port-forwarding).</p>
+            <p>This seeds NCCI edits, creates a benefit plan, submits a claim, runs adjudication, and writes the adjudication result back to the claim.</p>
+            <p>For the shortest walkthrough, see the <a href="/docs/quickstart">primary Quick Start guide</a>.</p>
           </div>
         </div>
 
@@ -310,37 +310,37 @@ BENEFIT_URL=http://localhost:5002 \
           <div class="step-body">
             <h3>Check pod status and health endpoints</h3>
 <pre><code><span class="code-comment"># All pods</span>
-kubectl get pods -n cloudhealthoffice
+kubectl get pods -n HealthCoreX
 
 <span class="code-comment"># All services</span>
-kubectl get svc -n cloudhealthoffice
+kubectl get svc -n HealthCoreX
 
 <span class="code-comment"># Portal logs</span>
-kubectl logs -n cloudhealthoffice -l app=portal --tail=50
+kubectl logs -n HealthCoreX -l app=portal --tail=50
 
 <span class="code-comment"># Claims service logs</span>
-kubectl logs -n cloudhealthoffice -l app=claims-service --tail=50
+kubectl logs -n HealthCoreX -l app=claims-service --tail=50
 
 <span class="code-comment"># Find errors across all services</span>
-kubectl logs -n cloudhealthoffice --all-containers --tail=20 | grep -i error</code></pre>
+kubectl logs -n HealthCoreX --all-containers --tail=20 | grep -i error</code></pre>
           </div>
         </div>
 
         <div class="callout callout-success">
-          <div class="callout-title">You're running production-equivalent Kubernetes!</div>
-          <p>You now have the same 25-service microservices architecture running locally that powers <code>portal.cloudhealthoffice.com</code> in production. Same namespace, same DNS, same manifests, same health probes.</p>
+          <div class="callout-title">You're running production-shaped local Kubernetes!</div>
+          <p>You now have the microservices architecture running locally with the same namespace, service DNS pattern, and health probes used by the reference deployment path. A payer production rollout still needs environment-specific security, ingress, identity, data, and operational validation.</p>
         </div>
 
-        <!-- Production Comparison -->
-        <h2 id="production-comparison">How This Matches Production</h2>
+        <!-- Deployment Comparison -->
+        <h2 id="deployment-comparison">How This Maps to a Cloud Deployment</h2>
 
         <table>
           <thead>
-            <tr><th>Aspect</th><th>Local (Docker Desktop)</th><th>Production (Azure AKS)</th></tr>
+            <tr><th>Aspect</th><th>Local (Docker Desktop)</th><th>Reference cloud deployment</th></tr>
           </thead>
           <tbody>
-            <tr><td>Namespace</td><td><code>cloudhealthoffice</code></td><td><code>cloudhealthoffice</code></td></tr>
-            <tr><td>Service DNS</td><td><code>svc.cloudhealthoffice</code></td><td><code>svc.cloudhealthoffice</code></td></tr>
+            <tr><td>Namespace</td><td><code>HealthCoreX</code></td><td><code>HealthCoreX</code></td></tr>
+            <tr><td>Service DNS</td><td><code>svc.HealthCoreX</code></td><td><code>svc.HealthCoreX</code></td></tr>
             <tr><td>K8s manifests</td><td>Same files, <code>imagePullPolicy</code> patched</td><td><code>Always</code> (pulls from ACR)</td></tr>
             <tr><td>Container port</td><td>8080</td><td>8080</td></tr>
             <tr><td>Secrets</td><td>Local stubs via <code>deploy-local.sh</code></td><td>Azure Key Vault</td></tr>
@@ -357,21 +357,21 @@ kubectl logs -n cloudhealthoffice --all-containers --tail=20 | grep -i error</co
 
         <h3>Rebuild and redeploy a single service</h3>
 <pre><code><span class="code-comment"># Rebuild just the claims service</span>
-docker build -t choacrhy6h2vdulfru6.azurecr.io/cloudhealthoffice-claims-service:latest \
+docker build -t choacrhy6h2vdulfru6.azurecr.io/HealthCoreX-claims-service:latest \
   -f src/services/claims-service/Dockerfile .
 
 <span class="code-comment"># Restart the deployment to pick up the new image</span>
-kubectl rollout restart deployment/claims-service -n cloudhealthoffice
-kubectl rollout status deployment/claims-service -n cloudhealthoffice</code></pre>
+kubectl rollout restart deployment/claims-service -n HealthCoreX
+kubectl rollout status deployment/claims-service -n HealthCoreX</code></pre>
 
         <h3>Connect to MongoDB</h3>
-<pre><code>kubectl port-forward -n cloudhealthoffice svc/mongodb 27017:27017
+<pre><code>kubectl port-forward -n HealthCoreX svc/mongodb 27017:27017
 
 <span class="code-comment"># In another terminal:</span>
 mongosh "mongodb://admin:localdev123@localhost:27017/?authSource=admin"</code></pre>
 
         <h3>Scale a service</h3>
-<pre><code>kubectl scale deployment/claims-service -n cloudhealthoffice --replicas=3</code></pre>
+<pre><code>kubectl scale deployment/claims-service -n HealthCoreX --replicas=3</code></pre>
 
         <h3>Apply a manifest change</h3>
 <pre><code>kubectl apply -f src/services/claims-service/k8s/claims-service-deployment.yaml</code></pre>
@@ -381,29 +381,29 @@ mongosh "mongodb://admin:localdev123@localhost:27017/?authSource=admin"</code></
 
         <h3>Pods stuck in ImagePullBackOff</h3>
         <p>Images are built locally but the manifest says <code>imagePullPolicy: Always</code>. The deploy script patches this automatically. If you applied a manifest manually:</p>
-<pre><code>kubectl patch deployment claims-service -n cloudhealthoffice \
+<pre><code>kubectl patch deployment claims-service -n HealthCoreX \
   -p '{"spec":{"template":{"spec":{"containers":[{"name":"claims-service","imagePullPolicy":"IfNotPresent"}]}}}}'</code></pre>
 
         <h3>Pods in CrashLoopBackOff</h3>
         <p>Usually a missing secret or MongoDB not ready yet:</p>
 <pre><code><span class="code-comment"># Check what's failing</span>
-kubectl describe pod -n cloudhealthoffice -l app=claims-service
-kubectl logs -n cloudhealthoffice -l app=claims-service --previous
+kubectl describe pod -n HealthCoreX -l app=claims-service
+kubectl logs -n HealthCoreX -l app=claims-service --previous
 
 <span class="code-comment"># Verify secrets exist</span>
-kubectl get secrets -n cloudhealthoffice</code></pre>
+kubectl get secrets -n HealthCoreX</code></pre>
 
         <h3>MongoDB not starting</h3>
-<pre><code>kubectl describe statefulset mongodb -n cloudhealthoffice
-kubectl logs -n cloudhealthoffice mongodb-0</code></pre>
+<pre><code>kubectl describe statefulset mongodb -n HealthCoreX
+kubectl logs -n HealthCoreX mongodb-0</code></pre>
         <p>If PVC issues on Docker Desktop: Settings &gt; Kubernetes &gt; Reset Kubernetes Cluster.</p>
 
         <h3>Port-forward drops</h3>
         <p>Port-forwards disconnect when pods restart. Re-run the command, or use <a href="https://github.com/txn2/kubefwd" target="_blank" rel="noopener noreferrer">kubefwd</a> for automatic forwarding.</p>
 
         <h3>Services can't reach each other</h3>
-<pre><code>kubectl run -n cloudhealthoffice dns-test --rm -it --image=busybox -- \
-  nslookup claims-service.cloudhealthoffice</code></pre>
+<pre><code>kubectl run -n HealthCoreX dns-test --rm -it --image=busybox -- \
+  nslookup claims-service.HealthCoreX</code></pre>
 
         <h3>Docker Desktop running slow</h3>
         <p>Increase resources in Docker Desktop &gt; Settings &gt; Resources: <strong>4+ CPU cores</strong>, <strong>8+ GB memory</strong>.</p>
@@ -412,11 +412,11 @@ kubectl logs -n cloudhealthoffice mongodb-0</code></pre>
         <h2 id="tear-down">Tear Down</h2>
 
         <h3>Stop everything (keep data)</h3>
-<pre><code>kubectl delete namespace cloudhealthoffice</code></pre>
+<pre><code>kubectl delete namespace HealthCoreX</code></pre>
         <p>Data in MongoDB PVCs persists. Re-run <code>./scripts/deploy-local.sh --skip-build</code> to bring it back.</p>
 
         <h3>Full reset (delete everything including data)</h3>
-<pre><code>kubectl delete namespace cloudhealthoffice
+<pre><code>kubectl delete namespace HealthCoreX
 docker volume prune -f</code></pre>
 
         <!-- Next Steps -->
@@ -424,13 +424,13 @@ docker volume prune -f</code></pre>
 
         <div class="docs-hub-grid" style="grid-template-columns: 1fr 1fr; margin-top: 20px;">
           <a href="/docs/quickstart" class="docs-hub-card">
-            <h3>Docker Compose Quick Start</h3>
-            <p>Faster alternative for API testing. Step-by-step claim adjudication with curl commands.</p>
+            <h3>Primary Quick Start</h3>
+            <p>Short path for deploying local Kubernetes and validating claims plus CRD discovery.</p>
             <span class="card-arrow">View guide &rarr;</span>
           </a>
           <a href="/docs/deployment" class="docs-hub-card">
-            <h3>Deploy to Production</h3>
-            <p>Move from local Kubernetes to Azure AKS with gated CI/CD releases and HIPAA-compliant infrastructure.</p>
+            <h3>Deployment Reference</h3>
+            <p>Move from local Kubernetes to a reviewed cloud deployment path with gated CI/CD, environment-specific security, and payer validation.</p>
             <span class="card-arrow">Deployment guide &rarr;</span>
           </a>
           <a href="/docs/architecture" class="docs-hub-card">
@@ -449,7 +449,7 @@ docker volume prune -f</code></pre>
         <div class="docs-pager">
           <a href="/docs/quickstart">
             <div class="pager-label">&larr; Previous</div>
-            <div class="pager-title">Quick Start (Docker)</div>
+            <div class="pager-title">Quick Start</div>
           </a>
           <a href="/docs/deployment" class="next">
             <div class="pager-label">Next &rarr;</div>
@@ -473,8 +473,8 @@ docker volume prune -f</code></pre>
         <div class="footer-col">
           <h5>Documentation</h5>
           <ul>
-            <li><a href="/docs/quickstart">Quick Start (Docker)</a></li>
-            <li><a href="/docs/quickstart-kubernetes">Quick Start (Kubernetes)</a></li>
+            <li><a href="/docs/quickstart">Quick Start</a></li>
+            <li><a href="/docs/quickstart-kubernetes">Kubernetes Reference</a></li>
             <li><a href="/docs/compliance">CMS-0057-F Guide</a></li>
             <li><a href="/docs/architecture">Architecture</a></li>
             <li><a href="/docs/fee-schedule-engine">Fee Schedule Engine</a></li>
@@ -486,7 +486,7 @@ docker volume prune -f</code></pre>
           <h5>Contact</h5>
           <ul>
             <li><a href="/contact">Contact Sales</a></li>
-            <li><a href="mailto:enterprise@cloudhealthoffice.com">Enterprise Support</a></li>
+            <li><a href="mailto:enterprise@HealthCoreX.com">Enterprise Support</a></li>
           </ul>
         </div>
       </div>

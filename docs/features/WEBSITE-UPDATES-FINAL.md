@@ -118,7 +118,7 @@ site/
 
 ### Contact & Legal
 ✅ Email: mark@aurelianware.com  
-✅ GitHub: github.com/aurelianware/cloudhealthoffice  
+✅ GitHub: github.com/aurelianware/HealthCoreX  
 ✅ License: BSL 1.1  
 ✅ Copyright: © 2026 Aurelianware  
 ✅ Disclaimer: "Not affiliated with third-party vendors"
@@ -161,7 +161,7 @@ site/
 ### 1. File Cleanup (Optional)
 ```bash
 # Archive old assessment.html
-cd /Users/karkusdog/git/cho/cloudhealthoffice/site
+cd /Users/karkusdog/git/cho/HealthCoreX/site
 mv assessment.html assessment-old.html
 # OR delete it entirely:
 # rm assessment.html
@@ -169,7 +169,7 @@ mv assessment.html assessment-old.html
 
 ### 2. Git Commit
 ```bash
-cd /Users/karkusdog/git/cho/cloudhealthoffice
+cd /Users/karkusdog/git/cho/HealthCoreX
 
 # Stage website updates
 git add site/index.html

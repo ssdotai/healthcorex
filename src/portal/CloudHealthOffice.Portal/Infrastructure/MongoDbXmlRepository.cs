@@ -3,7 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Xml.Linq;
 
-namespace CloudHealthOffice.Portal.Infrastructure;
+namespace HealthCoreX.Portal.Infrastructure;
 
 /// <summary>
 /// Persists ASP.NET Core DataProtection keys to MongoDB so that all
@@ -18,7 +18,7 @@ public class MongoDbXmlRepository : IXmlRepository
 
     public MongoDbXmlRepository(IMongoClient mongoClient, ILogger<MongoDbXmlRepository>? logger = null)
     {
-        var db = mongoClient.GetDatabase("cloudhealthoffice");
+        var db = mongoClient.GetDatabase("HealthCoreX");
         _collection = db.GetCollection<DataProtectionKeyDocument>("dataprotection_keys");
         _logger = logger;
     }

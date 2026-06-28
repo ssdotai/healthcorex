@@ -560,7 +560,7 @@ The wizard guides you through a series of interactive prompts:
 - **Organization Name**: Full legal name of the health plan
 - **Payer ID**: Unique identifier (5-20 characters, alphanumeric)
 - **Payer Name**: Display name for provider portals
-- **Logo URL**: Optional URL to organization logo (recommended: 800x400px PNG/SVG, Cloud Health Office Sentinel branding available at docs/images/logo-cloudhealthoffice-sentinel-primary.png.svg)
+- **Logo URL**: Optional URL to organization logo (recommended: 800x400px PNG/SVG, Cloud Health Office Sentinel branding available at docs/images/logo-HealthCoreX-sentinel-primary.png.svg)
 
 #### 2. Contact Information
 - **Technical Contact**: Name, email, phone

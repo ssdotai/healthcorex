@@ -8,13 +8,13 @@
 ## 2. Run the MongoDB Seed Script
 
 ```bash
-mongosh "<your-mongodb-connection-string>/CloudHealthOffice" scripts/setup/seed-tenant.js \
+mongosh "<your-mongodb-connection-string>/HealthCoreX" scripts/setup/seed-tenant.js \
   --eval 'var tenantId="my-org", azureTenantId="AZURE-AD-GUID", orgName="My Org", adminEmail="admin@example.com"'
 ```
 
 - [ ] Verify the document was inserted:
   ```bash
-  mongosh "<connection-string>/CloudHealthOffice" --eval 'db.Tenants.findOne({tenantId:"my-org"})'
+  mongosh "<connection-string>/HealthCoreX" --eval 'db.Tenants.findOne({tenantId:"my-org"})'
   ```
 
 ## 3. Azure AD — What You (CHO Admin) Need to Do
@@ -36,7 +36,7 @@ Send the tenant admin these URLs (replace `TENANT_ID` with their actual tenant I
 **Portal consent:**
 
 ```
-https://login.microsoftonline.com/TENANT_ID/adminconsent?client_id=54f3419d-0d69-4b06-939a-c1a260596556&redirect_uri=https://portal.cloudhealthoffice.com/signin-oidc
+https://login.microsoftonline.com/TENANT_ID/adminconsent?client_id=54f3419d-0d69-4b06-939a-c1a260596556&redirect_uri=https://portal.HealthCoreX.com/signin-oidc
 ```
 
 > **Note:** The `redirect_uri` parameter is required. Without it, Azure AD redirects to the app's default homepage after consent, which returns a 404.
@@ -48,7 +48,7 @@ The admin (who must be a **Global Admin**, **Cloud Application Admin**, or **App
 
 ### Option B: First-Login Consent Prompt (Automatic)
 
-If the admin doesn't pre-consent, Azure AD will prompt them to grant admin consent on first login to `portal.cloudhealthoffice.com`. They'll see an "Approval required" screen. This works, but:
+If the admin doesn't pre-consent, Azure AD will prompt them to grant admin consent on first login to `portal.HealthCoreX.com`. They'll see an "Approval required" screen. This works, but:
 - Only admin users see the consent prompt; regular users get an error (AADSTS65001)
 - It's a better experience to use Option A before telling users to log in
 
@@ -81,7 +81,7 @@ https://login.microsoftonline.com/TENANT_ID/adminconsent?client_id=cfada1ac-f251
 
 ## 6. Verify End-to-End
 
-- [ ] Tenant admin logs in at `portal.cloudhealthoffice.com`
+- [ ] Tenant admin logs in at `portal.HealthCoreX.com`
 - [ ] Index.razor extracts `tid` claim → matches `azureTenantId` in Tenants collection
 - [ ] User is routed to `/dashboard` (not `/signup` or `/demo`)
 - [ ] Downstream API calls succeed (no AADSTS650052 errors)

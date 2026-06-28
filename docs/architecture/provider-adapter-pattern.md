@@ -142,7 +142,7 @@ is a future PR.
 4. Configure tenants via `PUT /api/v1/tenants/{id}` with
    `configuration.providerPlatform.platform = "my-platform"`.
 5. Write factory + adapter tests under
-   `tests/CloudHealthOffice.ProviderService.Tests/Adapters/`.
+   `tests/HealthCoreX.ProviderService.Tests/Adapters/`.
 
 ## Migration TODOs
 

@@ -4,14 +4,14 @@ WORKDIR /repo
 
 # Copy csproj files and restore (preserves layer caching)
 COPY src/services/attachment-service/attachment-service.csproj src/services/attachment-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/engines/CloudHealthOffice.DocumentStore/CloudHealthOffice.DocumentStore.csproj src/engines/CloudHealthOffice.DocumentStore/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
+COPY src/engines/HealthCoreX.DocumentStore/HealthCoreX.DocumentStore.csproj src/engines/HealthCoreX.DocumentStore/
 RUN dotnet restore src/services/attachment-service/attachment-service.csproj
 
 # Copy source code and build
 COPY src/services/attachment-service/ src/services/attachment-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/engines/CloudHealthOffice.DocumentStore/ src/engines/CloudHealthOffice.DocumentStore/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
+COPY src/engines/HealthCoreX.DocumentStore/ src/engines/HealthCoreX.DocumentStore/
 RUN dotnet build src/services/attachment-service/attachment-service.csproj -c Release --no-restore
 
 # Publish stage

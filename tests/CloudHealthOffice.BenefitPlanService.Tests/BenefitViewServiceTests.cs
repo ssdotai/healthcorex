@@ -3,7 +3,7 @@ using BenefitPlanService.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 
-namespace CloudHealthOffice.BenefitPlanService.Tests;
+namespace HealthCoreX.BenefitPlanService.Tests;
 
 public class BenefitViewServiceTests
 {

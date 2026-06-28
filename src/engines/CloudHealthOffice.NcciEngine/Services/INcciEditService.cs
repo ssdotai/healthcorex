@@ -1,7 +1,7 @@
-using CloudHealthOffice.NcciEngine.Domain;
-using CloudHealthOffice.NcciEngine.Models;
+using HealthCoreX.NcciEngine.Domain;
+using HealthCoreX.NcciEngine.Models;
 
-namespace CloudHealthOffice.NcciEngine.Services;
+namespace HealthCoreX.NcciEngine.Services;
 
 /// <summary>
 /// Core NCCI/MUE editing service.

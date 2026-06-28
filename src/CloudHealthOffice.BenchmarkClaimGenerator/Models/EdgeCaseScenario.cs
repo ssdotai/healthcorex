@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Models;
+namespace HealthCoreX.BenchmarkClaimGenerator.Models;
 
 /// <summary>
 /// Enumerates all edge case scenarios in the Million Claim Challenge benchmark corpus.

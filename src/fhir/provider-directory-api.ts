@@ -290,7 +290,7 @@ export class ProviderDirectoryApi {
   constructor(
     nppesBaseUrl: string = 'https://npiregistry.cms.hhs.gov/api',
     cosmosEndpoint?: string,
-    cosmosDatabase: string = 'cloudhealthoffice',
+    cosmosDatabase: string = 'HealthCoreX',
     cosmosContainer: string = 'ProviderDirectory'
   ) {
     this.nppesBaseUrl = nppesBaseUrl;

@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.PriorAuthRuleEngine.Domain;
+namespace HealthCoreX.PriorAuthRuleEngine.Domain;
 
 // ─────────────────────────────────────────────────────────────────
 // Enumerations

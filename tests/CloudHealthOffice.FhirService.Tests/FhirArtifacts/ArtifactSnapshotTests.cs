@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using FluentAssertions;
 
-namespace CloudHealthOffice.FhirService.Tests.FhirArtifacts;
+namespace HealthCoreX.FhirService.Tests.FhirArtifacts;
 
 /// <summary>
 /// Snapshot test: SHA-256 of each artifact's raw JSON is compared against a
@@ -64,11 +64,11 @@ public class ArtifactSnapshotTests
         {
             var candidate = Path.Combine(dir.FullName, "Snapshots");
             if (Directory.Exists(candidate) &&
-                dir.Name == "CloudHealthOffice.FhirService.Tests")
+                dir.Name == "HealthCoreX.FhirService.Tests")
                 return candidate;
 
             var testRoot = Path.Combine(dir.FullName,
-                "tests", "CloudHealthOffice.FhirService.Tests", "Snapshots");
+                "tests", "HealthCoreX.FhirService.Tests", "Snapshots");
             if (Directory.Exists(testRoot)) return testRoot;
 
             dir = dir.Parent;

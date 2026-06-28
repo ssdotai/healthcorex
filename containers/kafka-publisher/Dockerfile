@@ -7,15 +7,15 @@
 #   - Message serialization (JSON)
 #   - Delivery confirmation and error handling
 #
-# Build: docker build -t cloudhealthoffice/kafka-publisher:latest .
-# Run: docker run cloudhealthoffice/kafka-publisher --bootstrap-servers kafka:9092 --topic attachments-in
+# Build: docker build -t HealthCoreX/kafka-publisher:latest .
+# Run: docker run HealthCoreX/kafka-publisher --bootstrap-servers kafka:9092 --topic attachments-in
 
 FROM python:3.11-slim
 
 LABEL org.opencontainers.image.title="Cloud Health Office Kafka Publisher"
 LABEL org.opencontainers.image.description="Publishes X12 EDI events to Apache Kafka"
 LABEL org.opencontainers.image.vendor="Aurelianware"
-LABEL org.opencontainers.image.source="https://github.com/aurelianware/cloudhealthoffice"
+LABEL org.opencontainers.image.source="https://github.com/aurelianware/HealthCoreX"
 
 # Security: Run as non-root user
 RUN groupadd -r kafkapub && useradd -r -g kafkapub kafkapub

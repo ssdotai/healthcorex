@@ -1,7 +1,7 @@
 {
   "resourceType": "CodeSystem",
   "id": "cho-appeal-x12-275-transmission-code",
-  "url": "http://fhir.cloudhealthoffice.com/CodeSystem/cho-appeal-x12-275-transmission-code",
+  "url": "http://fhir.HealthCoreX.com/CodeSystem/cho-appeal-x12-275-transmission-code",
   "version": "1.0.0",
   "name": "ChoAppealX12_275TransmissionCode",
   "title": "CHO Appeal X12 275 Transmission Code",

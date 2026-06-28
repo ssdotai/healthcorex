@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Events;
+namespace HealthCoreX.Events;
 
 /// <summary>
 /// Service Bus topic constants for the AI examination completion stream.

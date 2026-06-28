@@ -371,7 +371,7 @@ export class InteractiveWizard {
         Project: 'Cloud-Health-Office',
         Payer: payerId,
         Environment: answers.environment,
-        ManagedBy: 'CloudHealthOffice',
+        ManagedBy: 'HealthCoreX',
       },
       storageConfig: {
         sku: answers.environment === 'prod' ? 'Standard_GRS' : 'Standard_LRS',

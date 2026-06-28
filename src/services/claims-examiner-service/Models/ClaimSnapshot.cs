@@ -1,4 +1,4 @@
-using CloudHealthOffice.Events;
+using HealthCoreX.Events;
 
 namespace ClaimsExaminerService.Models;
 

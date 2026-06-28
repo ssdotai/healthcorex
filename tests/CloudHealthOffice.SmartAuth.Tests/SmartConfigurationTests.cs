@@ -2,7 +2,7 @@ using System.Text.Json;
 using FluentAssertions;
 using SmartAuthService.Models;
 
-namespace CloudHealthOffice.SmartAuth.Tests;
+namespace HealthCoreX.SmartAuth.Tests;
 
 /// <summary>
 /// Unit tests for SMART scope and configuration model correctness.

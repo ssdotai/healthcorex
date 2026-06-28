@@ -9,7 +9,7 @@ public class AttachmentRepository : IAttachmentRepository
 
     public AttachmentRepository(CosmosClient cosmosClient, IConfiguration configuration)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         var containerName = configuration["CosmosDb:AttachmentsContainerName"] ?? "Attachments";
         _container = cosmosClient.GetContainer(databaseName, containerName);
     }

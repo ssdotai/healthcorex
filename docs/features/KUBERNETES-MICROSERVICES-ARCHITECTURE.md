@@ -56,7 +56,7 @@ All components running in AKS cluster aligned with HIPAA X12 transaction flows:
 │  Azure Application Gateway / Load Balancer                            │
 │  - SSL Termination                                                     │
 │  - WAF (Web Application Firewall)                                     │
-│  - Custom domain: portal.cloudhealthoffice.com                        │
+│  - Custom domain: portal.HealthCoreX.com                        │
 └────────────┬───────────────────────────────────────────────────────────┘
              │
              ▼
@@ -89,8 +89,8 @@ All components running in AKS cluster aligned with HIPAA X12 transaction flows:
 │               │                                │                  │   │
 │  ┌────────────▼───────────┐  ┌────────────────▼──────┐  ┌───────▼───────┐
 │  │  Eligibility Service   │  │  Benefit Config      │  │  Provider     │ │
-│  │  Namespace: cloudhealthoffice   │  │  Namespace: cloudhealthoffice │  │  Directory    │ │
-│  │  ────────────────────  │  │  ──────────────────  │  │  cloudhealthoffice     │ │
+│  │  Namespace: HealthCoreX   │  │  Namespace: HealthCoreX │  │  Directory    │ │
+│  │  ────────────────────  │  │  ──────────────────  │  │  HealthCoreX     │ │
 │  │  • X12 270/271         │  │  • Plan management   │  │  ────────────  │ │
 │  │  • FHIR Coverage...    │  │  • Benefit rules     │  │  • NPI lookup │ │
 │  │  • Cosmos DB cache     │  │  • Copay/deductible  │  │  • CAQH sync  │ │
@@ -100,7 +100,7 @@ All components running in AKS cluster aligned with HIPAA X12 transaction flows:
 │                                                                          │
 │  ┌─────────────────────┐  ┌──────────────────────┐  ┌─────────────────┐ │
 │  │  Reference Data     │  │  Claims Scrubbing    │  │  Portal Backend │ │
-│  │  Namespace: cloudhealthoffice│  │  Namespace: cloudhealthoffice │  │  cloudhealthoffice       │ │
+│  │  Namespace: HealthCoreX│  │  Namespace: HealthCoreX │  │  HealthCoreX       │ │
 │  │  ─────────────────  │  │  ──────────────────  │  │  ───────────    │ │
 │  │  • CPT codes        │  │  • NCCI edits        │  │  • User mgmt    │ │
 │  │  • HCPCS codes      │  │  • DRG validation    │  │  • Dashboards   │ │
@@ -170,7 +170,7 @@ All components running in AKS cluster aligned with HIPAA X12 transaction flows:
 
 ```yaml
 cho-portal      # Frontend + API Gateway
-cloudhealthoffice        # Core microservices
+HealthCoreX        # Core microservices
 cho-workflows   # EDI batch jobs (existing)
 cho-sftp        # SFTP server (existing)
 cho-monitoring  # Prometheus, Grafana
@@ -481,7 +481,7 @@ PUT    /api/v1/settings                 # Update settings
 ## Deployment Strategy
 
 ### Phase 1: Infrastructure Setup (Week 1)
-- [ ] Create new namespaces (cho-portal, cloudhealthoffice)
+- [ ] Create new namespaces (cho-portal, HealthCoreX)
 - [ ] Deploy Dapr runtime
 - [ ] Deploy NGINX Ingress Controller
 - [ ] Configure Azure AD B2C/Entra ID

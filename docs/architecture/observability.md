@@ -9,7 +9,7 @@ spans, how to add new business spans, and how `/metrics` is scraped.
 Every service Program.cs calls:
 
 ```csharp
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 
 builder.Services.AddChoObservability(builder.Configuration);
 // ...
@@ -17,13 +17,13 @@ var app = builder.Build();
 app.UseChoObservability();
 ```
 
-These come from `CloudHealthOffice.Infrastructure`. All OTel packages are
+These come from `HealthCoreX.Infrastructure`. All OTel packages are
 declared there transitively; service csprojs do not PackageReference them
 directly.
 
 `AddChoObservability` wires:
 
-- Resource attributes (service.name, service.version, deployment.environment, service.namespace=CloudHealthOffice)
+- Resource attributes (service.name, service.version, deployment.environment, service.namespace=HealthCoreX)
 - Tracing: AspNetCore, HttpClient, StackExchange.Redis, MongoDB, and the
   CHO business-span source `ChoActivitySource`
 - Metrics: AspNetCore, HttpClient, and the CHO meter `ChoMetrics`
@@ -113,7 +113,7 @@ Both go through `ChoActivitySource.HashIdentifier`. Never write raw
 ## Adding a new business span
 
 ```csharp
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 
 using var activity = ChoActivitySource.StartActivity(
     "adjudicate-claim",
@@ -141,7 +141,7 @@ The shared `ChoMetrics` class exposes histograms and counters. To record from
 a service, reference the type directly:
 
 ```csharp
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 
 ChoMetrics.RequestDuration.Record(
     elapsed.TotalSeconds,
@@ -150,7 +150,7 @@ ChoMetrics.RequestDuration.Record(
     new KeyValuePair<string, object?>("http.status_code", 200));
 ```
 
-Available instruments (all under the `CloudHealthOffice` meter):
+Available instruments (all under the `HealthCoreX` meter):
 
 | Instrument | Unit | Purpose |
 |---|---|---|
@@ -200,7 +200,7 @@ the collector in the path. The OTLP exporter is dormant until an
 
 ## Test contract
 
-`CloudHealthOffice.Infrastructure.Tests.ObservabilityTestHelper.AssertStandardContract`
+`HealthCoreX.Infrastructure.Tests.ObservabilityTestHelper.AssertStandardContract`
 is the single smoke test every integration-capable service test project runs:
 
 1. `GET /metrics` → 200, body contains the CHO histogram name — proves

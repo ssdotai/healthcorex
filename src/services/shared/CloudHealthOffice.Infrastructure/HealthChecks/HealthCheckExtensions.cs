@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System.Text.Json;
 
-namespace CloudHealthOffice.Infrastructure.HealthChecks;
+namespace HealthCoreX.Infrastructure.HealthChecks;
 
 public static class HealthCheckExtensions
 {

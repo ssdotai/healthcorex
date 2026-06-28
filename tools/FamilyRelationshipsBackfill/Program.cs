@@ -24,7 +24,7 @@ namespace FamilyRelationshipsBackfill;
 ///
 /// Configuration (via appsettings.json / env vars):
 ///   MongoDb:ConnectionString   required
-///   MongoDb:DatabaseName       default CloudHealthOffice
+///   MongoDb:DatabaseName       default HealthCoreX
 /// </summary>
 public static class Program
 {
@@ -56,7 +56,7 @@ public static class Program
 
         var mongoCs = config["MongoDb:ConnectionString"]
             ?? throw new InvalidOperationException("MongoDb:ConnectionString is required.");
-        var dbName = config["MongoDb:DatabaseName"] ?? "CloudHealthOffice";
+        var dbName = config["MongoDb:DatabaseName"] ?? "HealthCoreX";
 
         var client = new MongoClient(mongoCs);
         var db = client.GetDatabase(dbName);

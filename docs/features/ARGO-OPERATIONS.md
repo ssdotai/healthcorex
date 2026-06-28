@@ -36,23 +36,23 @@ This guide covers day-to-day operations of the Cloud Health Office X12 EDI proce
 
 ```bash
 # Deploy the entire stack using Helm
-helm install cloudhealthoffice ./helm/cloudhealthoffice \
-  -n cloudhealthoffice \
+helm install HealthCoreX ./helm/HealthCoreX \
+  -n HealthCoreX \
   --create-namespace \
-  -f helm/cloudhealthoffice/values.yaml
+  -f helm/HealthCoreX/values.yaml
 
 # Verify deployment
-kubectl get pods -n cloudhealthoffice
-kubectl get workflowtemplates -n cloudhealthoffice
-kubectl get eventsources -n cloudhealthoffice
-kubectl get sensors -n cloudhealthoffice
+kubectl get pods -n HealthCoreX
+kubectl get workflowtemplates -n HealthCoreX
+kubectl get eventsources -n HealthCoreX
+kubectl get sensors -n HealthCoreX
 ```
 
 ### Scaling Workflows
 
 ```bash
 # Scale workflow controller parallelism
-kubectl patch deployment argo-workflows-controller -n cloudhealthoffice \
+kubectl patch deployment argo-workflows-controller -n HealthCoreX \
   --patch '{"spec":{"template":{"spec":{"containers":[{"name":"controller","args":["--parallelism=20"]}]}}}}'
 
 # Scale Kafka partitions for higher throughput
@@ -74,16 +74,16 @@ EOF
 
 ```bash
 # List recent workflows
-kubectl get workflows -n cloudhealthoffice --sort-by=.metadata.creationTimestamp
+kubectl get workflows -n HealthCoreX --sort-by=.metadata.creationTimestamp
 
 # Watch workflows in real-time
-watch kubectl get workflows -n cloudhealthoffice -l workflows.argoproj.io/completed=false
+watch kubectl get workflows -n HealthCoreX -l workflows.argoproj.io/completed=false
 
 # Get workflow details
-kubectl describe workflow <workflow-name> -n cloudhealthoffice
+kubectl describe workflow <workflow-name> -n HealthCoreX
 
 # View workflow logs
-kubectl logs -l workflows.argoproj.io/workflow=<workflow-name> -n cloudhealthoffice --all-containers
+kubectl logs -l workflows.argoproj.io/workflow=<workflow-name> -n HealthCoreX --all-containers
 ```
 
 ### Argo Workflows UI
@@ -92,7 +92,7 @@ Access the Argo Workflows UI:
 
 ```bash
 # Port forward to local machine
-kubectl port-forward svc/argo-workflows-server 2746:2746 -n cloudhealthoffice
+kubectl port-forward svc/argo-workflows-server 2746:2746 -n HealthCoreX
 
 # Open browser: https://localhost:2746
 ```
@@ -119,13 +119,13 @@ kubectl exec -it kafka-0 -n kafka -- \
 
 ```bash
 # View recent 275 processing
-kubectl get workflows -n cloudhealthoffice -l workflows.argoproj.io/workflow-template=x12-275-ingest
+kubectl get workflows -n HealthCoreX -l workflows.argoproj.io/workflow-template=x12-275-ingest
 
 # View recent 278 processing
-kubectl get workflows -n cloudhealthoffice -l workflows.argoproj.io/workflow-template=x12-278-ingest
+kubectl get workflows -n HealthCoreX -l workflows.argoproj.io/workflow-template=x12-278-ingest
 
 # View 277 RFAI generations
-kubectl get workflows -n cloudhealthoffice -l workflows.argoproj.io/workflow-template=x12-277-rfai
+kubectl get workflows -n HealthCoreX -l workflows.argoproj.io/workflow-template=x12-277-rfai
 ```
 
 ## Alerting
@@ -151,12 +151,12 @@ Key alerts configured in `monitoring/prometheus-rules.yaml`:
 
 1. Check workflow status:
    ```bash
-   kubectl get workflow <name> -n cloudhealthoffice -o yaml
+   kubectl get workflow <name> -n HealthCoreX -o yaml
    ```
 
 2. View failed step logs:
    ```bash
-   kubectl logs -l workflows.argoproj.io/workflow=<name> --tail=100 -n cloudhealthoffice
+   kubectl logs -l workflows.argoproj.io/workflow=<name> --tail=100 -n HealthCoreX
    ```
 
 3. Check for common issues:
@@ -167,7 +167,7 @@ Key alerts configured in `monitoring/prometheus-rules.yaml`:
 
 4. Retry if transient:
    ```bash
-   argo retry <workflow-name> -n cloudhealthoffice
+   argo retry <workflow-name> -n HealthCoreX
    ```
 
 #### KafkaConsumerLagHigh
@@ -180,7 +180,7 @@ Key alerts configured in `monitoring/prometheus-rules.yaml`:
 
 2. Scale workflow processing:
    ```bash
-   kubectl patch sensor rfai-sensor -n cloudhealthoffice \
+   kubectl patch sensor rfai-sensor -n HealthCoreX \
      --type=merge -p '{"spec":{"template":{"parallelism": 5}}}'
    ```
 
@@ -208,25 +208,25 @@ Key alerts configured in `monitoring/prometheus-rules.yaml`:
 
 ```bash
 # Check event source
-kubectl get eventsource -n cloudhealthoffice
-kubectl describe eventsource sftp-polling -n cloudhealthoffice
+kubectl get eventsource -n HealthCoreX
+kubectl describe eventsource sftp-polling -n HealthCoreX
 
 # Check sensor
-kubectl get sensor -n cloudhealthoffice
-kubectl describe sensor sftp-sensor -n cloudhealthoffice
+kubectl get sensor -n HealthCoreX
+kubectl describe sensor sftp-sensor -n HealthCoreX
 
 # Check sensor pod logs
-kubectl logs -l sensor-name=sftp-sensor -n cloudhealthoffice
+kubectl logs -l sensor-name=sftp-sensor -n HealthCoreX
 ```
 
 ### SFTP Connectivity Issues
 
 ```bash
 # Test SFTP connection
-kubectl run sftp-test --rm -it --image=cloudhealthoffice/sftp-fetcher \
+kubectl run sftp-test --rm -it --image=HealthCoreX/sftp-fetcher \
   --env="SFTP_HOST=sftp.clearinghouse.example.com" \
-  --env="SFTP_USERNAME=$(kubectl get secret clearinghouse-sftp-secret -n cloudhealthoffice -o jsonpath='{.data.username}' | base64 -d)" \
-  --env="SFTP_PASSWORD=$(kubectl get secret clearinghouse-sftp-secret -n cloudhealthoffice -o jsonpath='{.data.password}' | base64 -d)" \
+  --env="SFTP_USERNAME=$(kubectl get secret clearinghouse-sftp-secret -n HealthCoreX -o jsonpath='{.data.username}' | base64 -d)" \
+  --env="SFTP_PASSWORD=$(kubectl get secret clearinghouse-sftp-secret -n HealthCoreX -o jsonpath='{.data.password}' | base64 -d)" \
   -- --list-only --folder /inbound/attachments
 ```
 
@@ -234,10 +234,10 @@ kubectl run sftp-test --rm -it --image=cloudhealthoffice/sftp-fetcher \
 
 ```bash
 # Get parsing error logs
-kubectl logs -l step-name=parse-x12-275 -n cloudhealthoffice --tail=100
+kubectl logs -l step-name=parse-x12-275 -n HealthCoreX --tail=100
 
 # Test parser with specific file
-kubectl run parser-test --rm -it --image=cloudhealthoffice/x12-parser \
+kubectl run parser-test --rm -it --image=HealthCoreX/x12-parser \
   -- /path/to/file.edi --log-level DEBUG
 ```
 
@@ -288,7 +288,7 @@ aws s3 sync s3://hipaa-attachments s3://hipaa-attachments-backup \
 
 3. **Redeploy application stack**:
    ```bash
-   helm install cloudhealthoffice ./helm/cloudhealthoffice -n cloudhealthoffice
+   helm install HealthCoreX ./helm/HealthCoreX -n HealthCoreX
    ```
 
 4. **Restore secrets** from backup vault
@@ -304,11 +304,11 @@ aws s3 sync s3://hipaa-attachments s3://hipaa-attachments-backup \
 
 ```bash
 # Resubmit failed workflow
-argo resubmit <workflow-name> -n cloudhealthoffice
+argo resubmit <workflow-name> -n HealthCoreX
 
 # Submit new workflow with specific file
 argo submit argo-workflows/x12-275-ingest.yaml \
-  -n cloudhealthoffice \
+  -n HealthCoreX \
   -p sftp-host=sftp.clearinghouse.example.com \
   -p sftp-folder=/inbound/attachments
 ```
@@ -362,14 +362,14 @@ resources:
 kubectl create secret generic clearinghouse-sftp-secret \
   --from-literal=username=$SFTP_USERNAME \
   --from-literal=password=$NEW_PASSWORD \
-  -n cloudhealthoffice --dry-run=client -o yaml | kubectl apply -f -
+  -n HealthCoreX --dry-run=client -o yaml | kubectl apply -f -
 
 # Rotate Kafka credentials
 kubectl create secret generic kafka-sasl-secret \
   --from-literal=mechanism=SCRAM-SHA-512 \
   --from-literal=username=$KAFKA_USERNAME \
   --from-literal=password=$NEW_PASSWORD \
-  -n cloudhealthoffice --dry-run=client -o yaml | kubectl apply -f -
+  -n HealthCoreX --dry-run=client -o yaml | kubectl apply -f -
 ```
 
 ### Audit Logging
@@ -383,7 +383,7 @@ Query audit logs:
 ```bash
 # Get all workflow events for a claim
 kubectl logs -l workflows.argoproj.io/workflow-template=x12-275-ingest \
-  -n cloudhealthoffice | grep "CLM20250924001"
+  -n HealthCoreX | grep "CLM20250924001"
 ```
 
 ## Maintenance Windows
@@ -392,14 +392,14 @@ kubectl logs -l workflows.argoproj.io/workflow-template=x12-275-ingest \
 
 1. **Pause event sources**:
    ```bash
-   kubectl patch eventsource sftp-polling -n cloudhealthoffice \
+   kubectl patch eventsource sftp-polling -n HealthCoreX \
      --type=merge -p '{"spec":{"calendar":{"sftp-poll-275":{"schedule":""}}}}'
    ```
 
 2. **Wait for running workflows to complete**:
    ```bash
-   kubectl wait --for=condition=Completed workflows -l app=cloudhealthoffice \
-     -n cloudhealthoffice --timeout=30m
+   kubectl wait --for=condition=Completed workflows -l app=HealthCoreX \
+     -n HealthCoreX --timeout=30m
    ```
 
 3. **Perform maintenance**
@@ -414,13 +414,13 @@ kubectl logs -l workflows.argoproj.io/workflow-template=x12-275-ingest \
 ```bash
 # Update container images with zero downtime
 kubectl set image deployment/argo-workflows-controller \
-  controller=cloudhealthoffice/x12-parser:v1.1.0 \
-  -n cloudhealthoffice
+  controller=HealthCoreX/x12-parser:v1.1.0 \
+  -n HealthCoreX
 ```
 
 ## Support Contacts
 
 - **On-Call Rotation**: Check PagerDuty
-- **Slack Channel**: #cloudhealthoffice-ops
+- **Slack Channel**: #HealthCoreX-ops
 - **Escalation**: edi-platform@company.com
-- **Documentation**: https://docs.cloudhealthoffice.com
+- **Documentation**: https://docs.HealthCoreX.com

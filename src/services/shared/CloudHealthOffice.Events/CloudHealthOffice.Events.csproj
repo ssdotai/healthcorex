@@ -4,8 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>CloudHealthOffice.Events</RootNamespace>
-    <AssemblyName>CloudHealthOffice.Events</AssemblyName>
+    <RootNamespace>HealthCoreX.Events</RootNamespace>
+    <AssemblyName>HealthCoreX.Events</AssemblyName>
   </PropertyGroup>
 
 </Project>

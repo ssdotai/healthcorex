@@ -18,7 +18,7 @@
       - name: tenant-id
     http:
       method: POST
-      url: "http://benefit-plan-service.cloudhealthoffice/api/v1/adjudication/validate-provider-enrollment"
+      url: "http://benefit-plan-service.HealthCoreX/api/v1/adjudication/validate-provider-enrollment"
       headers:
         - name: X-Tenant-ID
           value: "{{inputs.parameters.tenant-id}}"

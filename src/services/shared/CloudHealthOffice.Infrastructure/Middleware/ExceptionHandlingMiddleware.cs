@@ -1,12 +1,12 @@
 using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
-using CloudHealthOffice.Infrastructure.Models;
+using HealthCoreX.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.Infrastructure.Middleware;
+namespace HealthCoreX.Infrastructure.Middleware;
 
 /// <summary>
 /// Global exception handler that catches unhandled exceptions and returns a <see cref="StandardErrorResponse"/>.

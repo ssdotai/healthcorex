@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace CloudHealthOffice.SmartAuth.Tests;
+namespace HealthCoreX.SmartAuth.Tests;
 
 /// <summary>
 /// Tests SMART scope enforcement in the FHIR service.
@@ -333,7 +333,7 @@ public class FhirServiceFactory : WebApplicationFactory<Program>
               "\"use\":\"claim\"," +
               "\"type\":{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/claim-type\",\"code\":\"professional\"}]}," +
               $"\"patient\":{{\"reference\":\"Patient/{patientId}\"}}," +
-              "\"insurer\":{\"display\":\"CloudHealthOffice\"}," +
+              "\"insurer\":{\"display\":\"HealthCoreX\"}," +
               "\"provider\":{\"display\":\"Test Provider\"}," +
               "\"created\":\"2026-01-15T00:00:00Z\"," +
               "\"outcome\":\"complete\"," +

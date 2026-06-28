@@ -9,7 +9,7 @@ because the system pool stays at min=2 nodes 24/7.
 
 ```bash
 az aks nodepool add \
-  --resource-group rg-cloudhealthoffice-prod \
+  --resource-group rg-HealthCoreX-prod \
   --cluster-name cho-aks \
   --name userspot \
   --mode User \
@@ -91,7 +91,7 @@ Before moving a workload to Spot, confirm:
 
 ```bash
 az aks nodepool delete \
-  --resource-group rg-cloudhealthoffice-prod \
+  --resource-group rg-HealthCoreX-prod \
   --cluster-name cho-aks \
   --name userspot
 ```

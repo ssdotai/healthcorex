@@ -1,6 +1,6 @@
 // seed-demo-data.js
 // MongoDB seed script that populates a comprehensive, production-grade
-// operational dataset for a given tenant in the CloudHealthOffice database.
+// operational dataset for a given tenant in the HealthCoreX database.
 //
 // WARNING: This script REPLACES any existing data for the specified tenant
 // in ALL seeded collections. Back up first if you need to preserve data.
@@ -37,7 +37,7 @@ const GROUP_NUMBER = groupNumber;
 const SPONSOR1_NAME = (typeof sponsor1 !== "undefined") ? sponsor1 : "Metro Employees Association";
 const SPONSOR2_NAME = (typeof sponsor2 !== "undefined") ? sponsor2 : "Lone Star Manufacturing Group";
 
-const choDb = db.getSiblingDB("cloudhealthoffice");
+const choDb = db.getSiblingDB("HealthCoreX");
 const now = new Date();
 const TODAY = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
@@ -158,7 +158,7 @@ const benefitPlans = benefitPlansData.map(function (p) {
     TenantId: TENANT_ID,
     PlanId: makeId("plan", p.idx),
     PlanName: p.name,
-    Payer: "CloudHealthOffice Demo Payer",
+    Payer: "HealthCoreX Demo Payer",
     EffectiveDate: new Date("2025-01-01"),
     TerminationDate: null,
     PlanType: p.type,

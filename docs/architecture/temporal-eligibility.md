@@ -183,5 +183,5 @@ Creates:
 - Replace `StubAccumulatorClient` with the real accumulator-service client
   once prompt 5.3 lands.
 - Promote the `IBatchQueueSender` / `IBatchQueueProcessor` abstractions to
-  `shared/CloudHealthOffice.Infrastructure` if another service adopts
+  `shared/HealthCoreX.Infrastructure` if another service adopts
   Service Bus (currently only batch eligibility uses it).

@@ -4,8 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>CloudHealthOffice.Appeals.Contracts</RootNamespace>
-    <AssemblyName>CloudHealthOffice.Appeals.Contracts</AssemblyName>
+    <RootNamespace>HealthCoreX.Appeals.Contracts</RootNamespace>
+    <AssemblyName>HealthCoreX.Appeals.Contracts</AssemblyName>
     <!--
       Cross-service DTO contract for appeals. Mirrors the domain model in
       appeals-service/Models/Appeal.cs as a parallel type: same property
@@ -15,7 +15,7 @@
       Current dependency direction:
       - fhir-service references this project and consumes AppealDto via
         HttpFhirAppealAdapter.
-      - CloudHealthOffice.Appeals.Contracts.Tests references both this
+      - HealthCoreX.Appeals.Contracts.Tests references both this
         project and appeals-service to run reflection-based drift checks
         between AppealDto and the domain Appeal aggregate.
 
@@ -28,7 +28,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="CloudHealthOffice.Appeals.Contracts.Tests" />
+    <InternalsVisibleTo Include="HealthCoreX.Appeals.Contracts.Tests" />
   </ItemGroup>
 
 </Project>

@@ -2,21 +2,21 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: provider-service-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 data:
   ASPNETCORE_ENVIRONMENT: "Production"
-  MongoDb__DatabaseName: "cloudhealthoffice"
+  MongoDb__DatabaseName: "HealthCoreX"
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: provider-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: provider-service
     tier: backend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: provider-service
@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: provider-service
-        image: choacrhy6h2vdulfru6.azurecr.io/cloudhealthoffice-provider-service:latest
+        image: choacrhy6h2vdulfru6.azurecr.io/HealthCoreX-provider-service:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -52,10 +52,10 @@ spec:
               key: MongoDb__DatabaseName
         resources:
           requests:
-            cpu: 100m
+            cpu: 200m
             memory: 128Mi
           limits:
-            cpu: 500m
+            cpu: 1000m
             memory: 512Mi
         livenessProbe:
           httpGet:
@@ -76,7 +76,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: provider-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: provider-service
 spec:

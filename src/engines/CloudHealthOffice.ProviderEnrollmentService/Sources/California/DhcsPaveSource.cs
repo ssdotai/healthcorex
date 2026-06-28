@@ -1,10 +1,10 @@
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Cache;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Cache;
+using HealthCoreX.ProviderEnrollmentService.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Sources.California;
+namespace HealthCoreX.ProviderEnrollmentService.Sources.California;
 
 /// <summary>
 /// California DHCS PAVE (Provider Application and Validation for Enrollment).

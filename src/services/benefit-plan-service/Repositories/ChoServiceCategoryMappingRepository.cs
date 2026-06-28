@@ -1,6 +1,6 @@
 using BenefitPlanService.Models;
-using CloudHealthOffice.BenefitEngine.Domain;
-using CloudHealthOffice.BenefitEngine.Services;
+using HealthCoreX.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Services;
 using Microsoft.Azure.Cosmos;
 
 namespace BenefitPlanService.Repositories;

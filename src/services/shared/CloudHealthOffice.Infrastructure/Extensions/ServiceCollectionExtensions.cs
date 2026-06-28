@@ -1,7 +1,7 @@
-using CloudHealthOffice.Infrastructure.Data;
-using CloudHealthOffice.Infrastructure.HealthChecks;
-using CloudHealthOffice.Infrastructure.Middleware;
-using CloudHealthOffice.Infrastructure.Serialization;
+using HealthCoreX.Infrastructure.Data;
+using HealthCoreX.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.Middleware;
+using HealthCoreX.Infrastructure.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.Infrastructure.Extensions;
+namespace HealthCoreX.Infrastructure.Extensions;
 
 /// <summary>
 /// Central extension methods to wire all Cloud Health Office infrastructure into a service.

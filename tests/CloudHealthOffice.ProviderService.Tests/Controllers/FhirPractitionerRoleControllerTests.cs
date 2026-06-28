@@ -1,5 +1,5 @@
 using System.Text.Json.Nodes;
-using CloudHealthOffice.ProviderService.Tests.Fakes;
+using HealthCoreX.ProviderService.Tests.Fakes;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +8,7 @@ using ProviderService.Controllers;
 using ProviderService.Models;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Controllers;
+namespace HealthCoreX.ProviderService.Tests.Controllers;
 
 /// <summary>
 /// Capability 5.8 — endpoint-shape coverage for

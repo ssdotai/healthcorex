@@ -148,7 +148,7 @@ unreachable), endpoints that depend on it return RFC 7807 ProblemDetails:
 
 ```json
 {
-  "type": "https://cloudhealthoffice.com/problems/downstream-unavailable",
+  "type": "https://HealthCoreX.com/problems/downstream-unavailable",
   "title": "Downstream service unavailable",
   "status": 503,
   "detail": "Configure Downstream:CoverageService:BaseUrl to enable coverage integrations.",
@@ -194,7 +194,7 @@ See `scripts/cosmos/provision-member-events.sh`. Usage:
 scripts/cosmos/provision-member-events.sh \
   --account my-cosmos \
   --resource-group rg-cho \
-  --database CloudHealthOffice
+  --database HealthCoreX
 ```
 
 ### Sample `az` command (runbook-inline copy)
@@ -203,7 +203,7 @@ scripts/cosmos/provision-member-events.sh \
 az cosmosdb sql container create \
   --account-name my-cosmos \
   --resource-group rg-cho \
-  --database-name CloudHealthOffice \
+  --database-name HealthCoreX \
   --name member-events \
   --partition-key-path "/partitionKey" \
   --unique-key-policy '{"uniqueKeys":[{"paths":["/version"]}]}' \

@@ -32,7 +32,7 @@ with an ARM-based Managed Application deployment model published through Microso
 ## Why It Was Archived
 
 Cloud Health Office transitioned from an Azure Marketplace Managed Application to a
-**SaaS model** delivered via [cloudhealthoffice.com](https://cloudhealthoffice.com),
+**SaaS model** delivered via [HealthCoreX.com](https://HealthCoreX.com),
 running on **Azure Kubernetes Service (AKS)**. The Marketplace offer is no longer
 maintained or published.
 

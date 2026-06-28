@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Appeals.Contracts;
+namespace HealthCoreX.Appeals.Contracts;
 
 // ── Parallel enum definitions ───────────────────────────────────────────
 // These mirror the enums in appeals-service/Models/Appeal.cs by name,

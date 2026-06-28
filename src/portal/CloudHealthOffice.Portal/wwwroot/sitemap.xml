@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://portal.cloudhealthoffice.com/welcome</loc>
+    <loc>https://portal.HealthCoreX.com/welcome</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://portal.cloudhealthoffice.com/pricing</loc>
+    <loc>https://portal.HealthCoreX.com/pricing</loc>
     <lastmod>2026-03-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://portal.cloudhealthoffice.com/signup</loc>
+    <loc>https://portal.HealthCoreX.com/signup</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://portal.cloudhealthoffice.com/demo</loc>
+    <loc>https://portal.HealthCoreX.com/demo</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://portal.cloudhealthoffice.com/apis</loc>
+    <loc>https://portal.HealthCoreX.com/apis</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://portal.cloudhealthoffice.com/quickstarts/local-claims</loc>
+    <loc>https://portal.HealthCoreX.com/quickstarts/local-claims</loc>
     <lastmod>2026-03-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://portal.cloudhealthoffice.com/docs</loc>
+    <loc>https://portal.HealthCoreX.com/docs</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://portal.cloudhealthoffice.com/contact-sales</loc>
+    <loc>https://portal.HealthCoreX.com/contact-sales</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://portal.cloudhealthoffice.com/legal</loc>
+    <loc>https://portal.HealthCoreX.com/legal</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>

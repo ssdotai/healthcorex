@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 using System.Text.Json;
-using CloudHealthOffice.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Configuration;
 using IdCardService.Models;
 using QRCoder;
 

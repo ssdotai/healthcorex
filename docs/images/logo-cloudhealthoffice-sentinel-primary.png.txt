@@ -2,7 +2,7 @@ SENTINEL LOGO SPECIFICATION
 
 CURRENT STATUS: Placeholder PNG file exists. Full logo needs to be created with design software.
 
-The logo-cloudhealthoffice-sentinel-primary.png should be created with the following specifications:
+The logo-HealthCoreX-sentinel-primary.png should be created with the following specifications:
 
 DIMENSIONS: 800x400 pixels
 FORMAT: PNG with transparency support
@@ -21,7 +21,7 @@ The logo embodies:
 - Authoritative, inevitable tone
 
 RECOMMENDED CREATION METHOD:
-1. Use the SVG file (logo-cloudhealthoffice-sentinel-primary.png.svg) as reference
+1. Use the SVG file (logo-HealthCoreX-sentinel-primary.png.svg) as reference
 2. Create in Adobe Photoshop, GIMP, Figma, or similar design tool
 3. Export as PNG at 800x400px resolution
 4. Replace the placeholder PNG file with the final design

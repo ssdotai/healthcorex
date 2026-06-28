@@ -37,7 +37,7 @@ It's important to understand the distinction between two different Azure AD appl
 
 **Federated Credential Subject Pattern**:
 ```
-repo:aurelianware/cloudhealthoffice:ref:refs/heads/main
+repo:aurelianware/HealthCoreX:ref:refs/heads/main
 ```
 
 **GitHub Secrets Required** (ONLY these - runtime secrets go in Key Vault):
@@ -70,7 +70,7 @@ repo:aurelianware/cloudhealthoffice:ref:refs/heads/main
 Before you begin, ensure you have:
 
 - [ ] **Azure Subscription** with Owner or User Access Administrator role
-- [ ] **GitHub Repository** admin access (`aurelianware/cloudhealthoffice`)
+- [ ] **GitHub Repository** admin access (`aurelianware/HealthCoreX`)
 - [ ] **Azure CLI** installed locally (`az --version` ≥ 2.50.0)
 - [ ] **Permissions to create App Registrations** in Azure AD
 - [ ] **Permissions to assign Azure roles** (Contributor, Website Contributor, Key Vault Secrets User)
@@ -91,7 +91,7 @@ Create a dedicated Azure AD application that GitHub Actions will use to authenti
 2. **Create New Registration**
    - Click **+ New registration**
    - Configure as follows:
-     - **Name**: `cloudhealthoffice-static-site-deployment`
+     - **Name**: `HealthCoreX-static-site-deployment`
      - **Supported account types**: Accounts in this organizational directory only (Single tenant)
      - **Redirect URI**: Leave empty (not needed for service authentication)
    - Click **Register**
@@ -109,11 +109,11 @@ Create a dedicated Azure AD application that GitHub Actions will use to authenti
 ```bash
 # Create the application
 az ad app create \
-  --display-name "cloudhealthoffice-static-site-deployment"
+  --display-name "HealthCoreX-static-site-deployment"
 
 # Get the Application ID
 APP_ID=$(az ad app list \
-  --display-name "cloudhealthoffice-static-site-deployment" \
+  --display-name "HealthCoreX-static-site-deployment" \
   --query "[0].appId" -o tsv)
 
 echo "Application (Client) ID: $APP_ID"
@@ -149,10 +149,10 @@ Configure the federated credential to trust GitHub Actions tokens from your repo
 2. **Configure Federated Credential**
    - **Federated credential scenario**: GitHub Actions deploying Azure resources
    - **Organization**: `aurelianware`
-   - **Repository**: `cloudhealthoffice`
+   - **Repository**: `HealthCoreX`
    - **Entity type**: Branch
    - **GitHub branch name**: `main`
-   - **Name**: `cloudhealthoffice-main-branch`
+   - **Name**: `HealthCoreX-main-branch`
    - **Description**: `GitHub Actions deployment from main branch`
    - Click **Add**
 
@@ -162,14 +162,14 @@ Configure the federated credential to trust GitHub Actions tokens from your repo
 # Set variables
 APP_ID="<your-app-id-from-step-1>"
 REPO_OWNER="aurelianware"
-REPO_NAME="cloudhealthoffice"
+REPO_NAME="HealthCoreX"
 BRANCH="main"
 
 # Create federated credential for main branch
 az ad app federated-credential create \
   --id "$APP_ID" \
   --parameters '{
-    "name": "cloudhealthoffice-main-branch",
+    "name": "HealthCoreX-main-branch",
     "issuer": "https://token.actions.githubusercontent.com",
     "subject": "repo:'"$REPO_OWNER"'/'"$REPO_NAME"':ref:refs/heads/'"$BRANCH"'",
     "description": "GitHub Actions deployment from main branch",
@@ -190,12 +190,12 @@ az ad app federated-credential list \
 ```
 Name                            Subject
 ------------------------------  ------------------------------------------------------
-cloudhealthoffice-main-branch   repo:aurelianware/cloudhealthoffice:ref:refs/heads/main
+HealthCoreX-main-branch   repo:aurelianware/HealthCoreX:ref:refs/heads/main
 ```
 
 **⚠️ Critical**: The `subject` field must **exactly match** the pattern:
 ```
-repo:aurelianware/cloudhealthoffice:ref:refs/heads/main
+repo:aurelianware/HealthCoreX:ref:refs/heads/main
 ```
 
 ### Step 3: Assign Azure Roles
@@ -239,7 +239,7 @@ az role assignment list \
 ```
 Principal                             Role         Scope
 ------------------------------------ ------------ --------------------------------------------------
-cloudhealthoffice-static-site-dep... Contributor  /subscriptions/.../resourceGroups/...
+HealthCoreX-static-site-dep... Contributor  /subscriptions/.../resourceGroups/...
 ```
 
 ### Step 4: Configure GitHub Secrets
@@ -249,7 +249,7 @@ Add the required secrets to your GitHub repository.
 #### Using GitHub Web Interface
 
 1. **Navigate to Repository Settings**
-   - Go to `https://github.com/aurelianware/cloudhealthoffice`
+   - Go to `https://github.com/aurelianware/HealthCoreX`
    - Click **Settings** tab
    - Click **Secrets and variables** → **Actions** in left sidebar
 
@@ -285,7 +285,7 @@ Add the required secrets to your GitHub repository.
 gh auth login
 
 # Set repository
-REPO="aurelianware/cloudhealthoffice"
+REPO="aurelianware/HealthCoreX"
 
 # Add secrets
 gh secret set AZURE_CLIENT_ID --repo "$REPO" --body "$APP_ID"
@@ -328,7 +328,7 @@ Add the required variables to your GitHub repository.
    Name: BASE_NAME
    Value: <your-base-name>
    ```
-   (This should match your resource naming convention, e.g., `cloudhealthoffice`)
+   (This should match your resource naming convention, e.g., `HealthCoreX`)
 
 #### Using GitHub CLI
 
@@ -346,7 +346,7 @@ gh variable list --repo "$REPO"
 Test the federated credential setup by manually triggering the deployment workflow.
 
 1. **Navigate to GitHub Actions**
-   - Go to `https://github.com/aurelianware/cloudhealthoffice/actions`
+   - Go to `https://github.com/aurelianware/HealthCoreX/actions`
    - Click on **Deploy Static Site with Custom Domain** workflow
 
 2. **Run Workflow Manually**
@@ -431,7 +431,7 @@ AADSTS70021: No matching federated identity record found for presented assertion
      --query "[].subject" -o tsv
    ```
 
-   **Expected**: `repo:aurelianware/cloudhealthoffice:ref:refs/heads/main`
+   **Expected**: `repo:aurelianware/HealthCoreX:ref:refs/heads/main`
 
 2. **Check Workflow Branch**:
    - Ensure workflow is triggered from `main` branch
@@ -453,9 +453,9 @@ AADSTS70021: No matching federated identity record found for presented assertion
    # Create new credential with correct subject
    az ad app federated-credential create --id "$APP_ID" \
      --parameters '{
-       "name": "cloudhealthoffice-main-branch",
+       "name": "HealthCoreX-main-branch",
        "issuer": "https://token.actions.githubusercontent.com",
-       "subject": "repo:aurelianware/cloudhealthoffice:ref:refs/heads/main",
+       "subject": "repo:aurelianware/HealthCoreX:ref:refs/heads/main",
        "audiences": ["api://AzureADTokenExchange"]
      }'
    ```
@@ -542,7 +542,7 @@ Error: Unable to get ACTIONS_ID_TOKEN_REQUEST_URL env variable
 1. **Verify Secret Names**:
    ```bash
    # List all secrets
-   gh secret list --repo "aurelianware/cloudhealthoffice"
+   gh secret list --repo "aurelianware/HealthCoreX"
    ```
 
    **Expected**: Exact names `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`
@@ -556,8 +556,8 @@ Error: Unable to get ACTIONS_ID_TOKEN_REQUEST_URL env variable
 3. **Re-create Secrets** (if incorrect):
    ```bash
    # Delete and re-create
-   gh secret delete AZURE_CLIENT_ID --repo "aurelianware/cloudhealthoffice"
-   gh secret set AZURE_CLIENT_ID --repo "aurelianware/cloudhealthoffice" --body "$APP_ID"
+   gh secret delete AZURE_CLIENT_ID --repo "aurelianware/HealthCoreX"
+   gh secret set AZURE_CLIENT_ID --repo "aurelianware/HealthCoreX" --body "$APP_ID"
    ```
 
 ### Issue 6: Multiple Federated Credentials Conflict
@@ -591,9 +591,9 @@ Error: Unable to get ACTIONS_ID_TOKEN_REQUEST_URL env variable
 
 Use this checklist to verify your setup is complete:
 
-- [ ] Azure AD application created (`cloudhealthoffice-static-site-deployment`)
+- [ ] Azure AD application created (`HealthCoreX-static-site-deployment`)
 - [ ] Service principal created from application
-- [ ] Federated credential configured with subject: `repo:aurelianware/cloudhealthoffice:ref:refs/heads/main`
+- [ ] Federated credential configured with subject: `repo:aurelianware/HealthCoreX:ref:refs/heads/main`
 - [ ] Federated credential issuer is `https://token.actions.githubusercontent.com`
 - [ ] Federated credential audiences includes `api://AzureADTokenExchange`
 - [ ] Contributor role assigned to service principal on resource group
@@ -633,7 +633,7 @@ az ad sp show --id "$APP_ID" --query "signInActivity"
 ### Federated Credential Hygiene
 
 - **Delete Unused Credentials**: Remove test or old branch credentials
-- **Descriptive Names**: Use clear, descriptive names like `cloudhealthoffice-main-branch`
+- **Descriptive Names**: Use clear, descriptive names like `HealthCoreX-main-branch`
 - **Document Changes**: Keep track of credential changes in deployment docs
 
 ### Monitoring
@@ -641,7 +641,7 @@ az ad sp show --id "$APP_ID" --query "signInActivity"
 Enable Azure AD sign-in logs to monitor authentication:
 
 1. Go to **Azure AD** → **Monitoring** → **Sign-in logs**
-2. Filter by application: `cloudhealthoffice-static-site-deployment`
+2. Filter by application: `HealthCoreX-static-site-deployment`
 3. Review for:
    - Failed authentication attempts
    - Unexpected source IPs
@@ -658,9 +658,9 @@ If you need to deploy from multiple branches (e.g., `main` and `develop`):
 az ad app federated-credential create \
   --id "$APP_ID" \
   --parameters '{
-    "name": "cloudhealthoffice-develop-branch",
+    "name": "HealthCoreX-develop-branch",
     "issuer": "https://token.actions.githubusercontent.com",
-    "subject": "repo:aurelianware/cloudhealthoffice:ref:refs/heads/develop",
+    "subject": "repo:aurelianware/HealthCoreX:ref:refs/heads/develop",
     "audiences": ["api://AzureADTokenExchange"]
   }'
 ```
@@ -674,9 +674,9 @@ For preview deployments from pull requests:
 az ad app federated-credential create \
   --id "$APP_ID" \
   --parameters '{
-    "name": "cloudhealthoffice-pull-requests",
+    "name": "HealthCoreX-pull-requests",
     "issuer": "https://token.actions.githubusercontent.com",
-    "subject": "repo:aurelianware/cloudhealthoffice:pull_request",
+    "subject": "repo:aurelianware/HealthCoreX:pull_request",
     "audiences": ["api://AzureADTokenExchange"]
   }'
 ```
@@ -696,8 +696,8 @@ For separate dev/staging/prod environments:
 
 ```bash
 # Create separate app for each environment
-az ad app create --display-name "cloudhealthoffice-static-site-prod"
-az ad app create --display-name "cloudhealthoffice-static-site-staging"
+az ad app create --display-name "HealthCoreX-static-site-prod"
+az ad app create --display-name "HealthCoreX-static-site-staging"
 
 # Configure environment-specific federated credentials
 # Use GitHub environments feature
@@ -724,7 +724,7 @@ For issues not covered in this guide:
 1. **Review Workflow Logs**: GitHub Actions → Failed Workflow → Expand steps
 2. **Check Azure Activity Log**: Azure Portal → Resource Group → Activity Log
 3. **Run Validation Script**: `./scripts/validate-deployment-auth.sh`
-4. **Consult Repository Issues**: Check for similar issues at `https://github.com/aurelianware/cloudhealthoffice/issues`
+4. **Consult Repository Issues**: Check for similar issues at `https://github.com/aurelianware/HealthCoreX/issues`
 
 ---
 

@@ -1,6 +1,6 @@
-using CloudHealthOffice.Portal.Models;
+using HealthCoreX.Portal.Models;
 
-namespace CloudHealthOffice.Portal.Services;
+namespace HealthCoreX.Portal.Services;
 
 public interface ITmppmRuleQueryService
 {

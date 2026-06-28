@@ -4,10 +4,10 @@ using FhirService.Models;
 using FhirService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using CloudHealthOffice.Infrastructure.HealthChecks;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.ProviderEnrollmentService.Configuration;
-using CloudHealthOffice.PriorAuthRuleEngine.Configuration;
+using HealthCoreX.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.ProviderEnrollmentService.Configuration;
+using HealthCoreX.PriorAuthRuleEngine.Configuration;
 using Microsoft.Azure.Cosmos;
 using MongoDB.Driver;
 using StackExchange.Redis;
@@ -121,21 +121,21 @@ builder.Services.AddHttpClient("AuthorizationService", client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:AuthorizationServiceUrl"]
-            ?? "http://authorization-service.cloudhealthoffice/");
+            ?? "http://authorization-service.HealthCoreX/");
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 builder.Services.AddHttpClient("TerminologyService", client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:TerminologyServiceUrl"]
-            ?? "http://terminology-service.cloudhealthoffice:5010/");
+            ?? "http://terminology-service.HealthCoreX:5010/");
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 builder.Services.AddHttpClient("ProviderVerificationService", client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:ProviderVerificationServiceUrl"]
-            ?? "http://provider-verification-service.cloudhealthoffice:5020/");
+            ?? "http://provider-verification-service.HealthCoreX:5020/");
     client.DefaultRequestHeaders.Add("Accept", "application/json");
     client.Timeout = TimeSpan.FromSeconds(5);
 });
@@ -175,7 +175,7 @@ builder.Services.AddCors(options => options.AddPolicy("AllowAll",
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
-app.UseMiddleware<CloudHealthOffice.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
+app.UseMiddleware<HealthCoreX.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseAuthentication();

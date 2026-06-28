@@ -1,7 +1,7 @@
-using CloudHealthOffice.ClaimsScrubEngine.Models;
+using HealthCoreX.ClaimsScrubEngine.Models;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.ClaimsScrubEngine.Services;
+namespace HealthCoreX.ClaimsScrubEngine.Services;
 
 /// <summary>
 /// Determines claim routing after validation:

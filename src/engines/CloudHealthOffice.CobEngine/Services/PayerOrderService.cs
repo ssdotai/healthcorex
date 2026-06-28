@@ -1,6 +1,6 @@
-using CloudHealthOffice.CobEngine.Domain;
+using HealthCoreX.CobEngine.Domain;
 
-namespace CloudHealthOffice.CobEngine.Services;
+namespace HealthCoreX.CobEngine.Services;
 
 /// <summary>
 /// Determines COB payer sequence using standard industry rules.

@@ -1,7 +1,7 @@
 # Benefits Viewer
 
 The Benefits Viewer surfaces a member-facing, categorized rendering of a
-benefit plan inside the **Member Details** dialog in CloudHealthOffice.Portal.
+benefit plan inside the **Member Details** dialog in HealthCoreX.Portal.
 It answers, at a glance, "what is this member covered for today?"
 
 ## Endpoint
@@ -113,7 +113,7 @@ form `documentreference/{id}`. Consumers must accept both.
 
 ## Portal integration
 
-`CloudHealthOffice.Portal/Pages/MemberDetailsDialog.razor` gains a new
+`HealthCoreX.Portal/Pages/MemberDetailsDialog.razor` gains a new
 `Benefits` `MudTabPanel`:
 
 - **No active coverage** → friendly `MudAlert` prompting the reviewer to check
@@ -149,10 +149,10 @@ plan-level waivers) and must be shown — not hidden as if absent.
 
 ## Testing
 
-- `tests/CloudHealthOffice.BenefitPlanService.Tests/BenefitViewServiceTests.cs`
+- `tests/HealthCoreX.BenefitPlanService.Tests/BenefitViewServiceTests.cs`
   covers category mapping, pharmacy tier detection, out-of-network
   projection, document forward-compatibility fields, plan-version derivation,
   and the 404 path.
-- `src/portal/CloudHealthOffice.Portal.Tests/Services/BenefitPlanServiceTests.cs`
+- `src/portal/HealthCoreX.Portal.Tests/Services/BenefitPlanServiceTests.cs`
   covers the portal HTTP client — happy path deserialization, 404 → null,
   and service-unavailable translation.

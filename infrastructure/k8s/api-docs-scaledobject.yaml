@@ -7,14 +7,14 @@ apiVersion: http.keda.sh/v1alpha1
 kind: HTTPScaledObject
 metadata:
   name: api-docs
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: api-docs
     component: documentation
 spec:
   hosts:
-  - api.cloudhealthoffice.com
-  - sandbox.cloudhealthoffice.com
+  - api.HealthCoreX.com
+  - sandbox.HealthCoreX.com
   pathPrefixes:
   - /
   scaleTargetRef:

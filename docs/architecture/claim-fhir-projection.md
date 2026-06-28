@@ -88,7 +88,7 @@ parameter once the repository grows an index seam.
 | `use` | constant `claim` | |
 | `patient.reference` | `Patient/{Claim.MemberId}` | resolves against member-service's FHIR Patient projection |
 | `created` | `Claim.SubmittedDate` | |
-| `insurer.display` | constant `CloudHealthOffice` | |
+| `insurer.display` | constant `HealthCoreX` | |
 | `provider.identifier` | `Claim.BillingProviderNPI` | `http://hl7.org/fhir/sid/us-npi` |
 | `outcome` | `Claim.Status` | queued / complete / partial / error |
 | `billablePeriod` | `Claim.ServiceDateFrom` / `ServiceDateTo` | |

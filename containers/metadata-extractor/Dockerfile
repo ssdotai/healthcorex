@@ -9,15 +9,15 @@
 #   - Diagnosis codes
 #   - Attachment metadata
 #
-# Build: docker build -t cloudhealthoffice/metadata-extractor:latest .
-# Run: docker run -v /data:/data cloudhealthoffice/metadata-extractor --input /data/parsed.json
+# Build: docker build -t HealthCoreX/metadata-extractor:latest .
+# Run: docker run -v /data:/data HealthCoreX/metadata-extractor --input /data/parsed.json
 
 FROM python:3.11-slim
 
 LABEL org.opencontainers.image.title="Cloud Health Office Metadata Extractor"
 LABEL org.opencontainers.image.description="Extracts business metadata from parsed X12 EDI JSON"
 LABEL org.opencontainers.image.vendor="Aurelianware"
-LABEL org.opencontainers.image.source="https://github.com/aurelianware/cloudhealthoffice"
+LABEL org.opencontainers.image.source="https://github.com/aurelianware/HealthCoreX"
 
 # Security: Run as non-root user
 RUN groupadd -r extractor && useradd -r -g extractor extractor

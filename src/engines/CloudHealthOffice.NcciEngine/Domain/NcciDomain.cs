@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.NcciEngine.Domain;
+namespace HealthCoreX.NcciEngine.Domain;
 
 // ═══════════════════════════════════════════════════════════════════
 // NCCI DOMAIN TYPES

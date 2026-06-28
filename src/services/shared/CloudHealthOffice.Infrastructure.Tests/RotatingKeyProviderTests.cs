@@ -1,9 +1,9 @@
 using System.Text;
-using CloudHealthOffice.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
-namespace CloudHealthOffice.Infrastructure.Tests;
+namespace HealthCoreX.Infrastructure.Tests;
 
 public class RotatingKeyProviderTests
 {

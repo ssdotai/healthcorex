@@ -4,12 +4,12 @@ WORKDIR /repo
 
 # Copy csproj files and restore (preserves layer caching)
 COPY src/services/payment-service/payment-service.csproj src/services/payment-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
 RUN dotnet restore src/services/payment-service/payment-service.csproj
 
 # Copy source code and build
 COPY src/services/payment-service/ src/services/payment-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
 RUN dotnet build src/services/payment-service/payment-service.csproj -c Release --no-restore
 
 # Publish stage

@@ -1,8 +1,8 @@
-using CloudHealthOffice.Infrastructure.Tests;
+using HealthCoreX.Infrastructure.Tests;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
-namespace CloudHealthOffice.IdCardService.Tests;
+namespace HealthCoreX.IdCardService.Tests;
 
 public class ObservabilityTests : IClassFixture<ObservabilityTestFactory<Program>>
 {

@@ -6,11 +6,11 @@ using ClaimsService.Services;
 using ClaimsService.Services.Adjudication;
 using ClaimsService.Services.Adjudication.Stages;
 using ClaimsService.Services.Resolution;
-using CloudHealthOffice.Infrastructure.Messaging;
-using CloudHealthOffice.NcciEngine.Configuration;
-using CloudHealthOffice.NcciEngine.Domain;
-using CloudHealthOffice.NcciEngine.Persistence;
-using CloudHealthOffice.NcciEngine.Services;
+using HealthCoreX.Infrastructure.Messaging;
+using HealthCoreX.NcciEngine.Configuration;
+using HealthCoreX.NcciEngine.Domain;
+using HealthCoreX.NcciEngine.Persistence;
+using HealthCoreX.NcciEngine.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -18,12 +18,12 @@ using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Integration;
+namespace HealthCoreX.ClaimsService.Tests.Integration;
 
 /// <summary>
 /// Capability 5.7 — pipeline-level integration that wires the REAL
 /// <see cref="NcciEditsStage"/> backed by the REAL
-/// <c>CloudHealthOffice.NcciEngine</c> against an in-memory
+/// <c>HealthCoreX.NcciEngine</c> against an in-memory
 /// <see cref="INcciRepository"/> seeded with one NCCI pair and one MUE
 /// entry. Verifies the cross-stage contract: bundled procedure pair
 /// produces a <c>Pend</c> outcome with PendDetails recorded; MUE
@@ -37,6 +37,7 @@ public class AdjudicationWithNcciEndToEndTests
     private readonly IClaimAdapter _adapter = Substitute.For<IClaimAdapter>();
     private readonly IBenefitPlanResolver _planResolver = Substitute.For<IBenefitPlanResolver>();
     private readonly IMemberResolver _memberResolver = Substitute.For<IMemberResolver>();
+    private readonly ICoverageResolver _coverageResolver = Substitute.For<ICoverageResolver>();
     private readonly IClaimVersionEventPublisher _eventPublisher = Substitute.For<IClaimVersionEventPublisher>();
     private readonly IMessageBus _messageBus = Substitute.For<IMessageBus>();
     private readonly ClaimAdapterFactory _factory;
@@ -175,6 +176,7 @@ public class AdjudicationWithNcciEndToEndTests
             _factory,
             _planResolver,
             _memberResolver,
+            _coverageResolver,
             new IClaimAdjudicationStage[] { ncciStage, new TestPersistenceStage() },
             _eventPublisher,
             _messageBus,
@@ -386,12 +388,12 @@ public class AdjudicationWithNcciEndToEndTests
             CancellationToken ct = default)
             => Task.FromResult((0, 0));
 
-        public Task<CloudHealthOffice.NcciEngine.Models.NcciTableVersion?> GetCurrentVersionAsync(
+        public Task<HealthCoreX.NcciEngine.Models.NcciTableVersion?> GetCurrentVersionAsync(
             string tenantId, CancellationToken ct = default)
-            => Task.FromResult<CloudHealthOffice.NcciEngine.Models.NcciTableVersion?>(null);
+            => Task.FromResult<HealthCoreX.NcciEngine.Models.NcciTableVersion?>(null);
 
         public Task SaveVersionAsync(
-            CloudHealthOffice.NcciEngine.Models.NcciTableVersion version,
+            HealthCoreX.NcciEngine.Models.NcciTableVersion version,
             CancellationToken ct = default)
             => Task.CompletedTask;
     }

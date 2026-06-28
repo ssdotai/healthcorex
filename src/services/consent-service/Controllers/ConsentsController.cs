@@ -373,7 +373,7 @@ public class ConsentsController : ControllerBase
             Status = 409,
             Title = "Invalid consent transition",
             Detail = ex.Message,
-            Type = "https://cloudhealthoffice.com/problems/consent-transition"
+            Type = "https://HealthCoreX.com/problems/consent-transition"
         };
         problem.Extensions["fromStatus"] = ex.FromStatus.ToString();
         problem.Extensions["toStatus"] = ex.ToStatus.ToString();

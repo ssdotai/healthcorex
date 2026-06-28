@@ -1,7 +1,7 @@
-using CloudHealthOffice.Portal.Models;
-using CloudHealthOffice.Portal.Services;
+using HealthCoreX.Portal.Models;
+using HealthCoreX.Portal.Services;
 
-namespace CloudHealthOffice.Portal.Pages.Compliance;
+namespace HealthCoreX.Portal.Pages.Compliance;
 
 public partial class PaRuleExplorer
 {

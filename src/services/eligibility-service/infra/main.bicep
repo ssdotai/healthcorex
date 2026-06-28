@@ -10,7 +10,7 @@ param baseName string
 param location string = resourceGroup().location
 
 @description('Container image to deploy')
-param containerImage string = 'ghcr.io/cloudhealthoffice/eligibility-service:latest'
+param containerImage string = 'ghcr.io/HealthCoreX/eligibility-service:latest'
 
 @description('Container CPU cores')
 param containerCpu string = '0.5'

@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.ProviderVerificationEngine.Models;
+namespace HealthCoreX.ProviderVerificationEngine.Models;
 
 /// <summary>
 /// Composite provider verification result aggregating all public data sources.

@@ -18,7 +18,7 @@ metadata:
   name: x12-277-download-job
   namespace: cho-workflows
   labels:
-    app: cloudhealthoffice
+    app: HealthCoreX
     component: edi-277-download
     hipaa-compliance: required
 spec:
@@ -54,7 +54,7 @@ spec:
                     name: sftp-credentials
                     key: password
               - name: BACKEND_API_URL
-                value: "http://backend-api.cloudhealthoffice.svc.cluster.local/api/v1"
+                value: "http://backend-api.HealthCoreX.svc.cluster.local/api/v1"
               - name: BACKEND_API_TOKEN
                 valueFrom:
                   secretKeyRef:

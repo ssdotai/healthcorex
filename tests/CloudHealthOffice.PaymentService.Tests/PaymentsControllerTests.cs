@@ -9,12 +9,12 @@ using PaymentService.Repositories;
 using PaymentService.Services;
 using Xunit;
 
-namespace CloudHealthOffice.PaymentService.Tests;
+namespace HealthCoreX.PaymentService.Tests;
 
 public class PaymentsControllerTests : IClassFixture<PaymentApiFactory>
 {
     // Match the server's wire format (string enums via JsonStringEnumConverter
-    // registered by AddCloudHealthOfficeJsonOptions).
+    // registered by AddHealthCoreXJsonOptions).
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web)
     {
         Converters = { new JsonStringEnumConverter() }

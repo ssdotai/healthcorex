@@ -180,6 +180,32 @@ public class Member
     public string? MaintenanceReasonCode { get; set; }
 
     /// <summary>
+    /// Retroactive effective date of a benefit-plan/coverage change
+    /// (<see cref="MaintenanceTypeCode"/> 001) recorded after the fact. Null
+    /// unless this member record reflects a correction whose effective date
+    /// precedes when it was processed; claims with a service date on or
+    /// after this date were adjudicated before the correct plan assignment
+    /// was known and require reconciliation.
+    /// </summary>
+    public DateTime? PlanChangeEffectiveDate { get; set; }
+
+    /// <summary>
+    /// Medicaid "medically needy" spend-down liability for the member's
+    /// current budget period: the dollar amount of incurred medical
+    /// expenses the member must accumulate before Medicaid coverage
+    /// activates for that period. Null for members not enrolled under a
+    /// spend-down eligibility category.
+    /// </summary>
+    public decimal? MedicaidSpendDownLiabilityAmount { get; set; }
+
+    /// <summary>
+    /// Cumulative amount the member has incurred toward
+    /// <see cref="MedicaidSpendDownLiabilityAmount"/> in the current budget
+    /// period. Meaningless when the liability amount is null.
+    /// </summary>
+    public decimal MedicaidSpendDownAmountMet { get; set; }
+
+    /// <summary>
     /// Employment status from 834 EMP segment
     /// </summary>
     public EmploymentStatus? EmploymentStatus { get; set; }

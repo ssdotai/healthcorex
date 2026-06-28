@@ -3,7 +3,7 @@ using FluentAssertions;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 
-namespace CloudHealthOffice.FhirService.Tests.FhirArtifacts;
+namespace HealthCoreX.FhirService.Tests.FhirArtifacts;
 
 /// <summary>
 /// Verifies that every CHO-authored FHIR artifact under docs/fhir/profiles/
@@ -60,7 +60,7 @@ public class ArtifactValidityTests
                     $"Unexpected resource type in artifact: {resource.TypeName}");
         }
 
-        url.Should().StartWith("http://fhir.cloudhealthoffice.com/",
+        url.Should().StartWith("http://fhir.HealthCoreX.com/",
             "all CHO artifacts live under the CHO canonical namespace");
         status.Should().Be(PublicationStatus.Active);
         experimental.Should().BeFalse("CHO ships these as production conformance artifacts");

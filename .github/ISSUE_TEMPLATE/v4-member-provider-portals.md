@@ -54,8 +54,8 @@ Create dedicated portals for members (eligibility checks, benefits viewing) and 
 #### 1.1 Project Setup
 - [ ] Clone portal structure:
   ```bash
-  cp -r portal/CloudHealthOffice.Portal portal/CloudHealthOffice.MemberPortal
-  cd portal/CloudHealthOffice.MemberPortal
+  cp -r portal/HealthCoreX.Portal portal/HealthCoreX.MemberPortal
+  cd portal/HealthCoreX.MemberPortal
   dotnet new sln -n MemberPortal
   ```
 
@@ -72,7 +72,7 @@ Create dedicated portals for members (eligibility checks, benefits viewing) and 
   ```
 
 #### 1.2 Azure AD B2C Configuration
-- [ ] Create Azure AD B2C tenant: `cloudhealthofficemembers.onmicrosoft.com`
+- [ ] Create Azure AD B2C tenant: `HealthCoreXmembers.onmicrosoft.com`
 - [ ] Configure user flows:
   - Sign-up/Sign-in (SUSI): Collect email, first/last name, member ID
   - Password reset
@@ -87,9 +87,9 @@ Create dedicated portals for members (eligibility checks, benefits viewing) and 
   ```json
   {
     "AzureAdB2C": {
-      "Instance": "https://cloudhealthofficemembers.b2clogin.com/",
+      "Instance": "https://HealthCoreXmembers.b2clogin.com/",
       "ClientId": "<member-portal-client-id>",
-      "Domain": "cloudhealthofficemembers.onmicrosoft.com",
+      "Domain": "HealthCoreXmembers.onmicrosoft.com",
       "SignUpSignInPolicyId": "B2C_1_susi",
       "CallbackPath": "/signin-oidc",
       "Scopes": "openid profile email"
@@ -190,7 +190,7 @@ Create dedicated portals for members (eligibility checks, benefits viewing) and 
   public async Task StartAsync()
   {
       _hubConnection = new HubConnectionBuilder()
-          .WithUrl("https://api.cloudhealthoffice.com/hubs/claimstatus")
+          .WithUrl("https://api.HealthCoreX.com/hubs/claimstatus")
           .Build();
       
       _hubConnection.On<ClaimStatusUpdate>("ClaimUpdated", update =>
@@ -207,7 +207,7 @@ Create dedicated portals for members (eligibility checks, benefits viewing) and 
 
 #### 2.1 Project Setup
 - [ ] Clone and configure similar to Member Portal
-- [ ] Azure AD B2C tenant: `cloudhealthofficeproviders.onmicrosoft.com`
+- [ ] Azure AD B2C tenant: `HealthCoreXproviders.onmicrosoft.com`
 - [ ] Custom attributes: `extension_NPI`, `extension_TaxonomyCode`, `extension_PracticeGroupId`
 
 #### 2.2 Provider Portal Pages
@@ -284,8 +284,8 @@ Create dedicated portals for members (eligibility checks, benefits viewing) and 
   {
       var session = await _stripeService.CreateCheckoutSessionAsync(new CreateCheckoutSessionRequest
       {
-          SuccessUrl = "https://portal.cloudhealthoffice.com/payment-success",
-          CancelUrl = "https://portal.cloudhealthoffice.com/pricing",
+          SuccessUrl = "https://portal.HealthCoreX.com/payment-success",
+          CancelUrl = "https://portal.HealthCoreX.com/pricing",
           CustomerId = User.FindFirst("extension_StripeCustomerId")?.Value,
           PriceId = "price_professional_monthly"
       });
@@ -373,7 +373,7 @@ Create dedicated portals for members (eligibility checks, benefits viewing) and 
 [Test]
 public async Task MemberPortal_EligibilityCheck_ShowsCoverageStatus()
 {
-    await Page.GotoAsync("https://members.cloudhealthoffice.com/eligibility");
+    await Page.GotoAsync("https://members.HealthCoreX.com/eligibility");
     await Page.FillAsync("#member-id", "M123456789");
     await Page.ClickAsync("button:has-text('Check Eligibility')");
     await Expect(Page.Locator(".coverage-status")).ToHaveTextAsync("Active");

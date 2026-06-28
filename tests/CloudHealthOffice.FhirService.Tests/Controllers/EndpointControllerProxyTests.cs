@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
-namespace CloudHealthOffice.FhirService.Tests.Controllers;
+namespace HealthCoreX.FhirService.Tests.Controllers;
 
 /// <summary>
 /// Capability BP 5.9 — proxy-shape coverage for the new

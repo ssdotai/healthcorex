@@ -9,7 +9,7 @@ metadata:
 type: Opaque
 stringData:
   token: "dev-token-replace-in-production"
-  url: "http://backend-api.cloudhealthoffice.svc.cluster.local/api/v1"
+  url: "http://backend-api.HealthCoreX.svc.cluster.local/api/v1"
 ---
 # Backend API Mock Service (for testing without real backend)
 apiVersion: v1

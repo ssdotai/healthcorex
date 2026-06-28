@@ -4,11 +4,11 @@ using Microsoft.Extensions.Options;
 using Xunit;
 using MvcJsonOptions = Microsoft.AspNetCore.Mvc.JsonOptions;
 
-namespace CloudHealthOffice.PaymentService.Tests;
+namespace HealthCoreX.PaymentService.Tests;
 
 /// <summary>
 /// Verifies that payment-service registers <see cref="JsonStringEnumConverter"/>
-/// via the shared <c>AddCloudHealthOfficeJsonOptions()</c> helper. Portal clients
+/// via the shared <c>AddHealthCoreXJsonOptions()</c> helper. Portal clients
 /// and sibling services expect enums as strings; the framework default (integer)
 /// has bitten us before (PRs #656, #657).
 /// </summary>

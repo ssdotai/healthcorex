@@ -1,6 +1,6 @@
-using CloudHealthOffice.TradingPartnerService.Models;
+using HealthCoreX.TradingPartnerService.Models;
 
-namespace CloudHealthOffice.TradingPartnerService.Services;
+namespace HealthCoreX.TradingPartnerService.Services;
 
 /// <summary>
 /// Resolves path templates from Trading Partner configuration

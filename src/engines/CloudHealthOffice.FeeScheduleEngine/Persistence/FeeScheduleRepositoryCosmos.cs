@@ -1,9 +1,9 @@
-using CloudHealthOffice.FeeScheduleEngine.Models;
+using HealthCoreX.FeeScheduleEngine.Models;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.FeeScheduleEngine.Persistence;
+namespace HealthCoreX.FeeScheduleEngine.Persistence;
 
 /// <summary>
 /// Cosmos DB implementations of IFeeScheduleRepository and IProviderContractRepository.
@@ -27,7 +27,7 @@ public class FeeScheduleRepositoryCosmos : IFeeScheduleRepository, IProviderCont
         IConfiguration configuration,
         ILogger<FeeScheduleRepositoryCosmos> logger)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         var scheduleContainerName = configuration["FeeScheduleEngine:FeeScheduleContainer"] ?? "FeeSchedules";
         var contractContainerName = configuration["FeeScheduleEngine:ProviderContractContainer"] ?? "ProviderContracts";
 

@@ -17,7 +17,7 @@ metadata:
   name: x12-275-upload-job
   namespace: cho-workflows
   labels:
-    app: cloudhealthoffice
+    app: HealthCoreX
     component: edi-275-upload
     hipaa-compliance: required
 spec:
@@ -239,7 +239,7 @@ spec:
                 cat /work/audit-${BATCH_ID}.json | jq .
                 
                 # In production, POST to audit API:
-                # curl -X POST http://audit-service.cloudhealthoffice.svc.cluster.local/api/v1/audit \
+                # curl -X POST http://audit-service.HealthCoreX.svc.cluster.local/api/v1/audit \
                 #   -H "Content-Type: application/json" \
                 #   -d @/work/audit-${BATCH_ID}.json
                 

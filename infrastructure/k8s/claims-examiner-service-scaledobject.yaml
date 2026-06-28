@@ -12,7 +12,7 @@
 # spot pool first and put a nodeSelector + spot toleration on the deployment,
 # then this scaler does what you want.
 #
-# KAFKA: self-hosted in-cluster at kafka.cloudhealthoffice:9092, plaintext,
+# KAFKA: self-hosted in-cluster at kafka.HealthCoreX:9092, plaintext,
 # no SASL, no TLS. Matches the real cluster state (kafka-secret has only
 # SASL creds that nothing actually uses, and the .NET producer only enables
 # SASL when Kafka:SaslUsername is non-empty). If you migrate to a broker
@@ -21,7 +21,7 @@ apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: claims-examiner-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: claims-examiner-service
 spec:
@@ -39,7 +39,7 @@ spec:
   triggers:
     - type: kafka
       metadata:
-        bootstrapServers: kafka.cloudhealthoffice:9092
+        bootstrapServers: kafka.HealthCoreX:9092
         consumerGroup: claims-examiner-service
         topic: claims.pended.v1
         # Scale up when any partition has at least this much lag. Tune based

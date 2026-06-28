@@ -1,7 +1,7 @@
 using Microsoft.Azure.Cosmos;
-using CloudHealthOffice.TradingPartnerService.Models;
+using HealthCoreX.TradingPartnerService.Models;
 
-namespace CloudHealthOffice.TradingPartnerService.Services;
+namespace HealthCoreX.TradingPartnerService.Services;
 
 public interface ITradingPartnerRepository
 {
@@ -19,7 +19,7 @@ public class TradingPartnerRepository : ITradingPartnerRepository
 
     public TradingPartnerRepository(CosmosClient cosmosClient, ILogger<TradingPartnerRepository> logger)
     {
-        var databaseName = Environment.GetEnvironmentVariable("COSMOS_DATABASE") ?? "CloudHealthOffice";
+        var databaseName = Environment.GetEnvironmentVariable("COSMOS_DATABASE") ?? "HealthCoreX";
         var containerName = Environment.GetEnvironmentVariable("COSMOS_CONTAINER_TRADING_PARTNERS") ?? "TradingPartners";
 
         _container = cosmosClient.GetContainer(databaseName, containerName);

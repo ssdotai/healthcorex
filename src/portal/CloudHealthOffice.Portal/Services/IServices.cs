@@ -3,13 +3,22 @@ using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace CloudHealthOffice.Portal.Services;
+namespace HealthCoreX.Portal.Services;
 
 public interface IClaimsService
 {
     Task<List<ClaimSummary>> GetRecentClaimsAsync(int count);
     Task<ClaimSearchResult> SearchClaimsAsync(ClaimSearchRequest request);
     Task<ClaimDetails?> GetClaimByIdAsync(string claimId);
+    Task<string?> GetExplanationOfBenefitJsonAsync(string claimId);
+    Task<List<MassAdjudicationRunSummary>> GetMassAdjudicationRunsAsync(int limit = 25);
+    Task<MassAdjudicationRunSummary?> GetMassAdjudicationRunAsync(string runId);
+    Task<List<MassAdjudicationClaimResult>> GetMassAdjudicationClaimResultsAsync(
+        string runId,
+        string? outcome = null,
+        int limit = 250,
+        string? validationStatus = null,
+        string? paymentStatus = null);
     Task<string> SubmitClaimAsync(SubmitClaimRequest request);
     Task UpdateClaimStatusAsync(string claimId, string status, string? notes = null);
     Task<AdjudicationTransparencyData?> GetAdjudicationDataAsync(string claimId);
@@ -21,6 +30,34 @@ public interface IClaimsService
     /// counts and links out — the full grid stays on /claims.
     /// </summary>
     Task<EobSearchResponse> SearchClaimsByMemberAsync(string memberId, MemberClaimsFilter filter);
+}
+
+/// <summary>
+/// Admin-console read path for raw EDI import outcomes — 834 enrollment
+/// batches (enrollment-import-service) and 837 claim imports
+/// (claims-service). Distinct from <see cref="IMemberService.GetMember834TransactionsAsync"/>,
+/// which is member-scoped and proxied through member-service; this is a
+/// tenant-wide admin view, so it calls both owning services directly, same
+/// as <see cref="IClaimsService.GetMassAdjudicationRunsAsync"/> does for
+/// claims-service.
+/// </summary>
+public interface IEdiTransactionsService
+{
+    Task<List<Enrollment834Record>> GetEnrollment834TransactionsAsync(int limit = 100);
+    Task<List<ClaimImportTransactionRecord>> GetClaimImportTransactionsAsync(int limit = 100);
+}
+
+/// <summary>Portal projection of claims-service's ClaimImportTransaction.</summary>
+public class ClaimImportTransactionRecord
+{
+    public string Id { get; set; } = string.Empty;
+    public string ClaimNumber { get; set; } = string.Empty;
+    public string? ClaimId { get; set; }
+    public string MemberId { get; set; } = string.Empty;
+    public string? FileName { get; set; }
+    public DateTime ReceivedAt { get; set; }
+    public string Status { get; set; } = string.Empty;
+    public List<string> Errors { get; set; } = new();
 }
 
 public interface IEligibilityService
@@ -67,6 +104,180 @@ public class MemberAccumulators
     public decimal FamilyOopLimit { get; set; }
     public List<ServiceAccumulator> ServiceAccumulators { get; set; } = new();
     public List<AccumulatorActivity> RecentActivity { get; set; } = new();
+}
+
+public class MassAdjudicationRunSummary
+{
+    public string Id { get; set; } = string.Empty;
+    public string Status { get; set; } = "Completed";
+    public MassAdjudicationRunMetadata Run { get; set; } = new();
+    public int TotalClaims { get; set; }
+    public int Processed { get; set; }
+    public int Paid { get; set; }
+    public int Pended { get; set; }
+    public int BusinessDenials { get; set; }
+    public int ObservationTimeouts { get; set; }
+    public int PlatformFailures { get; set; }
+    public int WorkflowScenarios { get; set; }
+    public int WorkflowMatches { get; set; }
+    public int WorkflowMismatches { get; set; }
+    public int WorkflowUnsupported { get; set; }
+    public int WorkflowObservationTimeouts { get; set; }
+    public TimeSpan Elapsed { get; set; }
+    public double ThroughputClaimsPerSecond { get; set; }
+    public double P95LatencyMilliseconds { get; set; }
+    public double P99LatencyMilliseconds { get; set; }
+    public MassAdjudicationStageTiming? SubmitTiming { get; set; }
+    public MassAdjudicationStageTiming? AdjudicateTiming { get; set; }
+    public MassAdjudicationStageTiming? WritebackTiming { get; set; }
+    public List<MassAdjudicationStageTiming> AdjudicationStepTimings { get; set; } = new();
+    public List<MassAdjudicationLifecycleTiming> LifecycleTimings { get; set; } = new();
+    public MassAdjudicationFixturePreparation? FixturePreparation { get; set; }
+    public decimal? AveragePaymentDelta { get; set; }
+    public decimal PaymentTolerance { get; set; }
+    public int PaymentComparisons { get; set; }
+    public int PaymentMatches { get; set; }
+    public int PaymentMismatches { get; set; }
+    public decimal? MaximumPaymentDelta { get; set; }
+    public List<MassAdjudicationPaymentDeltaBucket> PaymentDeltaDistribution { get; set; } = new();
+    public List<MassAdjudicationBusinessDenialSummary> BusinessDenialBreakdown { get; set; } = new();
+    public List<MassAdjudicationWorkflowScenarioSummary> WorkflowScenarioBreakdown { get; set; } = new();
+    public List<MassAdjudicationFailureSummary> SampleFailures { get; set; } = new();
+    public List<MassAdjudicationClaimResult> ClaimResults { get; set; } = new();
+    public DateTime CreatedAtUtc { get; set; }
+    public DateTime LastUpdatedAtUtc { get; set; }
+    public MassAdjudicationRunProgress? Progress { get; set; }
+}
+
+public class MassAdjudicationRunMetadata
+{
+    public string TenantId { get; set; } = string.Empty;
+    public int RequestedClaims { get; set; }
+    public int Seed { get; set; }
+    public int Parallelism { get; set; }
+    public string ClaimsUrl { get; set; } = string.Empty;
+    public string BenefitUrl { get; set; } = string.Empty;
+    public string MemberUrl { get; set; } = string.Empty;
+    public string CoverageUrl { get; set; } = string.Empty;
+    public string ProviderUrl { get; set; } = string.Empty;
+    public bool SeedMembers { get; set; }
+    public bool SeedProviders { get; set; }
+    public bool SkipClaimUpdate { get; set; }
+    public int LineOfBusiness { get; set; }
+    public DateTimeOffset StartedAtUtc { get; set; }
+    public DateTimeOffset CompletedAtUtc { get; set; }
+}
+
+public class MassAdjudicationRunProgress
+{
+    public string Phase { get; set; } = "Processing claims";
+    public int RequestedClaims { get; set; }
+    public int CompletedClaims { get; set; }
+    public int ProcessedClaims { get; set; }
+    public int PlatformFailures { get; set; }
+    public double PercentComplete { get; set; }
+    public double CurrentThroughputClaimsPerSecond { get; set; }
+    public double RollingP95LatencyMilliseconds { get; set; }
+    public double RollingP99LatencyMilliseconds { get; set; }
+    public int PendingExpectedPendObservations { get; set; }
+    public int PendingTerminalStatusObservations { get; set; }
+    public int PendingWorkflowObservations { get; set; }
+    public DateTimeOffset LastPublishedAtUtc { get; set; }
+}
+
+public class MassAdjudicationStageTiming
+{
+    public string Label { get; set; } = string.Empty;
+    public double AverageMilliseconds { get; set; }
+    public double P95Milliseconds { get; set; }
+}
+
+public class MassAdjudicationLifecycleTiming
+{
+    public string Label { get; set; } = string.Empty;
+    public string Category { get; set; } = string.Empty;
+    public double DurationMilliseconds { get; set; }
+    public DateTimeOffset StartedAtUtc { get; set; }
+    public DateTimeOffset CompletedAtUtc { get; set; }
+}
+
+public class MassAdjudicationFixturePreparation
+{
+    public int GeneratedClaims { get; set; }
+    public int ProviderPoolDistinctBefore { get; set; }
+    public int ProviderPoolDistinctAfter { get; set; }
+    public int ProviderPoolReusedAssignments { get; set; }
+    public int ProviderPoolProtectedClaims { get; set; }
+    public int MembersCreated { get; set; }
+    public int MembersExisting { get; set; }
+    public int MemberStatusesAligned { get; set; }
+    public int CobCoverageCreated { get; set; }
+    public int CobCoverageExisting { get; set; }
+    public int ProviderNetworksCreated { get; set; }
+    public int ProviderNetworksExisting { get; set; }
+    public int ProvidersCreated { get; set; }
+    public int ProvidersExisting { get; set; }
+}
+
+public class MassAdjudicationPaymentDeltaBucket
+{
+    public string Label { get; set; } = string.Empty;
+    public decimal? LowerBoundExclusive { get; set; }
+    public decimal? UpperBoundInclusive { get; set; }
+    public int Count { get; set; }
+}
+
+public class MassAdjudicationBusinessDenialSummary
+{
+    public string Code { get; set; } = string.Empty;
+    public int Count { get; set; }
+}
+
+public class MassAdjudicationWorkflowScenarioSummary
+{
+    public string Scenario { get; set; } = string.Empty;
+    public int Total { get; set; }
+    public int Matches { get; set; }
+    public int Mismatches { get; set; }
+    public int Unsupported { get; set; }
+    public int ObservationTimeouts { get; set; }
+    public int Unspecified { get; set; }
+}
+
+public class MassAdjudicationFailureSummary
+{
+    public string GeneratedClaimId { get; set; } = string.Empty;
+    public string? Stage { get; set; }
+    public string? Error { get; set; }
+}
+
+public class MassAdjudicationClaimResult
+{
+    public string Id { get; set; } = string.Empty;
+    public string RunId { get; set; } = string.Empty;
+    public string TenantId { get; set; } = string.Empty;
+    public string GeneratedClaimId { get; set; } = string.Empty;
+    public string? SubmittedClaimId { get; set; }
+    [JsonConverter(typeof(FlexibleClaimTypeJsonConverter))]
+    public string ClaimType { get; set; } = string.Empty;
+    public string? ValidationScenario { get; set; }
+    public string? ExpectedOutcome { get; set; }
+    public string? ExpectedBusinessDenialCode { get; set; }
+    public string ValidationStatus { get; set; } = "Unspecified";
+    public string Outcome { get; set; } = string.Empty;
+    public bool AdjudicationSuccess { get; set; }
+    public string? BusinessDenialCode { get; set; }
+    public string? FailureStage { get; set; }
+    public string? Error { get; set; }
+    public decimal? ActualPlanPayment { get; set; }
+    public decimal? ExpectedPlanPayment { get; set; }
+    public decimal? PaymentDelta { get; set; }
+    public double ElapsedMilliseconds { get; set; }
+    public double SubmitMilliseconds { get; set; }
+    public double AdjudicationMilliseconds { get; set; }
+    public double WritebackMilliseconds { get; set; }
+    public Dictionary<string, double> AdjudicationStepMilliseconds { get; set; } = new();
+    public DateTime CreatedAtUtc { get; set; }
 }
 
 public class ServiceAccumulator
@@ -476,6 +687,7 @@ public interface IIdCardService
 public class IdCardOrderView
 {
     public string OrderId { get; set; } = string.Empty;
+    [JsonConverter(typeof(FlexibleClaimStatusJsonConverter))]
     public string Status { get; set; } = string.Empty;
     public string? CardId { get; set; }
     public string? DocumentId { get; set; }
@@ -505,16 +717,35 @@ public class IdCardHistoryView
 // DTOs
 public class ClaimSummary
 {
-    public string ClaimId { get; set; } = string.Empty;
+    private string _claimId = string.Empty;
+
+    public string ClaimId
+    {
+        get => _claimId;
+        set => _claimId = string.IsNullOrWhiteSpace(value) ? _claimId : value;
+    }
+
+    [JsonPropertyName("id")]
+    public string? Id
+    {
+        get => _claimId;
+        set => _claimId = string.IsNullOrWhiteSpace(value) ? _claimId : value;
+    }
+
     public string ClaimNumber { get; set; } = string.Empty;
     public string MemberName { get; set; } = string.Empty;
     public string MemberId { get; set; } = string.Empty;
     public string ProviderName { get; set; } = string.Empty;
     public string ProviderId { get; set; } = string.Empty;
-    public string ClaimType { get; set; } = string.Empty; // Professional, Institutional
+    [JsonConverter(typeof(FlexibleClaimTypeJsonConverter))]
+    public string ClaimType { get; set; } = string.Empty; // Professional, Institutional, Dental
+    [JsonConverter(typeof(FlexibleDecimalJsonConverter))]
     public decimal TotalChargeAmount { get; set; }
+    [JsonConverter(typeof(FlexibleDecimalJsonConverter))]
     public decimal AllowedAmount { get; set; }
+    [JsonConverter(typeof(FlexibleDecimalJsonConverter))]
     public decimal PaidAmount { get; set; }
+    [JsonConverter(typeof(FlexibleClaimStatusJsonConverter))]
     public string Status { get; set; } = string.Empty;
     public DateTime ServiceDateFrom { get; set; }
     public DateTime ServiceDateTo { get; set; }
@@ -527,6 +758,10 @@ public class ClaimSummary
 
 public class ClaimDetails : ClaimSummary
 {
+    private List<ClaimDiagnosisCode> _diagnosisCodes = new();
+    private List<ClaimServiceLine> _serviceLines = new();
+    private List<ClaimAudit> _auditTrail = new();
+
     public string SubscriberId { get; set; } = string.Empty;
     public string SubscriberName { get; set; } = string.Empty;
     public string PatientName { get; set; } = string.Empty;
@@ -548,47 +783,164 @@ public class ClaimDetails : ClaimSummary
     public DateTime? PaidDate { get; set; }
     public string? CheckNumber { get; set; }
     public string? DenialReason { get; set; }
-    public List<ClaimDiagnosisCode> DiagnosisCodes { get; set; } = new();
-    public List<ClaimServiceLine> ServiceLines { get; set; } = new();
+    [JsonPropertyName("adjudicationResult")]
+    public ClaimAdjudicationProjection? AdjudicationResult
+    {
+        set
+        {
+            if (value is null)
+            {
+                return;
+            }
+
+            AllowedAmount = value.AllowedAmount;
+            PaidAmount = value.PayerPayment;
+            DeductibleAmount = value.DeductibleAmount;
+            CoinsuranceAmount = value.CoinsuranceAmount;
+            CopayAmount = value.CopayAmount;
+            PatientResponsibility = value.PatientResponsibility;
+            CheckNumber = value.CheckNumber;
+            PaidDate = value.PaymentDate;
+            DenialReason = value.DenialReason;
+        }
+    }
+    public List<ClaimDiagnosisCode> DiagnosisCodes
+    {
+        get => _diagnosisCodes;
+        set => _diagnosisCodes = value ?? new();
+    }
+    public List<ClaimServiceLine> ServiceLines
+    {
+        get => _serviceLines;
+        set => _serviceLines = value ?? new();
+    }
+    [JsonPropertyName("claimLines")]
+    public List<ClaimServiceLine>? ClaimLines
+    {
+        get => _serviceLines;
+        set => _serviceLines = value ?? new();
+    }
     public ClaimAdjustmentInfo? AdjustmentInfo { get; set; }
     public bool IsEditable { get; set; }
     public bool CanApprove { get; set; }
     public bool CanDeny { get; set; }
     public bool CanReverse { get; set; }
-    public List<ClaimAudit> AuditTrail { get; set; } = new();
+    public List<ClaimAudit> AuditTrail
+    {
+        get => _auditTrail;
+        set => _auditTrail = value ?? new();
+    }
 }
 
 public class ClaimDiagnosisCode
 {
+    private string _codeQualifier = string.Empty;
+    private string _type = string.Empty;
+
     public string Code { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string Type { get; set; } = string.Empty; // Principal, Secondary
+    public string CodeQualifier
+    {
+        get => _codeQualifier;
+        set => _codeQualifier = value ?? string.Empty;
+    }
+    public string Type
+    {
+        get => !string.IsNullOrWhiteSpace(_type) ? _type : DiagnosisTypeLabel(CodeQualifier);
+        set => _type = value ?? string.Empty;
+    }
     public int PointerNumber { get; set; }
+
+    private static string DiagnosisTypeLabel(string qualifier)
+        => qualifier.Trim().ToUpperInvariant() switch
+        {
+            "ABK" => "Principal",
+            "ABF" => "Secondary",
+            "" => "Unspecified",
+            _ => qualifier
+        };
 }
 
 public class ClaimServiceLine
 {
+    private List<string> _modifiers = new();
+    private List<int> _diagnosisPointers = new();
+    private List<ClaimLineAdjustment> _adjustments = new();
+
     public int LineNumber { get; set; }
     public string ProcedureCode { get; set; } = string.Empty;
     public string ProcedureDescription { get; set; } = string.Empty;
-    public List<string> Modifiers { get; set; } = new();
+    public List<string> Modifiers
+    {
+        get => _modifiers;
+        set => _modifiers = value ?? new();
+    }
+    [JsonConverter(typeof(FlexibleDecimalJsonConverter))]
     public decimal Units { get; set; }
+    [JsonConverter(typeof(FlexibleDecimalJsonConverter))]
     public decimal ChargeAmount { get; set; }
+    [JsonConverter(typeof(FlexibleDecimalJsonConverter))]
     public decimal AllowedAmount { get; set; }
+    [JsonConverter(typeof(FlexibleDecimalJsonConverter))]
     public decimal PaidAmount { get; set; }
+    [JsonConverter(typeof(FlexibleDecimalJsonConverter))]
     public decimal PatientResponsibility { get; set; }
     public DateTime ServiceDateFrom { get; set; }
     public DateTime ServiceDateTo { get; set; }
     public string? RevenueCode { get; set; } // Institutional
-    public List<int> DiagnosisPointers { get; set; } = new();
-    public List<ClaimLineAdjustment> Adjustments { get; set; } = new();
+    public List<int> DiagnosisPointers
+    {
+        get => _diagnosisPointers;
+        set => _diagnosisPointers = value ?? new();
+    }
+    public List<ClaimLineAdjustment> Adjustments
+    {
+        get => _adjustments;
+        set => _adjustments = value ?? new();
+    }
     public string? LineStatus { get; set; }
+    [JsonPropertyName("adjudicationResult")]
+    public ClaimLineAdjudicationProjection? AdjudicationResult
+    {
+        set
+        {
+            if (value is null)
+            {
+                return;
+            }
+
+            AllowedAmount = value.AllowedAmount;
+            PaidAmount = value.PaidAmount;
+            PatientResponsibility = value.PatientResponsibility;
+        }
+    }
+}
+
+public class ClaimAdjudicationProjection
+{
+    public decimal AllowedAmount { get; set; }
+    public decimal DeductibleAmount { get; set; }
+    public decimal CoinsuranceAmount { get; set; }
+    public decimal CopayAmount { get; set; }
+    public decimal PatientResponsibility { get; set; }
+    public decimal PayerPayment { get; set; }
+    public string? CheckNumber { get; set; }
+    public DateTime? PaymentDate { get; set; }
+    public string? DenialReason { get; set; }
+}
+
+public class ClaimLineAdjudicationProjection
+{
+    public decimal AllowedAmount { get; set; }
+    public decimal PaidAmount { get; set; }
+    public decimal PatientResponsibility { get; set; }
 }
 
 public class ClaimLineAdjustment
 {
     public string GroupCode { get; set; } = string.Empty;
     public string ReasonCode { get; set; } = string.Empty;
+    [JsonConverter(typeof(FlexibleDecimalJsonConverter))]
     public decimal Amount { get; set; }
     public string Description { get; set; } = string.Empty;
 }
@@ -598,6 +950,7 @@ public class ClaimAdjustmentInfo
     public string AdjustmentType { get; set; } = string.Empty; // Reversal, Adjustment, Correction
     public string? OriginalClaimId { get; set; }
     public string? RelatedClaimId { get; set; }
+    [JsonConverter(typeof(FlexibleDecimalJsonConverter))]
     public decimal AdjustmentAmount { get; set; }
     public string? Reason { get; set; }
     public DateTime? AdjustmentDate { get; set; }
@@ -625,6 +978,7 @@ public class ServiceLine
 
 public class ClaimSearchRequest
 {
+    public string? RunId { get; set; }
     public string? ClaimNumber { get; set; }
     public string? MemberId { get; set; }
     public string? MemberName { get; set; }

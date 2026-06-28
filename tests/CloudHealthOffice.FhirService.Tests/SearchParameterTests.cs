@@ -2,7 +2,7 @@ using FhirService.Models;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CloudHealthOffice.FhirService.Tests;
+namespace HealthCoreX.FhirService.Tests;
 
 /// <summary>
 /// Unit tests for FHIR search parameter model binding and validation.

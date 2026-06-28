@@ -24,7 +24,7 @@ public class CapitationRunRepository : ICapitationRunRepository
         IHttpContextAccessor httpContextAccessor,
         ILogger<CapitationRunRepository> logger)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         _container = cosmosClient.GetContainer(databaseName, "CapitationRuns");
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;

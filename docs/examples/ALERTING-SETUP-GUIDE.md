@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-This guide helps you deploy production-ready alert rules for Cloud Health Office monitoring dashboards.
+This guide helps you deploy alert rules for Cloud Health Office monitoring dashboards in validation or customer-owned environments.
 
 ---
 
@@ -24,7 +24,7 @@ An Action Group defines who gets notified and how (email, SMS, webhook, etc.).
 2. Click **+ Create**
 3. Fill in details:
    - **Resource group**: Same as your Cloud Health Office deployment
-   - **Name**: `CloudHealthOffice-Alerts`
+   - **Name**: `HealthCoreX-Alerts`
    - **Display name**: `CHO Alerts`
 4. Add notifications:
    - **Email**: Operations team email
@@ -38,14 +38,14 @@ An Action Group defines who gets notified and how (email, SMS, webhook, etc.).
 # Create email notification action group
 az monitor action-group create \
   --resource-group <resource-group-name> \
-  --name CloudHealthOffice-Alerts \
+  --name HealthCoreX-Alerts \
   --short-name CHOAlerts \
   --action email ops-team ops@example.com
 
 # Add SMS notification for critical alerts
 az monitor action-group update \
   --resource-group <resource-group-name> \
-  --name CloudHealthOffice-Alerts \
+  --name HealthCoreX-Alerts \
   --add action sms oncall +1234567890
 ```
 
@@ -65,7 +65,7 @@ echo "Application Insights ID: $APP_INSIGHTS_ID"
 # Get Action Group resource ID
 ACTION_GROUP_ID=$(az monitor action-group show \
   --resource-group <resource-group-name> \
-  --name CloudHealthOffice-Alerts \
+  --name HealthCoreX-Alerts \
   --query id -o tsv)
 
 echo "Action Group ID: $ACTION_GROUP_ID"
@@ -107,7 +107,7 @@ az monitor scheduled-query list \
 # Check specific alert
 az monitor scheduled-query show \
   --resource-group <resource-group-name> \
-  --name CloudHealthOffice-<unique>-LowSuccessRate
+  --name HealthCoreX-<unique>-LowSuccessRate
 ```
 
 ---
@@ -224,7 +224,7 @@ Forward alerts to incident management systems:
 ```bash
 az monitor action-group update \
   --resource-group <resource-group-name> \
-  --name CloudHealthOffice-Alerts \
+  --name HealthCoreX-Alerts \
   --add action webhook pagerduty https://events.pagerduty.com/integration/<key>/enqueue
 ```
 
@@ -353,7 +353,7 @@ Alert rule pricing (approximate):
    ```bash
    az monitor action-group show \
      --resource-group <rg> \
-     --name CloudHealthOffice-Alerts
+     --name HealthCoreX-Alerts
    ```
 
 2. Check spam/junk folders
@@ -362,7 +362,7 @@ Alert rule pricing (approximate):
    ```bash
    az monitor action-group test-notifications create \
      --resource-group <rg> \
-     --action-group-name CloudHealthOffice-Alerts \
+     --action-group-name HealthCoreX-Alerts \
      --alert-type servicehealth
    ```
 
@@ -378,6 +378,6 @@ Alert rule pricing (approximate):
 ## Support
 
 For questions or issues:
-- GitHub Issues: https://github.com/aurelianware/cloudhealthoffice/issues
+- GitHub Issues: https://github.com/aurelianware/HealthCoreX/issues
 - Email: mark@aurelianware.com
 - Include alert name, resource group, and error message

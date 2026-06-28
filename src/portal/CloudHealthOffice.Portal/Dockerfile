@@ -3,17 +3,17 @@ ARG REGISTRY=choacrhy6h2vdulfru6.azurecr.io
 FROM ${REGISTRY}/dotnet/sdk:8.0 AS build
 WORKDIR /repo
 
-COPY src/portal/CloudHealthOffice.Portal/CloudHealthOffice.Portal.csproj src/portal/CloudHealthOffice.Portal/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
-RUN dotnet restore src/portal/CloudHealthOffice.Portal/CloudHealthOffice.Portal.csproj
+COPY src/portal/HealthCoreX.Portal/HealthCoreX.Portal.csproj src/portal/HealthCoreX.Portal/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
+RUN dotnet restore src/portal/HealthCoreX.Portal/HealthCoreX.Portal.csproj
 
-COPY src/portal/CloudHealthOffice.Portal/ src/portal/CloudHealthOffice.Portal/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
-RUN dotnet build src/portal/CloudHealthOffice.Portal/CloudHealthOffice.Portal.csproj -c Release --no-restore
+COPY src/portal/HealthCoreX.Portal/ src/portal/HealthCoreX.Portal/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
+RUN dotnet build src/portal/HealthCoreX.Portal/HealthCoreX.Portal.csproj -c Release --no-restore
 
 # Publish stage
 FROM build AS publish
-RUN dotnet publish src/portal/CloudHealthOffice.Portal/CloudHealthOffice.Portal.csproj -c Release -o /app/publish /p:UseAppHost=false --no-restore --no-build
+RUN dotnet publish src/portal/HealthCoreX.Portal/HealthCoreX.Portal.csproj -c Release -o /app/publish /p:UseAppHost=false --no-restore --no-build
 
 # Stage 2: Runtime
 FROM ${REGISTRY}/dotnet/aspnet:8.0 AS runtime
@@ -34,4 +34,4 @@ EXPOSE 8080
 HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=10 \
     CMD curl -f http://localhost:8080/health || exit 1
 
-ENTRYPOINT ["dotnet", "CloudHealthOffice.Portal.dll"]
+ENTRYPOINT ["dotnet", "HealthCoreX.Portal.dll"]

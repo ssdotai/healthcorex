@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Infrastructure.Configuration;
+namespace HealthCoreX.Infrastructure.Configuration;
 
 /// <summary>
 /// Abstraction for retrieving application secrets from a configured secret store.

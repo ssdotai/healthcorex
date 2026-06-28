@@ -21,7 +21,7 @@ public interface IFhirFlagProjector
 public sealed class FhirFlagProjector : IFhirFlagProjector
 {
     private const string FlagCategorySystem = "http://terminology.hl7.org/CodeSystem/flag-category";
-    private const string CodeSystem = "https://cloudhealthoffice.com/fhir/CodeSystem/member-alert-type";
+    private const string CodeSystem = "https://HealthCoreX.com/fhir/CodeSystem/member-alert-type";
 
     public JsonObject Project(MemberAlert alert)
     {
@@ -94,7 +94,7 @@ public sealed class FhirFlagProjector : IFhirFlagProjector
             {
                 new JsonObject
                 {
-                    ["url"] = "https://cloudhealthoffice.com/fhir/StructureDefinition/required-action",
+                    ["url"] = "https://HealthCoreX.com/fhir/StructureDefinition/required-action",
                     ["valueString"] = alert.RequiredAction
                 }
             };

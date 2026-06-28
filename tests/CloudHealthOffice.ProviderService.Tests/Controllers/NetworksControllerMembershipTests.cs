@@ -9,7 +9,7 @@ using ProviderService.Controllers;
 using ProviderService.Models;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Controllers;
+namespace HealthCoreX.ProviderService.Tests.Controllers;
 
 /// <summary>
 /// Capability 5.6 — endpoint-shape coverage for

@@ -1,7 +1,7 @@
 {
   "resourceType": "ValueSet",
   "id": "cho-appeal-line-of-business",
-  "url": "http://fhir.cloudhealthoffice.com/ValueSet/cho-appeal-line-of-business",
+  "url": "http://fhir.HealthCoreX.com/ValueSet/cho-appeal-line-of-business",
   "version": "1.0.0",
   "name": "ChoAppealLineOfBusinessVS",
   "title": "CHO Appeal Line of Business Value Set",
@@ -12,7 +12,7 @@
   "description": "All concepts from CodeSystem cho-appeal-line-of-business. Authored by Cloud Health Office under its own canonical namespace; does not claim conformance to any external Implementation Guide.",
   "compose": {
     "include": [
-      { "system": "http://fhir.cloudhealthoffice.com/CodeSystem/cho-appeal-line-of-business" }
+      { "system": "http://fhir.HealthCoreX.com/CodeSystem/cho-appeal-line-of-business" }
     ]
   }
 }

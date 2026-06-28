@@ -1,8 +1,8 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Generators;
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
-using CloudHealthOffice.BenchmarkClaimGenerator.ReferenceData;
+using HealthCoreX.BenchmarkClaimGenerator.Generators;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.ReferenceData;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Tests;
+namespace HealthCoreX.BenchmarkClaimGenerator.Tests;
 
 public class EdgeCaseClaimGeneratorTests
 {
@@ -85,6 +85,40 @@ public class EdgeCaseClaimGeneratorTests
         var claim = _generator.Generate(1, "NewbornAutoAdjudication", random);
 
         Assert.Equal("Child", claim.Member.Relationship);
+        Assert.Equal("19", claim.Member.RelationshipCode);
+        Assert.False(claim.Member.IsSubscriber);
+        Assert.Equal("OnFile", claim.PriorAuthStatus);
+        Assert.Equal($"NB-AUTH-{claim.ClaimId}", claim.PriorAuthNumber);
+    }
+
+    [Theory]
+    [InlineData("NewbornAutoAdjudication", 2)]
+    [InlineData("NewbornMotherClaimLink", 5)]
+    [InlineData("NewbornFirstThirtyDays", 29)]
+    public void Generate_Newborn_SetsDateOfBirthRelativeToServiceDate(string scenario, int expectedAgeDays)
+    {
+        var claim = _generator.Generate(1, scenario, new Random(42));
+
+        var ageAtServiceDays = (claim.DateOfService.Date - claim.Member.DateOfBirth.Date).Days;
+
+        Assert.Equal(expectedAgeDays, ageAtServiceDays);
+        Assert.InRange(ageAtServiceDays, 0, 30);
+    }
+
+    [Theory]
+    [InlineData("NewbornMotherClaimLink")]
+    [InlineData("SubrogationAccidentRelated")]
+    public void Generate_MultiLineScenario_UsesDistinctLineProcedureCodes(string scenario)
+    {
+        for (var seed = 0; seed < 100; seed++)
+        {
+            var claim = _generator.Generate(seed + 1, scenario, new Random(seed));
+
+            Assert.Equal(2, claim.Lines.Count);
+            Assert.Equal(
+                claim.Lines.Count,
+                claim.Lines.Select(line => line.ProcedureCode).Distinct(StringComparer.Ordinal).Count());
+        }
     }
 
     [Fact]
@@ -98,6 +132,32 @@ public class EdgeCaseClaimGeneratorTests
     }
 
     [Fact]
+    public void Generate_BehavioralHealthCarveOut_DeniesAsNonCoveredService()
+    {
+        var claim = _generator.Generate(1, "BehavioralHealthCarveOut", new Random(42));
+
+        Assert.Equal("Denied", claim.ExpectedOutcome.Disposition);
+        Assert.Equal("96", claim.ExpectedOutcome.DenialReasonCode);
+        Assert.Equal(0m, claim.ExpectedOutcome.ExpectedAllowedAmount);
+        Assert.Equal(0m, claim.ExpectedOutcome.ExpectedPaidAmount);
+    }
+
+    [Fact]
+    public void Generate_AllScenarios_ProducePositiveLineCharges()
+    {
+        foreach (var scenario in Enum.GetValues<EdgeCaseScenario>())
+        {
+            for (var seed = 0; seed < 100; seed++)
+            {
+                var claim = _generator.Generate(seed + 1, scenario.ToString(), new Random(seed));
+
+                Assert.All(claim.Lines, line => Assert.True(line.ChargeAmount > 0m));
+                Assert.True(claim.TotalCharges > 0m);
+            }
+        }
+    }
+
+    [Fact]
     public void Generate_DeniedClaims_HaveZeroPaidAmount()
     {
         var random = new Random(42);
@@ -106,6 +166,24 @@ public class EdgeCaseClaimGeneratorTests
         Assert.Equal("Denied", claim.ExpectedOutcome.Disposition);
         Assert.Equal(0m, claim.ExpectedOutcome.ExpectedPaidAmount);
         Assert.Equal(0m, claim.ExpectedOutcome.ExpectedAllowedAmount);
+    }
+
+    [Fact]
+    public void Generate_RetroEligibilityTermination_TerminatesBeforeServiceDate()
+    {
+        var claim = _generator.Generate(1, "RetroEligibilityTermination", new Random(42));
+
+        Assert.NotNull(claim.Member.CoverageTermDate);
+        Assert.True(claim.Member.CoverageEffectiveDate.Date < claim.Member.CoverageTermDate.Value.Date);
+        Assert.True(claim.Member.CoverageTermDate.Value.Date < claim.DateOfService.Date);
+        Assert.Equal("Terminated", claim.Member.EnrollmentStatus);
+        Assert.Equal("024", claim.Member.MaintenanceTypeCode);
+        Assert.All(claim.Member.Coverages, coverage =>
+        {
+            Assert.Equal("Terminated", coverage.Status);
+            Assert.Equal("024", coverage.MaintenanceTypeCode);
+            Assert.Equal(claim.Member.CoverageTermDate, coverage.TermDate);
+        });
     }
 
     [Fact]

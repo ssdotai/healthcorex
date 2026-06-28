@@ -7,7 +7,7 @@
 # structure modeled after CloudDentalOffice (12 root files / 13 root dirs).
 #
 # USAGE:
-# cd cloudhealthoffice
+# cd HealthCoreX
 # chmod +x restructure-repo.sh
 # ./restructure-repo.sh
 #
@@ -25,7 +25,7 @@ echo -e "${BLUE}============================================================${NC
 echo ""
 # Verify we're in the right repo
 if [ ! -f "package.json" ] || ! grep -q "cloud-health-office" package.json 2>/dev/null; then
-echo -e "${RED}ERROR: Run this script from the cloudhealthoffice repo root.${NC}"
+echo -e "${RED}ERROR: Run this script from the HealthCoreX repo root.${NC}"
 exit 1
 fi
 BEFORE_FILES=$(ls -1 | grep -v '^\.' | wc -l)
@@ -282,7 +282,7 @@ echo " infrastructure/ → Argo, K8s, Helm, Azure Bicep, Kafka, monitoring"
 echo " schemas/ → X12 XSD schemas, FHIR profiles"
 echo " scripts/ → Setup, deploy, testing, migration scripts"
 echo " services/ → .NET microservices (16 bounded contexts)"
-echo " site/ → Marketing website (cloudhealthoffice.com)"
+echo " site/ → Marketing website (HealthCoreX.com)"
 echo " echo " src/ tests/ → FHIR APIs, Portal, AI, Security, Functions, ML"
 → Unit, integration, E2E tests + fixtures"
 echo " tools/ → Migration wizard"

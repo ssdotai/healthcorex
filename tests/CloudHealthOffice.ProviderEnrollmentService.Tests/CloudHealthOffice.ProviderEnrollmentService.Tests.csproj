@@ -20,7 +20,7 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\engines\CloudHealthOffice.ProviderEnrollmentService\CloudHealthOffice.ProviderEnrollmentService.csproj" />
+    <ProjectReference Include="..\..\src\engines\HealthCoreX.ProviderEnrollmentService\HealthCoreX.ProviderEnrollmentService.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="Xunit" />

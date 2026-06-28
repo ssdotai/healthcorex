@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Adapters;
+namespace HealthCoreX.ClaimsService.Tests.Adapters;
 
 /// <summary>
 /// Test helper: returns scripted responses for each HTTP call. Tracks the
@@ -10,6 +10,7 @@ internal sealed class FakeHttpMessageHandler : HttpMessageHandler
 {
     private readonly Func<HttpRequestMessage, HttpResponseMessage> _responder;
     public int RequestCount { get; private set; }
+    public string? LastClientName { get; set; }
 
     public FakeHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> responder)
     {

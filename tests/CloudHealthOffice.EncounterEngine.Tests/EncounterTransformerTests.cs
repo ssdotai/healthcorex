@@ -1,8 +1,8 @@
-using CloudHealthOffice.EncounterEngine.Domain;
-using CloudHealthOffice.EncounterEngine.Services;
+using HealthCoreX.EncounterEngine.Domain;
+using HealthCoreX.EncounterEngine.Services;
 using Xunit;
 
-namespace CloudHealthOffice.EncounterEngine.Tests;
+namespace HealthCoreX.EncounterEngine.Tests;
 
 public class EncounterTransformerTests
 {

@@ -1,13 +1,13 @@
-using CloudHealthOffice.ProviderVerificationEngine.DataSources;
-using CloudHealthOffice.ProviderVerificationEngine.Models;
-using CloudHealthOffice.ProviderVerificationEngine.Scoring;
+using HealthCoreX.ProviderVerificationEngine.DataSources;
+using HealthCoreX.ProviderVerificationEngine.Models;
+using HealthCoreX.ProviderVerificationEngine.Scoring;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Xunit;
 
-namespace CloudHealthOffice.ProviderVerificationEngine.Tests;
+namespace HealthCoreX.ProviderVerificationEngine.Tests;
 
 public class ProviderVerificationOrchestratorTests
 {

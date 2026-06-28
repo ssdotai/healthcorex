@@ -4,6 +4,7 @@ using System.Text.Json.Nodes;
 using ClaimsService.Adapters;
 using ClaimsService.Fhir;
 using ClaimsService.Models;
+using ClaimsService.Repositories;
 using ClaimsService.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,17 +45,20 @@ public class ClaimsV1Controller : ControllerBase
     private readonly ClaimAdapterFactory _adapterFactory;
     private readonly IClaimSubmissionService _submissionService;
     private readonly IExplanationOfBenefitProjector _eobProjector;
+    private readonly IClaimImportTransactionRepository _importTransactions;
     private readonly ILogger<ClaimsV1Controller> _logger;
 
     public ClaimsV1Controller(
         ClaimAdapterFactory adapterFactory,
         IClaimSubmissionService submissionService,
         IExplanationOfBenefitProjector eobProjector,
+        IClaimImportTransactionRepository importTransactions,
         ILogger<ClaimsV1Controller> logger)
     {
         _adapterFactory = adapterFactory;
         _submissionService = submissionService;
         _eobProjector = eobProjector;
+        _importTransactions = importTransactions;
         _logger = logger;
     }
 
@@ -101,6 +105,133 @@ public class ClaimsV1Controller : ControllerBase
             nameof(SearchMemberClaims),
             new { memberId = created.MemberId },
             created);
+    }
+
+    /// <summary>
+    /// Accepts a raw X12 837 EDI file (professional or institutional,
+    /// single claim or a multi-claim batch), parses it, maps each parsed
+    /// claim onto <see cref="AdapterClaim"/>, and submits each through the
+    /// same <see cref="IClaimSubmissionService"/> every other claim on
+    /// this surface goes through — the on-ramp for evaluators dropping in
+    /// their own 837 file rather than calling <c>POST /api/v1/claims</c>
+    /// with an already-structured payload one claim at a time.
+    /// </summary>
+    [HttpPost("import/raw837")]
+    [RequestSizeLimit(20_000_000)]
+    [ProducesResponseType(typeof(Raw837ImportResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Raw837ImportResult>> ImportRaw837(
+        [FromForm] IFormFile file,
+        CancellationToken ct = default)
+    {
+        if (file is null || file.Length == 0)
+        {
+            return BadRequest(new { error = "A non-empty 837 file is required." });
+        }
+
+        string ediContent;
+        using (var reader = new StreamReader(file.OpenReadStream()))
+        {
+            ediContent = await reader.ReadToEndAsync(ct);
+        }
+
+        List<HealthCoreX.ClaimsScrubEngine.Models.X12837Claim> parsedClaims;
+        try
+        {
+            parsedClaims = ClaimsService.EDI.Inbound.X12837Parser.Parse(ediContent);
+        }
+        catch (ClaimsService.EDI.Inbound.X12FormatException ex)
+        {
+            _logger.LogWarning(ex, "Failed to parse uploaded 837 file {FileName}", SanitizeForLog(file.FileName));
+            return BadRequest(new { error = $"Could not parse 837 file: {ex.Message}" });
+        }
+
+        if (parsedClaims.Count == 0)
+        {
+            return BadRequest(new { error = "No CLM (claim) segments found in the uploaded file." });
+        }
+
+        var tenantId = GetTenantId();
+        var actorId = ResolveActorId();
+        var correlationId = ResolveCorrelationId();
+
+        _logger.LogInformation(
+            "Parsed uploaded 837 file {FileName} for tenant {TenantId}: {Count} claim(s)",
+            SanitizeForLog(file.FileName), SanitizeForLog(tenantId), parsedClaims.Count);
+
+        var results = new List<Raw837ClaimResult>(parsedClaims.Count);
+        foreach (var parsed in parsedClaims)
+        {
+            var adapterClaim = ClaimsService.EDI.Inbound.X12837ClaimMapper.Map(parsed, tenantId);
+            var result = await _submissionService.SubmitAsync(adapterClaim, tenantId, actorId, correlationId, ct);
+
+            var errors = result.Success
+                ? []
+                : result.Errors.Select(e => $"{e.Field}: {e.Message}").ToList();
+
+            results.Add(new Raw837ClaimResult
+            {
+                ClaimNumber = parsed.ClaimId,
+                Success = result.Success,
+                ClaimId = result.Claim?.Id,
+                Errors = errors
+            });
+
+            // Persisted regardless of outcome — a rejected claim is exactly
+            // what an evaluator troubleshooting a dropped file needs to see.
+            try
+            {
+                await _importTransactions.CreateAsync(new ClaimImportTransaction
+                {
+                    TenantId = tenantId,
+                    ClaimNumber = parsed.ClaimId,
+                    ClaimId = result.Claim?.Id,
+                    MemberId = adapterClaim.MemberId,
+                    FileName = file.FileName,
+                    Status = result.Success ? "Accepted" : "Rejected",
+                    Errors = errors
+                });
+            }
+            catch (Exception ex)
+            {
+                // Transaction-log failures must not break the import — log
+                // and move on, same posture as enrollment-import-service's
+                // RecordTransactionAsync.
+                _logger.LogWarning(ex,
+                    "Failed to persist ClaimImportTransaction for claim {ClaimNumber}",
+                    SanitizeForLog(parsed.ClaimId));
+            }
+        }
+
+        return Ok(new Raw837ImportResult
+        {
+            FileName = file.FileName,
+            TotalClaims = parsedClaims.Count,
+            SucceededCount = results.Count(r => r.Success),
+            Results = results
+        });
+    }
+
+    /// <summary>
+    /// Most recent 837 import transactions for the tenant, newest first —
+    /// the admin-console read path (mirrors enrollment-import-service's
+    /// <c>GET /api/v1/enrollment/transactions/recent</c>). Includes
+    /// rejected imports, not just successful ones.
+    /// </summary>
+    [HttpGet("import-transactions")]
+    [ProducesResponseType(typeof(List<ClaimImportTransaction>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ListImportTransactions([FromQuery] int limit = 100)
+    {
+        var tenantId = TryGetTenantId();
+        if (string.IsNullOrWhiteSpace(tenantId))
+        {
+            return BadRequest(new { error = "X-Tenant-ID header is required" });
+        }
+        if (limit < 1 || limit > 500) limit = 100;
+
+        var transactions = await _importTransactions.ListRecentAsync(tenantId, limit);
+        return Ok(transactions);
     }
 
     /// <summary>
@@ -257,4 +388,21 @@ public class EobSearchResponse
     public int Page { get; set; }
     public int PageSize { get; set; }
     public JsonArray Resources { get; set; } = new();
+}
+
+/// <summary>Per-file result of a raw 837 upload — one entry per CLM segment found, in order.</summary>
+public class Raw837ImportResult
+{
+    public string FileName { get; set; } = string.Empty;
+    public int TotalClaims { get; set; }
+    public int SucceededCount { get; set; }
+    public List<Raw837ClaimResult> Results { get; set; } = [];
+}
+
+public class Raw837ClaimResult
+{
+    public string ClaimNumber { get; set; } = string.Empty;
+    public bool Success { get; set; }
+    public string? ClaimId { get; set; }
+    public List<string> Errors { get; set; } = [];
 }

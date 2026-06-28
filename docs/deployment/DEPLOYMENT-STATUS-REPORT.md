@@ -1,6 +1,6 @@
 # Deployment Status Report
 **Date:** February 3, 2026  
-**Repository:** aurelianware/cloudhealthoffice  
+**Repository:** aurelianware/HealthCoreX  
 **Investigated by:** GitHub Copilot Agent
 
 ## Executive Summary

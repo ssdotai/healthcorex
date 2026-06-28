@@ -5,7 +5,7 @@ using NSubstitute;
 using PaymentService.Repositories;
 using PaymentService.Services;
 
-namespace CloudHealthOffice.PaymentService.Tests;
+namespace HealthCoreX.PaymentService.Tests;
 
 public class PaymentApiFactory : WebApplicationFactory<Program>
 {

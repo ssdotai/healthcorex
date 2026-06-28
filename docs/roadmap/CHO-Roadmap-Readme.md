@@ -47,7 +47,7 @@ Complete X12 transaction support: 270/271, 276/277, 278, 834, 835, 837 (P/I enco
 
 ### 1A. Golden-Path Integration Test *(P0)*
 
-- [ ] Create `tests/CloudHealthOffice.E2E/` xUnit project
+- [ ] Create `tests/HealthCoreX.E2E/` xUnit project
 - [ ] Implement golden-path test: submit claim → adjudicate → pay → generate 835
 - [ ] Wire into GitHub Actions (`.github/workflows/e2e-tests.yml`)
 - [ ] Validate against docker-compose stack
@@ -56,9 +56,9 @@ Complete X12 transaction support: 270/271, 276/277, 278, 834, 835, 837 (P/I enco
 
 ### 1B. Service Controller Tests *(P0)*
 
-- [ ] `tests/CloudHealthOffice.ClaimsService.Tests/` — SubmitClaim, GetById, Search, 277CA generation
-- [ ] `tests/CloudHealthOffice.AdjudicationController.Tests/` — adjudicate, calculate-benefits, resolve-rates, ncci-check
-- [ ] `tests/CloudHealthOffice.PaymentService.Tests/` — payment creation, 835 generation, download
+- [ ] `tests/HealthCoreX.ClaimsService.Tests/` — SubmitClaim, GetById, Search, 277CA generation
+- [ ] `tests/HealthCoreX.AdjudicationController.Tests/` — adjudicate, calculate-benefits, resolve-rates, ncci-check
+- [ ] `tests/HealthCoreX.PaymentService.Tests/` — payment creation, 835 generation, download
 
 **Why:** The engines are well-tested (281 methods), but the HTTP layer stitching them together has zero coverage. De-risks the core adjudication pipeline.
 
@@ -66,7 +66,7 @@ Complete X12 transaction support: 270/271, 276/277, 278, 834, 835, 837 (P/I enco
 
 ### 1C. Shared Infrastructure Library *(P0)*
 
-- [ ] Create `src/services/shared/CloudHealthOffice.Infrastructure/`
+- [ ] Create `src/services/shared/HealthCoreX.Infrastructure/`
 - [ ] Extract: TenantMiddleware, health checks, MongoDB connection factory, error responses, logging config
 - [ ] Add DI extension: `AddChoInfrastructure()` / `UseChoInfrastructure()`
 - [ ] Migrate claims-service as proof-of-concept
@@ -119,11 +119,11 @@ Complete X12 transaction support: 270/271, 276/277, 278, 834, 835, 837 (P/I enco
 
 ### 2C. Claims Scrubbing / NCCI Consolidation *(P2)*
 
-- [ ] Create `src/engines/CloudHealthOffice.ClaimsScrubEngine/`
+- [ ] Create `src/engines/HealthCoreX.ClaimsScrubEngine/`
 - [ ] Port 20+ TypeScript validation rules (DC, CV, DL, AL, PV, MV categories) to C#
 - [ ] Port ~40 TypeScript tests to xUnit
 - [ ] Wire into AdjudicationController: scrub → NCCI → benefit calc → rate resolution
-- [x] Decommission `claims-scrubbing-service` — scrubbing runs in-process via `CloudHealthOffice.ClaimsScrubEngine` (capability 5.4)
+- [x] Decommission `claims-scrubbing-service` — scrubbing runs in-process via `HealthCoreX.ClaimsScrubEngine` (capability 5.4)
 
 **Why:** Unifies pre-adjudication validation under one runtime. Eliminates the TypeScript/C# split for the claims pipeline.
 
@@ -135,7 +135,7 @@ Complete X12 transaction support: 270/271, 276/277, 278, 834, 835, 837 (P/I enco
 
 ### 3A. Augment/Replace Mode Toggle *(P1)*
 
-- [ ] Create `src/engines/CloudHealthOffice.OperatingMode/`
+- [ ] Create `src/engines/HealthCoreX.OperatingMode/`
 - [ ] Define `IOperatingMode`, `AugmentResult<T>`, per-tenant engine configuration
 - [ ] Implement in BenefitCalculationEngine and FeeScheduleEngine
 - [ ] Store mode config per-tenant in tenant-service
@@ -145,7 +145,7 @@ Complete X12 transaction support: 270/271, 276/277, 278, 834, 835, 837 (P/I enco
 
 ### 3B. Observability Stack *(P1)*
 
-- [ ] Add OpenTelemetry to `CloudHealthOffice.Infrastructure`
+- [ ] Add OpenTelemetry to `HealthCoreX.Infrastructure`
 - [ ] Custom spans for adjudication pipeline (scrub → NCCI → benefit → rate → COB)
 - [ ] Metrics: claim processing latency, EDI throughput, error rates, auto-adjudication rate
 - [ ] `docker-compose.observability.yml` with Jaeger + Prometheus + Grafana

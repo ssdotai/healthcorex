@@ -10,7 +10,7 @@
 #
 # Usage:
 #   kubectl apply -f argo-workflows/sftp-test-workflow.yaml
-#   argo submit argo-workflows/sftp-test-workflow.yaml -n cloudhealthoffice
+#   argo submit argo-workflows/sftp-test-workflow.yaml -n HealthCoreX
 
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
@@ -20,7 +20,7 @@ metadata:
   labels:
     app.kubernetes.io/name: sftp-test-workflow
     app.kubernetes.io/component: integration-test
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
   annotations:
     description: "Test SFTP server integration with upload/download cycle"
     workflows.argoproj.io/version: ">= 3.0"

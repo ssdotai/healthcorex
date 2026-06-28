@@ -2,27 +2,27 @@
 # manifest (it is not checked in anywhere). Create it with:
 #   kubectl create secret generic anthropic-secret \
 #     --from-literal=apiKey=YOUR_KEY \
-#     -n cloudhealthoffice
+#     -n HealthCoreX
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: claims-examiner-service-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 data:
   ASPNETCORE_ENVIRONMENT: "Production"
   # Self-hosted Kafka is cluster-internal and plaintext; no SASL in this
   # environment.
-  Kafka__BootstrapServers: "kafka.cloudhealthoffice:9092"
+  Kafka__BootstrapServers: "kafka.HealthCoreX:9092"
   Kafka__ClaimPendedTopic: "claims.pended.v1"
   Kafka__ConsumerGroupId: "claims-examiner-service"
-  Services__ClaimsService: "http://claims-service.cloudhealthoffice:8080"
+  Services__ClaimsService: "http://claims-service.HealthCoreX:8080"
   Anthropic__Model: "claude-opus-4-6"
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: claims-examiner-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: claims-examiner-service
     tier: backend
@@ -59,7 +59,7 @@ spec:
                       - spot
       containers:
       - name: claims-examiner-service
-        image: choacrhy6h2vdulfru6.azurecr.io/cloudhealthoffice-claims-examiner-service:latest
+        image: choacrhy6h2vdulfru6.azurecr.io/HealthCoreX-claims-examiner-service:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -132,7 +132,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: claims-examiner-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: claims-examiner-service
 spec:

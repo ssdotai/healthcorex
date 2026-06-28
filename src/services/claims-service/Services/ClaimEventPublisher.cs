@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using ClaimsService.Models;
-using CloudHealthOffice.Events;
+using HealthCoreX.Events;
 using Confluent.Kafka;
 
 namespace ClaimsService.Services;
@@ -273,16 +273,16 @@ public class ClaimEventPublisher : IClaimEventPublisher, IHostedService, IAsyncD
         GC.SuppressFinalize(this);
     }
 
-    private static CloudHealthOffice.Events.PendDetails? MapPendDetails(ClaimsService.Models.PendDetails? source)
+    private static HealthCoreX.Events.PendDetails? MapPendDetails(ClaimsService.Models.PendDetails? source)
     {
         if (source is null) return null;
-        return new CloudHealthOffice.Events.PendDetails
+        return new HealthCoreX.Events.PendDetails
         {
             PendCode = source.PendCode,
             PendReason = source.PendReason,
             PendedAt = source.PendedAt,
             EditFailures = source.EditFailures
-                .Select(e => new CloudHealthOffice.Events.NcciEditFailureSnapshot
+                .Select(e => new HealthCoreX.Events.NcciEditFailureSnapshot
                 {
                     EditType = e.EditType,
                     RuleId = e.RuleId,

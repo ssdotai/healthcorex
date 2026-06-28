@@ -10,7 +10,7 @@ using NSubstitute;
 using AuthorizationService.Repositories;
 using SecurityClaim = System.Security.Claims.Claim;
 
-namespace CloudHealthOffice.AuthorizationService.Tests;
+namespace HealthCoreX.AuthorizationService.Tests;
 
 /// <summary>
 /// WebApplicationFactory for authorization-service smoke tests.

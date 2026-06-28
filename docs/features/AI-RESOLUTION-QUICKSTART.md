@@ -352,7 +352,7 @@ await resolveEdi277Claim(payload, false, config);
 ## Getting Help
 
 - **Documentation**: `/docs/AI-ERROR-RESOLUTION.md`
-- **GitHub Issues**: https://github.com/aurelianware/cloudhealthoffice/issues
+- **GitHub Issues**: https://github.com/aurelianware/HealthCoreX/issues
 - **Email**: support@aurelianware.com
 
 ---

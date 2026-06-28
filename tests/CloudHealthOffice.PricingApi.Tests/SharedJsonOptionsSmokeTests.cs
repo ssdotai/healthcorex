@@ -4,12 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MvcJsonOptions = Microsoft.AspNetCore.Mvc.JsonOptions;
 
-namespace CloudHealthOffice.PricingApi.Tests;
+namespace HealthCoreX.PricingApi.Tests;
 
 /// <summary>
 /// Verifies that PricingApi registers <see cref="JsonStringEnumConverter"/> with
 /// <see cref="JsonNamingPolicy.CamelCase"/> via the shared
-/// <c>AddCloudHealthOfficeJsonOptions(camelCaseEnums: true)</c> helper.
+/// <c>AddHealthCoreXJsonOptions(camelCaseEnums: true)</c> helper.
 /// PricingApi's published wire format uses camelCase enum names
 /// (e.g. "medicareFeeSchedule"); the converter must enforce that contract.
 /// </summary>

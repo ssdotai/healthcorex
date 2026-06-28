@@ -20,7 +20,7 @@ public enum ScrubbingDecision
 }
 
 /// <summary>
-/// One rule violation surfaced by <c>CloudHealthOffice.ClaimsScrubEngine</c>.
+/// One rule violation surfaced by <c>HealthCoreX.ClaimsScrubEngine</c>.
 /// Mirrors the engine's <c>ValidationResult</c> shape, projected onto the
 /// fields downstream consumers (277CA generation, work-queue UI) actually
 /// need. The engine's full result list lives on the response; this is the

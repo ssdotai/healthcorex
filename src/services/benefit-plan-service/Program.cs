@@ -9,23 +9,23 @@ using BenefitPlanService.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using CloudHealthOffice.BenefitEngine.Services;
-using CloudHealthOffice.BenefitEngine.Configuration;
-using CloudHealthOffice.BenefitEngine.Persistence;
+using HealthCoreX.BenefitEngine.Services;
+using HealthCoreX.BenefitEngine.Configuration;
+using HealthCoreX.BenefitEngine.Persistence;
 using StackExchange.Redis;
-using CloudHealthOffice.FeeScheduleEngine.Configuration;
-using CloudHealthOffice.ClaimsScrubEngine.Configuration;
-using CloudHealthOffice.NcciEngine.Configuration;
-using CloudHealthOffice.Infrastructure.HealthChecks;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.Caching;
-using CloudHealthOffice.Infrastructure.Json;
-using CloudHealthOffice.Infrastructure.Observability;
-using CloudHealthOffice.OperatingMode;
-using CloudHealthOffice.ProviderEnrollmentService.Configuration;
-using CloudHealthOffice.ProviderEnrollmentService.Gates;
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.PriorAuthRuleEngine.Configuration;
+using HealthCoreX.FeeScheduleEngine.Configuration;
+using HealthCoreX.ClaimsScrubEngine.Configuration;
+using HealthCoreX.NcciEngine.Configuration;
+using HealthCoreX.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Caching;
+using HealthCoreX.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Observability;
+using HealthCoreX.OperatingMode;
+using HealthCoreX.ProviderEnrollmentService.Configuration;
+using HealthCoreX.ProviderEnrollmentService.Gates;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.PriorAuthRuleEngine.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -159,7 +159,7 @@ builder.Services.AddHttpClient<IClaimsAccumulatorSource, ClaimsServiceAccumulato
 });
 
 builder.Services.AddBenefitEngine().UseRedisAccumulatorService();
-builder.Services.AddScoped<CloudHealthOffice.BenefitEngine.Services.IBenefitPlanProvider,
+builder.Services.AddScoped<HealthCoreX.BenefitEngine.Services.IBenefitPlanProvider,
                            BenefitPlanService.Services.ChoBenefitPlanProvider>();
 
 // ── ACA OOP Limits + Plan-Limit Validator (capability BP 5.7) ────────────────
@@ -211,7 +211,7 @@ builder.Services.AddScoped<CachingServiceCategoryMappingRepository>(sp =>
         return new CachingServiceCategoryMappingRepository(inner, inner, inner, cache, options);
     }
 });
-builder.Services.AddScoped<CloudHealthOffice.BenefitEngine.Services.IServiceCategoryMappingRepository>(
+builder.Services.AddScoped<HealthCoreX.BenefitEngine.Services.IServiceCategoryMappingRepository>(
     sp => sp.GetRequiredService<CachingServiceCategoryMappingRepository>());
 builder.Services.AddScoped<IServiceCategoryMappingWriteRepository>(
     sp => sp.GetRequiredService<CachingServiceCategoryMappingRepository>());
@@ -220,6 +220,19 @@ builder.Services.AddScoped<ISystemDefaultsAppliedRecordRepository>(
 
 builder.Services.AddSingleton<SystemDefaultMappingSeeder>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<SystemDefaultMappingSeeder>());
+
+// ── 834 Plan-Code Mappings ────────────────────────────────────────────────────
+// Crosswalk from a trading partner's own 834 plan code to this platform's
+// PlanId (see Enrollment834PlanCodeMapping). Mongo-only so far — every
+// recently-added capability in this service has landed Mongo-only.
+if (useMongo)
+{
+    builder.Services.AddScoped<IEnrollment834PlanCodeMappingRepository, Enrollment834PlanCodeMappingRepositoryMongo>();
+}
+else
+{
+    builder.Services.AddScoped<IEnrollment834PlanCodeMappingRepository, NullEnrollment834PlanCodeMappingRepository>();
+}
 builder.Services.AddFeeScheduleEngine().UseRepositoriesFromConfiguration(builder.Configuration);
 builder.Services.AddClaimsScrubEngine();
 builder.Services.AddNcciEngine().UseRepositoryFromConfiguration(builder.Configuration);
@@ -280,7 +293,7 @@ builder.Services.AddHttpClient<IOperatingModeProvider, HttpOperatingModeProvider
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:TenantServiceUrl"]
-        ?? "http://tenant-service:8080/");
+        ?? "http://tenant-service/");
     client.Timeout = TimeSpan.FromSeconds(5);
 });
 
@@ -303,14 +316,14 @@ builder.Services.AddHttpClient(HttpProviderIntegrityGate.ProviderServiceClientNa
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:ProviderServiceUrl"]
-        ?? "http://provider-service:8080/");
+        ?? "http://provider-service/");
     client.Timeout = TimeSpan.FromSeconds(5);
 });
 builder.Services.AddHttpClient(HttpProviderIntegrityGate.VerificationServiceClientName, client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:ProviderVerificationServiceUrl"]
-        ?? "http://provider-verification-service:8080/");
+        ?? "http://provider-verification-service/");
     client.Timeout = TimeSpan.FromSeconds(10);
 });
 builder.Services.AddSingleton<IProviderIntegrityGate, HttpProviderIntegrityGate>();
@@ -350,13 +363,13 @@ builder.Services.AddHttpClient<ITerminologyCrosswalkClient, HttpTerminologyCross
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:TerminologyServiceUrl"]
-        ?? "http://terminology-service:8080/");
+        ?? "http://terminology-service/");
     client.Timeout = TimeSpan.FromSeconds(5);
 });
 
 // ── ASP.NET Core ──────────────────────────────────────────────────────────────
 builder.Services.AddControllers()
-    .AddCloudHealthOfficeJsonOptions()
+    .AddHealthCoreXJsonOptions()
     // Register BenefitJsonConverter here (not via [JsonConverter] on Benefit) so
     // that WithoutSelf() can reliably strip it from a copy, avoiding the
     // attribute-inheritance stack overflow on polymorphic write.
@@ -365,7 +378,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var claimsServiceHealthUrl = builder.Configuration["Services:ClaimsServiceUrl"]
-    ?? "http://claims-service:8080";
+    ?? "http://claims-service";
 builder.Services.AddChoHealthChecks(options =>
 {
     options.MongoDbConnectionString  = builder.Configuration["MongoDb:ConnectionString"];
@@ -387,7 +400,7 @@ var app = builder.Build();
 app.UseChoObservability();
 
 if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
-app.UseMiddleware<CloudHealthOffice.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
+app.UseMiddleware<HealthCoreX.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseMiddleware<TenantMiddleware>();

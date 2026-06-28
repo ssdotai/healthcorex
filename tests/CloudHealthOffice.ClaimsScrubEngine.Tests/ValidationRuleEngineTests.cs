@@ -1,9 +1,9 @@
-using CloudHealthOffice.ClaimsScrubEngine.Data;
-using CloudHealthOffice.ClaimsScrubEngine.Models;
-using CloudHealthOffice.ClaimsScrubEngine.Services;
+using HealthCoreX.ClaimsScrubEngine.Data;
+using HealthCoreX.ClaimsScrubEngine.Models;
+using HealthCoreX.ClaimsScrubEngine.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.ClaimsScrubEngine.Tests;
+namespace HealthCoreX.ClaimsScrubEngine.Tests;
 
 /// <summary>
 /// Port of claims-scrubber.test.ts — ~40 tests covering all 6 rule categories,

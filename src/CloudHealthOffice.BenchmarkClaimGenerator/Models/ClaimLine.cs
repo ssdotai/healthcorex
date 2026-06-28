@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Models;
+namespace HealthCoreX.BenchmarkClaimGenerator.Models;
 
 /// <summary>
 /// Represents a single service line on a synthetic claim.

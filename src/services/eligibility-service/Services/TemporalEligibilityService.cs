@@ -103,7 +103,7 @@ public class TemporalEligibilityService : ITemporalEligibilityService
         string tenantId, string memberId, DateTime serviceDate, CancellationToken ct)
     {
         var baseUrl = _configuration["Services:CoverageService"]
-            ?? "http://coverage-service.cloudhealthoffice/api/v1";
+            ?? "http://coverage-service.HealthCoreX/api/v1";
         var client = _httpClientFactory.CreateClient("EligibilityDefault");
 
         var request = new HttpRequestMessage(

@@ -2,7 +2,7 @@ using FluentAssertions;
 using FhirService.Mappers;
 using FhirService.Models;
 
-namespace CloudHealthOffice.FhirService.Tests;
+namespace HealthCoreX.FhirService.Tests;
 
 // CS0618: ProviderDirectoryMapper.MapNppesToPractitioner / EnrichWithVerification
 // were marked [Obsolete] in capability 5.7. The Practitioner endpoints now

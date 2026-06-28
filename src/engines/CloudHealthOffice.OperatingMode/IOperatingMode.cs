@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.OperatingMode;
+namespace HealthCoreX.OperatingMode;
 
 /// <summary>
 /// Defines the operating mode for a CHO engine within a tenant.

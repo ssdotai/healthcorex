@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.ProviderService.Tests.TestHelpers;
+namespace HealthCoreX.ProviderService.Tests.TestHelpers;
 
 /// <summary>
 /// Deterministic polling helper for hosted-service / async-state tests.

@@ -1,15 +1,15 @@
-namespace CloudHealthOffice.ProviderVerificationService;
+namespace HealthCoreX.ProviderVerificationService;
 
-using CloudHealthOffice.ProviderVerificationEngine;
-using CloudHealthOffice.ProviderVerificationEngine.DataSources;
-using CloudHealthOffice.ProviderVerificationEngine.DataSources.Nppes;
-using CloudHealthOffice.ProviderVerificationEngine.Models;
-using CloudHealthOffice.ProviderVerificationEngine.Scoring;
+using HealthCoreX.ProviderVerificationEngine;
+using HealthCoreX.ProviderVerificationEngine.DataSources;
+using HealthCoreX.ProviderVerificationEngine.DataSources.Nppes;
+using HealthCoreX.ProviderVerificationEngine.Models;
+using HealthCoreX.ProviderVerificationEngine.Scoring;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Observability;
 
 // TODO(refactor): consider converting this Program to top-level statements for
 // consistency with the rest of the service fleet (out of scope for A.7.4).
@@ -97,7 +97,7 @@ public class Program
                 Version = "v1",
                 Description = "Multi-source provider verification and integrity scoring. " +
                               "Aggregates NPPES, OIG/LEIE, PECOS, Open Payments, and FSMB data.",
-                Contact = new() { Name = "Aurelianware", Url = new("https://cloudhealthoffice.com") }
+                Contact = new() { Name = "Aurelianware", Url = new("https://HealthCoreX.com") }
             });
         });
 

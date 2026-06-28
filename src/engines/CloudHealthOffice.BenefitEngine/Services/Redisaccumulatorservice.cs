@@ -1,10 +1,10 @@
-using CloudHealthOffice.BenefitEngine.Domain;
-using CloudHealthOffice.BenefitEngine.Models;
-using CloudHealthOffice.BenefitEngine.Persistence;
+using HealthCoreX.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Models;
+using HealthCoreX.BenefitEngine.Persistence;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
-namespace CloudHealthOffice.BenefitEngine.Services;
+namespace HealthCoreX.BenefitEngine.Services;
 
 /// <summary>
 /// Redis-backed accumulator service following the QNXT pattern: accumulators
@@ -62,7 +62,7 @@ namespace CloudHealthOffice.BenefitEngine.Services;
 /// </summary>
 /// <remarks>
 /// This service intentionally does NOT use the shared
-/// <see cref="CloudHealthOffice.Infrastructure.Caching.ICacheProvider"/>
+/// <see cref="HealthCoreX.Infrastructure.Caching.ICacheProvider"/>
 /// abstraction introduced in Addendum A.7.2. Accumulators use Redis hashes
 /// with server-side atomic <c>HINCRBYFLOAT</c> to avoid read-modify-write
 /// races between concurrent claim adjudications — behaviour that a
@@ -96,6 +96,7 @@ public class RedisAccumulatorService : IAccumulatorService
     /// plan with 2 months of run-out.
     /// </summary>
     private static readonly TimeSpan DefaultKeyTtl = TimeSpan.FromDays(425);
+    private static readonly RedisValue EmptySnapshotField = "__empty";
 
     public RedisAccumulatorService(
         IConnectionMultiplexer redis,
@@ -123,14 +124,18 @@ public class RedisAccumulatorService : IAccumulatorService
         var db = _redis.GetDatabase();
         var snapshots = new List<AccumulatorSnapshot>();
 
-        // Load individual accumulators
-        var individualSnapshots = await GetOrRebuildAsync(
+        // Load individual and family accumulators independently. Running
+        // both reads in parallel avoids paying two Redis round trips serially.
+        var individualTask = GetOrRebuildAsync(
             db, memberId, AccumulatorScope.Individual, benefitPlanId, planYear, ct);
-        snapshots.AddRange(individualSnapshots);
-
-        // Load family accumulators
-        var familySnapshots = await GetOrRebuildAsync(
+        var familyTask = GetOrRebuildAsync(
             db, subscriberId, AccumulatorScope.Family, benefitPlanId, planYear, ct);
+
+        await Task.WhenAll(individualTask, familyTask);
+
+        var individualSnapshots = await individualTask;
+        var familySnapshots = await familyTask;
+        snapshots.AddRange(individualSnapshots);
         snapshots.AddRange(familySnapshots);
 
         _logger.LogDebug(
@@ -299,10 +304,24 @@ public class RedisAccumulatorService : IAccumulatorService
         _logger.LogDebug(
             "Cache miss for {Key}. Rebuilding from claim history.", key.ToString());
 
-        var computed = await _claimsSource.CalculateAccumulatorsAsync(
+        var (fetchSuccess, computed) = await _claimsSource.CalculateAccumulatorsAsync(
             _tenantContext.TenantId, ownerId, scope, benefitPlanId, planYear, ct);
 
-        if (computed.Count == 0) return [];
+        if (!fetchSuccess)
+        {
+            // Source was unavailable — do not cache; the next read will retry.
+            _logger.LogWarning(
+                "Accumulator source unavailable for {Key}. Skipping Redis cache population.",
+                key.ToString());
+            return [];
+        }
+
+        if (computed.Count == 0)
+        {
+            // Authoritatively empty: owner has no accumulator history.
+            await MarkEmptySnapshotAsync(db, key);
+            return [];
+        }
 
         // Populate Redis
         var hashEntries = computed.Select(s =>
@@ -333,6 +352,8 @@ public class RedisAccumulatorService : IAccumulatorService
         var batch = db.CreateBatch();
         var tasks = new List<Task>();
 
+        tasks.Add(batch.HashDeleteAsync(key, EmptySnapshotField));
+
         foreach (var update in updates)
         {
             var field = MakeField(update);
@@ -344,6 +365,15 @@ public class RedisAccumulatorService : IAccumulatorService
 
         batch.Execute();
         await Task.WhenAll(tasks);
+    }
+
+    private static async Task MarkEmptySnapshotAsync(IDatabase db, RedisKey key)
+    {
+        var batch = db.CreateBatch();
+        var setTask = batch.HashSetAsync(key, EmptySnapshotField, RedisValue.EmptyString);
+        var expireTask = batch.KeyExpireAsync(key, DefaultKeyTtl);
+        batch.Execute();
+        await Task.WhenAll(setTask, expireTask);
     }
 
     // ═══════════════════════════════════════════════════════════════════
@@ -382,6 +412,8 @@ public class RedisAccumulatorService : IAccumulatorService
         foreach (var entry in entries)
         {
             var field = entry.Name.ToString();
+            if (entry.Name == EmptySnapshotField) continue;
+
             var amount = (decimal)(double)entry.Value;
 
             // Parse "AccumulatorType:NetworkTier" field format
@@ -438,7 +470,18 @@ public class RedisAccumulatorService : IAccumulatorService
 /// </summary>
 public interface IClaimsAccumulatorSource
 {
-    Task<IReadOnlyList<AccumulatorSnapshot>> CalculateAccumulatorsAsync(
+    /// <summary>
+    /// Calculates accumulator totals from claim history.
+    /// </summary>
+    /// <returns>
+    /// A result where <c>Success</c> is <c>true</c> when the source was
+    /// reachable and the data is authoritative (even if <c>Snapshots</c> is
+    /// empty, meaning the owner has no accumulator history), and <c>false</c>
+    /// when the source was unavailable or returned a non-success response —
+    /// in which case the caller must NOT cache the result as an authoritative
+    /// empty rebuild.
+    /// </returns>
+    Task<(bool Success, IReadOnlyList<AccumulatorSnapshot> Snapshots)> CalculateAccumulatorsAsync(
         string tenantId, string ownerId, AccumulatorScope scope,
         Guid benefitPlanId, string planYear,
         CancellationToken ct = default);

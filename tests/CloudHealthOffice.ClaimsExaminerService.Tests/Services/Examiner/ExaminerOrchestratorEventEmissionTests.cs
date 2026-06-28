@@ -4,13 +4,13 @@ using ClaimsExaminerService.Services;
 using ClaimsExaminerService.Services.Anthropic;
 using ClaimsExaminerService.Services.Events;
 using ClaimsExaminerService.Services.Examiner;
-using CloudHealthOffice.Events;
+using HealthCoreX.Events;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsExaminerService.Tests.Services.Examiner;
+namespace HealthCoreX.ClaimsExaminerService.Tests.Services.Examiner;
 
 /// <summary>
 /// Capability 5.9 — verifies <see cref="ExaminerOrchestrator"/> emits

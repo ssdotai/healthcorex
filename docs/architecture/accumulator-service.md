@@ -123,7 +123,7 @@ this PR.
 Every collection / container is partition-keyed on `tenantId`.
 Repositories never issue a query without a `tenantId` predicate. The
 shared `TenantMiddleware` (see
-`CloudHealthOffice.Infrastructure.Middleware`) resolves the tenant from
+`HealthCoreX.Infrastructure.Middleware`) resolves the tenant from
 JWT claims first, `X-Tenant-ID` header second, `tenantId` query
 parameter as a dev-only fallback.
 

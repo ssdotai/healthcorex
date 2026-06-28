@@ -26,7 +26,7 @@
 
 **"Authorized Users"** means Customer's employees, contractors, and agents who are authorized by Customer to access and use the Services.
 
-**"Documentation"** means the user guides, technical specifications, API documentation, and other materials provided by Provider for the Services, available at https://docs.cloudhealthoffice.com.
+**"Documentation"** means the user guides, technical specifications, API documentation, and other materials provided by Provider for the Services, available at https://docs.HealthCoreX.com.
 
 **"Confidential Information"** means all non-public information disclosed by one Party to the other Party that is marked as confidential or would reasonably be considered confidential given the nature of the information or circumstances of disclosure.
 
@@ -88,8 +88,8 @@ Detailed SLA terms are documented in the [Service Level Agreement](./sla.md) inc
 | Enterprise | 30 minutes | 1 hour | 4 hours | 1 business day |
 
 **Support Channels:**
-- Email: support@cloudhealthoffice.com (monitored 24/7)
-- Support Portal: https://support.cloudhealthoffice.com
+- Email: support@HealthCoreX.com (monitored 24/7)
+- Support Portal: https://support.HealthCoreX.com
 - Phone: 1-888-CLOUD-55 (Enterprise tier only)
 
 ---
@@ -458,7 +458,7 @@ All notices under these Terms must be in writing and delivered via:
 **Notices to Provider:**  
 Cloud Health Office  
 Attn: Legal Department  
-Email: legal@cloudhealthoffice.com  
+Email: legal@HealthCoreX.com  
 Address: [Company Address]
 
 **Notices to Customer:**  
@@ -507,10 +507,10 @@ By clicking "I Agree," creating an account, accessing the Services, or paying su
 ## Contact Information
 
 **Cloud Health Office**  
-Website: https://cloudhealthoffice.com  
-Support: support@cloudhealthoffice.com  
-Sales: sales@cloudhealthoffice.com  
-Legal: legal@cloudhealthoffice.com
+Website: https://HealthCoreX.com  
+Support: support@HealthCoreX.com  
+Sales: sales@HealthCoreX.com  
+Legal: legal@HealthCoreX.com
 
 ---
 

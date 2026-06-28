@@ -1,12 +1,12 @@
-using CloudHealthOffice.NcciEngine.Data;
-using CloudHealthOffice.NcciEngine.Models;
-using CloudHealthOffice.NcciEngine.Persistence;
-using CloudHealthOffice.NcciEngine.Services;
+using HealthCoreX.NcciEngine.Data;
+using HealthCoreX.NcciEngine.Models;
+using HealthCoreX.NcciEngine.Persistence;
+using HealthCoreX.NcciEngine.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.NcciEngine.Configuration;
+namespace HealthCoreX.NcciEngine.Configuration;
 
 /// <summary>
 /// DI registration for the NCCI Edit Engine.
@@ -38,6 +38,7 @@ public static class NcciEngineServiceCollectionExtensions
     /// </summary>
     public static NcciEngineBuilder AddNcciEngine(this IServiceCollection services)
     {
+        services.AddSingleton<NcciLookupCache>();
         services.AddScoped<INcciEditService, NcciEditService>();
         return new NcciEngineBuilder(services);
     }

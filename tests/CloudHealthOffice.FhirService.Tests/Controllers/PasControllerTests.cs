@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 
-namespace CloudHealthOffice.FhirService.Tests.Controllers;
+namespace HealthCoreX.FhirService.Tests.Controllers;
 
 public class PasControllerTests
 {

@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.PricingApi.Configuration;
+namespace HealthCoreX.PricingApi.Configuration;
 
 public class PricingApiOptions
 {

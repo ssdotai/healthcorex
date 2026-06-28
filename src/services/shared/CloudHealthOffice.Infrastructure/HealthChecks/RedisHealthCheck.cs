@@ -1,7 +1,7 @@
 using System.Net.Sockets;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace CloudHealthOffice.Infrastructure.HealthChecks;
+namespace HealthCoreX.Infrastructure.HealthChecks;
 
 public class RedisHealthCheck : IHealthCheck
 {

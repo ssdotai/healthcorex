@@ -1,8 +1,8 @@
 using Azure.Storage.Blobs;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.HealthChecks;
-using CloudHealthOffice.Infrastructure.Json;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Observability;
 using MemberDocumentService.Middleware;
 using MemberDocumentService.Repositories;
 using MemberDocumentService.Services;
@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSecretProvider(builder.Configuration);
 builder.Configuration.AddAzureKeyVaultConfiguration(builder.Configuration);
 
-builder.Services.AddControllers().AddCloudHealthOfficeJsonOptions();
+builder.Services.AddControllers().AddHealthCoreXJsonOptions();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -47,7 +47,7 @@ if (!string.IsNullOrEmpty(mongoConnectionString))
     builder.Services.AddScoped<IMongoDatabase>(sp =>
     {
         var client = sp.GetRequiredService<IMongoClient>();
-        var databaseName = builder.Configuration["MongoDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = builder.Configuration["MongoDb:DatabaseName"] ?? "HealthCoreX";
         return client.GetDatabase(databaseName);
     });
 
@@ -76,7 +76,7 @@ else
     {
         var cosmosClient = sp.GetRequiredService<CosmosClient>();
         var configuration = sp.GetRequiredService<IConfiguration>();
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         return new MemberDocumentRepository(cosmosClient, databaseName, configuration);
     });
 }
@@ -111,7 +111,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<CloudHealthOffice.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
+app.UseMiddleware<HealthCoreX.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseCors();
 app.UseTenantContext();

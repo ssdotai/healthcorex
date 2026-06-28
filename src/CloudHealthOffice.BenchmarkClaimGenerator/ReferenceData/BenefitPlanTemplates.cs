@@ -1,6 +1,6 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.ReferenceData;
+namespace HealthCoreX.BenchmarkClaimGenerator.ReferenceData;
 
 /// <summary>
 /// Realistic Texas Medicaid benefit plan templates for synthetic data generation.

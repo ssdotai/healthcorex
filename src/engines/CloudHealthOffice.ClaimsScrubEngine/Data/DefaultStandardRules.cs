@@ -1,6 +1,6 @@
-using CloudHealthOffice.ClaimsScrubEngine.Models;
+using HealthCoreX.ClaimsScrubEngine.Models;
 
-namespace CloudHealthOffice.ClaimsScrubEngine.Data;
+namespace HealthCoreX.ClaimsScrubEngine.Data;
 
 /// <summary>
 /// Default standard rule set configuration.

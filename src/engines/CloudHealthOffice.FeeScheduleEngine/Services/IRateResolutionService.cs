@@ -1,6 +1,6 @@
-using CloudHealthOffice.FeeScheduleEngine.Models;
+using HealthCoreX.FeeScheduleEngine.Models;
 
-namespace CloudHealthOffice.FeeScheduleEngine.Services;
+namespace HealthCoreX.FeeScheduleEngine.Services;
 
 /// <summary>
 /// Resolves the allowed rate for one or more claim lines.

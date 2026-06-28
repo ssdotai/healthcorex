@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.BenchmarkClaimGenerator.ReferenceData;
+namespace HealthCoreX.BenchmarkClaimGenerator.ReferenceData;
 
 /// <summary>
 /// CDT dental procedure codes organized by category.

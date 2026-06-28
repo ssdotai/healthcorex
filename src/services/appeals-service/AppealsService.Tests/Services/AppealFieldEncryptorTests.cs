@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using AppealsService.Services;
 using AppealsService.Tests.Fakes;
-using CloudHealthOffice.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace AppealsService.Tests.Services;

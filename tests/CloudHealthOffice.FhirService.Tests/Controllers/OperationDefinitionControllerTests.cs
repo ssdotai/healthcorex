@@ -4,7 +4,7 @@ using FluentAssertions;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 
-namespace CloudHealthOffice.FhirService.Tests.Controllers;
+namespace HealthCoreX.FhirService.Tests.Controllers;
 
 /// <summary>
 /// Integration tests for <see cref="FhirService.Controllers.OperationDefinitionController"/>.

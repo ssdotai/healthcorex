@@ -1,6 +1,6 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Configuration;
+using HealthCoreX.BenchmarkClaimGenerator.Configuration;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Tests;
+namespace HealthCoreX.BenchmarkClaimGenerator.Tests;
 
 public class CorpusProfileTests
 {

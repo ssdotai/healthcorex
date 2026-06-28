@@ -1,7 +1,7 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
-using CloudHealthOffice.BenchmarkClaimGenerator.ReferenceData;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.ReferenceData;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Generators;
+namespace HealthCoreX.BenchmarkClaimGenerator.Generators;
 
 /// <summary>
 /// Generates UB-04 institutional claims including inpatient DRG, outpatient per diem,

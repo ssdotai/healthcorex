@@ -10,7 +10,7 @@ using PaymentService.Repositories;
 using PaymentService.Services;
 using Xunit;
 
-namespace CloudHealthOffice.PaymentService.Tests;
+namespace HealthCoreX.PaymentService.Tests;
 
 /// <summary>
 /// Unit tests for the 5.10 batched flow inside <see cref="PaymentRunService"/>.

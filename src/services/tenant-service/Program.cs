@@ -2,10 +2,10 @@ using Microsoft.OpenApi.Models;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using TenantService.Services;
-using CloudHealthOffice.Infrastructure.HealthChecks;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.Json;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
 // Secret provider (Azure Key Vault / none)
@@ -13,7 +13,7 @@ builder.Services.AddSecretProvider(builder.Configuration);
 builder.Configuration.AddAzureKeyVaultConfiguration(builder.Configuration);
 
 builder.Services.AddControllers()
-    .AddCloudHealthOfficeJsonOptions();
+    .AddHealthCoreXJsonOptions();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -42,7 +42,7 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
 {
     var mongoClient = sp.GetRequiredService<IMongoClient>();
     var configuration = sp.GetRequiredService<IConfiguration>();
-    var databaseName = configuration["MongoDb:DatabaseName"] ?? "CloudHealthOffice";
+    var databaseName = configuration["MongoDb:DatabaseName"] ?? "HealthCoreX";
     return mongoClient.GetDatabase(databaseName);
 });
 
@@ -141,7 +141,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowAll");
 
-app.UseMiddleware<CloudHealthOffice.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
+app.UseMiddleware<HealthCoreX.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
 app.MapControllers();
 
 // Health check endpoints

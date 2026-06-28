@@ -33,7 +33,7 @@ public class PaymentRepository : IPaymentRepository
         IHttpContextAccessor httpContextAccessor,
         ILogger<PaymentRepository> logger)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         var containerName = configuration["CosmosDb:ContainerName"] ?? "Payments";
 
         _container = cosmosClient.GetContainer(databaseName, containerName);

@@ -2,7 +2,7 @@ using FluentAssertions;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 
-namespace CloudHealthOffice.FhirService.Tests.FhirArtifacts;
+namespace HealthCoreX.FhirService.Tests.FhirArtifacts;
 
 /// <summary>
 /// For each CHO extension, asserts that <c>context[0]</c> correctly scopes

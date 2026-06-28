@@ -1,17 +1,17 @@
 using System.Net;
 using System.Reflection;
 using System.Text;
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Cache;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
-using CloudHealthOffice.ProviderEnrollmentService.Sources.Texas;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Cache;
+using HealthCoreX.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Sources.Texas;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Tests;
+namespace HealthCoreX.ProviderEnrollmentService.Tests;
 
 public class TmhpPemsSourceTests
 {

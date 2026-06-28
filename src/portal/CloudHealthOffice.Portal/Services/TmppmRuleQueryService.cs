@@ -1,10 +1,10 @@
-using CloudHealthOffice.Portal.Models;
+using HealthCoreX.Portal.Models;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.Portal.Services;
+namespace HealthCoreX.Portal.Services;
 
 public class TmppmRuleQueryService : ITmppmRuleQueryService
 {

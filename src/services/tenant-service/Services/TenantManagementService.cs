@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
-using CloudHealthOffice.OperatingMode;
+using HealthCoreX.OperatingMode;
 using TenantService.Models;
 
 namespace TenantService.Services;

@@ -1,12 +1,12 @@
 using System.Diagnostics;
 using System.Security.Claims;
 using System.Text.Json;
-using CloudHealthOffice.Infrastructure.Models;
+using HealthCoreX.Infrastructure.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.Infrastructure.Middleware;
+namespace HealthCoreX.Infrastructure.Middleware;
 
 /// <summary>
 /// Extracts tenant context from JWT claims or HTTP headers for multi-tenant isolation.

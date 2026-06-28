@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Controllers;
+namespace HealthCoreX.ClaimsService.Tests.Controllers;
 
 /// <summary>
 /// Capability 5.1b — admin endpoint contract tests. Mirrors the

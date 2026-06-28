@@ -2,7 +2,7 @@ using System.Diagnostics;
 using ClaimsService.Models;
 using ClaimsService.Models.Migrations;
 using ClaimsService.Repositories;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Options;
 

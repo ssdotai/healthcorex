@@ -1,5 +1,5 @@
 using BenefitPlanService.Models;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 using Microsoft.Extensions.Options;
 
 namespace BenefitPlanService.Services;

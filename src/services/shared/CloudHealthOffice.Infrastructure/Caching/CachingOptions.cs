@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Infrastructure.Caching;
+namespace HealthCoreX.Infrastructure.Caching;
 
 /// <summary>
 /// Binds from the <c>Caching</c> configuration section. Shape mirrors

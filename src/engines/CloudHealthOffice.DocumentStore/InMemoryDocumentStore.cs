@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 
-namespace CloudHealthOffice.DocumentStore;
+namespace HealthCoreX.DocumentStore;
 
 /// <summary>
 /// In-memory <see cref="IDocumentStore"/> for unit tests and local development.

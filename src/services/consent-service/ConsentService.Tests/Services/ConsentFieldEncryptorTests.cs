@@ -1,5 +1,5 @@
 using System.Security.Cryptography;
-using CloudHealthOffice.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Configuration;
 using ConsentService.Services;
 using ConsentService.Tests.Fakes;
 using Microsoft.Extensions.Logging.Abstractions;

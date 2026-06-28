@@ -1,7 +1,7 @@
 using AccumulatorService.Models;
 using AccumulatorService.Repositories;
 
-namespace CloudHealthOffice.AccumulatorService.Tests;
+namespace HealthCoreX.AccumulatorService.Tests;
 
 /// <summary>
 /// In-memory repository for unit tests. Enforces the same invariants as the
@@ -124,16 +124,16 @@ public class InMemoryProcessedClaimStore : IProcessedClaimStore
 
 public class RecordingPublisher : global::AccumulatorService.Services.IAccumulatorEventPublisher
 {
-    public readonly List<CloudHealthOffice.Events.AccumulatorAdjustedEvent> Adjusted = new();
-    public readonly List<CloudHealthOffice.Events.OrphanAccumulatorClaimEvent> Orphans = new();
+    public readonly List<HealthCoreX.Events.AccumulatorAdjustedEvent> Adjusted = new();
+    public readonly List<HealthCoreX.Events.OrphanAccumulatorClaimEvent> Orphans = new();
 
-    public Task PublishAdjustedAsync(CloudHealthOffice.Events.AccumulatorAdjustedEvent evt, CancellationToken ct = default)
+    public Task PublishAdjustedAsync(HealthCoreX.Events.AccumulatorAdjustedEvent evt, CancellationToken ct = default)
     {
         Adjusted.Add(evt);
         return Task.CompletedTask;
     }
 
-    public Task PublishOrphanAsync(CloudHealthOffice.Events.OrphanAccumulatorClaimEvent evt, CancellationToken ct = default)
+    public Task PublishOrphanAsync(HealthCoreX.Events.OrphanAccumulatorClaimEvent evt, CancellationToken ct = default)
     {
         Orphans.Add(evt);
         return Task.CompletedTask;

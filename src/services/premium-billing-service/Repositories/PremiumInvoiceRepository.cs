@@ -43,7 +43,7 @@ public class PremiumInvoiceRepository : IPremiumInvoiceRepository
         IHttpContextAccessor httpContextAccessor,
         ILogger<PremiumInvoiceRepository> logger)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         _container = cosmosClient.GetContainer(databaseName, "PremiumInvoices");
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;

@@ -1,10 +1,10 @@
-using CloudHealthOffice.ProviderService.Tests.Fakes;
+using HealthCoreX.ProviderService.Tests.Fakes;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using ProviderService.Models;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Services;
+namespace HealthCoreX.ProviderService.Tests.Services;
 
 /// <summary>
 /// Behavior tests for <see cref="NetworkParticipationBackfillService"/>:

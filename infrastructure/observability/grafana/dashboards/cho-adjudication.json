@@ -111,7 +111,7 @@
   ],
   "refresh": "10s",
   "schemaVersion": 39,
-  "tags": ["cloudhealthoffice", "adjudication", "observability"],
+  "tags": ["HealthCoreX", "adjudication", "observability"],
   "templating": { "list": [] },
   "time": { "from": "now-1h", "to": "now" },
   "timepicker": {},

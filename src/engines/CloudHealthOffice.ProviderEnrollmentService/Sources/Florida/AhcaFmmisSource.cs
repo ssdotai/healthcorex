@@ -1,9 +1,9 @@
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Cache;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Cache;
+using HealthCoreX.ProviderEnrollmentService.Models;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Sources.Florida;
+namespace HealthCoreX.ProviderEnrollmentService.Sources.Florida;
 
 /// <summary>
 /// Florida AHCA FMMIS (Florida Medicaid Management Information System).

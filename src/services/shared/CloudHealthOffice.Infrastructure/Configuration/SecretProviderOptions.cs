@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Infrastructure.Configuration;
+namespace HealthCoreX.Infrastructure.Configuration;
 
 /// <summary>
 /// Configuration options for the secret provider, bound from the <c>SecretProvider</c> config section.

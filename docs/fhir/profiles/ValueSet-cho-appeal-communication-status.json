@@ -1,7 +1,7 @@
 {
   "resourceType": "ValueSet",
   "id": "cho-appeal-communication-status",
-  "url": "http://fhir.cloudhealthoffice.com/ValueSet/cho-appeal-communication-status",
+  "url": "http://fhir.HealthCoreX.com/ValueSet/cho-appeal-communication-status",
   "version": "1.0.0",
   "name": "ChoAppealCommunicationStatusVS",
   "title": "CHO Appeal Communication Status Value Set",

@@ -16,7 +16,7 @@ This guide explains how to build, test, and deploy the Cloud Health Office stati
 Convert Markdown files to HTML:
 
 ```bash
-cd /home/runner/work/cloudhealthoffice/cloudhealthoffice
+cd /home/runner/work/HealthCoreX/HealthCoreX
 npm run build:site
 ```
 
@@ -171,11 +171,11 @@ Horizontal rule
 2. **Azure login** via OIDC (no stored credentials)
 3. **Get Static Web App details** (hostname, deployment token)
 4. **Deploy content** using Azure/static-web-apps-deploy action
-5. **Configure custom domain** (cloudhealthoffice.com)
+5. **Configure custom domain** (HealthCoreX.com)
 6. **Generate DNS instructions** (artifact download)
 7. **Verify deployment** (HTTP 200 check)
 
-**Authentication:** Branch-based OIDC (subject: `repo:aurelianware/cloudhealthoffice:ref:refs/heads/main`)
+**Authentication:** Branch-based OIDC (subject: `repo:aurelianware/HealthCoreX:ref:refs/heads/main`)
 
 **Permissions:**
 - `id-token: write` (OIDC authentication)
@@ -184,7 +184,7 @@ Horizontal rule
 
 ### Custom Domain Setup
 
-The workflow automatically configures `cloudhealthoffice.com` as the custom domain.
+The workflow automatically configures `HealthCoreX.com` as the custom domain.
 
 **DNS Configuration Required:**
 
@@ -248,7 +248,7 @@ lighthouse http://localhost:8000 --view
 - [ ] Homepage loads correctly
 - [ ] Navigation menu works on all pages
 - [ ] Platform page displays capabilities
-- [ ] Insights page shows Magic Quadrant visualizations
+- [ ] Insights page shows market and engineering proof content
 - [ ] Assessment page renders from Markdown
 - [ ] All images have alt text
 - [ ] Links open in correct target (internal vs external)
@@ -274,7 +274,7 @@ node --version
 ```bash
 # Verify you're in repository root
 pwd
-# Should be: /home/runner/work/cloudhealthoffice/cloudhealthoffice
+# Should be: /home/runner/work/HealthCoreX/HealthCoreX
 
 # Verify assets directory exists
 ls -la site/assets/
@@ -397,7 +397,7 @@ az staticwebapp show \
 ### View Logs
 
 **GitHub Actions:**
-- Go to: https://github.com/aurelianware/cloudhealthoffice/actions
+- Go to: https://github.com/aurelianware/HealthCoreX/actions
 - Select workflow run
 - Click job to see logs
 
@@ -420,7 +420,7 @@ az staticwebapp hostname list \
 
 ```bash
 # Check SSL certificate
-curl -vI https://cloudhealthoffice.com 2>&1 | grep -E "subject|issuer|expire"
+curl -vI https://HealthCoreX.com 2>&1 | grep -E "subject|issuer|expire"
 
 # Or use online tool
 # https://www.ssllabs.com/ssltest/
@@ -507,18 +507,18 @@ Azure Static Web Apps automatically:
 Run this whenever you add or update public docs/quickstart pages:
 
 1. Open Google Search Console for both properties:
-  - `https://cloudhealthoffice.com`
-  - `https://portal.cloudhealthoffice.com`
+  - `https://HealthCoreX.com`
+  - `https://your-portal-host.example`
 2. Submit or re-submit sitemaps:
-  - `https://cloudhealthoffice.com/sitemap.xml`
-  - `https://portal.cloudhealthoffice.com/sitemap.xml`
+  - `https://HealthCoreX.com/sitemap.xml`
+  - `https://your-portal-host.example/sitemap.xml`
 3. Use URL Inspection and click **Request Indexing** for updated quickstart URLs:
-  - `https://cloudhealthoffice.com/portal`
-  - `https://cloudhealthoffice.com/portal/api-docs`
-  - `https://portal.cloudhealthoffice.com/quickstarts/local-claims`
+  - `https://HealthCoreX.com/portal`
+  - `https://HealthCoreX.com/portal/api-docs`
+  - `https://your-portal-host.example/quickstarts/local-claims`
 4. Verify crawler accessibility:
-  - `https://cloudhealthoffice.com/robots.txt`
-  - `https://portal.cloudhealthoffice.com/robots.txt`
+  - `https://HealthCoreX.com/robots.txt`
+  - `https://your-portal-host.example/robots.txt`
 5. Re-check Search Console coverage/enhancements after 24-72 hours.
 
 ### Quarterly Reviews
@@ -541,12 +541,12 @@ Run this whenever you add or update public docs/quickstart pages:
 
 ### Contact
 
-- **GitHub Issues:** https://github.com/aurelianware/cloudhealthoffice/issues
+- **GitHub Issues:** https://github.com/aurelianware/HealthCoreX/issues
 - **Email:** mark@aurelianware.com
 
 ---
 
 **Cloud Health Office v1.0.0 — The Sentinel**  
-*The deployment is inevitable. The sequence is immutable.*
+*Compliance first. Progressive modernization next.*
 
 BSL 1.1 • © 2026 Aurelianware, Inc

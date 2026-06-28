@@ -35,21 +35,21 @@ Add these A records to your DNS provider:
 
 | Domain                         | Type | Value         |
 |--------------------------------|------|---------------|
-| cloudhealthoffice.com          | A    | 4.149.83.133  |
-| www.cloudhealthoffice.com      | A    | 4.149.83.133  |
-| portal.cloudhealthoffice.com   | A    | 4.149.83.133  |
+| HealthCoreX.com          | A    | 4.149.83.133  |
+| www.HealthCoreX.com      | A    | 4.149.83.133  |
+| portal.HealthCoreX.com   | A    | 4.149.83.133  |
 
 ### Step 4: Deploy Cloud Health Office with HTTPS (2 min)
 
 ```bash
-cd /home/runner/work/cloudhealthoffice/cloudhealthoffice
+cd /home/runner/work/HealthCoreX/HealthCoreX
 
 # Apply cert-manager issuer
 kubectl apply -f k8s/cert-manager-issuer.yaml
 
 # Deploy website and portal with updated services
 kubectl apply -f site/k8s/site-deployment.yaml
-kubectl apply -f portal/CloudHealthOffice.Portal/k8s/portal-deployment.yaml
+kubectl apply -f portal/HealthCoreX.Portal/k8s/portal-deployment.yaml
 
 # Deploy ingress resources
 kubectl apply -f k8s/site-ingress.yaml
@@ -60,7 +60,7 @@ kubectl apply -f k8s/portal-ingress.yaml
 
 ```bash
 # Watch certificate issuance
-kubectl get certificate -n cloudhealthoffice -w
+kubectl get certificate -n HealthCoreX -w
 
 # Wait until both show READY=True:
 # - site-tls-secret
@@ -71,15 +71,15 @@ kubectl get certificate -n cloudhealthoffice -w
 
 ```bash
 # Test website
-curl -I https://cloudhealthoffice.com
+curl -I https://HealthCoreX.com
 
 # Test portal
-curl -I https://portal.cloudhealthoffice.com
+curl -I https://portal.HealthCoreX.com
 ```
 
 Open in browser:
-- https://cloudhealthoffice.com (should show green padlock)
-- https://portal.cloudhealthoffice.com (should show green padlock)
+- https://HealthCoreX.com (should show green padlock)
+- https://portal.HealthCoreX.com (should show green padlock)
 
 ## Done! 🎉
 
@@ -93,7 +93,7 @@ Your Cloud Health Office website and portal are now secured with HTTPS.
 
 Check DNS propagation:
 ```bash
-dig +short cloudhealthoffice.com
+dig +short HealthCoreX.com
 # Should return: 4.149.83.133
 ```
 
@@ -106,8 +106,8 @@ kubectl logs -n cert-manager -l app=cert-manager --tail=50
 
 Check backend pods are running:
 ```bash
-kubectl get pods -n cloudhealthoffice -l app=site
-kubectl get pods -n cloudhealthoffice -l app=portal
+kubectl get pods -n HealthCoreX -l app=site
+kubectl get pods -n HealthCoreX -l app=portal
 ```
 
 **For detailed troubleshooting, see:** [k8s/INGRESS-HTTPS-SETUP.md](./INGRESS-HTTPS-SETUP.md)
@@ -121,8 +121,8 @@ kubectl get pods -n cloudhealthoffice -l app=portal
    - `portal` service: ClusterIP (port 80→8080)
 
 2. **Ingress**: Added HTTPS ingress resources
-   - `site-ingress`: Serves cloudhealthoffice.com + www
-   - `portal-ingress`: Serves portal.cloudhealthoffice.com
+   - `site-ingress`: Serves HealthCoreX.com + www
+   - `portal-ingress`: Serves portal.HealthCoreX.com
 
 3. **TLS**: Automatic certificate management
    - cert-manager + Let's Encrypt

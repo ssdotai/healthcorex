@@ -1,6 +1,6 @@
-using CloudHealthOffice.NcciEngine.Domain;
+using HealthCoreX.NcciEngine.Domain;
 
-namespace CloudHealthOffice.NcciEngine.Data;
+namespace HealthCoreX.NcciEngine.Data;
 
 /// <summary>
 /// Seed data for common high-frequency NCCI edit pairs and MUE entries.

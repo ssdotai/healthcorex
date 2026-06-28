@@ -6,16 +6,16 @@ using ClaimsService.Services;
 using ClaimsService.Services.Adjudication;
 using ClaimsService.Services.Adjudication.Stages;
 using ClaimsService.Services.Resolution;
-using CloudHealthOffice.CobEngine.Domain;
-using CloudHealthOffice.CobEngine.Services;
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.CobEngine.Domain;
+using HealthCoreX.CobEngine.Services;
+using HealthCoreX.Infrastructure.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Integration;
+namespace HealthCoreX.ClaimsService.Tests.Integration;
 
 /// <summary>
 /// Capability 5.8 — pipeline-level integration that wires the REAL
@@ -35,6 +35,7 @@ public class AdjudicationWithCobEndToEndTests
     private readonly IClaimAdapter _adapter = Substitute.For<IClaimAdapter>();
     private readonly IBenefitPlanResolver _planResolver = Substitute.For<IBenefitPlanResolver>();
     private readonly IMemberResolver _memberResolver = Substitute.For<IMemberResolver>();
+    private readonly ICoverageResolver _coverageResolver = Substitute.For<ICoverageResolver>();
     private readonly ICoverageClient _coverageClient = Substitute.For<ICoverageClient>();
     private readonly IClaimVersionEventPublisher _eventPublisher = Substitute.For<IClaimVersionEventPublisher>();
     private readonly IMessageBus _messageBus = Substitute.For<IMessageBus>();
@@ -223,6 +224,7 @@ public class AdjudicationWithCobEndToEndTests
             _factory,
             _planResolver,
             _memberResolver,
+            _coverageResolver,
             stages,
             _eventPublisher,
             _messageBus,

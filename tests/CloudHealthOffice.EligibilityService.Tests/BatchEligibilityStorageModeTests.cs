@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NSubstitute;
 
-namespace CloudHealthOffice.EligibilityService.Tests;
+namespace HealthCoreX.EligibilityService.Tests;
 
 public class BatchEligibilityStorageModeTests
 {

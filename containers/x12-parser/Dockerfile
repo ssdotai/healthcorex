@@ -6,15 +6,15 @@
 #   - 005010X212 (277) - Health Care Claim Status Notification
 #   - 005010X217 (278) - Health Care Services Review Information
 #
-# Build: docker build -t cloudhealthoffice/x12-parser:latest .
-# Run: docker run -v /data:/data cloudhealthoffice/x12-parser /data/input.edi
+# Build: docker build -t HealthCoreX/x12-parser:latest .
+# Run: docker run -v /data:/data HealthCoreX/x12-parser /data/input.edi
 
 FROM python:3.11-slim
 
 LABEL org.opencontainers.image.title="Cloud Health Office X12 Parser"
 LABEL org.opencontainers.image.description="HIPAA X12 EDI parser for 275/277/278 transactions"
 LABEL org.opencontainers.image.vendor="Aurelianware"
-LABEL org.opencontainers.image.source="https://github.com/aurelianware/cloudhealthoffice"
+LABEL org.opencontainers.image.source="https://github.com/aurelianware/HealthCoreX"
 
 # Security: Run as non-root user
 RUN groupadd -r x12parser && useradd -r -g x12parser x12parser

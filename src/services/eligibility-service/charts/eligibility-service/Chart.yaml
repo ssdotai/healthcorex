@@ -14,10 +14,10 @@ keywords:
   - dapr
 maintainers:
   - name: Cloud Health Office Team
-    email: support@cloudhealthoffice.com
-home: https://github.com/cloudhealthoffice/cloudhealthoffice
+    email: support@HealthCoreX.com
+home: https://github.com/HealthCoreX/HealthCoreX
 sources:
-  - https://github.com/cloudhealthoffice/cloudhealthoffice
+  - https://github.com/HealthCoreX/HealthCoreX
 annotations:
   category: Healthcare
   licenses: BUSL-1.1

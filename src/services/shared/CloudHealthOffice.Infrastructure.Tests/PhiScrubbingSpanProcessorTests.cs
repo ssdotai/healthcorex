@@ -1,7 +1,7 @@
 using System.Diagnostics;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 
-namespace CloudHealthOffice.Infrastructure.Tests;
+namespace HealthCoreX.Infrastructure.Tests;
 
 public sealed class PhiScrubbingSpanProcessorTests : IDisposable
 {

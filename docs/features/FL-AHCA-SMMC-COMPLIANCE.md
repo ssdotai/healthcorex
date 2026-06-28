@@ -1,6 +1,6 @@
 # Florida AHCA / SMMC 3.0 Compliance
 
-> **Status:** Generally Available — PR [#634](https://github.com/aurelianware/cloudhealthoffice/pull/634)  
+> **Status:** Generally Available — PR [#634](https://github.com/aurelianware/HealthCoreX/pull/634)  
 > **Regulatory basis:** FL §627.6131 · AHCA SMMC 3.0 Contract · FL FMMIS Companion Guides  
 > **Affects:** Medicaid MCOs operating under Florida AHCA contracts
 
@@ -230,7 +230,7 @@ Claim adjudicated (Day 0)
 An end-to-end integration test (`FL_Medicaid_Claim_EncounterSubmission_E2E`) validates the complete workflow:
 
 ```bash
-dotnet test tests/CloudHealthOffice.FlAhca.E2ETests/ --verbosity normal
+dotnet test tests/HealthCoreX.FlAhca.E2ETests/ --verbosity normal
 ```
 
 The test covers:

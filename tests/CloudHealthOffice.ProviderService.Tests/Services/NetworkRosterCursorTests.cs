@@ -2,7 +2,7 @@ using FluentAssertions;
 using ProviderService.Models;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Services;
+namespace HealthCoreX.ProviderService.Tests.Services;
 
 /// <summary>
 /// Unit tests for the cursor encode/decode and the filter-hash binding.

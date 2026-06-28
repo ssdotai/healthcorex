@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Services.Adjudication.Stages;
+namespace HealthCoreX.ClaimsService.Tests.Services.Adjudication.Stages;
 
 /// <summary>
 /// Capability 5.9 — behavior coverage for <see cref="AiExaminationStage"/>:

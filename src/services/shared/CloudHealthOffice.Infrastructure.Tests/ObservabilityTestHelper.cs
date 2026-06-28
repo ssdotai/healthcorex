@@ -1,9 +1,9 @@
 using System.Diagnostics;
 using System.Net;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace CloudHealthOffice.Infrastructure.Tests;
+namespace HealthCoreX.Infrastructure.Tests;
 
 /// <summary>
 /// Shared smoke-test helpers for the CHO observability contract. Per-service
@@ -24,7 +24,7 @@ public static class ObservabilityTestHelper
     ///
     /// Ordering matters here: <c>CreateClient</c> is called first because that
     /// is what forces WebApplicationFactory to build the app, which in turn
-    /// subscribes the OTel MeterProvider to the <c>CloudHealthOffice</c> meter.
+    /// subscribes the OTel MeterProvider to the <c>HealthCoreX</c> meter.
     /// Any <c>ChoMetrics.RequestDuration.Record</c> call made *before* the
     /// subscription is dropped (no listener yet) and the sample never reaches
     /// the Prometheus exporter — a latent failure that only shows up under

@@ -1,6 +1,7 @@
 using System.Net.Http.Json;
+using System.Text.Json;
 using BenefitPlanService.Models;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
@@ -41,10 +42,11 @@ namespace BenefitPlanService.Services;
 /// </para>
 ///
 /// <para>
-/// Pass-through results (both upstream services unavailable) are
-/// <em>not</em> cached — operators get a recovered exclusion signal on
-/// the next adjudication call rather than waiting up to an hour for the
-/// cached pass-through to expire.
+/// Unavailable results (both upstream services unreachable, or the live
+/// service itself reports <c>Failed</c>/<c>ManualReviewRequired</c>) are
+/// <em>not</em> cached — operators get a recovered signal on the next
+/// adjudication call rather than waiting up to an hour for a cached
+/// unavailable result to expire.
 /// </para>
 ///
 /// <para>
@@ -56,16 +58,22 @@ namespace BenefitPlanService.Services;
 /// </para>
 ///
 /// <para>
-/// On any service failure the gate returns the existing pass-through
-/// result so adjudication is never blocked by infrastructure flakes; the
-/// scheduled re-verification path in <c>provider-verification-service</c>
-/// remains responsible for catching exclusion drift.
+/// <b>The gate never fails open.</b> When no data source can confirm a
+/// provider is clear -- both provider-service and provider-verification-service
+/// unreachable, or the live service reports <c>Failed</c>/<c>ManualReviewRequired</c>
+/// -- <see cref="ProviderIntegrityResult.Passed"/> is <c>false</c> and
+/// <see cref="ProviderIntegrityResult.RequiresManualReview"/> is <c>true</c>,
+/// distinct from a confirmed <see cref="ProviderIntegrityResult.IsExcluded"/>
+/// finding. Callers should hold such a claim for human review rather than
+/// treat it as either a confirmed exclusion or a clean pass -- adjudication
+/// must never silently pay a claim it could not verify.
 /// </para>
 /// </summary>
 public class HttpProviderIntegrityGate : IProviderIntegrityGate
 {
     public const string ProviderServiceClientName = "ProviderService";
     public const string VerificationServiceClientName = "ProviderVerificationService";
+    private const string TenantHeaderName = "X-Tenant-ID";
 
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IMemoryCache _cache;
@@ -88,15 +96,17 @@ public class HttpProviderIntegrityGate : IProviderIntegrityGate
 
     public async Task<ProviderIntegrityResult> CheckAsync(
         string npi,
+        string? tenantId = null,
         bool forceRefresh = false,
         CancellationToken ct = default)
     {
         // Cache key separates default vs force-refresh so a force-refresh
         // call's live-only result doesn't pollute the cached-or-live entry,
         // and vice-versa.
+        var cacheTenant = string.IsNullOrWhiteSpace(tenantId) ? "default" : tenantId.Trim();
         var cacheKey = forceRefresh
-            ? $"provider-integrity:force:{npi}"
-            : $"provider-integrity:cached-or-live:{npi}";
+            ? $"provider-integrity:force:{cacheTenant}:{npi}"
+            : $"provider-integrity:cached-or-live:{cacheTenant}:{npi}";
 
         if (_cache.TryGetValue<ProviderIntegrityResult>(cacheKey, out var cached) && cached is not null)
         {
@@ -105,49 +115,61 @@ public class HttpProviderIntegrityGate : IProviderIntegrityGate
         }
 
         ProviderIntegrityResult result;
-        // Track whether the result came from a real data source. Pass-through
-        // results (both upstream services down) are NOT cached for the full
-        // 1-hour TTL so a recovered exclusion signal is picked up on the next
-        // adjudication call rather than waiting an hour. The cache is still
-        // useful for real responses (request coalescing) and for genuine
-        // pass-throughs we accept a brief retry storm during outages — that's
-        // the lesser evil compared to an hour of pretending Excluded providers
-        // pass.
-        var isPassthrough = false;
+        // Track whether the result came from a confident data source.
+        // Unavailable results (no data source could confirm the provider is
+        // clear) are NOT cached for the full 1-hour TTL so a recovered
+        // signal is picked up on the next adjudication call rather than
+        // waiting an hour. The cache is still useful for real responses
+        // (request coalescing); for genuine outages we accept a brief retry
+        // storm rather than an hour of every claim for that NPI being held
+        // for review after the outage has already recovered.
+        var isUnavailable = false;
 
         if (forceRefresh)
         {
-            var live = await CallVerificationServiceAsync(npi, ct);
-            isPassthrough = live is null;
-            result = live ?? Passthrough();
+            var live = await CallVerificationServiceAsync(npi, tenantId, ct);
+            isUnavailable = live is null;
+            result = live ?? Unavailable();
             RecordDecision(IntegrityGatePath.LiveOnly, result.Rating);
         }
         else
         {
             // Default path: try the cached projection first.
-            var projection = await TryReadProjectionAsync(npi, ct);
+            var projection = await TryReadProjectionAsync(npi, tenantId, ct);
 
             if (projection is null)
             {
                 // Provider not found in provider-service or transport
                 // failure — fall back to live verification rather than
                 // failing closed.
-                var live = await CallVerificationServiceAsync(npi, ct);
-                isPassthrough = live is null;
-                result = live ?? Passthrough();
+                var live = await CallVerificationServiceAsync(npi, tenantId, ct);
+                isUnavailable = live is null;
+                result = live ?? Unavailable();
                 RecordDecision(IntegrityGatePath.NullFallback, result.Rating);
             }
             else if (projection.Score is null || projection.LastVerifiedAt is null)
             {
-                // Projection row exists but never refreshed — fall back to
-                // live and let the local cache absorb subsequent calls.
-                result = await CallVerificationServiceAsync(npi, ct)
-                    ?? BuildResultFromProjection(projection);
+                // Projection row exists but was never refreshed -- unlike
+                // the staleness branch below, there is no real prior rating
+                // here (BuildResultFromProjection on an unset IntegrityRating
+                // would read as "not Blocked" i.e. falsely Clear). Fall back
+                // to live; if that also fails, this NPI has no trustworthy
+                // data anywhere and must be treated as unavailable.
+                var live = await CallVerificationServiceAsync(npi, tenantId, ct);
+                isUnavailable = live is null;
+                result = live ?? Unavailable();
                 RecordDecision(IntegrityGatePath.NullFallback, result.Rating);
             }
             else if (IsStale(projection.LastVerifiedAt.Value))
             {
-                result = await CallVerificationServiceAsync(npi, ct)
+                // Unlike the branches above, this projection carries a real,
+                // previously-computed rating -- just aged past the
+                // staleness window. If live verification can't refresh it,
+                // trusting the stale-but-real rating is safer than
+                // discarding it as unavailable; the staleness-alerting path
+                // (IntegrityProjectionStalenessReporter) is responsible for
+                // surfacing providers stuck in this state operationally.
+                result = await CallVerificationServiceAsync(npi, tenantId, ct)
                     ?? BuildResultFromProjection(projection);
                 RecordDecision(IntegrityGatePath.StaleFallback, result.Rating);
             }
@@ -158,7 +180,7 @@ public class HttpProviderIntegrityGate : IProviderIntegrityGate
             }
         }
 
-        if (!isPassthrough) _cache.Set(cacheKey, result, CacheTtl);
+        if (!isUnavailable) _cache.Set(cacheKey, result, CacheTtl);
         return result;
     }
 
@@ -169,14 +191,17 @@ public class HttpProviderIntegrityGate : IProviderIntegrityGate
         return DateTimeOffset.UtcNow - lastVerifiedAt > threshold;
     }
 
-    private async Task<ProviderProjection?> TryReadProjectionAsync(string npi, CancellationToken ct)
+    private async Task<ProviderProjection?> TryReadProjectionAsync(string npi, string? tenantId, CancellationToken ct)
     {
         try
         {
             var client = _httpClientFactory.CreateClient(ProviderServiceClientName);
             var encodedNpi = Uri.EscapeDataString(npi);
-            var response = await client.GetAsync(
-                $"api/v1/providers/npi/{encodedNpi}", ct);
+            using var request = new HttpRequestMessage(
+                HttpMethod.Get,
+                $"api/v1/providers/npi/{encodedNpi}");
+            AddTenantHeader(request, tenantId);
+            using var response = await client.SendAsync(request, ct);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return null;
@@ -202,19 +227,23 @@ public class HttpProviderIntegrityGate : IProviderIntegrityGate
 
     private async Task<ProviderIntegrityResult?> CallVerificationServiceAsync(
         string npi,
+        string? tenantId,
         CancellationToken ct)
     {
         try
         {
             var client = _httpClientFactory.CreateClient(VerificationServiceClientName);
             var encodedNpi = Uri.EscapeDataString(npi);
-            var response = await client.GetAsync(
-                $"api/v1/providers/{encodedNpi}/integrity-score", ct);
+            using var request = new HttpRequestMessage(
+                HttpMethod.Get,
+                $"api/v1/providers/{encodedNpi}/integrity-score");
+            AddTenantHeader(request, tenantId);
+            using var response = await client.SendAsync(request, ct);
 
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogWarning(
-                    "Provider verification service returned {StatusCode} for NPI {Npi}; passing through",
+                    "Provider verification service returned {StatusCode} for NPI {Npi}; treating as unavailable",
                     response.StatusCode, SanitizeForLog(npi));
                 return null;
             }
@@ -222,23 +251,35 @@ public class HttpProviderIntegrityGate : IProviderIntegrityGate
             var record = await response.Content.ReadFromJsonAsync<IntegrityScoreResponse>(ct);
             if (record is null) return null;
 
-            var isExcluded = record.Status is "Excluded";
+            var rating = NormalizeRating(record.Rating) ?? "Unknown";
+            var status = NormalizeStatus(record.Status);
+            var isExcluded = status is "Excluded";
+            // "Failed" and "ManualReviewRequired" are not exclusion findings
+            // -- they mean the verification service itself could not reach
+            // a confident determination. Treat them the same as total
+            // unavailability (held for review) rather than a silent pass.
+            var requiresManualReview = !isExcluded && status is "Failed" or "ManualReviewRequired";
             return new ProviderIntegrityResult
             {
-                Passed = record.Status is not ("Excluded" or "Failed"),
+                Passed = !isExcluded && !requiresManualReview,
                 IntegrityScore = record.CompositeScore,
-                Rating = record.Rating,
+                Rating = rating,
                 IsExcluded = isExcluded,
-                DenialCode = isExcluded ? "B7" : null,
+                RequiresManualReview = requiresManualReview,
+                DenialCode = isExcluded
+                    ? "B7"
+                    : requiresManualReview ? "PROVIDER_VERIFICATION_UNAVAILABLE" : null,
                 DenialReason = isExcluded
                     ? "Provider is excluded from federal healthcare programs"
-                    : null
+                    : requiresManualReview
+                        ? "Provider verification could not reach a confident determination; manual review required"
+                        : null
             };
         }
         catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
         {
             _logger.LogWarning(ex,
-                "Provider verification service unreachable for NPI {Npi}; passing through",
+                "Provider verification service unreachable for NPI {Npi}; treating as unavailable",
                 SanitizeForLog(npi));
             return null;
         }
@@ -282,10 +323,13 @@ public class HttpProviderIntegrityGate : IProviderIntegrityGate
         _                                => "unknown",
     };
 
-    private static ProviderIntegrityResult Passthrough() => new()
+    private static ProviderIntegrityResult Unavailable() => new()
     {
-        Passed = true,
-        Rating = "Unknown"
+        Passed = false,
+        Rating = "Unknown",
+        RequiresManualReview = true,
+        DenialCode = "PROVIDER_VERIFICATION_UNAVAILABLE",
+        DenialReason = "Provider integrity could not be verified against any data source; manual review required"
     };
 
     private static string SanitizeForLog(string? value)
@@ -293,6 +337,37 @@ public class HttpProviderIntegrityGate : IProviderIntegrityGate
         if (string.IsNullOrEmpty(value))
             return string.Empty;
         return value.Replace("\r", string.Empty).Replace("\n", string.Empty);
+    }
+
+    private static string? NormalizeRating(JsonElement value)
+        => NormalizeEnumValue(value, ["Unknown", "Clear", "Advisory", "Caution", "Alert", "Blocked"]);
+
+    private static string? NormalizeStatus(JsonElement value)
+        => NormalizeEnumValue(value, ["Pending", "Verified", "VerifiedWithWarnings", "Failed", "Excluded", "Expired", "ManualReviewRequired"]);
+
+    private static void AddTenantHeader(HttpRequestMessage request, string? tenantId)
+    {
+        if (!string.IsNullOrWhiteSpace(tenantId))
+        {
+            request.Headers.TryAddWithoutValidation(TenantHeaderName, tenantId.Trim());
+        }
+    }
+
+    private static string? NormalizeEnumValue(JsonElement value, IReadOnlyList<string> names)
+    {
+        if (value.ValueKind == JsonValueKind.String)
+        {
+            var s = value.GetString();
+            if (s is not null && names.Contains(s)) return s;
+            if (s is not null && int.TryParse(s, out var idx) && idx >= 0 && idx < names.Count) return names[idx];
+            return null;
+        }
+        return value.ValueKind switch
+        {
+            JsonValueKind.Number when value.TryGetInt32(out var index) && index >= 0 && index < names.Count => names[index],
+            JsonValueKind.Null or JsonValueKind.Undefined => null,
+            _ => null
+        };
     }
 
     /// <summary>
@@ -319,8 +394,8 @@ public class HttpProviderIntegrityGate : IProviderIntegrityGate
     private sealed record IntegrityScoreResponse
     {
         public int CompositeScore { get; init; }
-        public string? Rating { get; init; }
-        public string? Status { get; init; }
+        public JsonElement Rating { get; init; }
+        public JsonElement Status { get; init; }
         public DateTimeOffset? VerifiedAt { get; init; }
     }
 

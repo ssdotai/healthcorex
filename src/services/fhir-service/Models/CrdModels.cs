@@ -142,7 +142,7 @@ public class CrdCardSource
     public string Label { get; set; } = "Cloud Health Office";
 
     [JsonPropertyName("url")]
-    public string? Url { get; set; } = "https://cloudhealthoffice.com";
+    public string? Url { get; set; } = "https://HealthCoreX.com";
 
     [JsonPropertyName("topic")]
     public CrdCoding? Topic { get; set; }

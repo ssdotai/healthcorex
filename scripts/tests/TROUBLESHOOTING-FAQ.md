@@ -586,8 +586,8 @@ If these solutions don't resolve your issue:
    - [SECURITY.md](./SECURITY.md)
 
 4. **Community support**:
-   - [GitHub Issues](https://github.com/aurelianware/cloudhealthoffice/issues)
-   - [GitHub Discussions](https://github.com/aurelianware/cloudhealthoffice/discussions)
+   - [GitHub Issues](https://github.com/aurelianware/HealthCoreX/issues)
+   - [GitHub Discussions](https://github.com/aurelianware/HealthCoreX/discussions)
 
 5. **Report a bug**:
    - Include error messages, logs, and steps to reproduce

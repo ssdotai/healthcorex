@@ -1,14 +1,14 @@
 using System.Diagnostics;
 using ClaimsService.Models.Adjudication;
 using ClaimsService.Services.Adjudication.Mapping;
-using EngineModels = CloudHealthOffice.ClaimsScrubEngine.Models;
-using EngineServices = CloudHealthOffice.ClaimsScrubEngine.Services;
+using EngineModels = HealthCoreX.ClaimsScrubEngine.Models;
+using EngineServices = HealthCoreX.ClaimsScrubEngine.Services;
 
 namespace ClaimsService.Services.Adjudication.Stages;
 
 /// <summary>
 /// Capability 5.4 — replaces <see cref="ScrubbingStubStage"/>. Drives
-/// every adjudicated claim through <c>CloudHealthOffice.ClaimsScrubEngine</c>
+/// every adjudicated claim through <c>HealthCoreX.ClaimsScrubEngine</c>
 /// for structural validation before any downstream stage runs.
 ///
 /// <list type="bullet">

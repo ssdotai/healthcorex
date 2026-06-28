@@ -1,4 +1,4 @@
-using CloudHealthOffice.OperatingMode;
+using HealthCoreX.OperatingMode;
 using Microsoft.AspNetCore.Mvc;
 using TenantService.Models;
 using TenantService.Services;

@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.BenchmarkClaimGenerator.ReferenceData;
+namespace HealthCoreX.BenchmarkClaimGenerator.ReferenceData;
 
 /// <summary>
 /// Network tier definitions for provider participation levels.

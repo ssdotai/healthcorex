@@ -11,10 +11,10 @@ Load tests validate that critical services (claims processing, payment/ERA gener
 docker compose up -d claims-service payment-service mongodb redis
 
 # Run all load tests
-dotnet test tests/CloudHealthOffice.LoadTests
+dotnet test tests/HealthCoreX.LoadTests
 
 # Run a specific scenario
-dotnet test tests/CloudHealthOffice.LoadTests --filter "ClaimSubmission"
+dotnet test tests/HealthCoreX.LoadTests --filter "ClaimSubmission"
 ```
 
 ## Configuration

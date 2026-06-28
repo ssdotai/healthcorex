@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Integration;
+namespace HealthCoreX.ClaimsService.Tests.Integration;
 
 /// <summary>
 /// Capability 5.1b — composition-level contract tests reframing the

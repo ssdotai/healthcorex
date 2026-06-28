@@ -1,8 +1,8 @@
-using CloudHealthOffice.Infrastructure.Tests;
+using HealthCoreX.Infrastructure.Tests;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
-namespace CloudHealthOffice.BenefitPlanService.Tests;
+namespace HealthCoreX.BenefitPlanService.Tests;
 
 public class ObservabilityTests : IClassFixture<ObservabilityTestFactory<Program>>
 {

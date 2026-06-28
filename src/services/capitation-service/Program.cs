@@ -4,10 +4,10 @@ using MongoDB.Driver;
 using CapitationService.Middleware;
 using CapitationService.Repositories;
 using CapitationService.Services;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.HealthChecks;
-using CloudHealthOffice.Infrastructure.Json;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
 // Secret provider (Azure Key Vault / none)
@@ -15,7 +15,7 @@ builder.Services.AddSecretProvider(builder.Configuration);
 builder.Configuration.AddAzureKeyVaultConfiguration(builder.Configuration);
 
 builder.Services.AddControllers()
-    .AddCloudHealthOfficeJsonOptions();
+    .AddHealthCoreXJsonOptions();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -41,7 +41,7 @@ if (!string.IsNullOrEmpty(builder.Configuration["MongoDb:ConnectionString"]))
     builder.Services.AddScoped<IMongoDatabase>(sp =>
     {
         var client = sp.GetRequiredService<IMongoClient>();
-        var dbName = sp.GetRequiredService<IConfiguration>()["MongoDb:DatabaseName"] ?? "CloudHealthOffice";
+        var dbName = sp.GetRequiredService<IConfiguration>()["MongoDb:DatabaseName"] ?? "HealthCoreX";
         return client.GetDatabase(dbName);
     });
 
@@ -142,7 +142,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseMiddleware<CloudHealthOffice.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
+app.UseMiddleware<HealthCoreX.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 // Multi-tenant middleware (extract TenantId from JWT or headers)

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace CloudHealthOffice.FhirService.Tests.Services;
+namespace HealthCoreX.FhirService.Tests.Services;
 
 public class BulkExportServiceTests
 {

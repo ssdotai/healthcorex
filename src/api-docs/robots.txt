@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://api.cloudhealthoffice.com/sitemap.xml
+Sitemap: https://api.HealthCoreX.com/sitemap.xml

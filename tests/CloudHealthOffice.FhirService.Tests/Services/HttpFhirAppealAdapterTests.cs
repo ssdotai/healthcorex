@@ -1,13 +1,13 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using CloudHealthOffice.Appeals.Contracts;
+using HealthCoreX.Appeals.Contracts;
 using FhirService.Services;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.FhirService.Tests.Services;
+namespace HealthCoreX.FhirService.Tests.Services;
 
 /// <summary>
 /// Verifies the HttpFhirAppealAdapter's correlation-id propagation

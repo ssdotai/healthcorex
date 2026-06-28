@@ -1,6 +1,6 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Output;
+namespace HealthCoreX.BenchmarkClaimGenerator.Output;
 
 /// <summary>
 /// Interface for writing generated claims to an output format.

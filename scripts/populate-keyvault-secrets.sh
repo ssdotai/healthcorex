@@ -188,7 +188,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     --value "$SECRET_VALUE" \
     --content-type "$CONTENT_TYPE" \
     --expires "$EXPIRY_DATE" \
-    --tags "managed-by=populate-keyvault-secrets" "app=cloudhealthoffice" \
+    --tags "managed-by=populate-keyvault-secrets" "app=HealthCoreX" \
     --output none 2>/dev/null; then
     print_success "Created: $SECRET_NAME (expires $EXPIRY_DATE)"
     CREATED=$((CREATED + 1))

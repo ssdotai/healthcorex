@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Infrastructure.Caching;
+namespace HealthCoreX.Infrastructure.Caching;
 
 /// <summary>
 /// How a cache key should be scoped by <c>CacheKeyGuard</c>.

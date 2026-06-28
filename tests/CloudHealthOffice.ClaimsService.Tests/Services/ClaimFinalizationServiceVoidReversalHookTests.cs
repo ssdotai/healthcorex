@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Services;
+namespace HealthCoreX.ClaimsService.Tests.Services;
 
 /// <summary>
 /// Capability 5.12b — covers the

@@ -5,11 +5,11 @@
 Every Cloud Health Office service with an HTTP controller surface is expected
 to register the same core JSON conventions. This used to be a copy-paste
 block in each `Program.cs`; it now lives in the shared
-`CloudHealthOffice.Infrastructure` package as a single extension method.
+`HealthCoreX.Infrastructure` package as a single extension method.
 
 ## What it does
 
-`builder.Services.AddControllers().AddCloudHealthOfficeJsonOptions();`
+`builder.Services.AddControllers().AddHealthCoreXJsonOptions();`
 registers exactly one thing today:
 
 - **`JsonStringEnumConverter` (strict)** — enums serialize/deserialize as
@@ -29,7 +29,7 @@ Services whose published wire format already uses camelCase enum names
 
 ```csharp
 builder.Services.AddControllers()
-    .AddCloudHealthOfficeJsonOptions(camelCaseEnums: true);
+    .AddHealthCoreXJsonOptions(camelCaseEnums: true);
 ```
 
 This registers `JsonStringEnumConverter` with `JsonNamingPolicy.CamelCase`
@@ -62,10 +62,10 @@ control.
 ## How to adopt in a new service
 
 ```csharp
-using CloudHealthOffice.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Json;
 
 builder.Services.AddControllers()
-    .AddCloudHealthOfficeJsonOptions();
+    .AddHealthCoreXJsonOptions();
 ```
 
 If you also need service-specific overrides, chain a second
@@ -74,7 +74,7 @@ shared converter remains registered.
 
 ```csharp
 builder.Services.AddControllers()
-    .AddCloudHealthOfficeJsonOptions()
+    .AddHealthCoreXJsonOptions()
     .AddJsonOptions(o =>
     {
         o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
@@ -85,7 +85,7 @@ For a service that already publishes camelCase enum names on the wire:
 
 ```csharp
 builder.Services.AddControllers()
-    .AddCloudHealthOfficeJsonOptions(camelCaseEnums: true)
+    .AddHealthCoreXJsonOptions(camelCaseEnums: true)
     .AddJsonOptions(o =>
     {
         o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
@@ -95,7 +95,7 @@ builder.Services.AddControllers()
 
 ## Services intentionally NOT migrated
 
-Two services deliberately skip `AddCloudHealthOfficeJsonOptions()`. Each
+Two services deliberately skip `AddHealthCoreXJsonOptions()`. Each
 has an in-line comment in its `Program.cs` explaining why, so the next
 person scaffolding doesn't "fix" the unexplained absence.
 
@@ -111,7 +111,7 @@ asserts `JsonStringEnumConverter` is present in the MVC JSON options.
 Each test introspects `IOptions<Microsoft.AspNetCore.Mvc.JsonOptions>`
 from the service's DI container and verifies the converter is registered.
 
-`CloudHealthOffice.PricingApi.Tests` additionally asserts that the
+`HealthCoreX.PricingApi.Tests` additionally asserts that the
 converter uses `JsonNamingPolicy.CamelCase`, matching the service's
 published wire format.
 

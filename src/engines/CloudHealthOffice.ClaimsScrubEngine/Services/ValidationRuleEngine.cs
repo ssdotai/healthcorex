@@ -1,9 +1,9 @@
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using CloudHealthOffice.ClaimsScrubEngine.Models;
+using HealthCoreX.ClaimsScrubEngine.Models;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.ClaimsScrubEngine.Services;
+namespace HealthCoreX.ClaimsScrubEngine.Services;
 
 /// <summary>
 /// Port of the TypeScript ValidationRuleEngine.

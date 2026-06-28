@@ -187,7 +187,7 @@ Built a complete **X12 834 Benefit Enrollment and Maintenance** import pipeline 
 
 ### Prerequisites
 
-1. **Cosmos DB**: Database `CloudHealthOffice`, containers `Members`, `Coverage`, `Sponsors` (400 RU/s each)
+1. **Cosmos DB**: Database `HealthCoreX`, containers `Members`, `Coverage`, `Sponsors` (400 RU/s each)
 2. **Kubernetes Secrets**: `database-secret` (endpoint, key), `sftp-creds` (username, password)
 3. **Kafka Topic**: `enrollment-import` (3 partitions, 30-day retention)
 4. **SFTP Server**: Directories `/inbound/enrollment`, `/archive/834`
@@ -196,8 +196,8 @@ Built a complete **X12 834 Benefit Enrollment and Maintenance** import pipeline 
 
 ```bash
 # 1. Build Docker images (automatic via GitHub Actions)
-docker build -t ghcr.io/aurelianware/cloudhealthoffice-x12-834-parser:latest containers/x12-834-parser
-docker build -t ghcr.io/aurelianware/cloudhealthoffice-enrollment-import-service:latest services/enrollment-import-service
+docker build -t ghcr.io/aurelianware/HealthCoreX-x12-834-parser:latest containers/x12-834-parser
+docker build -t ghcr.io/aurelianware/HealthCoreX-enrollment-import-service:latest services/enrollment-import-service
 
 # 2. Deploy Enrollment Import Service
 kubectl apply -f services/enrollment-import-service/k8s/enrollment-import-service-deployment.yaml
@@ -206,8 +206,8 @@ kubectl apply -f services/enrollment-import-service/k8s/enrollment-import-servic
 kubectl apply -f argo-workflows/x12-834-enrollment-import.yaml
 
 # 4. Verify deployment
-kubectl get pods -n cloudhealthoffice -l app=enrollment-import-service
-kubectl get cronworkflows -n cloudhealthoffice x12-834-enrollment-import
+kubectl get pods -n HealthCoreX -l app=enrollment-import-service
+kubectl get cronworkflows -n HealthCoreX x12-834-enrollment-import
 ```
 
 ### Test Pipeline
@@ -218,18 +218,18 @@ sftp <username>@<sftp-host>
 put test-x12-834-enrollment-sample.edi /inbound/enrollment/test-enrollment.edi
 
 # 2. Trigger workflow manually (or wait for cron)
-argo submit --from cronwf/x12-834-enrollment-import -n cloudhealthoffice
+argo submit --from cronwf/x12-834-enrollment-import -n HealthCoreX
 
 # 3. Watch workflow execution
-argo watch @latest -n cloudhealthoffice
+argo watch @latest -n HealthCoreX
 
 # 4. View logs
-argo logs @latest -n cloudhealthoffice
+argo logs @latest -n HealthCoreX
 
 # 5. Verify data in Cosmos DB
 az cosmosdb sql query \
   --account-name <cosmos-account> \
-  --database-name CloudHealthOffice \
+  --database-name HealthCoreX \
   --container-name Members \
   --query-string "SELECT * FROM c WHERE c.tenantId = '<tenant-id>'"
 ```
@@ -368,16 +368,16 @@ Enrollment-import-service exposes `/metrics`:
 
 ```bash
 # View recent workflow executions
-argo list -n cloudhealthoffice --prefix x12-834-enrollment-import
+argo list -n HealthCoreX --prefix x12-834-enrollment-import
 
 # View specific workflow
-argo get x12-834-enrollment-import-<timestamp> -n cloudhealthoffice
+argo get x12-834-enrollment-import-<timestamp> -n HealthCoreX
 
 # View logs for each step
-argo logs x12-834-enrollment-import-<timestamp> -n cloudhealthoffice --container fetch-from-sftp
-argo logs x12-834-enrollment-import-<timestamp> -n cloudhealthoffice --container parse-834-files
-argo logs x12-834-enrollment-import-<timestamp> -n cloudhealthoffice --container import-to-cosmos
-argo logs x12-834-enrollment-import-<timestamp> -n cloudhealthoffice --container archive-to-sftp
+argo logs x12-834-enrollment-import-<timestamp> -n HealthCoreX --container fetch-from-sftp
+argo logs x12-834-enrollment-import-<timestamp> -n HealthCoreX --container parse-834-files
+argo logs x12-834-enrollment-import-<timestamp> -n HealthCoreX --container import-to-cosmos
+argo logs x12-834-enrollment-import-<timestamp> -n HealthCoreX --container archive-to-sftp
 ```
 
 ---
@@ -460,4 +460,4 @@ The **834 Enrollment Import Pipeline** is a production-ready, industry-standard 
 **For questions or support:**  
 - **Deployment Guide:** `docs/834-ENROLLMENT-DEPLOYMENT.md`  
 - **Architecture Docs:** `ARCHITECTURE.md`  
-- **GitHub Issues:** https://github.com/aurelianware/cloudhealthoffice/issues
+- **GitHub Issues:** https://github.com/aurelianware/HealthCoreX/issues

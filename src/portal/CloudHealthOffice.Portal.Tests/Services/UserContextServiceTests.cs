@@ -5,9 +5,9 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using CloudHealthOffice.Portal.Services;
+using HealthCoreX.Portal.Services;
 
-namespace CloudHealthOffice.Portal.Tests.Services;
+namespace HealthCoreX.Portal.Tests.Services;
 
 public class UserContextServiceTests
 {

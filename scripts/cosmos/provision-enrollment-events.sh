@@ -18,7 +18,7 @@
 #   scripts/cosmos/provision-enrollment-events.sh \
 #     --account my-cosmos \
 #     --resource-group rg-cho \
-#     --database CloudHealthOffice \
+#     --database HealthCoreX \
 #     [--container enrollment-events] \
 #     [--throughput 400]
 #

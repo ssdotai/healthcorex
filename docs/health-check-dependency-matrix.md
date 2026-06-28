@@ -1,6 +1,6 @@
 # CHO Microservice Health Check Dependency Matrix
 
-Each service exposes three standard health check endpoints via `CloudHealthOffice.Infrastructure`:
+Each service exposes three standard health check endpoints via `HealthCoreX.Infrastructure`:
 
 | Endpoint         | Purpose          | Behavior                                      |
 |------------------|------------------|-----------------------------------------------|
@@ -38,7 +38,7 @@ Each service exposes three standard health check endpoints via `CloudHealthOffic
 
 ## How Health Checks Are Configured
 
-All services use `CloudHealthOffice.Infrastructure.HealthChecks.AddChoHealthChecks()`:
+All services use `HealthCoreX.Infrastructure.HealthChecks.AddChoHealthChecks()`:
 
 ```csharp
 // Dual-database service (most services — auto-detects active datastore)

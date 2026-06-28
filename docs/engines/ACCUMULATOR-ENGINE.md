@@ -254,7 +254,7 @@ builder.Services.AddBenefitEngine()
 |---|---|---|
 | `Redis:ConnectionString` | Yes | StackExchange.Redis connection string |
 | `Services:ClaimsServiceUrl` | Yes | Base URL of the claims-service (e.g., `http://claims-service`) |
-| `CosmosDb:DatabaseName` | Cosmos only | Database name (default: `CloudHealthOffice`) |
+| `CosmosDb:DatabaseName` | Cosmos only | Database name (default: `HealthCoreX`) |
 | `CosmosDb:Endpoint` / `CosmosDb:Key` | Cosmos only | Cosmos DB credentials |
 | `MongoDb:ConnectionString` | Mongo only | MongoDB connection string |
 | `MongoDb:DatabaseName` | Mongo only | MongoDB database name |

@@ -1,4 +1,4 @@
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 using Microsoft.Extensions.Options;
 using ProviderService.Models;
 using ProviderService.Repositories;

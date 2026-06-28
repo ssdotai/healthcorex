@@ -11,7 +11,7 @@ public class EligibilityRepository : IEligibilityRepository
 
     public EligibilityRepository(CosmosClient cosmosClient, ILogger<EligibilityRepository> logger)
     {
-        var database = cosmosClient.GetDatabase("CloudHealthOffice");
+        var database = cosmosClient.GetDatabase("HealthCoreX");
         _inquiryContainer = database.GetContainer("EligibilityInquiries");
         _responseContainer = database.GetContainer("EligibilityResponses");
         _logger = logger;

@@ -229,7 +229,7 @@ public class OrganizationContactInfo
 /// from row lifecycle (<see cref="OrganizationVersionState"/>).
 ///
 /// <para>String-only / no-integer enforcement is delegated to the shared
-/// MVC JSON options registered by <c>AddCloudHealthOfficeJsonOptions</c>.</para>
+/// MVC JSON options registered by <c>AddHealthCoreXJsonOptions</c>.</para>
 /// </summary>
 public enum OrganizationStatus
 {

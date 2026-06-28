@@ -49,7 +49,7 @@ helm install cho-monitoring prometheus-community/kube-prometheus-stack \
   --namespace cho-monitoring \
   --set prometheus.prometheusSpec.retention=15d \
   --set prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage=50Gi \
-  --set grafana.adminPassword=CloudHealthOffice2026 \
+  --set grafana.adminPassword=HealthCoreX2026 \
   --set grafana.persistence.enabled=true \
   --set grafana.persistence.size=10Gi
 
@@ -58,7 +58,7 @@ kubectl port-forward -n cho-monitoring svc/cho-monitoring-grafana 3000:80
 ```
 
 **Grafana URL**: http://localhost:3000  
-**Login**: admin / CloudHealthOffice2026
+**Login**: admin / HealthCoreX2026
 
 ## Key Dashboards to Import
 
@@ -109,7 +109,7 @@ spec:
             arguments:
               parameters:
                 - name: url
-                  value: "http://eligibility-service.cloudhealthoffice:3000/api/v1/eligibility/{{workflow.parameters.patient-id}}"
+                  value: "http://eligibility-service.HealthCoreX:3000/api/v1/eligibility/{{workflow.parameters.patient-id}}"
                 - name: method
                   value: "GET"
           
@@ -120,7 +120,7 @@ spec:
             arguments:
               parameters:
                 - name: url
-                  value: "http://provider-service.cloudhealthoffice:3002/api/v1/providers/{{workflow.parameters.provider-npi}}"
+                  value: "http://provider-service.HealthCoreX:3002/api/v1/providers/{{workflow.parameters.provider-npi}}"
                 - name: method
                   value: "GET"
           
@@ -131,7 +131,7 @@ spec:
             arguments:
               parameters:
                 - name: url
-                  value: "http://benefit-service.cloudhealthoffice:3001/api/v1/plans/{{tasks.check-eligibility.outputs.parameters.plan-id}}"
+                  value: "http://benefit-service.HealthCoreX:3001/api/v1/plans/{{tasks.check-eligibility.outputs.parameters.plan-id}}"
                 - name: method
                   value: "GET"
           
@@ -141,7 +141,7 @@ spec:
             arguments:
               parameters:
                 - name: url
-                  value: "http://reference-data-service.cloudhealthoffice:3003/api/v1/codes/validate"
+                  value: "http://reference-data-service.HealthCoreX:3003/api/v1/codes/validate"
                 - name: method
                   value: "POST"
                 - name: body
@@ -150,7 +150,7 @@ spec:
           # Pre-adjudication scrubbing was a separate HTTP call against
           # claims-scrubbing-service in earlier revisions of this
           # workflow. As of capability 5.4 it runs in-process inside
-          # claims-service via the CloudHealthOffice.ClaimsScrubEngine
+          # claims-service via the HealthCoreX.ClaimsScrubEngine
           # class library at adjudication pipeline Order=100, so the
           # adjudication step calls a single endpoint that scrubs and
           # adjudicates atomically.

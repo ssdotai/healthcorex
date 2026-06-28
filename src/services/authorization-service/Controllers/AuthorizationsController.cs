@@ -14,13 +14,16 @@ namespace AuthorizationService.Controllers;
 public class AuthorizationsController : ControllerBase
 {
     private readonly IAuthorizationRepository _authorizationRepository;
+    private readonly IWebHostEnvironment _environment;
     private readonly ILogger<AuthorizationsController> _logger;
 
     public AuthorizationsController(
         IAuthorizationRepository authorizationRepository,
+        IWebHostEnvironment environment,
         ILogger<AuthorizationsController> logger)
     {
         _authorizationRepository = authorizationRepository;
+        _environment = environment;
         _logger = logger;
     }
 
@@ -97,14 +100,21 @@ public class AuthorizationsController : ControllerBase
     /// Check if authorization is valid for claim submission
     /// CRITICAL for claims processing: validates auth before submitting 837
     /// </summary>
+    [AllowAnonymous]
     [HttpGet("{authNumber}/validate")]
     [ProducesResponseType(typeof(AuthorizationValidationResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<AuthorizationValidationResponse>> ValidateAuthorization(
         string authNumber,
         [FromQuery] string? procedureCode = null,
-        [FromQuery] DateTime? serviceDate = null)
+        [FromQuery] DateTime? serviceDate = null,
+        [FromQuery] string? providerNpi = null)
     {
+        if (!AllowsAnonymousLocalValidation() && HttpContext?.User.Identity?.IsAuthenticated != true)
+        {
+            return Forbid();
+        }
+
         var checkDate = serviceDate ?? DateTime.UtcNow;
 
         _logger.LogInformation(
@@ -143,10 +153,12 @@ public class AuthorizationsController : ControllerBase
             }
         }
 
+        var providerApproved = IsProviderApprovedForAuthorization(authorization, providerNpi);
+
         var response = new AuthorizationValidationResponse
         {
             AuthorizationNumber = authorization.AuthorizationNumber,
-            IsValid = isValid && isActive && procedureApproved,
+            IsValid = isValid && isActive && procedureApproved && providerApproved,
             Status = authorization.Status,
             ApprovedServiceDateFrom = authorization.ApprovedServiceDateFrom,
             ApprovedServiceDateTo = authorization.ApprovedServiceDateTo,
@@ -155,10 +167,101 @@ public class AuthorizationsController : ControllerBase
             ValidationMessage = !isValid ? "Authorization not approved" :
                                !isActive ? "Authorization expired or not yet active" :
                                !procedureApproved ? $"Procedure {procedureCode} not approved" :
+                               !providerApproved ? $"Provider {providerNpi} not approved for authorization" :
                                "Authorization valid"
         };
 
         return Ok(response);
+    }
+
+    private static bool IsProviderApprovedForAuthorization(Authorization authorization, string? providerNpi)
+    {
+        if (string.IsNullOrWhiteSpace(providerNpi))
+        {
+            return true;
+        }
+
+        var approvedProviderNpis = new[]
+            {
+                authorization.ServicingProviderNPI,
+                authorization.RequestingProviderNPI
+            }
+            .Where(npi => !string.IsNullOrWhiteSpace(npi))
+            .Select(npi => npi!.Trim())
+            .ToArray();
+
+        return approvedProviderNpis.Length == 0
+            || approvedProviderNpis.Any(npi => string.Equals(
+                npi,
+                providerNpi.Trim(),
+                StringComparison.OrdinalIgnoreCase));
+    }
+
+    private bool AllowsAnonymousLocalValidation() =>
+        _environment.IsDevelopment() ||
+        string.Equals(_environment.EnvironmentName, "Test", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Seed deterministic prior authorization fixtures for local validation.
+    /// </summary>
+    [AllowAnonymous]
+    [HttpPost("dev-seed")]
+    [ApiExplorerSettings(IgnoreApi = true)]
+    [ProducesResponseType(typeof(DevelopmentAuthorizationSeedResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult<DevelopmentAuthorizationSeedResponse>> SeedDevelopmentAuthorizations(
+        [FromBody] DevelopmentAuthorizationSeedRequest request)
+    {
+        if (!_environment.IsDevelopment() && !string.Equals(_environment.EnvironmentName, "Test", StringComparison.OrdinalIgnoreCase))
+        {
+            return Forbid();
+        }
+
+        if (request?.Authorizations is not { Count: > 0 })
+        {
+            return BadRequest("At least one authorization fixture is required");
+        }
+
+        var now = DateTime.UtcNow;
+        var created = 0;
+        var updated = 0;
+
+        foreach (var fixture in request.Authorizations)
+        {
+            if (string.IsNullOrWhiteSpace(fixture.AuthorizationNumber))
+            {
+                return BadRequest("Authorization fixtures must include authorizationNumber");
+            }
+
+            fixture.AuthorizationNumber = fixture.AuthorizationNumber.Trim();
+            fixture.MemberId = fixture.MemberId?.Trim() ?? string.Empty;
+            fixture.PatientFirstName = fixture.PatientFirstName?.Trim() ?? string.Empty;
+            fixture.PatientLastName = fixture.PatientLastName?.Trim() ?? string.Empty;
+            fixture.RequestingProviderNPI = fixture.RequestingProviderNPI?.Trim() ?? string.Empty;
+            fixture.CreatedDate = fixture.CreatedDate == default ? now : fixture.CreatedDate;
+            fixture.LastUpdatedDate = now;
+
+            var existing = await _authorizationRepository.GetByAuthorizationNumberAsync(fixture.AuthorizationNumber);
+            if (existing is null)
+            {
+                fixture.Id = string.IsNullOrWhiteSpace(fixture.Id) ? Guid.NewGuid().ToString() : fixture.Id;
+                await _authorizationRepository.CreateAsync(fixture);
+                created++;
+                continue;
+            }
+
+            fixture.Id = existing.Id;
+            fixture.CreatedDate = existing.CreatedDate == default ? fixture.CreatedDate : existing.CreatedDate;
+            await _authorizationRepository.UpdateAsync(fixture);
+            updated++;
+        }
+
+        _logger.LogInformation(
+            "Seeded {Total} development authorization fixtures ({Created} created, {Updated} updated)",
+            created + updated, created, updated);
+
+        return Ok(new DevelopmentAuthorizationSeedResponse(created + updated, created, updated));
     }
 
     /// <summary>
@@ -372,3 +475,7 @@ public class AuthorizationsController : ControllerBase
         return value.Replace("\r", string.Empty).Replace("\n", string.Empty);
     }
 }
+
+public sealed record DevelopmentAuthorizationSeedRequest(List<Authorization> Authorizations);
+
+public sealed record DevelopmentAuthorizationSeedResponse(int Total, int Created, int Updated);

@@ -1,9 +1,9 @@
 using ClaimsService.Models;
 using ClaimsService.Services.Adjudication.Mapping;
-using EngineModels = CloudHealthOffice.NcciEngine.Models;
+using EngineModels = HealthCoreX.NcciEngine.Models;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Services.Adjudication.Mapping;
+namespace HealthCoreX.ClaimsService.Tests.Services.Adjudication.Mapping;
 
 /// <summary>
 /// Capability 5.7 — mapping fidelity coverage for

@@ -1,8 +1,8 @@
 using System.Net;
-using CloudHealthOffice.Infrastructure.Caching;
-using CloudHealthOffice.PriorAuthRuleEngine.Domain;
-using CloudHealthOffice.PriorAuthRuleEngine.Models;
-using CloudHealthOffice.PriorAuthRuleEngine.Persistence;
+using HealthCoreX.Infrastructure.Caching;
+using HealthCoreX.PriorAuthRuleEngine.Domain;
+using HealthCoreX.PriorAuthRuleEngine.Models;
+using HealthCoreX.PriorAuthRuleEngine.Persistence;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 using NSubstitute;
 using StackExchange.Redis;
 
-namespace CloudHealthOffice.PriorAuthRuleEngine.Tests.Persistence;
+namespace HealthCoreX.PriorAuthRuleEngine.Tests.Persistence;
 
 /// <summary>
 /// Post-A.7.2 tests: the K/V operations go through <see cref="ICacheProvider"/>

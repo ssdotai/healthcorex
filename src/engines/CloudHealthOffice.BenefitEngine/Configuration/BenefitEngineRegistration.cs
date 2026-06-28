@@ -1,10 +1,10 @@
-using CloudHealthOffice.BenefitEngine.Domain;
-using CloudHealthOffice.BenefitEngine.Persistence;
-using CloudHealthOffice.BenefitEngine.Services;
+using HealthCoreX.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Persistence;
+using HealthCoreX.BenefitEngine.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CloudHealthOffice.BenefitEngine.Configuration;
+namespace HealthCoreX.BenefitEngine.Configuration;
 
 /// <summary>
 /// DI registration for the Benefit Calculation Engine.

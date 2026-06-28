@@ -8,7 +8,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
-namespace CloudHealthOffice.Infrastructure.Observability;
+namespace HealthCoreX.Infrastructure.Observability;
 
 /// <summary>
 /// Extensions to wire OpenTelemetry tracing + metrics into any CHO service.
@@ -71,7 +71,7 @@ public static class ObservabilityExtensions
             .AddAttributes(new Dictionary<string, object>
             {
                 ["deployment.environment"] = environment,
-                ["service.namespace"] = "CloudHealthOffice",
+                ["service.namespace"] = "HealthCoreX",
             });
 
         // ── Tracing ──

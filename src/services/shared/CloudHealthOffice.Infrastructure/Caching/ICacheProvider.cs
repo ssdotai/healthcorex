@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Infrastructure.Caching;
+namespace HealthCoreX.Infrastructure.Caching;
 
 /// <summary>
 /// Shared cache abstraction for Cloud Health Office services.

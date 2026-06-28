@@ -1,7 +1,7 @@
 {
   "resourceType": "StructureDefinition",
   "id": "cho-appeal-communication",
-  "url": "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-communication",
+  "url": "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-communication",
   "version": "1.0.0",
   "name": "ChoAppealCommunication",
   "title": "CHO Appeal Communication",
@@ -33,7 +33,7 @@
         "max": "1",
         "binding": {
           "strength": "required",
-          "valueSet": "http://fhir.cloudhealthoffice.com/ValueSet/cho-appeal-communication-status"
+          "valueSet": "http://fhir.HealthCoreX.com/ValueSet/cho-appeal-communication-status"
         }
       },
       {
@@ -43,7 +43,7 @@
         "max": "1",
         "binding": {
           "strength": "required",
-          "valueSet": "http://fhir.cloudhealthoffice.com/ValueSet/cho-appeal-communication-category"
+          "valueSet": "http://fhir.HealthCoreX.com/ValueSet/cho-appeal-communication-category"
         }
       },
       {
@@ -66,7 +66,7 @@
         "type": [
           {
             "code": "Reference",
-            "targetProfile": ["http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-task"]
+            "targetProfile": ["http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-task"]
           }
         ]
       },

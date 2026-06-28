@@ -135,20 +135,20 @@ kubectl create secret generic stripe-api-keys -n cho-workflows \
 echo "✅ Created secret: stripe-api-keys (cho-workflows namespace)"
 
 # Create Stripe secret for portal
-kubectl create secret generic stripe-api-keys -n cloudhealthoffice \
+kubectl create secret generic stripe-api-keys -n HealthCoreX \
     --from-literal=secret-key="$SECRET_KEY" \
     --from-literal=publishable-key="$PUBLISHABLE_KEY" \
     --from-literal=starter-price-id="$STARTER_PRICE" \
     --from-literal=professional-price-id="$PROFESSIONAL_PRICE" \
     --dry-run=client -o yaml | kubectl apply -f -
 
-echo "✅ Created secret: stripe-api-keys (cloudhealthoffice namespace)"
+echo "✅ Created secret: stripe-api-keys (HealthCoreX namespace)"
 
 echo ""
 echo "🔗 Setting up webhooks..."
 echo ""
 echo "Configure webhook endpoint at: https://dashboard.stripe.com/webhooks"
-echo "Webhook URL: https://api.cloudhealthoffice.com/v1/webhooks/stripe"
+echo "Webhook URL: https://api.HealthCoreX.com/v1/webhooks/stripe"
 echo ""
 echo "Select these events:"
 echo "  ✓ customer.subscription.created"
@@ -160,7 +160,7 @@ echo ""
 read -p "Webhook signing secret (whsec_...): " WEBHOOK_SECRET
 
 if [[ "$WEBHOOK_SECRET" =~ ^whsec_ ]]; then
-    kubectl create secret generic stripe-webhook-secret -n cloudhealthoffice \
+    kubectl create secret generic stripe-webhook-secret -n HealthCoreX \
         --from-literal=signing-secret="$WEBHOOK_SECRET" \
         --dry-run=client -o yaml | kubectl apply -f -
     
@@ -187,7 +187,7 @@ cat > /tmp/stripe-config.json <<EOF
 EOF
 
 echo ""
-echo "Add this to portal/CloudHealthOffice.Portal/appsettings.json:"
+echo "Add this to portal/HealthCoreX.Portal/appsettings.json:"
 cat /tmp/stripe-config.json
 
 echo ""
@@ -197,8 +197,8 @@ echo "=========================================="
 echo ""
 echo "Next steps:"
 echo "  1. Update appsettings.json with Stripe configuration"
-echo "  2. Deploy portal: kubectl rollout restart deployment/portal -n cloudhealthoffice"
-echo "  3. Test signup at: https://portal.cloudhealthoffice.com/signup"
+echo "  2. Deploy portal: kubectl rollout restart deployment/portal -n HealthCoreX"
+echo "  3. Test signup at: https://portal.HealthCoreX.com/signup"
 echo ""
 echo "Test cards ($MODE mode):"
 echo "  ✅ Success: 4242 4242 4242 4242"

@@ -7,14 +7,14 @@ using ClaimsService.Services;
 using ClaimsService.Services.Adjudication;
 using ClaimsService.Services.Adjudication.Stages;
 using ClaimsService.Services.Resolution;
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Services.Adjudication;
+namespace HealthCoreX.ClaimsService.Tests.Services.Adjudication;
 
 /// <summary>
 /// Capability 5.6 — pipeline-level integration that wires the REAL
@@ -34,6 +34,7 @@ public class AdjudicationWithEnforcementEndToEndTests
     private readonly IClaimAdapter _adapter = Substitute.For<IClaimAdapter>();
     private readonly IBenefitPlanResolver _planResolver = Substitute.For<IBenefitPlanResolver>();
     private readonly IMemberResolver _memberResolver = Substitute.For<IMemberResolver>();
+    private readonly ICoverageResolver _coverageResolver = Substitute.For<ICoverageResolver>();
     private readonly IClaimVersionEventPublisher _eventPublisher = Substitute.For<IClaimVersionEventPublisher>();
     private readonly IMessageBus _messageBus = Substitute.For<IMessageBus>();
     private readonly IProviderMembershipClient _membership = Substitute.For<IProviderMembershipClient>();
@@ -249,6 +250,7 @@ public class AdjudicationWithEnforcementEndToEndTests
             _factory,
             _planResolver,
             _memberResolver,
+            _coverageResolver,
             new IClaimAdjudicationStage[] { stage, persistence },
             _eventPublisher,
             _messageBus,

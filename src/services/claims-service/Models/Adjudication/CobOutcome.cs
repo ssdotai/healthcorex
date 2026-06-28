@@ -1,4 +1,4 @@
-using CloudHealthOffice.CobEngine.Domain;
+using HealthCoreX.CobEngine.Domain;
 
 namespace ClaimsService.Models.Adjudication;
 
@@ -55,7 +55,7 @@ public sealed class CobOutcome
     public string? PendReason { get; init; }
 
     /// <summary>The engine's <see cref="PayerOrderRule"/> when the stage
-    /// invoked <see cref="CloudHealthOffice.CobEngine.Services.IPayerOrderService.DetermineOrder"/>
+    /// invoked <see cref="HealthCoreX.CobEngine.Services.IPayerOrderService.DetermineOrder"/>
     /// for audit-trail enrichment; <c>null</c> when no engine call was
     /// made (e.g. CHO-primary scenarios skip it). For CHO-secondary
     /// commercial cases the engine defaults to

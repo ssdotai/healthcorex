@@ -1,7 +1,7 @@
 using ProviderService.Adapters;
 using ProviderService.Models;
 
-namespace CloudHealthOffice.ProviderService.Tests.Adapters;
+namespace HealthCoreX.ProviderService.Tests.Adapters;
 
 /// <summary>
 /// Each stub adapter must throw <see cref="NotImplementedException"/> with a

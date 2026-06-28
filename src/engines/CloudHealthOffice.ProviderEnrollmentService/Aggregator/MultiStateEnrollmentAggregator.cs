@@ -1,9 +1,9 @@
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Aggregator;
+namespace HealthCoreX.ProviderEnrollmentService.Aggregator;
 
 /// <summary>
 /// Fans out enrollment lookups to all registered IStateEnrollmentSource implementations

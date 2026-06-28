@@ -1,7 +1,7 @@
 @page "/contact-sales"
 @using Microsoft.AspNetCore.Authorization
 @using System.ComponentModel.DataAnnotations
-@using CloudHealthOffice.Portal.Services
+@using HealthCoreX.Portal.Services
 @inject ISalesInquiryService SalesInquiryService
 @inject NavigationManager Navigation
 @inject ILogger<ContactSales> Logger
@@ -222,7 +222,7 @@
         catch (Exception ex)
         {
             Logger.LogError(ex, "Error submitting sales inquiry");
-            errorMessage = "Failed to submit inquiry. Please try again or email us directly at sales@cloudhealthoffice.com";
+            errorMessage = "Failed to submit inquiry. Please try again or email us directly at sales@HealthCoreX.com";
         }
         finally
         {

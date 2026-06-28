@@ -1,5 +1,5 @@
 using ClaimsService.Models.Messaging;
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Messaging;
 
 namespace ClaimsService.Services.Adjudication;
 

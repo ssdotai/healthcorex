@@ -1,6 +1,6 @@
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Models;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Abstractions;
+namespace HealthCoreX.ProviderEnrollmentService.Abstractions;
 
 // ─────────────────────────────────────────────────────────────────
 // State enrollment source — one implementation per state system

@@ -7,12 +7,12 @@ Run the full Cloud Health Office platform on Docker Desktop Kubernetes — the s
 | Component | Count | Notes |
 |-----------|-------|-------|
 | Microservices | 25 | Claims, Members, Eligibility, Payments, FHIR, etc. |
-| Portal | 1 | Blazor Server UI (same as portal.cloudhealthoffice.com) |
+| Portal | 1 | Blazor Server UI exposed through your local or customer-owned endpoint |
 | MongoDB | 1 | StatefulSet with persistent storage |
 | Redis | 1 | Data-protection key store and caching |
-| Namespace | `cloudhealthoffice` | Matches production layout |
+| Namespace | `HealthCoreX` | Matches production layout |
 
-All services communicate over Kubernetes DNS (`service-name.cloudhealthoffice`) — identical to production.
+All services communicate over Kubernetes DNS (`service-name.HealthCoreX`) — identical to production.
 
 ---
 
@@ -72,7 +72,7 @@ From the repo root:
 This does everything:
 
 1. **Builds** Docker images for all 25 services + portal (~10 min first time, ~2 min on rebuilds)
-2. **Creates** the `cloudhealthoffice` namespace
+2. **Creates** the `HealthCoreX` namespace
 3. **Deploys** MongoDB and Redis
 4. **Creates** all Kubernetes secrets (database, Azure AD, Stripe, Redis)
 5. **Seeds** demo data (tenant, member)
@@ -92,7 +92,7 @@ This does everything:
 In a separate terminal:
 
 ```bash
-watch kubectl get pods -n cloudhealthoffice
+watch kubectl get pods -n HealthCoreX
 ```
 
 All pods should reach `Running` / `1/1 Ready` within 2-3 minutes after images are built.
@@ -106,7 +106,7 @@ Services run inside the cluster on ClusterIP. Use port-forwarding to access them
 ### Portal (main UI)
 
 ```bash
-kubectl port-forward -n cloudhealthoffice svc/portal 8080:80
+kubectl port-forward -n HealthCoreX svc/portal 8080:80
 ```
 
 Open [http://localhost:8080](http://localhost:8080)
@@ -117,15 +117,15 @@ Open each in a separate terminal (or append `&` to background):
 
 ```bash
 # Core services
-kubectl port-forward -n cloudhealthoffice svc/claims-service 5001:80
-kubectl port-forward -n cloudhealthoffice svc/benefit-plan-service 5002:80
-kubectl port-forward -n cloudhealthoffice svc/member-service 5003:80
-kubectl port-forward -n cloudhealthoffice svc/provider-service 5004:80
-kubectl port-forward -n cloudhealthoffice svc/eligibility-service 5005:80
-kubectl port-forward -n cloudhealthoffice svc/payment-service 5006:80
+kubectl port-forward -n HealthCoreX svc/claims-service 5001:80
+kubectl port-forward -n HealthCoreX svc/benefit-plan-service 5002:80
+kubectl port-forward -n HealthCoreX svc/member-service 5003:80
+kubectl port-forward -n HealthCoreX svc/provider-service 5004:80
+kubectl port-forward -n HealthCoreX svc/eligibility-service 5005:80
+kubectl port-forward -n HealthCoreX svc/payment-service 5006:80
 
 # Infrastructure
-kubectl port-forward -n cloudhealthoffice svc/mongodb 27017:27017
+kubectl port-forward -n HealthCoreX svc/mongodb 27017:27017
 ```
 
 ### Swagger UIs
@@ -164,7 +164,7 @@ For a step-by-step walkthrough with curl commands, see [local-claims-quickstart.
 ### Check all pods
 
 ```bash
-kubectl get pods -n cloudhealthoffice
+kubectl get pods -n HealthCoreX
 ```
 
 Expected: all pods `Running`, `1/1` ready.
@@ -174,7 +174,7 @@ Expected: all pods `Running`, `1/1` ready.
 ```bash
 for svc in claims-service member-service benefit-plan-service eligibility-service \
            payment-service provider-service portal; do
-  STATUS=$(kubectl exec -n cloudhealthoffice deploy/$svc -- \
+  STATUS=$(kubectl exec -n HealthCoreX deploy/$svc -- \
     curl -sf http://localhost:8080/health/live 2>/dev/null || echo "DOWN")
   echo "$svc: $STATUS"
 done
@@ -184,13 +184,13 @@ done
 
 ```bash
 # Portal logs
-kubectl logs -n cloudhealthoffice -l app=portal --tail=50
+kubectl logs -n HealthCoreX -l app=portal --tail=50
 
 # Claims service logs
-kubectl logs -n cloudhealthoffice -l app=claims-service --tail=50
+kubectl logs -n HealthCoreX -l app=claims-service --tail=50
 
 # All services with errors
-kubectl logs -n cloudhealthoffice --all-containers --tail=20 | grep -i error
+kubectl logs -n HealthCoreX --all-containers --tail=20 | grep -i error
 ```
 
 ---
@@ -199,8 +199,8 @@ kubectl logs -n cloudhealthoffice --all-containers --tail=20 | grep -i error
 
 | Aspect | Local (Docker Desktop) | Production (Azure AKS) |
 |--------|----------------------|----------------------|
-| Namespace | `cloudhealthoffice` | `cloudhealthoffice` |
-| Service DNS | `svc.cloudhealthoffice` | `svc.cloudhealthoffice` |
+| Namespace | `HealthCoreX` | `HealthCoreX` |
+| Service DNS | `svc.HealthCoreX` | `svc.HealthCoreX` |
 | K8s manifests | Same files, `imagePullPolicy` patched to `IfNotPresent` | `Always` (pulls from ACR) |
 | Container port | 8080 | 8080 |
 | Secrets | Local stubs via `deploy-local.sh` | Azure Key Vault |
@@ -218,18 +218,18 @@ kubectl logs -n cloudhealthoffice --all-containers --tail=20 | grep -i error
 
 ```bash
 # Rebuild just the claims service
-docker build -t choacrhy6h2vdulfru6.azurecr.io/cloudhealthoffice-claims-service:latest \
+docker build -t choacrhy6h2vdulfru6.azurecr.io/HealthCoreX-claims-service:latest \
   -f src/services/claims-service/Dockerfile .
 
 # Restart the deployment to pick up the new image
-kubectl rollout restart deployment/claims-service -n cloudhealthoffice
-kubectl rollout status deployment/claims-service -n cloudhealthoffice
+kubectl rollout restart deployment/claims-service -n HealthCoreX
+kubectl rollout status deployment/claims-service -n HealthCoreX
 ```
 
 ### Connect to MongoDB
 
 ```bash
-kubectl port-forward -n cloudhealthoffice svc/mongodb 27017:27017
+kubectl port-forward -n HealthCoreX svc/mongodb 27017:27017
 
 # In another terminal:
 mongosh "mongodb://admin:localdev123@localhost:27017/?authSource=admin"
@@ -238,13 +238,13 @@ mongosh "mongodb://admin:localdev123@localhost:27017/?authSource=admin"
 ### View all services and endpoints
 
 ```bash
-kubectl get svc -n cloudhealthoffice
+kubectl get svc -n HealthCoreX
 ```
 
 ### Scale a service
 
 ```bash
-kubectl scale deployment/claims-service -n cloudhealthoffice --replicas=3
+kubectl scale deployment/claims-service -n HealthCoreX --replicas=3
 ```
 
 ### Apply a manifest change
@@ -264,7 +264,7 @@ kubectl apply -f src/services/claims-service/k8s/claims-service-deployment.yaml
 Images are built locally but the manifest says `imagePullPolicy: Always`. The deploy script patches this automatically, but if you applied a manifest manually:
 
 ```bash
-kubectl patch deployment claims-service -n cloudhealthoffice \
+kubectl patch deployment claims-service -n HealthCoreX \
   -p '{"spec":{"template":{"spec":{"containers":[{"name":"claims-service","imagePullPolicy":"IfNotPresent"}]}}}}'
 ```
 
@@ -274,18 +274,18 @@ Usually a missing secret or MongoDB not ready yet:
 
 ```bash
 # Check what's failing
-kubectl describe pod -n cloudhealthoffice -l app=claims-service
-kubectl logs -n cloudhealthoffice -l app=claims-service --previous
+kubectl describe pod -n HealthCoreX -l app=claims-service
+kubectl logs -n HealthCoreX -l app=claims-service --previous
 
 # Verify secrets exist
-kubectl get secrets -n cloudhealthoffice
+kubectl get secrets -n HealthCoreX
 ```
 
 ### MongoDB not starting
 
 ```bash
-kubectl describe statefulset mongodb -n cloudhealthoffice
-kubectl logs -n cloudhealthoffice mongodb-0
+kubectl describe statefulset mongodb -n HealthCoreX
+kubectl logs -n HealthCoreX mongodb-0
 ```
 
 If PVC issues on Docker Desktop, try resetting the Kubernetes cluster: Docker Desktop > Settings > Kubernetes > Reset Kubernetes Cluster.
@@ -299,15 +299,15 @@ Port-forwards drop when pods restart. Re-run the command, or use a tool like [ku
 Verify DNS resolution inside the cluster:
 
 ```bash
-kubectl run -n cloudhealthoffice dns-test --rm -it --image=busybox -- \
-  nslookup claims-service.cloudhealthoffice
+kubectl run -n HealthCoreX dns-test --rm -it --image=busybox -- \
+  nslookup claims-service.HealthCoreX
 ```
 
 ### Out of memory / Docker Desktop slow
 
-The full platform runs 25+ pods. Allocate at least:
-- **CPU:** 4 cores
-- **Memory:** 8 GB (Settings > Resources)
+The full platform runs 30+ pods. Allocate at least:
+- **CPU:** 6 cores
+- **Memory:** 16 GB minimum, 24 GB recommended (Settings > Resources)
 
 ---
 
@@ -316,7 +316,7 @@ The full platform runs 25+ pods. Allocate at least:
 ### Stop everything but keep data
 
 ```bash
-kubectl delete namespace cloudhealthoffice
+kubectl delete namespace HealthCoreX
 ```
 
 Data in MongoDB PVCs persists. Re-run `./scripts/deploy-local.sh --skip-build` to bring it back.
@@ -324,7 +324,7 @@ Data in MongoDB PVCs persists. Re-run `./scripts/deploy-local.sh --skip-build` t
 ### Full reset (delete everything including data)
 
 ```bash
-kubectl delete namespace cloudhealthoffice
+kubectl delete namespace HealthCoreX
 docker volume prune -f
 ```
 

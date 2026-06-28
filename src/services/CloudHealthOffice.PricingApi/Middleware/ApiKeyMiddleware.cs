@@ -1,7 +1,7 @@
-using CloudHealthOffice.PricingApi.Data;
-using CloudHealthOffice.PricingApi.Models;
+using HealthCoreX.PricingApi.Data;
+using HealthCoreX.PricingApi.Models;
 
-namespace CloudHealthOffice.PricingApi.Middleware;
+namespace HealthCoreX.PricingApi.Middleware;
 
 public class ApiKeyMiddleware
 {
@@ -55,7 +55,7 @@ public class ApiKeyMiddleware
                 Error = new ApiError
                 {
                     Code = "MISSING_API_KEY",
-                    Message = $"Provide your API key in the {ApiKeyHeaderName} header. Register at https://cloudhealthoffice.com/pricing-api to get a free key."
+                    Message = $"Provide your API key in the {ApiKeyHeaderName} header. Register at https://HealthCoreX.com/pricing-api to get a free key."
                 }
             });
             return;
@@ -102,7 +102,7 @@ public class ApiKeyMiddleware
                 Error = new ApiError
                 {
                     Code = "RATE_LIMIT_EXCEEDED",
-                    Message = $"Monthly limit of {monthlyLimit:N0} claims reached for your {apiKeyRecord.Tier} plan. Upgrade at https://cloudhealthoffice.com/pricing-api/upgrade"
+                    Message = $"Monthly limit of {monthlyLimit:N0} claims reached for your {apiKeyRecord.Tier} plan. Upgrade at https://HealthCoreX.com/pricing-api/upgrade"
                 }
             });
             return;

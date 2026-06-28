@@ -1,8 +1,8 @@
-using CloudHealthOffice.BenefitEngine.Domain;
-using CloudHealthOffice.BenefitEngine.Services;
+using HealthCoreX.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Services;
 using Xunit;
 
-namespace CloudHealthOffice.BenefitEngine.Tests;
+namespace HealthCoreX.BenefitEngine.Tests;
 
 /// <summary>
 /// Aggregate-mode ACA 45 CFR §156.130 individual-cap enforcement
@@ -169,6 +169,33 @@ public class AccumulatorWorkingSetAcaCapTests
         var snap = ws.GetSnapshot();
         Assert.DoesNotContain(snap, e => e.Type == AccumulatorType.AcaIndividualCap);
         // Embedded uses the existing IndividualOutOfPocketMax, not the cap.
+        Assert.Equal(5_000m, ws.GetRemainingOopMax(NetworkTier.InNetwork));
+    }
+
+    [Fact]
+    public void Embedded_ZeroLimitPlaceholder_UsesAuthoredPlanOopLimit()
+    {
+        var plan = new BenefitPlanConfig
+        {
+            Id = Guid.NewGuid(),
+            TenantId = "tenant-placeholder",
+            PlanName = "Placeholder Source",
+            PlanType = PlanType.PPO,
+            FamilyAccumulatorModel = FamilyAccumulatorModel.Embedded,
+            IndividualOopMax = 5_000m,
+            FamilyOopMax = 10_000m,
+        };
+        var sourcePlaceholder = new AccumulatorSnapshot
+        {
+            Type = AccumulatorType.IndividualOutOfPocketMax,
+            Scope = AccumulatorScope.Individual,
+            NetworkTier = NetworkTier.InNetwork,
+            LimitAmount = 0m,
+            AccumulatedAmountAfter = 0m,
+        };
+
+        var ws = new AccumulatorWorkingSet([sourcePlaceholder], plan);
+
         Assert.Equal(5_000m, ws.GetRemainingOopMax(NetworkTier.InNetwork));
     }
 }

@@ -3,7 +3,7 @@ using FluentAssertions;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 
-namespace CloudHealthOffice.FhirService.Tests.FhirArtifacts;
+namespace HealthCoreX.FhirService.Tests.FhirArtifacts;
 
 /// <summary>
 /// Verifies that every canonical URL appearing in a shipped artifact

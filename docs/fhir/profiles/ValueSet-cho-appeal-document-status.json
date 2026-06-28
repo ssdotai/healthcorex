@@ -1,7 +1,7 @@
 {
   "resourceType": "ValueSet",
   "id": "cho-appeal-document-status",
-  "url": "http://fhir.cloudhealthoffice.com/ValueSet/cho-appeal-document-status",
+  "url": "http://fhir.HealthCoreX.com/ValueSet/cho-appeal-document-status",
   "version": "1.0.0",
   "name": "ChoAppealDocumentStatusVS",
   "title": "CHO Appeal Document Status Value Set",

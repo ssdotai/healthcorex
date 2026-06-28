@@ -1,12 +1,12 @@
 using System.Diagnostics;
-using CloudHealthOffice.BenchmarkClaimGenerator.Configuration;
-using CloudHealthOffice.BenchmarkClaimGenerator.Generators;
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
-using CloudHealthOffice.BenchmarkClaimGenerator.Output;
+using HealthCoreX.BenchmarkClaimGenerator.Configuration;
+using HealthCoreX.BenchmarkClaimGenerator.Generators;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.Output;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Seeding;
+namespace HealthCoreX.BenchmarkClaimGenerator.Seeding;
 
 /// <summary>
 /// Orchestrates the full benchmark data generation and seeding pipeline.

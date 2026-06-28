@@ -185,7 +185,7 @@ After all updates:
 ## 📞 Contact for Questions
 
 **Email**: mark@aurelianware.com  
-**Repository**: https://github.com/aurelianware/cloudhealthoffice  
+**Repository**: https://github.com/aurelianware/HealthCoreX  
 **Branch**: copilot/fix-deployment-pipeline-issues
 
 ---

@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.Portal.Infrastructure;
+namespace HealthCoreX.Portal.Infrastructure;
 
 /// <summary>
 /// Creates MongoDB indexes for the TMPPM collections on startup.

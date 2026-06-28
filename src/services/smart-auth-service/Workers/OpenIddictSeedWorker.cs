@@ -110,12 +110,12 @@ public class OpenIddictSeedWorker : IHostedService
                 DisplayName = "CHO SMART Patient App",
                 RedirectUris =
                 {
-                    new Uri("https://app.cloudhealthoffice.com/callback"),
+                    new Uri("https://app.HealthCoreX.com/callback"),
                     new Uri("http://localhost:4200/callback")  // dev
                 },
                 PostLogoutRedirectUris =
                 {
-                    new Uri("https://app.cloudhealthoffice.com/signout"),
+                    new Uri("https://app.HealthCoreX.com/signout"),
                     new Uri("http://localhost:4200/signout")
                 },
                 Permissions =
@@ -153,7 +153,7 @@ public class OpenIddictSeedWorker : IHostedService
                 DisplayName = "CHO EHR Application",
                 RedirectUris =
                 {
-                    new Uri("https://portal.cloudhealthoffice.com/smart/callback"),
+                    new Uri("https://portal.HealthCoreX.com/smart/callback"),
                     new Uri("http://localhost:5000/smart/callback")
                 },
                 Permissions =

@@ -1,6 +1,6 @@
-using CloudHealthOffice.RiskAdjustmentEngine.Domain;
+using HealthCoreX.RiskAdjustmentEngine.Domain;
 
-namespace CloudHealthOffice.RiskAdjustmentEngine.Services;
+namespace HealthCoreX.RiskAdjustmentEngine.Services;
 
 /// <summary>
 /// Maps ICD-10-CM diagnosis codes to HCC category codes using the

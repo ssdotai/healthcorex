@@ -1,13 +1,13 @@
 using ClaimsService.Models;
 using ClaimsService.Services.Resolution;
-using EngineModels = CloudHealthOffice.ClaimsScrubEngine.Models;
+using EngineModels = HealthCoreX.ClaimsScrubEngine.Models;
 
 namespace ClaimsService.Services.Adjudication.Mapping;
 
 /// <summary>
 /// Bridges the platform's <see cref="AdapterClaim"/> + resolved-member
 /// context onto the <see cref="EngineModels.X12837Claim"/> shape that
-/// <c>CloudHealthOffice.ClaimsScrubEngine</c> consumes (capability 5.4,
+/// <c>HealthCoreX.ClaimsScrubEngine</c> consumes (capability 5.4,
 /// Decision 5 — mapping layer lives consumer-side).
 ///
 /// <para>
@@ -56,7 +56,7 @@ public static class ClaimToX12837Mapper
             TransactionDate = (claim.SubmittedDate == default
                 ? DateTime.UtcNow
                 : claim.SubmittedDate).ToString("yyyyMMdd"),
-            Submitter = MapSubmitter("cloudhealthoffice", claim.TenantId),
+            Submitter = MapSubmitter("HealthCoreX", claim.TenantId),
             Receiver = MapReceiver("payer", claim.TenantId),
             BillingProvider = MapBillingProvider(claim),
             Subscriber = MapSubscriber(claim, subscriber),
@@ -160,6 +160,7 @@ public static class ClaimToX12837Mapper
 
         return new EngineModels.ClaimPatient
         {
+            MemberId = claim.MemberId,
             FirstName = claim.PatientFirstName ?? string.Empty,
             LastName = claim.PatientLastName ?? string.Empty,
             DateOfBirth = FormatDob(member?.DateOfBirth),

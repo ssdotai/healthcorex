@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mongodb
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: mongodb
 spec:
@@ -19,15 +19,18 @@ spec:
       containers:
       - name: mongodb
         image: mongo:6.0
+        args:
+          - --wiredTigerCacheSizeGB
+          - "3.5"
         ports:
         - containerPort: 27017
         resources:
           requests:
-            cpu: "250m"
-            memory: "512Mi"
-          limits:
             cpu: "1000m"
-            memory: "1Gi"
+            memory: "2Gi"
+          limits:
+            cpu: "4000m"
+            memory: "8Gi"
         env:
         - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
@@ -55,7 +58,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mongodb
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: mongodb
 spec:

@@ -1,5 +1,6 @@
 using ClaimsService.Exceptions;
 using ClaimsService.Models;
+using ClaimsService.Services.Adjudication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
@@ -16,41 +17,27 @@ public class ClaimRepositoryMongo : IClaimRepository
     private readonly IMongoCollection<Claim> _collection;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<ClaimRepositoryMongo> _logger;
+    private readonly IAdjudicationTenantContext? _adjudicationTenantContext;
 
     public ClaimRepositoryMongo(
         IMongoDatabase database,
         IHttpContextAccessor httpContextAccessor,
-        ILogger<ClaimRepositoryMongo> logger)
+        ILogger<ClaimRepositoryMongo> logger,
+        IAdjudicationTenantContext? adjudicationTenantContext = null)
     {
         _collection = database.GetCollection<Claim>("Claims");
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
-
-        // Ensure indexes (best effort on startup)
-        var indexKeys = Builders<Claim>.IndexKeys;
-        var indexModels = new List<CreateIndexModel<Claim>>
-        {
-            new CreateIndexModel<Claim>(indexKeys.Ascending(c => c.TenantId).Ascending(c => c.ClaimNumber)),
-            new CreateIndexModel<Claim>(indexKeys.Ascending(c => c.TenantId).Ascending(c => c.MemberId)),
-            new CreateIndexModel<Claim>(indexKeys.Ascending(c => c.TenantId).Ascending(c => c.SubmittedDate)),
-            // Compound index for search
-            new CreateIndexModel<Claim>(indexKeys.Ascending(c => c.TenantId).Ascending(c => c.ServiceDateFrom)),
-            // Versioning chain key index — supports GetLatestVersion / ListVersions.
-            new CreateIndexModel<Claim>(indexKeys.Ascending(c => c.TenantId).Ascending(c => c.ClaimVersionId).Descending(c => c.VersionNumber))
-        };
-
-        _collection.Indexes.CreateMany(indexModels);
+        _adjudicationTenantContext = adjudicationTenantContext;
     }
 
     private string GetTenantId()
     {
-        var tenantId = _httpContextAccessor.HttpContext?.Items["TenantId"]?.ToString();
+        var tenantId = _httpContextAccessor.HttpContext?.Items["TenantId"]?.ToString()
+            ?? _adjudicationTenantContext?.TenantId;
         if (string.IsNullOrEmpty(tenantId))
         {
-            // Fallback for background services or testing if no context.
-            // In a real scenario, we might default to a specific behavior or throw
-            // throw new InvalidOperationException("TenantId not found in request context -- Mongo repo");
-            return "unknown";
+            throw new InvalidOperationException("TenantId not found in request or adjudication context");
         }
         return tenantId;
     }
@@ -73,6 +60,7 @@ public class ClaimRepositoryMongo : IClaimRepository
         {
             claim.VersionState = ClaimRepository.MapStatusToVersionState(claim.Status);
         }
+        ClaimRepository.NormalizeAdjudicationProjection(claim);
         return claim;
     }
 
@@ -110,6 +98,29 @@ public class ClaimRepositoryMongo : IClaimRepository
     }
 
     public async Task<IEnumerable<Claim>> SearchAsync(
+        string? memberId,
+        string? providerNPI,
+        DateTime? serviceDateFrom,
+        DateTime? serviceDateTo,
+        ClaimStatus? status,
+        LineOfBusiness? lineOfBusiness,
+        int page,
+        int pageSize)
+    {
+        var (claims, _) = await SearchWithCountAsync(
+            memberId,
+            providerNPI,
+            serviceDateFrom,
+            serviceDateTo,
+            status,
+            lineOfBusiness,
+            page,
+            pageSize);
+
+        return claims;
+    }
+
+    public async Task<(IReadOnlyList<Claim> Page, int TotalCount)> SearchWithCountAsync(
         string? memberId,
         string? providerNPI,
         DateTime? serviceDateFrom,
@@ -157,12 +168,74 @@ public class ClaimRepositoryMongo : IClaimRepository
             filter = builder.And(filter, builder.Eq(c => c.LineOfBusiness, lineOfBusiness.Value));
         }
 
+        var safePage = Math.Max(page, 1);
+        var safePageSize = Math.Clamp(pageSize, 1, 1000);
+        var totalCount = (int)await _collection.CountDocumentsAsync(filter);
         var docs = await _collection.Find(filter)
             .SortByDescending(c => c.SubmittedDate)
-            .Skip((page - 1) * pageSize)
-            .Limit(pageSize)
+            .Skip((safePage - 1) * safePageSize)
+            .Limit(safePageSize)
             .ToListAsync();
-        return docs.Select(Hydrate);
+
+        return (docs.Select(Hydrate).ToList(), totalCount);
+    }
+
+    public async Task<(IReadOnlyList<Claim> Page, int TotalCount)> SearchByIdsAsync(
+        IReadOnlyCollection<string> claimIds,
+        string? memberId,
+        string? providerNPI,
+        DateTime? serviceDateFrom,
+        DateTime? serviceDateTo,
+        ClaimStatus? status,
+        int page,
+        int pageSize)
+    {
+        if (claimIds.Count == 0)
+        {
+            return (Array.Empty<Claim>(), 0);
+        }
+
+        var tenantId = GetTenantId();
+        var builder = Builders<Claim>.Filter;
+        var filter = builder.And(
+            builder.Eq(c => c.TenantId, tenantId),
+            builder.In(c => c.Id, claimIds.Distinct(StringComparer.OrdinalIgnoreCase)));
+
+        if (!string.IsNullOrEmpty(memberId))
+        {
+            filter = builder.And(filter, builder.Eq(c => c.MemberId, memberId));
+        }
+
+        if (!string.IsNullOrEmpty(providerNPI))
+        {
+            filter = builder.And(filter, builder.Or(
+                builder.Eq(c => c.BillingProviderNPI, providerNPI),
+                builder.Eq(c => c.RenderingProviderNPI, providerNPI)));
+        }
+
+        if (serviceDateFrom.HasValue)
+        {
+            filter = builder.And(filter, builder.Gte(c => c.ServiceDateFrom, serviceDateFrom.Value));
+        }
+
+        if (serviceDateTo.HasValue)
+        {
+            filter = builder.And(filter, builder.Lte(c => c.ServiceDateTo, serviceDateTo.Value));
+        }
+
+        if (status.HasValue)
+        {
+            filter = builder.And(filter, builder.Eq(c => c.Status, status.Value));
+        }
+
+        var totalCount = (int)await _collection.CountDocumentsAsync(filter);
+        var docs = await _collection.Find(filter)
+            .SortByDescending(c => c.SubmittedDate)
+            .Skip((Math.Max(page, 1) - 1) * Math.Clamp(pageSize, 1, 1000))
+            .Limit(Math.Clamp(pageSize, 1, 1000))
+            .ToListAsync();
+
+        return (docs.Select(Hydrate).ToList(), totalCount);
     }
 
     public async Task<(IReadOnlyList<Claim> Page, int TotalCount)> SearchForMemberAsync(
@@ -438,7 +511,9 @@ public class ClaimRepositoryMongo : IClaimRepository
         AdjudicationResult adjudicationResult,
         IReadOnlyList<LineAdjudicationResult> lineResults,
         CancellationToken ct = default,
-        PendDetails? pendDetails = null)
+        PendDetails? pendDetails = null,
+        bool isPend = false,
+        ClaimStatus? resolvedStatus = null)
     {
         var b = Builders<Claim>.Filter;
 
@@ -497,7 +572,203 @@ public class ClaimRepositoryMongo : IClaimRepository
 
         var rowFilter = b.And(b.Eq(c => c.TenantId, tenantId), b.Eq(c => c.Id, head.Id));
         var result = await _collection.UpdateOneAsync(rowFilter, update, cancellationToken: ct);
-        return result.MatchedCount > 0;
+        if (result.MatchedCount == 0)
+        {
+            return false;
+        }
+
+        if (isPend)
+        {
+            // Defect A fix, made atomic — project the orchestrator's Pend outcome
+            // onto ClaimStatus in a SEPARATE conditional update, whose FILTER
+            // (not a C# if-check against the `head` snapshot above) carries the
+            // precedence rule: never downgrade a claim already at a later-stage
+            // disposition (see ClaimRepository.IsFinalDisposition). A
+            // read-then-decide check only catches a concurrent write that lands
+            // before this method's own read; MongoDB evaluates this filter
+            // against the row's live state at the moment the update actually
+            // executes, so a competing write landing in between is still caught.
+            // No match on this second update just means the guard correctly
+            // blocked the downgrade — not an error; the AdjudicationResult /
+            // ClaimLines / PendDetails write above already succeeded, so this
+            // method still returns true either way. Re-pending an already-Pended
+            // claim is allowed — Pended is excluded from FinalDispositions.
+            var pendFilter = b.And(
+                b.Eq(c => c.TenantId, tenantId),
+                b.Eq(c => c.Id, head.Id),
+                b.Not(b.In(c => c.Status, ClaimRepository.FinalDispositions)));
+            var pendUpdate = Builders<Claim>.Update.Set(c => c.Status, ClaimStatus.Pended);
+            await _collection.UpdateOneAsync(pendFilter, pendUpdate, cancellationToken: ct);
+            return true;
+        }
+
+        if (resolvedStatus is not null)
+        {
+            await TryPatchStatusAsync(
+                    tenantId,
+                    head.Id,
+                    resolvedStatus.Value,
+                    ClaimRepository.MapStatusToVersionState(resolvedStatus.Value),
+                    ct,
+                    adjudicationResult,
+                    head.Status)
+                .ConfigureAwait(false);
+        }
+
+        return true;
+    }
+
+    public async Task<StatusWriteResult> UpdateAdjudicationSummaryAsync(
+        string tenantId,
+        string claimVersionId,
+        AdjudicationResult adjudicationResult,
+        ClaimStatus status,
+        CancellationToken ct = default)
+    {
+        var b = Builders<Claim>.Filter;
+
+        var chainFilter = b.Or(
+            b.Eq(c => c.ClaimVersionId, claimVersionId),
+            b.And(
+                b.Or(b.Eq(c => c.ClaimVersionId, string.Empty), b.Eq(c => c.ClaimVersionId, (string?)null)),
+                b.Eq(c => c.Id, claimVersionId)));
+
+        var filter = b.And(
+            b.Eq(c => c.TenantId, tenantId),
+            chainFilter,
+            b.Ne(c => c.VersionState, ClaimVersionState.Draft));
+        var now = DateTime.UtcNow;
+
+        // Residual-race fix — financial/audit data (AdjudicationResult, dates)
+        // persists by chain/id even if async adjudication already finalized
+        // the row. Only Status + VersionState are guarded, in a separate
+        // conditional update — see TryPatchStatusAsync.
+        var summaryUpdate = Builders<Claim>.Update
+            .Set(c => c.AdjudicationResult, adjudicationResult)
+            .Set(c => c.AdjudicatedDate, now)
+            .Set(c => c.LastUpdatedDate, now);
+
+        var options = new FindOneAndUpdateOptions<Claim>
+        {
+            Sort = Builders<Claim>.Sort.Descending(c => c.VersionNumber),
+            Projection = Builders<Claim>.Projection
+                .Include(c => c.Id)
+                .Include(c => c.Status),
+            ReturnDocument = ReturnDocument.Before,
+        };
+
+        var preWriteHead = await _collection.FindOneAndUpdateAsync(filter, summaryUpdate, options, ct);
+        if (preWriteHead is null)
+        {
+            return StatusWriteResult.NotFoundResult;
+        }
+
+        return await TryPatchStatusAsync(
+            tenantId,
+            preWriteHead.Id,
+            status,
+            ClaimVersionState.Adjudicated,
+            ct,
+            adjudicationResult,
+            preWriteHead.Status);
+    }
+
+    public Task<StatusWriteResult> TryTransitionStatusAsync(
+        string tenantId,
+        string claimId,
+        ClaimStatus desiredStatus,
+        CancellationToken ct = default) =>
+        TryPatchStatusAsync(tenantId, claimId, desiredStatus, ClaimRepository.MapStatusToVersionState(desiredStatus), ct);
+
+    /// <summary>
+    /// Shared atomic status write behind <see cref="UpdateAdjudicationSummaryAsync"/>
+    /// and <see cref="TryTransitionStatusAsync"/>. The precedence guard
+    /// (<see cref="ClaimRepository.BlocksSynchronousWriteback"/>) is encoded
+    /// directly in the update filter's <c>$nin</c> clause, so MongoDB
+    /// evaluates it against the document's live state at the moment the
+    /// update actually executes — not a read-then-decide snapshot — meaning
+    /// it holds under a true concurrent write. A <c>MatchedCount == 0</c>
+    /// result is ambiguous (guard blocked it vs. row doesn't exist), so on
+    /// that path we issue one fallback existence+status read to disambiguate
+    /// and to report what's actually persisted; this only runs on the
+    /// (expected to be rare) suppressed/not-found path, not the hot path.
+    /// </summary>
+    private async Task<StatusWriteResult> TryPatchStatusAsync(
+        string tenantId,
+        string rowId,
+        ClaimStatus desiredStatus,
+        ClaimVersionState desiredVersionState,
+        CancellationToken ct,
+        AdjudicationResult? incomingAdjudication = null,
+        ClaimStatus? preWriteStatus = null)
+    {
+        var b = Builders<Claim>.Filter;
+        var statusFilter = b.And(
+            b.Eq(c => c.TenantId, tenantId),
+            b.Eq(c => c.Id, rowId),
+            b.Not(b.In(c => c.Status, ClaimRepository.SynchronousWritebackBlockedStatuses)));
+        var statusUpdate = Builders<Claim>.Update
+            .Set(c => c.Status, desiredStatus)
+            .Set(c => c.VersionState, desiredVersionState);
+
+        var result = await _collection.UpdateOneAsync(statusFilter, statusUpdate, cancellationToken: ct);
+        if (result.MatchedCount > 0)
+        {
+            return new StatusWriteResult(StatusWriteOutcome.Applied, desiredStatus);
+        }
+
+        var snapshotAllowsRepair = incomingAdjudication is not null
+            && preWriteStatus is not null
+            && (ClaimRepository.CanRepairContradictoryDeniedSummary(
+                    preWriteStatus.Value,
+                    desiredStatus,
+                    incomingAdjudication)
+                || ClaimRepository.CanRepairContradictoryApprovedSummary(
+                    preWriteStatus.Value,
+                    desiredStatus,
+                    incomingAdjudication));
+        var liveEvidenceAllowsRepair = incomingAdjudication is not null
+            && ClaimRepository.CanAttemptContradictoryStatusRepair(desiredStatus, incomingAdjudication);
+
+        if (snapshotAllowsRepair || liveEvidenceAllowsRepair)
+        {
+            var repairEvidenceFilter = desiredStatus == ClaimStatus.Denied
+                ? b.And(
+                    b.Eq(c => c.Status, ClaimStatus.Approved),
+                    b.Eq(c => c.AdjudicationResult!.PayerPayment, 0m),
+                    b.Or(
+                        b.And(
+                            b.Ne(c => c.AdjudicationResult!.DenialReasonCode, null),
+                            b.Ne(c => c.AdjudicationResult!.DenialReasonCode, string.Empty)),
+                        b.And(
+                            b.Ne(c => c.AdjudicationResult!.DenialReason, null),
+                            b.Ne(c => c.AdjudicationResult!.DenialReason, string.Empty)),
+                        b.SizeGt(c => c.AdjudicationResult!.AdjustmentReasons, 0)))
+                : b.And(
+                    b.Eq(c => c.Status, ClaimStatus.Denied),
+                    b.Gt(c => c.AdjudicationResult!.PayerPayment, 0m),
+                    b.Or(
+                        b.Eq(c => c.AdjudicationResult!.DenialReasonCode, null),
+                        b.Eq(c => c.AdjudicationResult!.DenialReasonCode, string.Empty)));
+            var repairFilter = b.And(
+                b.Eq(c => c.TenantId, tenantId),
+                b.Eq(c => c.Id, rowId),
+                repairEvidenceFilter);
+
+            var repairResult = await _collection.UpdateOneAsync(repairFilter, statusUpdate, cancellationToken: ct);
+            if (repairResult.MatchedCount > 0)
+            {
+                return new StatusWriteResult(StatusWriteOutcome.Applied, desiredStatus);
+            }
+        }
+
+        var existing = await _collection
+            .Find(b.And(b.Eq(c => c.TenantId, tenantId), b.Eq(c => c.Id, rowId)))
+            .FirstOrDefaultAsync(ct);
+
+        return existing is null
+            ? StatusWriteResult.NotFoundResult
+            : new StatusWriteResult(StatusWriteOutcome.Suppressed, existing.Status);
     }
 
     public async Task<AccumulatorTotalsResponse> GetAccumulatorTotalsAsync(
@@ -538,16 +809,19 @@ public class ClaimRepositoryMongo : IClaimRepository
         else
             filter = builder.And(filter, builder.Eq(c => c.MemberId, ownerId));
 
-        var claims = await _collection
-            .Find(filter)
-            .Project(c => new
-            {
-                c.AdjudicationResult!.DeductibleAmount,
-                c.AdjudicationResult.CoinsuranceAmount,
-                c.AdjudicationResult.CopayAmount,
-                c.AdjudicationResult.PatientResponsibility,
-                c.AdjudicationResult.NetworkTier
-            })
+        var rows = await _collection
+            .Aggregate()
+            .Match(filter)
+            .Group(
+                c => c.AdjudicationResult!.NetworkTier,
+                g => new AccumulatorTotalsAggregationRow
+                {
+                    NetworkTier = g.Key,
+                    DeductibleAmount = g.Sum(c => c.AdjudicationResult!.DeductibleAmount),
+                    CoinsuranceAmount = g.Sum(c => c.AdjudicationResult!.CoinsuranceAmount),
+                    CopayAmount = g.Sum(c => c.AdjudicationResult!.CopayAmount),
+                    PatientResponsibility = g.Sum(c => c.AdjudicationResult!.PatientResponsibility)
+                })
             .ToListAsync(ct);
 
         var deductibleType = scope == "Family" ? "FamilyDeductible"     : "IndividualDeductible";
@@ -558,7 +832,7 @@ public class ClaimRepositoryMongo : IClaimRepository
         var coinsurance = new Dictionary<string, decimal>();
         var copay       = new Dictionary<string, decimal>();
 
-        foreach (var row in claims)
+        foreach (var row in rows)
         {
             var tier = row.NetworkTier ?? "InNetwork";
             deductible[tier]  = deductible.GetValueOrDefault(tier)  + row.DeductibleAmount;
@@ -578,6 +852,15 @@ public class ClaimRepositoryMongo : IClaimRepository
             if (amount > 0) totals.Add(new AccumulatorTotalEntry { AccumulatorType = "Copay", NetworkTier = tier, AccumulatedAmount = amount });
 
         return new AccumulatorTotalsResponse { Totals = totals };
+    }
+
+    private sealed class AccumulatorTotalsAggregationRow
+    {
+        public string? NetworkTier { get; set; }
+        public decimal DeductibleAmount { get; set; }
+        public decimal CoinsuranceAmount { get; set; }
+        public decimal CopayAmount { get; set; }
+        public decimal PatientResponsibility { get; set; }
     }
 
     public async Task<bool> MarkSupersededProjectionAsync(

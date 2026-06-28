@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 
-namespace CloudHealthOffice.Infrastructure.Configuration;
+namespace HealthCoreX.Infrastructure.Configuration;
 
 /// <summary>
 /// Bridges the IConfiguration reload token fired by

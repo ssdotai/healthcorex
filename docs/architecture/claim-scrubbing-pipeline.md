@@ -15,7 +15,7 @@ carrying a malformed CPT code was happily handed to
 `BenefitCalculationStage`, which then produced unreliable outputs from
 incomplete inputs.
 
-The `CloudHealthOffice.ClaimsScrubEngine` class library has been
+The `HealthCoreX.ClaimsScrubEngine` class library has been
 sitting in `src/engines/` since the platform's early days, well-tested
 and ready to wire. 5.4 is the wiring PR.
 
@@ -60,7 +60,7 @@ is intentionally rejected.
 
 ## Mapping layer
 
-The engine consumes `X12837Claim` (`src/engines/CloudHealthOffice.ClaimsScrubEngine/Models/ScrubModels.cs`),
+The engine consumes `X12837Claim` (`src/engines/HealthCoreX.ClaimsScrubEngine/Models/ScrubModels.cs`),
 which is shaped to match an X12 837 EDI transaction. The pipeline
 operates on `AdapterClaim`. `ClaimToX12837Mapper`
 (`src/services/claims-service/Services/Adjudication/Mapping/ClaimToX12837Mapper.cs`)
@@ -189,7 +189,7 @@ deploy / monitor.
 Removed:
 
 - `src/services/claims-scrubbing-service/` (entire tree)
-- `tests/CloudHealthOffice.ClaimsScrubbingService.Tests/` (entire tree)
+- `tests/HealthCoreX.ClaimsScrubbingService.Tests/` (entire tree)
 - Solution-file entry for the test project
 - GitHub Actions matrix entries (`deploy-azure-aks.yml`,
   `pr-validation.yml`, `security-scan.yml`)

@@ -7,7 +7,7 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Services.Adjudication.Stages;
+namespace HealthCoreX.ClaimsService.Tests.Services.Adjudication.Stages;
 
 public class PersistenceStageTests
 {
@@ -36,13 +36,7 @@ public class PersistenceStageTests
         {
             new() { AllowedAmount = 75m, PaidAmount = 50m, PatientResponsibility = 25m },
         };
-        _repository.UpdateAdjudicationProjectionAsync(
-            Arg.Any<string>(),
-            Arg.Any<string>(),
-            Arg.Any<AdjudicationResult>(),
-            Arg.Any<IReadOnlyList<LineAdjudicationResult>>(),
-            Arg.Any<CancellationToken>())
-            .Returns(true);
+        StubRepositoryReturns(true);
 
         var result = await _sut.ExecuteAsync(ctx, CancellationToken.None);
 
@@ -52,20 +46,17 @@ public class PersistenceStageTests
             "ver-1",
             Arg.Is<AdjudicationResult>(a => a.AllowedAmount == 75m),
             Arg.Is<IReadOnlyList<LineAdjudicationResult>>(l => l.Count == 1),
-            Arg.Any<CancellationToken>());
+            Arg.Any<CancellationToken>(),
+            Arg.Any<PendDetails?>(),
+            Arg.Is<bool>(isPend => !isPend),
+            Arg.Is<ClaimStatus?>(status => status == ClaimStatus.Approved));
     }
 
     [Fact]
     public async Task Execute_BypassReturnsFalse_StageReturnsReject()
     {
         var ctx = BuildContext();
-        _repository.UpdateAdjudicationProjectionAsync(
-            Arg.Any<string>(),
-            Arg.Any<string>(),
-            Arg.Any<AdjudicationResult>(),
-            Arg.Any<IReadOnlyList<LineAdjudicationResult>>(),
-            Arg.Any<CancellationToken>())
-            .Returns(false);
+        StubRepositoryReturns(false);
 
         var result = await _sut.ExecuteAsync(ctx, CancellationToken.None);
 
@@ -81,12 +72,111 @@ public class PersistenceStageTests
             Arg.Any<string>(),
             Arg.Any<AdjudicationResult>(),
             Arg.Any<IReadOnlyList<LineAdjudicationResult>>(),
-            Arg.Any<CancellationToken>())
+            Arg.Any<CancellationToken>(),
+            Arg.Any<PendDetails?>(),
+            Arg.Any<bool>(),
+            Arg.Any<ClaimStatus?>())
             .Throws(new InvalidOperationException("cosmos down"));
 
         await Assert.ThrowsAsync<InvalidOperationException>(
             () => _sut.ExecuteAsync(ctx, CancellationToken.None));
     }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // Defect A fix — isPend resolution (Reject > Deny > Pend > Pass over
+    // every stage that ran before Persistence, since Persistence is
+    // always Order=999/last).
+    // ═══════════════════════════════════════════════════════════════════
+
+    [Fact]
+    public async Task Execute_WhenPriorStageResultIsPend_PassesIsPendTrue()
+    {
+        var ctx = BuildContext();
+        ctx.PendDetails = new PendDetails { PendCode = "NCCI", PendReason = "bundled pair" };
+        ctx.StageResults.Add(ClaimAdjudicationStageResult.Pend("NcciEdits", "pended for NCCI/MUE review"));
+        StubRepositoryReturns(true);
+
+        await _sut.ExecuteAsync(ctx, CancellationToken.None);
+
+        await _repository.Received(1).UpdateAdjudicationProjectionAsync(
+            "tenant-1", "ver-1",
+            Arg.Any<AdjudicationResult>(), Arg.Any<IReadOnlyList<LineAdjudicationResult>>(),
+            Arg.Any<CancellationToken>(),
+            Arg.Is<PendDetails?>(p => p!.PendCode == "NCCI"),
+            Arg.Is<bool>(isPend => isPend),
+            Arg.Is<ClaimStatus?>(status => status == ClaimStatus.Pended));
+    }
+
+    [Fact]
+    public async Task Execute_WhenNoPriorStageResults_PassesIsPendFalse()
+    {
+        var ctx = BuildContext();
+        StubRepositoryReturns(true);
+
+        await _sut.ExecuteAsync(ctx, CancellationToken.None);
+
+        await _repository.Received(1).UpdateAdjudicationProjectionAsync(
+            "tenant-1", "ver-1",
+            Arg.Any<AdjudicationResult>(), Arg.Any<IReadOnlyList<LineAdjudicationResult>>(),
+            Arg.Any<CancellationToken>(),
+            Arg.Any<PendDetails?>(),
+            Arg.Is<bool>(isPend => !isPend),
+            Arg.Is<ClaimStatus?>(status => status == ClaimStatus.Approved));
+    }
+
+    [Fact]
+    public async Task Execute_WhenPriorStageResultIsDeny_PassesIsPendFalse_EvenWithPendDetailsPresent()
+    {
+        // NcciEditsStage records the deterministic edit-failure snapshot on
+        // PendDetails unconditionally, regardless of NcciMode — so a Deny-mode
+        // claim can carry non-null PendDetails while the resolved outcome is
+        // Deny, not Pend. isPend must reflect the resolved outcome (Deny wins
+        // over Pend), not merely "PendDetails is non-null".
+        var ctx = BuildContext();
+        ctx.PendDetails = new PendDetails { PendCode = "NCCI", PendReason = "bundled pair (Deny mode)" };
+        ctx.StageResults.Add(ClaimAdjudicationStageResult.Deny("NcciEdits", "denied for NCCI/MUE failure"));
+        StubRepositoryReturns(true);
+
+        await _sut.ExecuteAsync(ctx, CancellationToken.None);
+
+        await _repository.Received(1).UpdateAdjudicationProjectionAsync(
+            "tenant-1", "ver-1",
+            Arg.Any<AdjudicationResult>(), Arg.Any<IReadOnlyList<LineAdjudicationResult>>(),
+            Arg.Any<CancellationToken>(),
+            Arg.Any<PendDetails?>(),
+            Arg.Is<bool>(isPend => !isPend),
+            Arg.Is<ClaimStatus?>(status => status == ClaimStatus.Denied));
+    }
+
+    [Fact]
+    public async Task Execute_WhenPriorStageResultIsReject_PassesIsPendFalse()
+    {
+        var ctx = BuildContext();
+        ctx.StageResults.Add(ClaimAdjudicationStageResult.Reject("Scrubbing", "missing NPI"));
+        StubRepositoryReturns(true);
+
+        await _sut.ExecuteAsync(ctx, CancellationToken.None);
+
+        await _repository.Received(1).UpdateAdjudicationProjectionAsync(
+            "tenant-1", "ver-1",
+            Arg.Any<AdjudicationResult>(), Arg.Any<IReadOnlyList<LineAdjudicationResult>>(),
+            Arg.Any<CancellationToken>(),
+            Arg.Any<PendDetails?>(),
+            Arg.Is<bool>(isPend => !isPend),
+            Arg.Is<ClaimStatus?>(status => status == ClaimStatus.Denied));
+    }
+
+    private void StubRepositoryReturns(bool value) =>
+        _repository.UpdateAdjudicationProjectionAsync(
+            Arg.Any<string>(),
+            Arg.Any<string>(),
+            Arg.Any<AdjudicationResult>(),
+            Arg.Any<IReadOnlyList<LineAdjudicationResult>>(),
+            Arg.Any<CancellationToken>(),
+            Arg.Any<PendDetails?>(),
+            Arg.Any<bool>(),
+            Arg.Any<ClaimStatus?>())
+            .Returns(value);
 
     private static ClaimAdjudicationContext BuildContext() => new()
     {

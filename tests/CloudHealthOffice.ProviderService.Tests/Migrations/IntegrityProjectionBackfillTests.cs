@@ -1,10 +1,10 @@
-using CloudHealthOffice.ProviderService.Tests.Fakes;
+using HealthCoreX.ProviderService.Tests.Fakes;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using ProviderService.Models;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Migrations;
+namespace HealthCoreX.ProviderService.Tests.Migrations;
 
 /// <summary>
 /// Coverage for the admin backfill path (capability 5.4.5). Backfill

@@ -1,6 +1,6 @@
-using CloudHealthOffice.EncounterEngine.Domain;
+using HealthCoreX.EncounterEngine.Domain;
 
-namespace CloudHealthOffice.EncounterEngine.Services;
+namespace HealthCoreX.EncounterEngine.Services;
 
 /// <summary>
 /// Wraps one or more ST…SE encounter transactions inside an X12 ISA/GS/GE/IEA

@@ -2,16 +2,16 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CloudHealthOffice.Infrastructure.Observability;
+namespace HealthCoreX.Infrastructure.Observability;
 
 /// <summary>
 /// Central ActivitySource for Cloud Health Office business-level spans.
 /// All custom tracing flows through this single source so services
-/// only need to subscribe to "CloudHealthOffice" to capture everything.
+/// only need to subscribe to "HealthCoreX" to capture everything.
 /// </summary>
 public static class ChoActivitySource
 {
-    public const string Name = "CloudHealthOffice";
+    public const string Name = "HealthCoreX";
 
     public static readonly ActivitySource Instance = new(Name, GetAssemblyVersion());
 

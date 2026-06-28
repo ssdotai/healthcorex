@@ -5,7 +5,7 @@
 
 set -e
 
-REGISTRY="ghcr.io/aurelianware/cloudhealthoffice"
+REGISTRY="ghcr.io/aurelianware/HealthCoreX"
 
 echo "Updating Kubernetes deployments to use GitHub Container Registry images..."
 echo "Registry: $REGISTRY"
@@ -43,7 +43,7 @@ echo ""
 echo "Deployment files updated successfully!"
 echo ""
 echo "Next steps:"
-echo "1. Verify GitHub Actions build completed: https://github.com/aurelianware/cloudhealthoffice/actions"
+echo "1. Verify GitHub Actions build completed: https://github.com/aurelianware/HealthCoreX/actions"
 echo "2. Deploy updated services: kubectl apply -f services/*/k8s/"
-echo "3. Watch rollout: kubectl rollout status deployment -n cloudhealthoffice"
-echo "4. Verify pods: kubectl get pods -n cloudhealthoffice"
+echo "3. Watch rollout: kubectl rollout status deployment -n HealthCoreX"
+echo "4. Verify pods: kubectl get pods -n HealthCoreX"

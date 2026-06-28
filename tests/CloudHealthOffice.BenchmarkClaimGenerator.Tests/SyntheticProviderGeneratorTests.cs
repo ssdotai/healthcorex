@@ -1,7 +1,7 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Configuration;
-using CloudHealthOffice.BenchmarkClaimGenerator.Generators;
+using HealthCoreX.BenchmarkClaimGenerator.Configuration;
+using HealthCoreX.BenchmarkClaimGenerator.Generators;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Tests;
+namespace HealthCoreX.BenchmarkClaimGenerator.Tests;
 
 public class SyntheticProviderGeneratorTests
 {

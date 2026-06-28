@@ -5,7 +5,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Adapters;
+namespace HealthCoreX.ClaimsService.Tests.Adapters;
 
 public class ChoClaimAdapterTests
 {

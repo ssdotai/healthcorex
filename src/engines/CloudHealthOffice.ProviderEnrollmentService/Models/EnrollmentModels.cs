@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.ProviderEnrollmentService.Models;
+namespace HealthCoreX.ProviderEnrollmentService.Models;
 
 // ─────────────────────────────────────────────────────────────────
 // Enumerations

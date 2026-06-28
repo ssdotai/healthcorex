@@ -1,14 +1,14 @@
-using CloudHealthOffice.PriorAuthRuleEngine.Abstractions;
-using CloudHealthOffice.PriorAuthRuleEngine.Domain;
-using CloudHealthOffice.PriorAuthRuleEngine.Models;
-using CloudHealthOffice.PriorAuthRuleEngine.Persistence;
-using CloudHealthOffice.PriorAuthRuleEngine.Rules.Platform;
-using CloudHealthOffice.PriorAuthRuleEngine.SeedRules;
-using CloudHealthOffice.PriorAuthRuleEngine.Services;
+using HealthCoreX.PriorAuthRuleEngine.Abstractions;
+using HealthCoreX.PriorAuthRuleEngine.Domain;
+using HealthCoreX.PriorAuthRuleEngine.Models;
+using HealthCoreX.PriorAuthRuleEngine.Persistence;
+using HealthCoreX.PriorAuthRuleEngine.Rules.Platform;
+using HealthCoreX.PriorAuthRuleEngine.SeedRules;
+using HealthCoreX.PriorAuthRuleEngine.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 
-namespace CloudHealthOffice.E2E;
+namespace HealthCoreX.E2E;
 
 /// <summary>
 /// Integration smoke tests for the TX platform seed rules running through

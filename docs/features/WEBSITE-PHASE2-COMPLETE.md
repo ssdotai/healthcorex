@@ -19,8 +19,8 @@ Phase 2 website updates implement the dual-market strategic positioning across a
 **Key Features:**
 - Two-column pricing grid (Health Plans | Practices)
 - Payer tiers: Starter ($50k-100k) / Growth ($100k-200k) / Enterprise ($200k-250k)
-- Provider tiers: Solo / Small Group / Group Practice — [Contact sales](mailto:sales@cloudhealthoffice.com) for pricing
-- Founding Practices Program — [Contact sales](mailto:sales@cloudhealthoffice.com) for details
+- Provider tiers: Solo / Small Group / Group Practice — [Contact sales](mailto:sales@HealthCoreX.com) for pricing
+- Founding Practices Program — [Contact sales](mailto:sales@HealthCoreX.com) for details
 - ROI comparison table (82%+ savings vs traditional solutions)
 - Contact sales CTAs for all tiers
 
@@ -170,13 +170,13 @@ Phase 2 website updates implement the dual-market strategic positioning across a
 
 ### Branding Elements
 - ✅ "The Sentinel" tagline removed from all pages
-- ✅ Logo: docs/images/logo-cloudhealthoffice-sentinel-primary.png (or .svg)
+- ✅ Logo: docs/images/logo-HealthCoreX-sentinel-primary.png (or .svg)
 - ✅ Sentinel theme colors maintained (neon cyan #00ffff, neon green #00ff88, absolute black #000000)
 - ✅ Footer: "Cloud Health Office v3.0 • Modern healthcare integration for payers and providers"
 
 ### Contact Information
 - ✅ All CTAs point to: mark@aurelianware.com
-- ✅ GitHub: https://github.com/aurelianware/cloudhealthoffice
+- ✅ GitHub: https://github.com/aurelianware/HealthCoreX
 - ✅ License: BSL 1.1
 - ✅ Copyright: © 2026 Aurelianware
 

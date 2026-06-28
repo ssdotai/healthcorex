@@ -5,7 +5,7 @@ using ClaimsService.Models;
 using ClaimsService.Models.Messaging;
 using ClaimsService.Repositories;
 using ClaimsService.Services.Adjudication;
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Messaging;
 
 namespace ClaimsService.Services;
 

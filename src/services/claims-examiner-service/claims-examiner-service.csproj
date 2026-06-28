@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj" />
-    <ProjectReference Include="../shared/CloudHealthOffice.Events/CloudHealthOffice.Events.csproj" />
+    <ProjectReference Include="../shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj" />
+    <ProjectReference Include="../shared/HealthCoreX.Events/HealthCoreX.Events.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="CloudHealthOffice.ClaimsExaminerService.Tests" />
+    <InternalsVisibleTo Include="HealthCoreX.ClaimsExaminerService.Tests" />
   </ItemGroup>
 
 </Project>

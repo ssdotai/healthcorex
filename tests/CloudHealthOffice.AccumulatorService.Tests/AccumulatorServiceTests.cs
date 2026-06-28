@@ -1,9 +1,9 @@
 using AccumulatorService.Models;
 using AccumulatorService.Services;
-using CloudHealthOffice.Events;
+using HealthCoreX.Events;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.AccumulatorService.Tests;
+namespace HealthCoreX.AccumulatorService.Tests;
 
 /// <summary>
 /// Behavior of the accumulator domain service. Covers:

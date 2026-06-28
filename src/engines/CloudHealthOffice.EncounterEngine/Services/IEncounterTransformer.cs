@@ -1,6 +1,6 @@
-using CloudHealthOffice.EncounterEngine.Domain;
+using HealthCoreX.EncounterEngine.Domain;
 
-namespace CloudHealthOffice.EncounterEngine.Services;
+namespace HealthCoreX.EncounterEngine.Services;
 
 /// <summary>
 /// Transforms an adjudicated claim into a single X12 837 encounter transaction (ST through SE).

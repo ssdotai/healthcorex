@@ -6,7 +6,7 @@ using EligibilityService.Adapters;
 using EligibilityService.Repositories;
 using EligibilityService.Services;
 
-namespace CloudHealthOffice.EligibilityService.Tests;
+namespace HealthCoreX.EligibilityService.Tests;
 
 /// <summary>
 /// WebApplicationFactory for eligibility-service smoke tests.

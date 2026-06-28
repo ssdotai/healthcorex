@@ -1,8 +1,8 @@
 using System.Diagnostics;
-using CloudHealthOffice.Infrastructure.Messaging;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Observability;
 
-namespace CloudHealthOffice.Infrastructure.Tests.Messaging;
+namespace HealthCoreX.Infrastructure.Tests.Messaging;
 
 /// <summary>
 /// Shared contract every <see cref="IMessageBus"/> implementation must pass.

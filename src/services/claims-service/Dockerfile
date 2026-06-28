@@ -10,33 +10,33 @@ WORKDIR /repo
 # resolved graph silently uses older, vulnerable package versions.
 COPY src/Directory.Build.props src/
 COPY src/services/claims-service/claims-service.csproj src/services/claims-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/services/shared/CloudHealthOffice.Events/CloudHealthOffice.Events.csproj src/services/shared/CloudHealthOffice.Events/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
+COPY src/services/shared/HealthCoreX.Events/HealthCoreX.Events.csproj src/services/shared/HealthCoreX.Events/
 # 5.5 — BenefitCalculationStage calls IBenefitCalculationEngine via the
 # HttpBenefitCalculationEngineClient shim, which transitively pulls in
 # BenefitEngine + OperatingMode at compile time.
-COPY src/engines/CloudHealthOffice.BenefitEngine/CloudHealthOffice.BenefitEngine.csproj src/engines/CloudHealthOffice.BenefitEngine/
-COPY src/engines/CloudHealthOffice.OperatingMode/CloudHealthOffice.OperatingMode.csproj src/engines/CloudHealthOffice.OperatingMode/
+COPY src/engines/HealthCoreX.BenefitEngine/HealthCoreX.BenefitEngine.csproj src/engines/HealthCoreX.BenefitEngine/
+COPY src/engines/HealthCoreX.OperatingMode/HealthCoreX.OperatingMode.csproj src/engines/HealthCoreX.OperatingMode/
 # 5.4 — ScrubbingStage drives every claim through the shared scrub
 # engine class library at adjudication pipeline Order=100.
-COPY src/engines/CloudHealthOffice.ClaimsScrubEngine/CloudHealthOffice.ClaimsScrubEngine.csproj src/engines/CloudHealthOffice.ClaimsScrubEngine/
+COPY src/engines/HealthCoreX.ClaimsScrubEngine/HealthCoreX.ClaimsScrubEngine.csproj src/engines/HealthCoreX.ClaimsScrubEngine/
 # 5.7 — NcciEditsStage drives every claim through the NCCI engine
 # class library at adjudication pipeline Order=400.
-COPY src/engines/CloudHealthOffice.NcciEngine/CloudHealthOffice.NcciEngine.csproj src/engines/CloudHealthOffice.NcciEngine/
+COPY src/engines/HealthCoreX.NcciEngine/HealthCoreX.NcciEngine.csproj src/engines/HealthCoreX.NcciEngine/
 # 5.8 — CoordinationOfBenefitsStage uses the CobEngine class library
 # for payer-order rule labelling at adjudication pipeline Order=500.
-COPY src/engines/CloudHealthOffice.CobEngine/CloudHealthOffice.CobEngine.csproj src/engines/CloudHealthOffice.CobEngine/
+COPY src/engines/HealthCoreX.CobEngine/HealthCoreX.CobEngine.csproj src/engines/HealthCoreX.CobEngine/
 RUN dotnet restore src/services/claims-service/claims-service.csproj
 
 # Copy source code and build
 COPY src/services/claims-service/ src/services/claims-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/services/shared/CloudHealthOffice.Events/ src/services/shared/CloudHealthOffice.Events/
-COPY src/engines/CloudHealthOffice.BenefitEngine/ src/engines/CloudHealthOffice.BenefitEngine/
-COPY src/engines/CloudHealthOffice.OperatingMode/ src/engines/CloudHealthOffice.OperatingMode/
-COPY src/engines/CloudHealthOffice.ClaimsScrubEngine/ src/engines/CloudHealthOffice.ClaimsScrubEngine/
-COPY src/engines/CloudHealthOffice.NcciEngine/ src/engines/CloudHealthOffice.NcciEngine/
-COPY src/engines/CloudHealthOffice.CobEngine/ src/engines/CloudHealthOffice.CobEngine/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
+COPY src/services/shared/HealthCoreX.Events/ src/services/shared/HealthCoreX.Events/
+COPY src/engines/HealthCoreX.BenefitEngine/ src/engines/HealthCoreX.BenefitEngine/
+COPY src/engines/HealthCoreX.OperatingMode/ src/engines/HealthCoreX.OperatingMode/
+COPY src/engines/HealthCoreX.ClaimsScrubEngine/ src/engines/HealthCoreX.ClaimsScrubEngine/
+COPY src/engines/HealthCoreX.NcciEngine/ src/engines/HealthCoreX.NcciEngine/
+COPY src/engines/HealthCoreX.CobEngine/ src/engines/HealthCoreX.CobEngine/
 RUN dotnet build src/services/claims-service/claims-service.csproj -c Release --no-restore
 
 # Publish stage

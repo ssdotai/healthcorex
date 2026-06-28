@@ -6,7 +6,7 @@
 #          Idempotent — safe to re-run.
 # Usage:
 #   ./scripts/setup-azure-keyvault.sh \
-#     --resource-group rg-cloudhealthoffice-prod \
+#     --resource-group rg-HealthCoreX-prod \
 #     --vault-name cho-app-kv \
 #     --aks-cluster cho-aks \
 #     --location eastus \
@@ -70,7 +70,7 @@ OPTIONS:
   -h, --help                      Show this help message
 
 EXAMPLES:
-  $0 -g rg-cloudhealthoffice-prod -v cho-app-kv -a cho-aks -l eastus -w cho-logs
+  $0 -g rg-HealthCoreX-prod -v cho-app-kv -a cho-aks -l eastus -w cho-logs
 
 WHAT THIS SCRIPT DOES:
   1. Creates Key Vault (Premium SKU, RBAC auth, purge protection)

@@ -80,11 +80,11 @@ and HCC risk scoring pipeline. 120 new tests added across sprint 2.
 ## "What Doesn't Exist Yet" Section — Current Status
 
 - ✅ NCCI/MUE Edits Engine (now exists)
-- ✅ COB (Coordination of Benefits) — `CloudHealthOffice.CobEngine`: payer order (birthday rule, MSP, active-employment), complementary + non-duplication models, BenefitEngine integration (OA-23 CAS), coverage-service `/cob` endpoint. 24 tests.
+- ✅ COB (Coordination of Benefits) — `HealthCoreX.CobEngine`: payer order (birthday rule, MSP, active-employment), complementary + non-duplication models, BenefitEngine integration (OA-23 CAS), coverage-service `/cob` endpoint. 24 tests.
 - ✅ Provider Contract / Network Management
 - ✅ Payment Service + 835 (core roadmap objective implemented)
-- ✅ Encounter Submission — `CloudHealthOffice.EncounterEngine`: X12 837P/837I transformer + ISA/GS batch builder, original/corrected/void, COB OI segments, MOA/MIA adjudication. 44 tests.
-- ✅ Risk Adjustment / HCC — `CloudHealthOffice.RiskAdjustmentEngine`: CMS-HCC v28 + HHS-HCC crosswalk, hierarchy resolution, demographic factor table, batch risk scoring pipeline. 52 tests.
+- ✅ Encounter Submission — `HealthCoreX.EncounterEngine`: X12 837P/837I transformer + ISA/GS batch builder, original/corrected/void, COB OI segments, MOA/MIA adjudication. 44 tests.
+- ✅ Risk Adjustment / HCC — `HealthCoreX.RiskAdjustmentEngine`: CMS-HCC v28 + HHS-HCC crosswalk, hierarchy resolution, demographic factor table, batch risk scoring pipeline. 52 tests.
 
 ## Recommended PR Sequence — Progress Snapshot
 - ✅ PR1 RFAI MVP

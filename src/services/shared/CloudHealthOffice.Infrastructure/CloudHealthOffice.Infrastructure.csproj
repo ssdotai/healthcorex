@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>CloudHealthOffice.Infrastructure</RootNamespace>
+    <RootNamespace>HealthCoreX.Infrastructure</RootNamespace>
     <AzureCosmosDisableNewtonsoftJsonCheck>true</AzureCosmosDisableNewtonsoftJsonCheck>
   </PropertyGroup>
 
@@ -13,12 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="CloudHealthOffice.Infrastructure.Tests" />
+    <InternalsVisibleTo Include="HealthCoreX.Infrastructure.Tests" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.17.5" />
-    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.59.0" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.62.0" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.11" />
     <PackageReference Include="MongoDB.Driver" Version="3.6.0" />
   <PackageReference Include="SharpCompress" Version="0.48.0" />

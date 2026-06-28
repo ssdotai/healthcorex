@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.DocumentStore;
+namespace HealthCoreX.DocumentStore;
 
 /// <summary>
 /// Provider-agnostic abstraction for binary document storage.

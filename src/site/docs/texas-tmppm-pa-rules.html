@@ -6,13 +6,13 @@
   <title>TMPPM Prior Authorization Rules — Texas Medicaid Compliance — Cloud Health Office</title>
   <meta name="description" content="Automated TMPPM prior authorization rule extraction for Texas Medicaid. 50 PA categories, 8 TMPPM chapters, monthly auto-refresh from TMHP PDFs to CRD endpoint. The only CMS-0057-F platform with built-in state-specific PA rules." />
   <meta name="keywords" content="TMPPM, Texas Medicaid Provider Procedures Manual, prior authorization, PA rules, TMHP, CPT, HCPCS, CRD, CDS Hooks, CMS-0057-F, Medicaid compliance, neurostimulators, bariatric surgery, HBOT, hyperbaric oxygen, organ transplants, ConceptMapEntry, Cosmos DB" />
-  <link rel="canonical" href="https://cloudhealthoffice.com/docs/texas-tmppm-pa-rules" />
+  <link rel="canonical" href="https://HealthCoreX.com/docs/texas-tmppm-pa-rules" />
 
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://cloudhealthoffice.com/docs/texas-tmppm-pa-rules" />
+  <meta property="og:url" content="https://HealthCoreX.com/docs/texas-tmppm-pa-rules" />
   <meta property="og:title" content="TMPPM PA Rule Extraction — Cloud Health Office" />
   <meta property="og:description" content="The only CMS-0057-F platform that ingests the Texas Medicaid Provider Procedures Manual, extracts PA rules from TMHP PDFs, and serves them through CRD in real time." />
-  <meta property="og:image" content="https://cloudhealthoffice.com/graphics/logo-cloudhealthoffice-sentinel-primary.svg" />
+  <meta property="og:image" content="https://HealthCoreX.com/graphics/logo-HealthCoreX-sentinel-primary.svg" />
 
   <script type="application/ld+json">
   {
@@ -20,9 +20,9 @@
     "@type": "TechArticle",
     "headline": "TMPPM Prior Authorization Rules — Cloud Health Office",
     "description": "Automated extraction of Texas Medicaid prior authorization rules from the TMPPM. 50 PA categories across 8 chapters, monthly auto-refresh, hybrid regex + LLM extraction, persisted to Cosmos DB for real-time CRD responses.",
-    "url": "https://cloudhealthoffice.com/docs/texas-tmppm-pa-rules",
+    "url": "https://HealthCoreX.com/docs/texas-tmppm-pa-rules",
     "author": { "@type": "Organization", "name": "Aurelianware, Inc." },
-    "publisher": { "@type": "Organization", "name": "Cloud Health Office", "url": "https://cloudhealthoffice.com" },
+    "publisher": { "@type": "Organization", "name": "Cloud Health Office", "url": "https://HealthCoreX.com" },
     "datePublished": "2026-04-10",
     "proficiencyLevel": "Intermediate",
     "about": [
@@ -38,10 +38,10 @@
     "breadcrumb": {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cloudhealthoffice.com" },
-        { "@type": "ListItem", "position": 2, "name": "Docs", "item": "https://cloudhealthoffice.com/docs" },
-        { "@type": "ListItem", "position": 3, "name": "Texas Compliance", "item": "https://cloudhealthoffice.com/docs/texas-compliance" },
-        { "@type": "ListItem", "position": 4, "name": "TMPPM PA Rules", "item": "https://cloudhealthoffice.com/docs/texas-tmppm-pa-rules" }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://HealthCoreX.com" },
+        { "@type": "ListItem", "position": 2, "name": "Docs", "item": "https://HealthCoreX.com/docs" },
+        { "@type": "ListItem", "position": 3, "name": "Texas Compliance", "item": "https://HealthCoreX.com/docs/texas-compliance" },
+        { "@type": "ListItem", "position": 4, "name": "TMPPM PA Rules", "item": "https://HealthCoreX.com/docs/texas-tmppm-pa-rules" }
       ]
     }
   }
@@ -95,7 +95,7 @@
   <nav>
     <div class="nav-inner">
       <a href="/" class="nav-logo" aria-label="Cloud Health Office Home">
-        <img src="/graphics/logo-cloudhealthoffice-sentinel-primary.svg" alt="" class="nav-logo-img" aria-hidden="true" />
+        <img src="/graphics/logo-HealthCoreX-sentinel-primary.svg" alt="" class="nav-logo-img" aria-hidden="true" />
         <span class="nav-logo-text">Cloud Health Office</span>
       </a>
       <div class="nav-right">
@@ -106,7 +106,7 @@
           <li><a href="/pricing">Pricing</a></li>
           <li><a href="/platform">Platform</a></li>
           <li><a href="/docs" style="color:#00ffff; font-weight:bold;">Docs</a></li>
-          <li><a href="https://github.com/aurelianware/cloudhealthoffice" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="https://github.com/aurelianware/HealthCoreX" target="_blank" rel="noopener noreferrer">GitHub</a></li>
           <li><a href="/contact" style="color:#00ffff; font-weight:bold;">Contact Sales</a></li>
         </ul>
       </div>
@@ -174,8 +174,8 @@
           <div class="docs-sidebar-section">
             <div class="docs-sidebar-section-title">Resources</div>
             <ul>
-              <li><a href="https://github.com/aurelianware/cloudhealthoffice" target="_blank" rel="noopener noreferrer">GitHub Repo</a></li>
-              <li><a href="https://sandbox.cloudhealthoffice.com/?spec=patient-access" target="_blank" rel="noopener noreferrer">API Sandbox</a></li>
+              <li><a href="https://github.com/aurelianware/HealthCoreX" target="_blank" rel="noopener noreferrer">GitHub Repo</a></li>
+              <li><a href="https://sandbox.HealthCoreX.com/?spec=patient-access" target="_blank" rel="noopener noreferrer">API Sandbox</a></li>
               <li><a href="/release-notes">Release Notes</a></li>
             </ul>
           </div>
@@ -249,7 +249,7 @@
             <div class="tmppm-flow-icon green">&#x25C6;</div>
             <div class="tmppm-flow-body">
               <h4>5. CRD server responds</h4>
-              <p>Provider submits a CRD check &rarr; CHO queries Cosmos &rarr; returns Texas-correct &ldquo;auth required&rdquo; or &ldquo;no auth&rdquo; with the TMPPM section reference and clinical criteria. Sub-second response, zero manual lookup.</p>
+              <p>Provider submits a CRD check &rarr; Cloud Health Office queries Cosmos &rarr; returns Texas-correct &ldquo;auth required&rdquo; or &ldquo;no auth&rdquo; with the TMPPM section reference and clinical criteria through an auditable automated lookup.</p>
             </div>
           </div>
         </div>
@@ -356,7 +356,7 @@
         <p>All rules are tenant-scoped with <code>TenantId</code> (e.g., <code>txmco01</code>). The CRD server merges global rules with tenant-specific overrides at query time, allowing plans to customize PA requirements while inheriting the platform baseline.</p>
 
         <h3>Extraction Pipeline</h3>
-        <p>The <code>TmppmIngestionService</code> is a .NET 8 console application in <code>tools/CloudHealthOffice.TmppmIngestionService</code>:</p>
+        <p>The <code>TmppmIngestionService</code> is a .NET 8 console application in <code>tools/HealthCoreX.TmppmIngestionService</code>:</p>
         <ul>
           <li><strong>TmhpChapterDownloader</strong> &mdash; fetches PDFs from TMHP, SHA256 hashes for change detection</li>
           <li><strong>TmppmPdfParser</strong> &mdash; PdfPig-based text extraction with regex pattern matching for procedure codes, age rules, and section references</li>
@@ -452,8 +452,8 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <h4>Cloud Health Office</h4>
-          <p>The modern integration layer for health plan core administration systems. CMS-0057-F compliant, multi-clearinghouse EDI, FHIR R4 APIs.</p>
-          <p style="font-size:0.82rem; color:rgba(128,128,128,0.45);">BSL 1.1 &nbsp;&middot;&nbsp; v4.2.0 Production</p>
+          <p>The modern integration layer for health plan core administration systems. CMS-0057-F readiness, multi-clearinghouse EDI, FHIR R4 APIs.</p>
+          <p style="font-size:0.82rem; color:rgba(128,128,128,0.45);">BSL 1.1 &nbsp;&middot;&nbsp; Source-Available Platform</p>
         </div>
         <div class="footer-col">
           <h5>Product</h5>
@@ -481,15 +481,15 @@
           <h5>Contact</h5>
           <ul>
             <li><a href="/contact">Contact Sales</a></li>
-            <li><a href="mailto:enterprise@cloudhealthoffice.com">Enterprise Support</a></li>
-            <li><a href="mailto:partners@cloudhealthoffice.com">Partner Program</a></li>
-            <li><a href="mailto:investors@cloudhealthoffice.com">Investors</a></li>
+            <li><a href="mailto:enterprise@HealthCoreX.com">Enterprise Support</a></li>
+            <li><a href="mailto:partners@HealthCoreX.com">Partner Program</a></li>
+            <li><a href="mailto:investors@HealthCoreX.com">Investors</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 Cloud Health Office &mdash; Aurelianware, Inc. &nbsp;&middot;&nbsp; Source-available platform (BSL 1.1) &nbsp;&middot;&nbsp; Free for non-production use &nbsp;&middot;&nbsp; <a href="mailto:licensing@cloudhealthoffice.com" style="color:rgba(0,255,255,0.6);">Commercial licensing</a></p>
-        <p><a href="/pricing" style="color:rgba(128,128,128,0.45);">Pricing</a> &nbsp;&middot;&nbsp; <a href="mailto:contact@cloudhealthoffice.com" style="color:rgba(128,128,128,0.45);">Contact</a> &nbsp;&middot;&nbsp; <a href="/legal/privacy-policy" style="color:rgba(128,128,128,0.45);">Privacy Policy</a></p>
+        <p>&copy; 2026 Cloud Health Office &mdash; Aurelianware, Inc. &nbsp;&middot;&nbsp; Source-available platform (BSL 1.1) &nbsp;&middot;&nbsp; Free for non-production use &nbsp;&middot;&nbsp; <a href="mailto:licensing@HealthCoreX.com" style="color:rgba(0,255,255,0.6);">Commercial licensing</a></p>
+        <p><a href="/pricing" style="color:rgba(128,128,128,0.45);">Pricing</a> &nbsp;&middot;&nbsp; <a href="mailto:contact@HealthCoreX.com" style="color:rgba(128,128,128,0.45);">Contact</a> &nbsp;&middot;&nbsp; <a href="/legal/privacy-policy" style="color:rgba(128,128,128,0.45);">Privacy Policy</a></p>
       </div>
     </div>
   </footer>

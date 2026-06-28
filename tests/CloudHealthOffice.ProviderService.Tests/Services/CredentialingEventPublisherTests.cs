@@ -6,7 +6,7 @@ using ProviderService.HostedServices;
 using ProviderService.Models;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Services;
+namespace HealthCoreX.ProviderService.Tests.Services;
 
 /// <summary>
 /// Mongo-backed publisher coverage for capability 5.6: monotonic

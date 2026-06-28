@@ -1,9 +1,9 @@
-using CloudHealthOffice.BenefitEngine.Domain;
-using CloudHealthOffice.BenefitEngine.Services;
+using HealthCoreX.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace CloudHealthOffice.BenefitEngine.Tests;
+namespace HealthCoreX.BenefitEngine.Tests;
 
 /// <summary>
 /// Capability BP 5.10 — pin effective-date filtering on

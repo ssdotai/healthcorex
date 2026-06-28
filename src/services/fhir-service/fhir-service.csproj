@@ -29,17 +29,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="CloudHealthOffice.FhirService.Tests" />
+    <InternalsVisibleTo Include="HealthCoreX.FhirService.Tests" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\shared\CloudHealthOffice.Infrastructure\CloudHealthOffice.Infrastructure.csproj" />
-    <ProjectReference Include="..\shared\CloudHealthOffice.Appeals.Contracts\CloudHealthOffice.Appeals.Contracts.csproj" />
-    <ProjectReference Include="..\..\engines\CloudHealthOffice.ProviderEnrollmentService\CloudHealthOffice.ProviderEnrollmentService.csproj" />
-    <ProjectReference Include="..\..\engines\CloudHealthOffice.PriorAuthRuleEngine\CloudHealthOffice.PriorAuthRuleEngine.csproj" />
-    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.59.0" />
+    <ProjectReference Include="..\shared\HealthCoreX.Infrastructure\HealthCoreX.Infrastructure.csproj" />
+    <ProjectReference Include="..\shared\HealthCoreX.Appeals.Contracts\HealthCoreX.Appeals.Contracts.csproj" />
+    <ProjectReference Include="..\..\engines\HealthCoreX.ProviderEnrollmentService\HealthCoreX.ProviderEnrollmentService.csproj" />
+    <ProjectReference Include="..\..\engines\HealthCoreX.PriorAuthRuleEngine\HealthCoreX.PriorAuthRuleEngine.csproj" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.62.0" />
     <!-- StackExchange.Redis is pulled in transitively via
-         CloudHealthOffice.Infrastructure. fhir-service has no direct
+         HealthCoreX.Infrastructure. fhir-service has no direct
          IConnectionMultiplexer consumer after A.7.2 — the Redis client is
          opened and owned by AddChoCaching. -->
     <PackageReference Include="Hl7.Fhir.R4" Version="5.10.2" />

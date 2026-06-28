@@ -235,8 +235,8 @@ ENTRYPOINT ["python3", "/app/generate-270.py"]
 
 **Build and Push:**
 ```bash
-docker build -t ghcr.io/aurelianware/cloudhealthoffice-x12-270-generator:latest containers/x12-270-generator/
-docker push ghcr.io/aurelianware/cloudhealthoffice-x12-270-generator:latest
+docker build -t ghcr.io/aurelianware/HealthCoreX-x12-270-generator:latest containers/x12-270-generator/
+docker push ghcr.io/aurelianware/HealthCoreX-x12-270-generator:latest
 ```
 
 ---
@@ -321,7 +321,7 @@ spec:
       parameters:
       - name: request-json
     container:
-      image: ghcr.io/aurelianware/cloudhealthoffice-x12-270-generator:latest
+      image: ghcr.io/aurelianware/HealthCoreX-x12-270-generator:latest
       command: ["python3", "/app/generate-270.py"]
       stdin: "{{inputs.parameters.request-json}}"
   
@@ -396,7 +396,7 @@ spec:
       parameters:
       - name: x12-content
     container:
-      image: ghcr.io/aurelianware/cloudhealthoffice-x12-parser:latest
+      image: ghcr.io/aurelianware/HealthCoreX-x12-parser:latest
       command: ["python3", "/app/parse-271.py"]
       stdin: "{{inputs.parameters.x12-content}}"
   
@@ -416,7 +416,7 @@ spec:
         
         az cosmosdb sql container item create \
           --account-name "cosmos-cho-prod" \
-          --database-name "CloudHealthOffice" \
+          --database-name "HealthCoreX" \
           --container-name "EligibilityResponses" \
           --partition-key-value "{{inputs.parameters.tenant-id}}" \
           --body @/tmp/response.json
@@ -516,7 +516,7 @@ public class EligibilityController : ControllerBase
 
 ```bash
 # Test 270 generation
-curl -X POST https://api-staging.cloudhealthoffice.com/api/v1/eligibility/check \
+curl -X POST https://api-staging.HealthCoreX.com/api/v1/eligibility/check \
   -H "X-Tenant-ID: tenant-123" \
   -H "Content-Type: application/json" \
   -d '{
@@ -539,7 +539,7 @@ curl -X POST https://api-staging.cloudhealthoffice.com/api/v1/eligibility/check 
 # }
 
 # Poll for completion (after ~30 seconds)
-curl https://api-staging.cloudhealthoffice.com/api/v1/eligibility/status/x12-270-eligibility-availity-abc123
+curl https://api-staging.HealthCoreX.com/api/v1/eligibility/status/x12-270-eligibility-availity-abc123
 ```
 
 **4.3 Load Testing (100 Transactions)**

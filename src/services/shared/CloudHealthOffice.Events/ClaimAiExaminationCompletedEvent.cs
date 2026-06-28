@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Events;
+namespace HealthCoreX.Events;
 
 /// <summary>
 /// Service Bus payload for the <c>ai-examination-events</c> topic, emitted by

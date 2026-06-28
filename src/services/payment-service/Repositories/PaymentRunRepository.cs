@@ -25,7 +25,7 @@ public class PaymentRunRepository : IPaymentRunRepository
         IHttpContextAccessor httpContextAccessor,
         ILogger<PaymentRunRepository> logger)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         var containerName = "PaymentRuns"; // Separate container for payment runs
 
         _container = cosmosClient.GetContainer(databaseName, containerName);

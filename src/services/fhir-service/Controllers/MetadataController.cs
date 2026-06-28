@@ -214,7 +214,7 @@ public class MetadataController : FhirControllerBase
                         new CapabilityStatement.OperationComponent
                         {
                             Name = AppealSubmitController.OperationName,
-                            Definition = "http://fhir.cloudhealthoffice.com/OperationDefinition/cho-appeal-submit",
+                            Definition = "http://fhir.HealthCoreX.com/OperationDefinition/cho-appeal-submit",
                         },
                     ]
                 }

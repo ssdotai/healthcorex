@@ -489,7 +489,7 @@ Time:        1.587 s
 - [X12 Standards](https://x12.org/)
 
 ### Contact
-- **Issues**: [GitHub Issues](https://github.com/aurelianware/cloudhealthoffice/issues)
+- **Issues**: [GitHub Issues](https://github.com/aurelianware/HealthCoreX/issues)
 - **Security**: security@aurelianware.com
 - **License**: BSL 1.1
 

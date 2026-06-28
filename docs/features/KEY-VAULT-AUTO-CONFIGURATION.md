@@ -172,7 +172,7 @@ spec:
   serviceAccountName: eligibility-service-sa
   containers:
   - name: service
-    image: cloudhealthoffice/eligibility-service:latest
+    image: HealthCoreX/eligibility-service:latest
     env:
     - name: KEY_VAULT_URI
       value: "https://prod-keyvault.vault.azure.net/"

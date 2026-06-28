@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace CloudHealthOffice.Infrastructure.Middleware;
+namespace HealthCoreX.Infrastructure.Middleware;
 
 public static class HttpContextExtensions
 {

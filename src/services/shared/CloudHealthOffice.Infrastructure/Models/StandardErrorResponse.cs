@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace CloudHealthOffice.Infrastructure.Models;
+namespace HealthCoreX.Infrastructure.Models;
 
 /// <summary>
 /// Standard error response model used across all CHO microservices.

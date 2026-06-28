@@ -1,7 +1,7 @@
 {
   "resourceType": "StructureDefinition",
   "id": "cho-appeal-target-response-date",
-  "url": "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-target-response-date",
+  "url": "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-target-response-date",
   "version": "1.0.0",
   "name": "ChoAppealTargetResponseDate",
   "title": "CHO Appeal Target Response Date",
@@ -29,7 +29,7 @@
       {
         "id": "Extension.url",
         "path": "Extension.url",
-        "fixedUri": "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-target-response-date"
+        "fixedUri": "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-target-response-date"
       },
       {
         "id": "Extension.value[x]",

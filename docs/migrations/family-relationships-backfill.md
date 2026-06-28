@@ -65,7 +65,7 @@ Configuration is read from `tools/FamilyRelationshipsBackfill/appsettings.json`
 and/or env vars:
 
 - `MongoDb__ConnectionString` (required)
-- `MongoDb__DatabaseName` (default `CloudHealthOffice`)
+- `MongoDb__DatabaseName` (default `HealthCoreX`)
 
 Progress is written to a `BackfillJobs` collection, one row per tenant. To
 re-run from scratch for a tenant:

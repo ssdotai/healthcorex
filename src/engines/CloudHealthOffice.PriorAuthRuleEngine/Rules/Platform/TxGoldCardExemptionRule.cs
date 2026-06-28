@@ -1,8 +1,8 @@
-using CloudHealthOffice.PriorAuthRuleEngine.Domain;
-using CloudHealthOffice.PriorAuthRuleEngine.Models;
-using CloudHealthOffice.PriorAuthRuleEngine.Rules;
+using HealthCoreX.PriorAuthRuleEngine.Domain;
+using HealthCoreX.PriorAuthRuleEngine.Models;
+using HealthCoreX.PriorAuthRuleEngine.Rules;
 
-namespace CloudHealthOffice.PriorAuthRuleEngine.Rules.Platform;
+namespace HealthCoreX.PriorAuthRuleEngine.Rules.Platform;
 
 /// <summary>
 /// Texas Gold Card Law — HB 3229 (2021), effective 09/01/2022.

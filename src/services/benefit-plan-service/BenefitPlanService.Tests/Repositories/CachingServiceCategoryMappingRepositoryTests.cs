@@ -1,7 +1,7 @@
 using BenefitPlanService.Models;
 using BenefitPlanService.Repositories;
 using BenefitPlanService.Tests.Fakes;
-using CloudHealthOffice.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Domain;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace BenefitPlanService.Tests.Repositories;

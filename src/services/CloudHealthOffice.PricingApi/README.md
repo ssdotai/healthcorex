@@ -1,4 +1,4 @@
-# CloudHealthOffice Claims Pricing API
+# HealthCoreX Claims Pricing API
 
 **Vendor-neutral claims repricing by Aurelianware, Inc.**
 
@@ -65,7 +65,7 @@ Pass your API key in the `X-API-Key` header:
 X-API-Key: cho_pk_a1b2c3d4e5f6...
 ```
 
-Register for a free key at [cloudhealthoffice.com/pricing-api](https://cloudhealthoffice.com/pricing-api).
+Register for a free key at [HealthCoreX.com/pricing-api](https://HealthCoreX.com/pricing-api).
 
 ## Fee Schedules
 
@@ -135,9 +135,9 @@ Response:
 | Tier | Monthly Claims | Price |
 |------|---------------|-------|
 | **Free** | 1,000 | $0 |
-| **Starter** | 10,000 | [Contact us](mailto:sales@cloudhealthoffice.com) |
-| **Professional** | 100,000 | [Contact us](mailto:sales@cloudhealthoffice.com) |
-| **Enterprise** | Unlimited | [Contact us](mailto:sales@cloudhealthoffice.com) |
+| **Starter** | 10,000 | [Contact us](mailto:sales@HealthCoreX.com) |
+| **Professional** | 100,000 | [Contact us](mailto:sales@HealthCoreX.com) |
+| **Enterprise** | Unlimited | [Contact us](mailto:sales@HealthCoreX.com) |
 
 ## Rate Limiting
 
@@ -153,7 +153,7 @@ Response:
 docker compose up -d
 ```
 
-### AKS (CloudHealthOffice namespace)
+### AKS (HealthCoreX namespace)
 
 ```bash
 # Build and push
@@ -161,7 +161,7 @@ docker build -t acr.azurecr.io/cho-pricing-api:latest .
 docker push acr.azurecr.io/cho-pricing-api:latest
 
 # Deploy to existing CHO namespace
-kubectl apply -f k8s/pricing-api.yaml -n cloudhealthoffice
+kubectl apply -f k8s/pricing-api.yaml -n HealthCoreX
 ```
 
 ## Roadmap

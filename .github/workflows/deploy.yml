@@ -12,12 +12,12 @@ on:
 
 env:
   # Secure defaults - use repository variables with fallbacks
-  AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RG_NAME || 'rg-cloudhealthoffice-prod' }}
-  BASE_NAME: ${{ vars.BASE_NAME || 'cloudhealthoffice' }}
+  AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RG_NAME || 'rg-HealthCoreX-prod' }}
+  BASE_NAME: ${{ vars.BASE_NAME || 'HealthCoreX' }}
   LOCATION: ${{ vars.AZURE_LOCATION || 'eastus' }}
   CONNECTOR_LOCATION: ${{ vars.AZURE_CONNECTOR_LOCATION || 'eastus' }}
   IA_NAME: ${{ vars.IA_NAME || 'prod-integration-account' }}
-  SERVICE_BUS_NAME: ${{ vars.SERVICE_BUS_NAME || 'cloudhealthoffice-sb' }}
+  SERVICE_BUS_NAME: ${{ vars.SERVICE_BUS_NAME || 'HealthCoreX-sb' }}
   STORAGE_SKU: ${{ vars.STORAGE_SKU || 'Standard_LRS' }}
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
       sp-id: ${{ steps.ensure-sp.outputs.sp-id }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set default secrets if not configured
         id: set-defaults
@@ -67,7 +67,7 @@ jobs:
       - name: Azure Login (OIDC) - Optional if secrets exist
         if: env.HAS_AZURE_CREDS == 'true'
         id: azure-login
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ env.CLIENT_ID }}
           tenant-id: ${{ env.TENANT_ID }}

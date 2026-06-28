@@ -1,5 +1,5 @@
 /*
- * CloudHealthOffice Whitepaper PDF Stylesheet
+ * HealthCoreX Whitepaper PDF Stylesheet
  * 
  * Used by pandoc with weasyprint for PDF generation
  * Optimized for print and accessibility
@@ -11,7 +11,7 @@
     margin: 1in;
     
     @top-center {
-        content: "CloudHealthOffice CMS-0057-F Compliance Whitepaper";
+        content: "HealthCoreX CMS-0057-F Compliance Whitepaper";
         font-size: 9pt;
         color: #666;
     }

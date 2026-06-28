@@ -1,7 +1,7 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
-using CloudHealthOffice.BenchmarkClaimGenerator.ReferenceData;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.ReferenceData;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Generators;
+namespace HealthCoreX.BenchmarkClaimGenerator.Generators;
 
 /// <summary>
 /// Generates edge case claims that test complex adjudication pathways including
@@ -45,7 +45,7 @@ public class EdgeCaseClaimGenerator : IClaimGenerator
                 ProcedureCode = proc.Code,
                 Description = proc.Description,
                 Units = 1,
-                ChargeAmount = proc.BaseCharge + random.Next(-50, 100),
+                ChargeAmount = ChargeWithVariance(proc.BaseCharge, random, -50, 100),
                 ServiceDate = serviceDate,
                 DiagnosisPointers = new List<int> { 1 }
             }
@@ -54,14 +54,14 @@ public class EdgeCaseClaimGenerator : IClaimGenerator
         // Add additional lines for complex scenarios
         if (IsMultiLineScenario(scenario))
         {
-            var proc2 = _refData.GetProcedureCode(random, procSubType);
+            var proc2 = GetDistinctProcedureCode(random, procSubType, proc.Code);
             lines.Add(new ClaimLine
             {
                 LineNumber = 2,
                 ProcedureCode = proc2.Code,
                 Description = proc2.Description,
                 Units = 1,
-                ChargeAmount = proc2.BaseCharge + random.Next(-30, 60),
+                ChargeAmount = ChargeWithVariance(proc2.BaseCharge, random, -30, 60),
                 ServiceDate = serviceDate,
                 DiagnosisPointers = new List<int> { 1 }
             });
@@ -92,8 +92,88 @@ public class EdgeCaseClaimGenerator : IClaimGenerator
             PayerToPayerReady = true
         };
 
+        ApplyScenarioMemberContext(claim, scenario);
+        ApplyScenarioCoverageWindow(claim, scenario);
+        ApplyScenarioRelatedCauses(claim, scenario, random);
         claim.ExpectedOutcome = ComputeExpectedOutcome(claim, scenario, random);
         return claim;
+    }
+
+    private static void ApplyScenarioRelatedCauses(SyntheticClaim claim, EdgeCaseScenario scenario, Random random)
+    {
+        // X12 837 CLM11-1: AA=Auto Accident, EM=Employment, OA=Other Accident.
+        // Any related-causes code signals potential third-party liability that
+        // requires subrogation investigation before the claim can pay.
+        claim.RelatedCausesCode = scenario switch
+        {
+            EdgeCaseScenario.SubrogationAccidentRelated => "AA",
+            EdgeCaseScenario.SubrogationThirdPartyLiability => "OA",
+            EdgeCaseScenario.SubrogationWorkersComp => "EM",
+            _ => null
+        };
+
+        if (claim.RelatedCausesCode is not null)
+        {
+            claim.AccidentDate = claim.DateOfService.Date.AddDays(-random.Next(1, 30));
+        }
+    }
+
+    private static void ApplyScenarioMemberContext(SyntheticClaim claim, EdgeCaseScenario scenario)
+    {
+        if (scenario is not (
+            EdgeCaseScenario.NewbornAutoAdjudication or
+            EdgeCaseScenario.NewbornMotherClaimLink or
+            EdgeCaseScenario.NewbornFirstThirtyDays))
+        {
+            return;
+        }
+
+        claim.Member.DateOfBirth = scenario switch
+        {
+            EdgeCaseScenario.NewbornAutoAdjudication => claim.DateOfService.Date.AddDays(-2),
+            EdgeCaseScenario.NewbornMotherClaimLink => claim.DateOfService.Date.AddDays(-5),
+            EdgeCaseScenario.NewbornFirstThirtyDays => claim.DateOfService.Date.AddDays(-29),
+            _ => claim.Member.DateOfBirth
+        };
+        claim.Member.Relationship = "Child";
+        claim.Member.RelationshipCode = "19";
+        claim.Member.IsSubscriber = false;
+        claim.PriorAuthStatus = "OnFile";
+        claim.PriorAuthNumber = $"NB-AUTH-{claim.ClaimId}";
+    }
+
+    private static void ApplyScenarioCoverageWindow(SyntheticClaim claim, EdgeCaseScenario scenario)
+    {
+        var serviceDate = claim.DateOfService.Date;
+
+        if (scenario is EdgeCaseScenario.RetroEligibilityTermination)
+        {
+            claim.Member.CoverageEffectiveDate = serviceDate.AddYears(-1);
+            claim.Member.CoverageTermDate = serviceDate.AddDays(-30);
+            claim.Member.EnrollmentStatus = "Terminated";
+            claim.Member.MaintenanceTypeCode = "024";
+
+            foreach (var coverage in claim.Member.Coverages)
+            {
+                coverage.EffectiveDate = claim.Member.CoverageEffectiveDate;
+                coverage.TermDate = claim.Member.CoverageTermDate;
+                coverage.Status = "Terminated";
+                coverage.MaintenanceTypeCode = "024";
+            }
+
+            return;
+        }
+
+        if (scenario is EdgeCaseScenario.RetroEligibilityCoverageChange)
+        {
+            // A benefit-plan correction recorded today, effective two weeks ago:
+            // the claim's own service date falls inside the retroactive window,
+            // so the plan in force on the date of service can't be trusted
+            // without reconciliation. X12 834 maintenance type code 001 = Change.
+            claim.Member.CoverageEffectiveDate = serviceDate.AddYears(-1);
+            claim.Member.PlanChangeEffectiveDate = serviceDate.AddDays(-14);
+            claim.Member.MaintenanceTypeCode = "001";
+        }
     }
 
     private SyntheticMember GenerateMemberForScenario(EdgeCaseScenario scenario, Random random)
@@ -105,8 +185,9 @@ public class EdgeCaseClaimGenerator : IClaimGenerator
             case EdgeCaseScenario.NewbornAutoAdjudication:
             case EdgeCaseScenario.NewbornMotherClaimLink:
             case EdgeCaseScenario.NewbornFirstThirtyDays:
-                member.DateOfBirth = new DateTime(2024, 1, 1).AddDays(random.Next(365));
                 member.Relationship = "Child";
+                member.RelationshipCode = "19";
+                member.IsSubscriber = false;
                 member.Gender = random.Next(2) == 0 ? "M" : "F";
                 break;
 
@@ -114,13 +195,19 @@ public class EdgeCaseClaimGenerator : IClaimGenerator
                 member.Relationship = "Child";
                 break;
 
-            case EdgeCaseScenario.RetroEligibilityTermination:
-                member.CoverageTermDate = member.CoverageEffectiveDate.AddMonths(random.Next(3, 12));
+            case EdgeCaseScenario.MedicaidDualEligible:
+                member.DateOfBirth = new DateTime(1940 + random.Next(30), 1 + random.Next(12), 1 + random.Next(28));
                 break;
 
-            case EdgeCaseScenario.MedicaidDualEligible:
             case EdgeCaseScenario.MedicaidSpendDown:
                 member.DateOfBirth = new DateTime(1940 + random.Next(30), 1 + random.Next(12), 1 + random.Next(28));
+                // "Medically needy" spend-down: the member must incur this much
+                // in medical expense before Medicaid activates for the budget
+                // period. Amount met is deliberately short of the liability so
+                // the scenario always lands in the still-pending window.
+                member.MedicaidSpendDownLiabilityAmount = 500m + random.Next(0, 1000);
+                member.MedicaidSpendDownAmountMet =
+                    member.MedicaidSpendDownLiabilityAmount.Value * (0.3m + (decimal)random.NextDouble() * 0.4m);
                 break;
         }
 
@@ -185,6 +272,29 @@ public class EdgeCaseClaimGenerator : IClaimGenerator
             EdgeCaseScenario.NewbornMotherClaimLink or
             EdgeCaseScenario.SubrogationAccidentRelated;
     }
+
+    private (string Code, string Description, decimal BaseCharge) GetDistinctProcedureCode(
+        Random random,
+        string procSubType,
+        string firstProcedureCode)
+    {
+        var candidate = _refData.GetProcedureCode(random, procSubType);
+        for (var attempt = 0; attempt < 100 && candidate.Code == firstProcedureCode; attempt++)
+        {
+            candidate = _refData.GetProcedureCode(random, procSubType);
+        }
+
+        if (candidate.Code == firstProcedureCode)
+        {
+            throw new InvalidOperationException(
+                $"Could not select a distinct procedure code for multi-line {procSubType} edge-case claim.");
+        }
+
+        return candidate;
+    }
+
+    private static decimal ChargeWithVariance(decimal baseCharge, Random random, int minVariance, int maxVariance)
+        => Math.Max(1m, baseCharge + random.Next(minVariance, maxVariance));
 
     private static (string Status, string? Number) GetPriorAuthForScenario(EdgeCaseScenario scenario, Random random)
     {
@@ -299,7 +409,7 @@ public class EdgeCaseClaimGenerator : IClaimGenerator
             EdgeCaseScenario.SubrogationThirdPartyLiability => ("Pended", "W1", 0.65m),
 
             // Behavioral health
-            EdgeCaseScenario.BehavioralHealthCarveOut => ("Denied", "296", 0m), // CARC 296 = precertification
+            EdgeCaseScenario.BehavioralHealthCarveOut => ("Denied", "96", 0m), // CARC 96 = non-covered charge
             EdgeCaseScenario.BehavioralHealthCarveIn => ("Paid", null, 0.65m),
             EdgeCaseScenario.BehavioralHealthParityCheck => ("Paid", null, 0.65m),
 

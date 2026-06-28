@@ -39,7 +39,7 @@ Cloud Health Office Platform
 - 100% HIPAA compliant infrastructure with Premium Key Vault
 - Automated audit trails and 7-year retention
 - Reduced error rates and compliance risks
-- SOC 2 Type II certified platform
+- SOC 2 Type II audit in progress (observation period through September 2026)
 
 **Strategic Value:**
 - Faster claim adjudication and settlement
@@ -93,14 +93,14 @@ The Cloud Health Office Platform is an Azure-native, configuration-driven soluti
 - X12 EDI decoding (275 Attachments, 277 RFAI, 278 Authorizations)
 - Integration with [Customer's Claims System]
 - Event-driven architecture for downstream workflows
-- HIPAA-compliant infrastructure with comprehensive security controls
+- HIPAA-oriented infrastructure patterns with comprehensive security controls for customer validation
 
 ### Architecture Components
 
 #### 1. SFTP Integration & Data Lake
 - **Automated Polling:** Checks Clearinghouse SFTP every 15 minutes for new files
 - **Azure Data Lake Gen2:** Archives raw EDI files with date-based partitioning
-- **Retention Management:** 7-year HIPAA-compliant retention with automated lifecycle policies
+- **Retention Management:** Configurable 7-year retention pattern with automated lifecycle policies
 - **Secure Storage:** Encryption at rest (AES-256), encryption in transit (TLS 1.2+)
 
 #### 2. X12 Processing
@@ -136,7 +136,7 @@ The Cloud Health Office Platform is an Azure-native, configuration-driven soluti
 - **PHI Masking:** Automated redaction in Application Insights logs
 
 #### Compliance Certifications
-- SOC 2 Type II certified
+- SOC 2 Type II audit in progress (targeted completion Q4 2026)
 - HITRUST certification in progress
 - Azure Government cloud support available
 
@@ -386,7 +386,7 @@ For organizations processing higher volumes:
 |------|-----------|
 | **Platform downtime** | 99.9% uptime SLA, multi-region redundancy, automated failover |
 | **Data loss** | 7-year retention, geo-redundant storage, automated backups |
-| **Security breach** | SOC 2 certified, penetration tested, continuous monitoring |
+| **Security breach** | SOC 2 Type II audit in progress, penetration tested, continuous monitoring |
 | **Azure service outage** | Azure SLA 99.95%+, multi-region deployment option |
 
 ### ROI Guarantee

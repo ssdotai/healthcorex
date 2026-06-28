@@ -36,7 +36,7 @@ public class ReversalRunRepository : IReversalRunRepository
         IHttpContextAccessor httpContextAccessor,
         ILogger<ReversalRunRepository> logger)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         var containerName = "ReversalRuns";
 
         _container = cosmosClient.GetContainer(databaseName, containerName);

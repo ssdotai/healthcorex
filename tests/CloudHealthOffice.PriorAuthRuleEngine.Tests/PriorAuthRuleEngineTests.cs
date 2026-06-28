@@ -1,16 +1,16 @@
-using CloudHealthOffice.PriorAuthRuleEngine.Abstractions;
-using CloudHealthOffice.PriorAuthRuleEngine.Domain;
-using CloudHealthOffice.PriorAuthRuleEngine.Models;
-using CloudHealthOffice.PriorAuthRuleEngine.Persistence;
-using CloudHealthOffice.PriorAuthRuleEngine.Rules.Platform;
-using CloudHealthOffice.PriorAuthRuleEngine.Services;
+using HealthCoreX.PriorAuthRuleEngine.Abstractions;
+using HealthCoreX.PriorAuthRuleEngine.Domain;
+using HealthCoreX.PriorAuthRuleEngine.Models;
+using HealthCoreX.PriorAuthRuleEngine.Persistence;
+using HealthCoreX.PriorAuthRuleEngine.Rules.Platform;
+using HealthCoreX.PriorAuthRuleEngine.Services;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
-namespace CloudHealthOffice.PriorAuthRuleEngine.Tests;
+namespace HealthCoreX.PriorAuthRuleEngine.Tests;
 
 // ═════════════════════════════════════════════════════════════════
 //  Shared helpers

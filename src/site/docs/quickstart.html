@@ -4,32 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quick Start — Cloud Health Office Documentation</title>
-  <meta name="description" content="Get Cloud Health Office running locally in under 15 minutes. Clone, start the Docker stack, submit a claim through full adjudication, and generate an 835 ERA — no Azure account needed." />
-  <meta name="keywords" content="Cloud Health Office quick start, healthcare payer platform setup, FHIR R4 quick start, X12 EDI local development, claims adjudication tutorial, CMS-0057-F getting started" />
-  <link rel="canonical" href="https://cloudhealthoffice.com/docs/quickstart" />
+  <meta name="description" content="Get Cloud Health Office running locally on Kubernetes, run scored Million Claim Challenge validation, inspect the Mass Adjudication console, and compare your run to the published clean 100K evidence." />
+  <meta name="keywords" content="Cloud Health Office quick start, Kubernetes local development, healthcare payer platform setup, FHIR R4 quick start, X12 EDI local development, claims adjudication tutorial, CMS-0057-F getting started" />
+  <link rel="canonical" href="https://HealthCoreX.com/docs/quickstart" />
 
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://cloudhealthoffice.com/docs/quickstart" />
+  <meta property="og:url" content="https://HealthCoreX.com/docs/quickstart" />
   <meta property="og:title" content="Quick Start — Cloud Health Office" />
-  <meta property="og:description" content="Get Cloud Health Office running locally in under 15 minutes. Full claims adjudication pipeline with no Azure account needed." />
+  <meta property="og:description" content="Run Cloud Health Office locally on Kubernetes, execute scored MCC validation, inspect the operator console, and compare against the published clean 100K evidence." />
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": "Cloud Health Office Quick Start Guide",
-    "description": "Step-by-step guide to running Cloud Health Office locally with Docker. Submit a claim, run adjudication, generate an 835 ERA.",
-    "url": "https://cloudhealthoffice.com/docs/quickstart",
+    "description": "Step-by-step guide to running Cloud Health Office locally on Kubernetes, executing scored Million Claim Challenge validation, inspecting the operator console, and comparing against the published clean 100K evidence.",
+    "url": "https://HealthCoreX.com/docs/quickstart",
     "author": { "@type": "Organization", "name": "Aurelianware, Inc." },
-    "publisher": { "@type": "Organization", "name": "Cloud Health Office", "url": "https://cloudhealthoffice.com" },
+    "publisher": { "@type": "Organization", "name": "Cloud Health Office", "url": "https://HealthCoreX.com" },
     "datePublished": "2026-03-24",
     "proficiencyLevel": "Beginner",
     "breadcrumb": {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cloudhealthoffice.com" },
-        { "@type": "ListItem", "position": 2, "name": "Docs", "item": "https://cloudhealthoffice.com/docs" },
-        { "@type": "ListItem", "position": 3, "name": "Quick Start", "item": "https://cloudhealthoffice.com/docs/quickstart" }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://HealthCoreX.com" },
+        { "@type": "ListItem", "position": 2, "name": "Docs", "item": "https://HealthCoreX.com/docs" },
+        { "@type": "ListItem", "position": 3, "name": "Quick Start", "item": "https://HealthCoreX.com/docs/quickstart" }
       ]
     }
   }
@@ -48,7 +48,7 @@
   <nav>
     <div class="nav-inner">
       <a href="/" class="nav-logo" aria-label="Cloud Health Office Home">
-        <img src="/graphics/logo-cloudhealthoffice-sentinel-primary.svg" alt="" class="nav-logo-img" aria-hidden="true" />
+        <img src="/graphics/logo-HealthCoreX-sentinel-primary.svg" alt="" class="nav-logo-img" aria-hidden="true" />
         <span class="nav-logo-text">Cloud Health Office</span>
       </a>
       <div class="nav-right">
@@ -59,7 +59,7 @@
           <li><a href="/pricing">Pricing</a></li>
           <li><a href="/platform">Platform</a></li>
           <li><a href="/docs" style="color:#00ffff; font-weight:bold;">Docs</a></li>
-          <li><a href="https://github.com/aurelianware/cloudhealthoffice" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="https://github.com/aurelianware/HealthCoreX" target="_blank" rel="noopener noreferrer">GitHub</a></li>
           <li><a href="/contact" style="color:#00ffff; font-weight:bold;">Contact Sales</a></li>
         </ul>
       </div>
@@ -77,8 +77,8 @@
             <div class="docs-sidebar-section-title">Getting Started</div>
             <ul>
               <li><a href="/docs">Docs Home</a></li>
-              <li><a href="/docs/quickstart" class="active">Quick Start (Docker)</a></li>
-              <li><a href="/docs/quickstart-kubernetes">Quick Start (Kubernetes)</a></li>
+              <li><a href="/docs/quickstart" class="active">Quick Start</a></li>
+              <li><a href="/docs/quickstart-kubernetes">Kubernetes Reference</a></li>
             </ul>
           </div>
           <div class="docs-sidebar-section">
@@ -92,13 +92,12 @@
             <div class="docs-sidebar-section-title">On This Page</div>
             <ul class="toc-sub">
               <li><a href="#prerequisites">Prerequisites</a></li>
-              <li><a href="#step-1">1. Clone &amp; Install</a></li>
-              <li><a href="#step-2">2. Start the Stack</a></li>
-              <li><a href="#step-3">3. Seed Data</a></li>
-              <li><a href="#step-4">4. Submit a Claim</a></li>
-              <li><a href="#step-5">5. Adjudicate</a></li>
-              <li><a href="#step-6">6. Payment &amp; 835 ERA</a></li>
-              <li><a href="#step-7">7. Verify FHIR APIs</a></li>
+              <li><a href="#step-1">1. Clone</a></li>
+              <li><a href="#step-2">2. Deploy Kubernetes</a></li>
+              <li><a href="#step-3">3. Port Forward</a></li>
+              <li><a href="#step-4">4. Validate Claims</a></li>
+              <li><a href="#step-5">5. Verify CRD</a></li>
+              <li><a href="#step-6">6. Check Health</a></li>
               <li><a href="#next-steps">Next Steps</a></li>
             </ul>
           </div>
@@ -141,7 +140,7 @@
 
         <h1>Quick Start</h1>
         <p class="docs-subtitle">
-          Run Cloud Health Office locally and take a claim all the way through adjudication, payment, and 835 ERA download — no Azure account needed. Total time: under 15 minutes.
+          Run the full Cloud Health Office platform locally on Kubernetes, validate claims adjudication, run a scored Million Claim Challenge workload, and inspect the run evidence in the operator console &mdash; no Azure account needed.
         </p>
 
         <!-- Diagram -->
@@ -152,7 +151,75 @@
         <!-- What This Covers -->
         <div class="callout callout-success">
           <div class="callout-title">What you'll build</div>
-          <p>By the end of this guide you'll have a running local stack with MongoDB, Redis, and three core services — and you'll have submitted a claim through NCCI edit checking, fee schedule lookup, benefit calculation, cost-sharing, payment batching, and 835 ERA generation.</p>
+          <p>By the end of this guide you'll have the full service suite running in the <code>HealthCoreX</code> namespace with MongoDB, Redis, the portal, FHIR, claims, payment, enrollment, provider, and supporting services. You'll run a claim through adjudication, execute a scored 1,000-claim benchmark, inspect its evidence in the Mass Adjudication console, and verify CRD discovery.</p>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Current evidence to compare against</div>
+          <p>
+            The latest published Cloud Health Office proof is this series' first full
+            <strong>1,000,000-claim local Docker Desktop Kubernetes run</strong> &mdash; the target this benchmark was built
+            around from the start: zero unsupported scenarios held at full scale, 129,981/130,000 workflow checks matched, an
+            exact payment gate on 20,000/20,000 comparisons, and the wall-clock-gap fix held to 7 milliseconds unaccounted out of
+            two and a half hours. Scope matters: this is local engineering evidence, not a production cloud capacity claim.
+          </p>
+          <p>
+            The run also found a bug no smaller run ever could: Redis, backing the benefit-calculation accumulator cache, hit a
+            768MB memory ceiling once true million-claim scale built a working set of ~962,000 distinct member accumulators,
+            forcing eviction churn that produced 23 platform failures late in the run. Fixed live and verified on an identical
+            re-run (0 platform failures). Stated honestly: sustained throughput at this scale (123.81 claims/sec) is still well
+            below the 363 claims/sec verified at 20,000-claim scale, confirmed not caused by Redis, and remains an open question
+            for whoever picks this up next.
+          </p>
+          <p>
+            Getting there took several rounds of prior work. A 500,000-claim run at 2x the prior scale (61,063/65,000 workflow
+            checks matched, zero platform failures) turned up two fixture-generation bugs and found the real Submit-chain
+            bottleneck one layer underneath the guessed one: a shared MongoDB instance throttled more than it ran, on a CPU
+            limit never touched by earlier app-tier fixes. Fixing it brought throughput to 186.06 claims/sec at the time. That
+            run also reproduced a smaller version of an unexplained wall-clock gap, later traced to macOS suspending the local
+            Kubernetes cluster mid-run and fixed by keeping the machine awake for the duration of a run. Every scenario this
+            series ever disclosed as unsupported was then converted to a real, scored outcome, and a separate investigation
+            found and fixed why the benchmark's highest concurrency setting (parallelism 56) had quietly underperformed lower
+            concurrency for its entire run &mdash; two single-replica services throttled under CPU limits nobody had profiled at
+            that load, and a memory ceiling the fix immediately exposed once throughput actually rose.
+          </p>
+          <p>
+            <a href="/docs/million-claim-challenge/evidence#episode-015"><strong>Inspect the 1M evidence archive</strong></a>
+            or read
+            <a href="/insights/million-claim-challenge/part-15-one-million-claims"><strong>Part 15: One Million Claims, and the Bug Only That Scale Could Find</strong></a>.
+          </p>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Field note: local Kubernetes validation</div>
+          <p>Want the story behind this walkthrough? The full local Kubernetes field-note series follows the path from first deployment to repeatable Million Claim Challenge benchmarking:</p>
+          <ul>
+            <li><a href="https://medium.com/@markus_31/running-a-healthcare-claims-platform-locally-in-kubernetes-then-validating-real-workflows-db3b6d691ac2" target="_blank" rel="noopener noreferrer">Part 1: Running a Healthcare Claims Platform Locally in Kubernetes, Then Validating Real Workflows</a></li>
+            <li><a href="https://medium.com/@markus_31/running-a-healthcare-claims-platform-locally-in-kubernetes-part-2-from-it-runs-to-it-measures-b36c915f08b9" target="_blank" rel="noopener noreferrer">Part 2: From It Runs to It Measures</a></li>
+            <li><a href="https://medium.com/@markus_31/part-3-running-a-healthcare-claims-platform-locally-in-kubernetes-from-it-measures-to-it-f4553a8ef5bc" target="_blank" rel="noopener noreferrer">Part 3: From It Measures to It Explains</a></li>
+            <li><a href="https://medium.com/@markus_31/running-a-healthcare-claims-platform-locally-in-kubernetes-part-4-from-it-explains-to-it-55f1b14f72b4" target="_blank" rel="noopener noreferrer">Part 4: From It Explains to It Improves</a></li>
+            <li><a href="https://medium.com/@markus_31/running-a-healthcare-claims-platform-locally-in-kubernetes-part-5-from-faster-to-repeatably-2bb9a65de8de" target="_blank" rel="noopener noreferrer">Part 5: From Faster to Repeatably Faster</a></li>
+            <li><a href="https://medium.com/@markus_31/running-a-healthcare-claims-platform-locally-in-kubernetes-part-6-from-fast-runs-to-honest-4b58288da8da" target="_blank" rel="noopener noreferrer">Part 6: From Fast Runs to Honest Edge-Case Scoring</a></li>
+            <li><a href="/insights/million-claim-challenge/part-7-operator-console">Part 7: From Benchmark Logs to an Operator Console</a></li>
+            <li><a href="/insights/million-claim-challenge/part-8-clean-100k">Part 8: The Clean 100,000-Claim Run</a></li>
+            <li><a href="/insights/million-claim-challenge/part-9-from-unsupported-to-scored">Part 9: From Unsupported to Scored</a></li>
+            <li><a href="/insights/million-claim-challenge/part-10-the-migration-cost-that-wasnt">Part 10: The Migration Cost That Wasn't</a></li>
+            <li><a href="/insights/million-claim-challenge/part-11-the-check-that-only-ran-in-the-benchmark">Part 11: The Check That Only Ran in the Benchmark</a></li>
+            <li><a href="/insights/million-claim-challenge/part-12-the-database-nobody-profiled">Part 12: The Database Nobody Profiled</a></li>
+            <li><a href="/insights/million-claim-challenge/part-13-the-gap-was-the-laptop">Part 13: The Gap Was the Laptop</a></li>
+            <li><a href="/insights/million-claim-challenge/part-14-zero-unsupported-parallelism">Part 14: Zero Unsupported, Then the Parallelism Nobody Profiled</a></li>
+            <li><a href="/insights/million-claim-challenge/part-15-one-million-claims">Part 15: One Million Claims, and the Bug Only That Scale Could Find</a></li>
+          </ul>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Prefer Docker Compose?</div>
+          <p>This guide walks through the full Kubernetes-shaped deployment. If you just want the core adjudication services running quickly without Kubernetes:</p>
+          <pre><code>git clone https://github.com/aurelianware/HealthCoreX.git
+cd HealthCoreX
+docker compose --profile core up -d
+curl http://localhost:5001/health/live</code></pre>
+          <p>See <a href="https://github.com/aurelianware/HealthCoreX/blob/main/README.md#quick-start" target="_blank" rel="noopener noreferrer">the README Quick Start</a> for the full profile list and the complete-stack (<code>docker-compose.development.yml</code>) option.</p>
         </div>
 
         <!-- Prerequisites -->
@@ -163,226 +230,193 @@
             <tr><th>Tool</th><th>Version</th><th>Notes</th></tr>
           </thead>
           <tbody>
-            <tr><td><code>Docker Desktop</code></td><td>4.x+</td><td>Must have Docker Compose v2</td></tr>
-            <tr><td><code>Node.js</code></td><td>18+</td><td>For CLI tooling</td></tr>
+            <tr><td><code>Docker Desktop</code></td><td>4.x+</td><td>Kubernetes enabled; 16 GB memory minimum for small runs, 18 CPU / 24 GB allocation recommended for 100K validation</td></tr>
+            <tr><td><code>kubectl</code></td><td>current</td><td>Bundled with Docker Desktop</td></tr>
+            <tr><td><code>bash</code></td><td>4+</td><td>macOS: <code>brew install bash</code></td></tr>
             <tr><td><code>curl</code></td><td>any</td><td>For API calls</td></tr>
             <tr><td><code>jq</code></td><td>any</td><td>Optional — for pretty JSON output</td></tr>
           </tbody>
         </table>
 
         <!-- Step 1 -->
-        <h2 id="step-1">1. Clone &amp; Install</h2>
+        <h2 id="step-1">1. Clone the Repository</h2>
 
         <div class="step">
           <span class="step-number">1</span>
           <div class="step-body">
-            <h3>Clone the repository and install dependencies</h3>
+            <h3>Clone the repository</h3>
 <pre><code><span class="code-comment"># Clone</span>
-git clone https://github.com/aurelianware/cloudhealthoffice.git
-cd cloudhealthoffice
+git clone https://github.com/aurelianware/HealthCoreX.git
+cd HealthCoreX
 
-<span class="code-comment"># Install Node.js dependencies (for CLI tooling)</span>
-npm install</code></pre>
+<span class="code-comment"># Confirm Docker Desktop Kubernetes is selected</span>
+kubectl config current-context
+kubectl cluster-info</code></pre>
           </div>
         </div>
 
         <!-- Step 2 -->
-        <h2 id="step-2">2. Start the Stack</h2>
+        <h2 id="step-2">2. Deploy to Local Kubernetes</h2>
 
         <div class="step">
           <span class="step-number">2</span>
           <div class="step-body">
-            <h3>Launch all services with Docker Compose</h3>
-<pre><code>docker compose up -d</code></pre>
-            <p>This starts MongoDB (<code>localhost:27017</code>), Redis (<code>localhost:6379</code>), and three core services:</p>
+            <h3>Build images and deploy the platform</h3>
+<pre><code>bash ./scripts/deploy-local.sh</code></pre>
+            <p>The script builds local images, creates the <code>HealthCoreX</code> namespace, deploys MongoDB and Redis, creates local secrets, applies service manifests, and waits for the core rollout. First run can take 15-30 minutes depending on Docker cache and CPU.</p>
+            <p>For repeat deploys after images are already built:</p>
+<pre><code>bash ./scripts/deploy-local.sh --skip-build</code></pre>
+            <p>Verify the deployments:</p>
+<pre><code>kubectl get deployments -n HealthCoreX
+kubectl get pods -n HealthCoreX</code></pre>
+            <p>Every deployment should eventually show <code>1/1</code> ready. The main services used below are:</p>
             <table>
               <thead><tr><th>Service</th><th>URL</th></tr></thead>
               <tbody>
+                <tr><td>portal</td><td><code>http://localhost:8080</code></td></tr>
                 <tr><td>claims-service</td><td><code>http://localhost:5001</code></td></tr>
                 <tr><td>benefit-plan-service</td><td><code>http://localhost:5002</code></td></tr>
-                <tr><td>payment-service</td><td><code>http://localhost:5003</code></td></tr>
+                <tr><td>payment-service</td><td><code>http://localhost:5006</code></td></tr>
+                <tr><td>fhir-service</td><td><code>http://localhost:5080</code></td></tr>
               </tbody>
             </table>
-            <p>Wait about 45 seconds, then verify all services are healthy:</p>
-<pre><code>curl -s http://localhost:5001/health
-curl -s http://localhost:5002/health
-curl -s http://localhost:5003/health</code></pre>
-            <p>All should return <code>Healthy</code>.</p>
           </div>
         </div>
 
         <!-- Step 3 -->
-        <h2 id="step-3">3. Seed Reference Data</h2>
+        <h2 id="step-3">3. Open Local Access</h2>
 
         <div class="step">
           <span class="step-number green">3</span>
           <div class="step-body">
-            <h3>Set tenant ID and seed NCCI/MUE edits</h3>
-            <p>All requests require an <code>X-Tenant-ID</code> header. For local development, use any string:</p>
-<pre><code>TENANT="demo"
-
-<span class="code-comment"># Seed NCCI Q1 2025 baseline edits</span>
-curl -s -X POST http://localhost:5002/api/v1/ncci/seed \
-  -H "X-Tenant-ID: $TENANT" | jq .</code></pre>
-            <p>The response includes an <code>editCount</code> showing the number of NCCI pairs loaded.</p>
+            <h3>Port-forward the services used in the walkthrough</h3>
+            <p>Run these in separate terminals, or append <code>&amp;</code> to background them:</p>
+<pre><code>kubectl port-forward -n HealthCoreX svc/portal 8080:80
+kubectl port-forward -n HealthCoreX svc/claims-service 5001:80
+kubectl port-forward -n HealthCoreX svc/benefit-plan-service 5002:80
+kubectl port-forward -n HealthCoreX svc/payment-service 5006:80
+kubectl port-forward -n HealthCoreX svc/fhir-service 5080:80</code></pre>
+            <p>Open the portal at <a href="http://localhost:8080" target="_blank" rel="noopener noreferrer">http://localhost:8080</a>. API calls use the local seeded tenant header <code>X-Tenant-ID: demo</code>.</p>
           </div>
         </div>
 
         <!-- Step 4 -->
-        <h2 id="step-4">4. Create a Benefit Plan &amp; Submit a Claim</h2>
+        <h2 id="step-4">4. Validate the Claims Workflow</h2>
 
         <div class="step">
           <span class="step-number green">4</span>
           <div class="step-body">
-            <h3>Create a PPO plan with cost-sharing rules</h3>
-<pre><code>PLAN=$(curl -s -X POST http://localhost:5002/api/benefitplans \
-  -H "X-Tenant-ID: $TENANT" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "planId": "LOCAL-PPO-2025",
-    "planName": "Local Dev PPO 2025",
-    "payer": "Demo Health",
-    "effectiveDate": "2025-01-01T00:00:00Z",
-    "planType": "PPO",
-    "lineOfBusiness": "Commercial",
-    "costSharing": {
-      "individualDeductible": 1500.00,
-      "familyDeductible": 3000.00,
-      "individualOutOfPocketMax": 5000.00,
-      "familyOutOfPocketMax": 10000.00
-    },
-    "benefits": [
-      {
-        "serviceCategory": "98",
-        "description": "Professional Office Visit",
-        "inNetworkCopay": 30.00,
-        "deductibleApplies": false
-      },
-      {
-        "serviceCategory": "73",
-        "description": "Diagnostic Lab",
-        "inNetworkCoinsurance": 0.20,
-        "deductibleApplies": true
-      }
-    ]
-  }')
-
-PLAN_ID=$(echo $PLAN | jq -r '.id')
-echo "Plan ID: $PLAN_ID"</code></pre>
-
-            <h3>Submit an 837P-equivalent claim</h3>
-            <p>An office visit (CPT 99213) at POS 11 with a billed amount of $175:</p>
-<pre><code>CLAIM=$(curl -s -X POST http://localhost:5001/api/claims \
-  -H "X-Tenant-ID: $TENANT" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "claimNumber": "LOCAL-TEST-001",
-    "memberId": "MBR001",
-    "subscriberId": "SUB001",
-    "providerNpi": "1234567890",
-    "serviceDate": "2025-06-15T00:00:00Z",
-    "diagnosisCodes": ["Z00.00"],
-    "serviceLines": [{
-      "procedureCode": "99213",
-      "placeOfServiceCode": "11",
-      "billedAmount": 175.00,
-      "units": 1,
-      "diagnosisCodes": ["Z00.00"]
-    }],
-    "totalBilledAmount": 175.00,
-    "status": "Submitted"
-  }')
-
-CLAIM_ID=$(echo $CLAIM | jq -r '.id')
-echo "Claim ID: $CLAIM_ID"</code></pre>
+            <h3>Seed data, submit a claim, and run adjudication</h3>
+<pre><code>CLAIMS_URL=http://localhost:5001 \
+BENEFIT_URL=http://localhost:5002 \
+./scripts/seed-local.sh --tenant demo</code></pre>
+            <p>The script seeds NCCI edits, creates a local PPO benefit plan, submits a professional claim, runs adjudication, and updates the claim with the adjudication result. The summary prints the claim ID, allowed amount, plan payment, and member responsibility.</p>
           </div>
         </div>
 
         <!-- Step 5 -->
-        <h2 id="step-5">5. Adjudicate the Claim</h2>
+        <h2 id="step-5">5. Run the Million Claim Challenge</h2>
 
         <div class="step">
-          <span class="step-number">5</span>
+          <span class="step-number green">5</span>
           <div class="step-body">
-            <h3>Run the full adjudication pipeline</h3>
-            <p>This calls the combined endpoint which runs NCCI/MUE edit check, fee schedule lookup, and benefit calculation in a single pass:</p>
-<pre><code>ADJ=$(curl -s -X POST http://localhost:5002/api/v1/adjudication/adjudicate \
-  -H "X-Tenant-ID: $TENANT" \
-  -H "Content-Type: application/json" \
-  -d "{
-    \"claimId\": \"$CLAIM_ID\",
-    \"memberId\": \"MBR001\",
-    \"planId\": \"LOCAL-PPO-2025\"
-  }")
-
-echo $ADJ | jq .</code></pre>
-
-            <div class="callout callout-info">
-              <div class="callout-title">What happens during adjudication</div>
-              <p><strong>NCCI check:</strong> CPT 99213 has no NCCI conflicts — passes. <strong>Fee schedule:</strong> No local schedule seeded, falls back to billed charges ($175). <strong>Benefit calculation:</strong> POS 11 resolves to service type "98" (Professional Visit); $30 copay applies, deductible not consumed. <strong>Result:</strong> Allowed $175, plan pays $145, member owes $30 copay.</p>
+            <h3>Run a scored 1,000-claim validation</h3>
+            <p>The validator generates a deterministic corpus, seeds the run-scoped fixtures needed by the platform, submits and adjudicates the claims, checks persisted pend state, scores workflow outcomes and comparable payments, and publishes the run summary to claims-service.</p>
+            <p>Start at 1K. Treat 10K as a confidence gate. Attempt 100K only after the smaller run is clean and the Mass Adjudication console can load the published run.</p>
+<pre><code>CLAIMS=1000 \
+MAX_CLAIMS=1000 \
+PARALLELISM=10 \
+PROGRESS_EVERY=100 \
+JOB_NAME=mcc-quickstart-1k \
+./scripts/run-mcc-local-k8s.sh</code></pre>
+            <p>The first invocation builds the validator image. The command waits for the Kubernetes job and prints the final evidence summary in the same terminal.</p>
+            <div class="callout callout-success">
+              <div class="callout-title">What a clean validation means</div>
+              <p>Confirm that the final summary reports <strong>zero platform failures</strong>, <strong>zero workflow mismatches</strong>, <strong>zero observation timeouts</strong>, <strong>zero unexpected pends</strong>, and <strong>zero payment mismatches</strong>. Unsupported scenarios are named product gaps; they are reported separately and are not counted as passes or platform failures.</p>
             </div>
+            <p>If the terminal disconnects, inspect the same job directly:</p>
+<pre><code>kubectl get job -n HealthCoreX mcc-quickstart-1k
+kubectl logs -n HealthCoreX job/mcc-quickstart-1k</code></pre>
+
+            <h3>Inspect the published run in the console</h3>
+            <p>Keep the portal port-forward from Step 3 running, then open <a href="http://localhost:8080/mass-adjudication-runs" target="_blank" rel="noopener noreferrer">http://localhost:8080/mass-adjudication-runs</a>. Open the newest run to review throughput, P95/P99 latency, outcome counts, workflow scoring, payment accuracy, and retained claim-level evidence. Filter by validation status to inspect unsupported or mismatched rows, then open a claim for its persisted adjudication and benefit breakdown.</p>
+
+            <h3>Scale up only after 1K is clean</h3>
+<pre><code><span class="code-comment"># 10K confidence run</span>
+CLAIMS=10000 MAX_CLAIMS=10000 PROGRESS_EVERY=1000 \
+JOB_NAME=mcc-quickstart-10k ./scripts/run-mcc-local-k8s.sh
+
+<span class="code-comment"># 100K milestone; use the recommended 18 CPU / 24 GB Docker allocation</span>
+CLAIMS=100000 MAX_CLAIMS=100000 PARALLELISM=10 PROGRESS_EVERY=5000 \
+JOB_NAME=mcc-quickstart-100k ./scripts/run-mcc-local-k8s.sh</code></pre>
+            <p>Large runs include fixture generation and seeding before timed submission. Do not calculate claims per second from total Kubernetes job duration; use the validator's reported timed throughput. For the published clean 100K run, adjudication finished in under 30 minutes, while the full Kubernetes job took more than two hours because fixture preparation dominated the lifecycle.</p>
+            <div class="callout callout-info">
+              <div class="callout-title">100K reproducibility notes</div>
+              <p>Use Docker Desktop Kubernetes with the recommended 18 CPU / 24 GB allocation, keep the local service port-forwards active if you want console visibility, and expect existing demo-tenant state to affect seeding time. If the run publishes successfully, compare your output against the <a href="/docs/million-claim-challenge/evidence#episode-008">Episode 008 evidence archive</a>. The target gates are zero platform failures, zero scoreable workflow mismatches, zero unexpected pends, and all comparable payments within one cent.</p>
+            </div>
+            <p>See the <a href="/docs/million-claim-challenge">Million Claim Challenge guide</a> for corpus design and the <a href="/docs/million-claim-challenge/evidence">evidence archive</a> for published results and limitations.</p>
           </div>
         </div>
 
         <!-- Step 6 -->
-        <h2 id="step-6">6. Generate Payment &amp; 835 ERA</h2>
+        <h2 id="step-6">6. Verify CRD Discovery</h2>
 
         <div class="step">
-          <span class="step-number green">6</span>
+          <span class="step-number">6</span>
           <div class="step-body">
-            <h3>Create a payment batch and download the X12 835</h3>
-<pre><code><span class="code-comment"># Create payment batch</span>
-BATCH=$(curl -s -X POST http://localhost:5003/api/v1/payment/batch \
-  -H "X-Tenant-ID: $TENANT" \
-  -H "Content-Type: application/json" \
-  -d '{ "batchDate": "2025-06-20T00:00:00Z" }')
-
-BATCH_ID=$(echo $BATCH | jq -r '.batchId')
-
-<span class="code-comment"># Download the 835 ERA file</span>
-curl -s "http://localhost:5003/api/v1/payment/era/$BATCH_ID" \
-  -H "X-Tenant-ID: $TENANT" -o era-835.edi
-
-cat era-835.edi</code></pre>
-            <p>The output is a valid X12 835 Electronic Remittance Advice file showing the claim payment details.</p>
+            <h3>Call the Da Vinci CRD CDS Hooks discovery endpoint</h3>
+<pre><code>curl -s -H "X-Tenant-ID: demo" http://localhost:5080/cds-services | jq .</code></pre>
+            <div class="callout callout-info">
+              <div class="callout-title">Expected result</div>
+              <p>The response should list the local CRD services, including <code>cho-order-select</code> and <code>cho-order-sign</code>. Browser testing needs a header extension or proxy that sends <code>X-Tenant-ID: demo</code>.</p>
+            </div>
           </div>
         </div>
 
         <!-- Step 7 -->
-        <h2 id="step-7">7. Verify FHIR R4 APIs</h2>
+        <h2 id="step-7">7. Check System Health</h2>
 
         <div class="step">
           <span class="step-number green">7</span>
           <div class="step-body">
-            <h3>Test the CMS-0057-F FHIR endpoints</h3>
-<pre><code><span class="code-comment"># FHIR CapabilityStatement</span>
-curl -s http://localhost:3000/fhir/r4/metadata | jq .resourceType
+            <h3>Inspect rollouts and logs</h3>
+<pre><code>kubectl get deployments -n HealthCoreX
+kubectl get pods -n HealthCoreX
 
-<span class="code-comment"># Patient Access API — retrieve claims as FHIR resources</span>
-curl -s -H "Authorization: Bearer test-token" \
-  "http://localhost:3000/fhir/r4/Claim?patient=MBR001" | jq .
+<span class="code-comment"># Recent portal and claims logs</span>
+kubectl logs -n HealthCoreX -l app=portal --tail=50
+kubectl logs -n HealthCoreX -l app=claims-service --tail=50
 
-<span class="code-comment"># Explanation of Benefits</span>
-curl -s -H "Authorization: Bearer test-token" \
-  "http://localhost:3000/fhir/r4/ExplanationOfBenefit?patient=MBR001" | jq .</code></pre>
+<span class="code-comment"># Find recent errors across services</span>
+kubectl logs -n HealthCoreX --all-containers --tail=20 | grep -i error || true</code></pre>
           </div>
         </div>
 
         <div class="callout callout-success">
           <div class="callout-title">You're done!</div>
-          <p>You've just run a claim through the complete Cloud Health Office pipeline — NCCI edit checking, benefit calculation, cost-sharing, payment, 835 ERA generation, and FHIR R4 API verification. All locally, with synthetic data, in under 15 minutes.</p>
+          <p>You now have the Cloud Health Office platform running locally in Kubernetes, with claims adjudication, scored Million Claim Challenge evidence, and CRD discovery validated against the seeded <code>demo</code> tenant.</p>
         </div>
 
         <!-- Next Steps -->
         <h2 id="next-steps">Next Steps</h2>
 
-        <p>Now that you have a running local stack, explore these areas:</p>
+        <p>Now that you have a running local Kubernetes platform, explore these areas:</p>
 
         <div class="docs-hub-grid" style="grid-template-columns: 1fr 1fr; margin-top: 20px;">
           <a href="/docs/quickstart-kubernetes" class="docs-hub-card">
-            <h3>Kubernetes Quick Start</h3>
-            <p>Deploy the full 25-service platform on Docker Desktop Kubernetes &mdash; identical to the production Azure AKS architecture.</p>
-            <span class="card-arrow">Kubernetes guide &rarr;</span>
+            <h3>Kubernetes Reference</h3>
+            <p>Review deeper troubleshooting, resource guidance, common kubectl tasks, and teardown commands.</p>
+            <span class="card-arrow">Reference guide &rarr;</span>
+          </a>
+          <a href="/docs/million-claim-challenge" class="docs-hub-card">
+            <h3>Million Claim Challenge</h3>
+            <p>Understand the deterministic corpus, answer key, workflow scoring, supported gaps, and published evidence.</p>
+            <span class="card-arrow">Challenge guide &rarr;</span>
+          </a>
+          <a href="/docs/million-claim-challenge/evidence#episode-015" class="docs-hub-card">
+            <h3>1M Evidence Archive</h3>
+            <p>Review the full 1,000,000-claim local Kubernetes result, run settings, correctness gates, and the open sustained-throughput question.</p>
+            <span class="card-arrow">Inspect evidence &rarr;</span>
           </a>
           <a href="/docs/compliance" class="docs-hub-card">
             <h3>CMS-0057-F Compliance</h3>
@@ -390,8 +424,8 @@ curl -s -H "Authorization: Bearer test-token" \
             <span class="card-arrow">View guide &rarr;</span>
           </a>
           <a href="/docs/deployment" class="docs-hub-card">
-            <h3>Deploy to Production</h3>
-            <p>Move from local Docker to production AKS, EKS, or GKE with gated releases and HIPAA-compliant infrastructure.</p>
+            <h3>Deployment Reference</h3>
+            <p>Review the path from local Docker to AKS, EKS, or GKE with gated releases, infrastructure controls, and environment-specific validation.</p>
             <span class="card-arrow">Deployment guide &rarr;</span>
           </a>
         </div>
@@ -436,7 +470,7 @@ curl -s -H "Authorization: Bearer test-token" \
           <h5>Contact</h5>
           <ul>
             <li><a href="/contact">Contact Sales</a></li>
-            <li><a href="mailto:enterprise@cloudhealthoffice.com">Enterprise Support</a></li>
+            <li><a href="mailto:enterprise@HealthCoreX.com">Enterprise Support</a></li>
           </ul>
         </div>
       </div>

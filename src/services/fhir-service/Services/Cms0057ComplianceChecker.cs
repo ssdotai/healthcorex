@@ -66,13 +66,13 @@ public class Cms0057ComplianceChecker : ICms0057ComplianceChecker
     // future PR's work.
 
     private const string AppealTaskProfile =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-task";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-task";
     private const string AppealCommunicationProfile =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-communication";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-communication";
     private const string AppealDocumentReferenceProfile =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-document-reference";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-document-reference";
     private const string AppealClaimResponseProfile =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-claim-response";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-claim-response";
 
     private static ComplianceResult ValidateAppealTask(Hl7.Fhir.Model.Task resource)
     {

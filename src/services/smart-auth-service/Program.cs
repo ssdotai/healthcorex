@@ -5,10 +5,10 @@ using SmartAuthService.Middleware;
 using SmartAuthService.Services;
 using SmartAuthService.Workers;
 using static OpenIddict.Abstractions.OpenIddictConstants;
-using CloudHealthOffice.Infrastructure.HealthChecks;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.Json;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
 // Secret provider (Azure Key Vault / none)
@@ -17,7 +17,7 @@ builder.Configuration.AddAzureKeyVaultConfiguration(builder.Configuration);
 
 // ── MongoDB ───────────────────────────────────────────────────────────────────
 var mongoConnStr = builder.Configuration["MongoDb:ConnectionString"];
-var mongoDbName = builder.Configuration["MongoDb:DatabaseName"] ?? "CloudHealthOffice";
+var mongoDbName = builder.Configuration["MongoDb:DatabaseName"] ?? "HealthCoreX";
 
 if (!string.IsNullOrEmpty(mongoConnStr))
 {
@@ -150,7 +150,7 @@ builder.Services.AddHostedService<OpenIddictSeedWorker>();
 
 // ── MVC + Swagger ─────────────────────────────────────────────────────────────
 builder.Services.AddControllers()
-    .AddCloudHealthOfficeJsonOptions();
+    .AddHealthCoreXJsonOptions();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddChoHealthChecks(options =>
@@ -172,7 +172,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<CloudHealthOffice.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
+app.UseMiddleware<HealthCoreX.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 

@@ -5,7 +5,7 @@ using MongoDB.Driver;
 using ProviderService.Models;
 using ProviderService.Repositories;
 
-namespace CloudHealthOffice.ProviderService.Tests.Repositories;
+namespace HealthCoreX.ProviderService.Tests.Repositories;
 
 /// <summary>
 /// Mongo-backed coverage for the panel-gating-defaults write path

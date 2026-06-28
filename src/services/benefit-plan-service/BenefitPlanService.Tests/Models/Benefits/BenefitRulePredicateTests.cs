@@ -1,5 +1,5 @@
 using BenefitPlanService.Models.Benefits;
-using CloudHealthOffice.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Domain;
 
 namespace BenefitPlanService.Tests.Models.Benefits;
 

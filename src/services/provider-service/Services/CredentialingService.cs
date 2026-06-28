@@ -1,6 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using CloudHealthOffice.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Json;
 using ProviderService.Models;
 using ProviderService.Models.CredentialingPayloads;
 using ProviderService.Repositories;
@@ -547,7 +547,7 @@ public sealed class CredentialingService : ICredentialingService
     private static JsonObject? SerializePayload<T>(T payload) where T : class
     {
         if (payload == null) return null;
-        var json = JsonSerializer.Serialize(payload, CloudHealthOfficeJsonOptions.DefaultOptions);
+        var json = JsonSerializer.Serialize(payload, HealthCoreXJsonOptions.DefaultOptions);
         return JsonNode.Parse(json) as JsonObject;
     }
 

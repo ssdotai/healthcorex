@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Services.Migrations;
+namespace HealthCoreX.ClaimsService.Tests.Services.Migrations;
 
 /// <summary>
 /// Capability 5.1b — Cosmos partition-key migration service tests.

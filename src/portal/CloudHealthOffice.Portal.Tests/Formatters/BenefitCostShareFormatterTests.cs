@@ -1,7 +1,7 @@
-using CloudHealthOffice.Portal.Formatters;
-using CloudHealthOffice.Portal.Services;
+using HealthCoreX.Portal.Formatters;
+using HealthCoreX.Portal.Services;
 
-namespace CloudHealthOffice.Portal.Tests.Formatters;
+namespace HealthCoreX.Portal.Tests.Formatters;
 
 public class BenefitCostShareFormatterTests
 {

@@ -4,18 +4,18 @@ WORKDIR /repo
 
 # Copy csproj files and restore (preserves layer caching)
 COPY src/services/fhir-service/fhir-service.csproj src/services/fhir-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/services/shared/CloudHealthOffice.Appeals.Contracts/CloudHealthOffice.Appeals.Contracts.csproj src/services/shared/CloudHealthOffice.Appeals.Contracts/
-COPY src/engines/CloudHealthOffice.ProviderEnrollmentService/CloudHealthOffice.ProviderEnrollmentService.csproj src/engines/CloudHealthOffice.ProviderEnrollmentService/
-COPY src/engines/CloudHealthOffice.PriorAuthRuleEngine/CloudHealthOffice.PriorAuthRuleEngine.csproj src/engines/CloudHealthOffice.PriorAuthRuleEngine/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
+COPY src/services/shared/HealthCoreX.Appeals.Contracts/HealthCoreX.Appeals.Contracts.csproj src/services/shared/HealthCoreX.Appeals.Contracts/
+COPY src/engines/HealthCoreX.ProviderEnrollmentService/HealthCoreX.ProviderEnrollmentService.csproj src/engines/HealthCoreX.ProviderEnrollmentService/
+COPY src/engines/HealthCoreX.PriorAuthRuleEngine/HealthCoreX.PriorAuthRuleEngine.csproj src/engines/HealthCoreX.PriorAuthRuleEngine/
 RUN dotnet restore src/services/fhir-service/fhir-service.csproj
 
 # Copy source code and build
 COPY src/services/fhir-service/ src/services/fhir-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/services/shared/CloudHealthOffice.Appeals.Contracts/ src/services/shared/CloudHealthOffice.Appeals.Contracts/
-COPY src/engines/CloudHealthOffice.ProviderEnrollmentService/ src/engines/CloudHealthOffice.ProviderEnrollmentService/
-COPY src/engines/CloudHealthOffice.PriorAuthRuleEngine/ src/engines/CloudHealthOffice.PriorAuthRuleEngine/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
+COPY src/services/shared/HealthCoreX.Appeals.Contracts/ src/services/shared/HealthCoreX.Appeals.Contracts/
+COPY src/engines/HealthCoreX.ProviderEnrollmentService/ src/engines/HealthCoreX.ProviderEnrollmentService/
+COPY src/engines/HealthCoreX.PriorAuthRuleEngine/ src/engines/HealthCoreX.PriorAuthRuleEngine/
 # CHO-authored FHIR profile artifacts — embedded into fhir-service.dll at
 # build time via the <EmbeddedResource Include="...docs/fhir/profiles/*.json">
 # item in fhir-service.csproj (logical-name prefix `FhirArtifacts.`).

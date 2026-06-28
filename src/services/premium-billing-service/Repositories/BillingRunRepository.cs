@@ -25,7 +25,7 @@ public class BillingRunRepository : IBillingRunRepository
         IHttpContextAccessor httpContextAccessor,
         ILogger<BillingRunRepository> logger)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         _container = cosmosClient.GetContainer(databaseName, "BillingRuns");
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;

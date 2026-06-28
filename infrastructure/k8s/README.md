@@ -16,13 +16,13 @@ For complete documentation with troubleshooting:
 
 #### Website Ingress
 - **File**: `site-ingress.yaml`
-- **Domains**: cloudhealthoffice.com, www.cloudhealthoffice.com
+- **Domains**: HealthCoreX.com, www.HealthCoreX.com
 - **Backend**: site service (port 80)
 - **TLS**: Automatic via Let's Encrypt (site-tls-secret)
 
 #### Portal Ingress
 - **File**: `portal-ingress.yaml`
-- **Domain**: portal.cloudhealthoffice.com
+- **Domain**: portal.HealthCoreX.com
 - **Backend**: portal service (port 80→8080)
 - **TLS**: Automatic via Let's Encrypt (portal-tls-secret)
 
@@ -60,7 +60,7 @@ k8s/
 ## Namespaces
 
 - **cho-portal**: Frontend applications
-- **cloudhealthoffice**: Backend services, website, portal
+- **HealthCoreX**: Backend services, website, portal
 - **cho-workflows**: Argo Workflows
 
 ## Prerequisites for HTTPS Ingress
@@ -79,9 +79,9 @@ k8s/
    ```
 
 3. **DNS Configuration**
-   - cloudhealthoffice.com → 4.149.83.133
-   - www.cloudhealthoffice.com → 4.149.83.133
-   - portal.cloudhealthoffice.com → 4.149.83.133
+   - HealthCoreX.com → 4.149.83.133
+   - www.HealthCoreX.com → 4.149.83.133
+   - portal.HealthCoreX.com → 4.149.83.133
 
 ## Deployment Order
 
@@ -108,7 +108,7 @@ k8s/
 4. **Website and Portal**
    ```bash
    kubectl apply -f ../site/k8s/site-deployment.yaml
-   kubectl apply -f ../portal/CloudHealthOffice.Portal/k8s/portal-deployment.yaml
+   kubectl apply -f ../portal/HealthCoreX.Portal/k8s/portal-deployment.yaml
    ```
 
 5. **HTTPS Ingress (NEW)**
@@ -121,18 +121,18 @@ k8s/
 ## Service Architecture
 
 ### External Access (via Ingress)
-- **Website**: https://cloudhealthoffice.com
-- **Portal**: https://portal.cloudhealthoffice.com
+- **Website**: https://HealthCoreX.com
+- **Portal**: https://portal.HealthCoreX.com
 
 ### Internal Services (ClusterIP)
 All microservices use ClusterIP and are accessed internally:
-- member-service.cloudhealthoffice:3000
-- coverage-service.cloudhealthoffice:3001
-- claims-service.cloudhealthoffice:3002
-- eligibility-service.cloudhealthoffice:3003
-- authorization-service.cloudhealthoffice:3004
-- provider-service.cloudhealthoffice:3005
-- benefit-plan-service.cloudhealthoffice:3006
+- member-service.HealthCoreX:3000
+- coverage-service.HealthCoreX:3001
+- claims-service.HealthCoreX:3002
+- eligibility-service.HealthCoreX:3003
+- authorization-service.HealthCoreX:3004
+- provider-service.HealthCoreX:3005
+- benefit-plan-service.HealthCoreX:3006
 
 ## HIPAA X12 Workflows
 
@@ -147,16 +147,16 @@ EDI transaction processing jobs:
 Check deployment status:
 ```bash
 # All pods
-kubectl get pods -n cloudhealthoffice
+kubectl get pods -n HealthCoreX
 
 # Ingress status
-kubectl get ingress -n cloudhealthoffice
+kubectl get ingress -n HealthCoreX
 
 # Certificates
-kubectl get certificate -n cloudhealthoffice
+kubectl get certificate -n HealthCoreX
 
 # Services
-kubectl get svc -n cloudhealthoffice
+kubectl get svc -n HealthCoreX
 ```
 
 ## Troubleshooting
@@ -177,10 +177,10 @@ kubectl logs -n ingress-nginx -l app.kubernetes.io/component=controller
 kubectl logs -n cert-manager -l app=cert-manager
 
 # Describe certificate
-kubectl describe certificate <cert-name> -n cloudhealthoffice
+kubectl describe certificate <cert-name> -n HealthCoreX
 
 # Test HTTPS
-curl -I https://cloudhealthoffice.com
+curl -I https://HealthCoreX.com
 ```
 
 ## Security
@@ -200,7 +200,7 @@ curl -I https://cloudhealthoffice.com
 ## Additional Resources
 
 - **Website Deployment**: `../site/DEPLOYMENT.md`
-- **Portal Deployment**: `../portal/CloudHealthOffice.Portal/README.md`
+- **Portal Deployment**: `../portal/HealthCoreX.Portal/README.md`
 - **HIPAA X12 Workflows**: `./SFTP-WORKFLOWS-SUMMARY.md`
 - **Main Documentation**: `../README.md`
 
@@ -210,4 +210,4 @@ For issues or questions:
 1. Check [INGRESS-HTTPS-SETUP.md](./INGRESS-HTTPS-SETUP.md#troubleshooting)
 2. Review logs: `kubectl logs -n <namespace> <pod-name>`
 3. Check pod status: `kubectl describe pod <pod-name> -n <namespace>`
-4. Review ingress events: `kubectl describe ingress <ingress-name> -n cloudhealthoffice`
+4. Review ingress events: `kubectl describe ingress <ingress-name> -n HealthCoreX`

@@ -40,7 +40,7 @@ Migrate all application secrets from environment variables and configuration fil
 # Create Key Vault (Premium SKU for HSM-backed keys)
 az keyvault create \
   --name "kv-cho-prod-${LOCATION}" \
-  --resource-group "rg-cloudhealthoffice-prod" \
+  --resource-group "rg-HealthCoreX-prod" \
   --location "eastus" \
   --sku "Premium" \
   --enable-rbac-authorization true \
@@ -50,13 +50,13 @@ az keyvault create \
 # Configure network access (allow Azure services + deny public)
 az keyvault network-rule add \
   --name "kv-cho-prod-eastus" \
-  --resource-group "rg-cloudhealthoffice-prod" \
+  --resource-group "rg-HealthCoreX-prod" \
   --vnet-name "vnet-cho-prod" \
   --subnet "snet-aks"
 
 az keyvault update \
   --name "kv-cho-prod-eastus" \
-  --resource-group "rg-cloudhealthoffice-prod" \
+  --resource-group "rg-HealthCoreX-prod" \
   --default-action Deny
 ```
 
@@ -65,8 +65,8 @@ az keyvault update \
 # Send Key Vault logs to Log Analytics
 az monitor diagnostic-settings create \
   --name "KeyVaultAudit" \
-  --resource $(az keyvault show --name "kv-cho-prod-eastus" -g "rg-cloudhealthoffice-prod" --query id -o tsv) \
-  --workspace $(az monitor log-analytics workspace show --name "law-cho-prod" -g "rg-cloudhealthoffice-prod" --query id -o tsv) \
+  --resource $(az keyvault show --name "kv-cho-prod-eastus" -g "rg-HealthCoreX-prod" --query id -o tsv) \
+  --workspace $(az monitor log-analytics workspace show --name "law-cho-prod" -g "rg-HealthCoreX-prod" --query id -o tsv) \
   --logs '[{"category": "AuditEvent", "enabled": true, "retentionPolicy": {"enabled": true, "days": 365}}]' \
   --metrics '[{"category": "AllMetrics", "enabled": true}]'
 ```
@@ -75,18 +75,18 @@ az monitor diagnostic-settings create \
 ```bash
 # Enable managed identity on AKS cluster
 az aks update \
-  --resource-group "rg-cloudhealthoffice-prod" \
+  --resource-group "rg-HealthCoreX-prod" \
   --name "cho-aks-prod" \
   --enable-managed-identity
 
 # Get AKS managed identity
-AKS_IDENTITY=$(az aks show -g "rg-cloudhealthoffice-prod" -n "cho-aks-prod" --query identityProfile.kubeletidentity.clientId -o tsv)
+AKS_IDENTITY=$(az aks show -g "rg-HealthCoreX-prod" -n "cho-aks-prod" --query identityProfile.kubeletidentity.clientId -o tsv)
 
 # Grant Key Vault Secrets User role
 az role assignment create \
   --role "Key Vault Secrets User" \
   --assignee $AKS_IDENTITY \
-  --scope $(az keyvault show --name "kv-cho-prod-eastus" -g "rg-cloudhealthoffice-prod" --query id -o tsv)
+  --scope $(az keyvault show --name "kv-cho-prod-eastus" -g "rg-HealthCoreX-prod" --query id -o tsv)
 ```
 
 ---
@@ -171,7 +171,7 @@ if (builder.Environment.IsProduction())
 **3.3 Update Portal Program.cs**
 
 ```csharp
-// In portal/CloudHealthOffice.Portal/Program.cs
+// In portal/HealthCoreX.Portal/Program.cs
 if (builder.Environment.IsProduction())
 {
     var keyVaultEndpoint = new Uri(builder.Configuration["KeyVault:VaultUri"] 
@@ -231,7 +231,7 @@ spec:
     spec:
       containers:
       - name: member-service
-        image: ghcr.io/aurelianware/cloudhealthoffice-member-service:latest
+        image: ghcr.io/aurelianware/HealthCoreX-member-service:latest
         env:
         - name: KeyVault__VaultUri
           value: "https://kv-cho-prod-eastus.vault.azure.net/"
@@ -246,7 +246,7 @@ For pod-level identity instead of node-level:
 ```bash
 # Enable workload identity on AKS
 az aks update \
-  --resource-group "rg-cloudhealthoffice-prod" \
+  --resource-group "rg-HealthCoreX-prod" \
   --name "cho-aks-prod" \
   --enable-workload-identity
 
@@ -267,7 +267,7 @@ kubectl apply -k k8s/overlays/staging
 kubectl logs -n cho-svcs-staging deployment/member-service | grep "KeyVault"
 
 # Test API endpoints
-curl https://staging-api.cloudhealthoffice.com/api/v1/members/health
+curl https://staging-api.HealthCoreX.com/api/v1/members/health
 ```
 
 **5.2 Smoke Tests**

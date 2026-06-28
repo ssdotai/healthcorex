@@ -5,16 +5,16 @@ apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
   name: claims-kafka-source
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app.kubernetes.io/name: claims-kafka-source
     app.kubernetes.io/component: eventsource
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
 spec:
   kafka:
     claims-adjudication:
       # Kafka connection
-      url: cloudhealthoffice-kafka-bootstrap.kafka:9092
+      url: HealthCoreX-kafka-bootstrap.kafka:9092
       topic: claims-adjudication
       partition: "0-5"  # All 6 partitions
       
@@ -56,11 +56,11 @@ apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
   name: claims-adjudication-trigger
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app.kubernetes.io/name: claims-adjudication-trigger
     app.kubernetes.io/component: sensor
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
 spec:
   template:
     serviceAccountName: argo-events-sa
@@ -81,7 +81,7 @@ spec:
               kind: Workflow
               metadata:
                 generateName: claims-adjudication-
-                namespace: cloudhealthoffice
+                namespace: HealthCoreX
               spec:
                 workflowTemplateRef:
                   name: claims-adjudication-template

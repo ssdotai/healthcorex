@@ -1,13 +1,13 @@
 using ClaimsExaminerService.Models;
 using ClaimsExaminerService.Services.Events;
-using CloudHealthOffice.Events;
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.Events;
+using HealthCoreX.Infrastructure.Messaging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsExaminerService.Tests.Services.Events;
+namespace HealthCoreX.ClaimsExaminerService.Tests.Services.Events;
 
 /// <summary>
 /// Capability 5.9 — verifies <see cref="ServiceBusAiExaminationEventPublisher"/>

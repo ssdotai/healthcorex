@@ -17,7 +17,7 @@ public class BulkExportService : IBulkExportService
     public BulkExportService(IConfiguration configuration, ILogger<BulkExportService> logger)
     {
         _serverBaseUrl = configuration["Fhir:ServerBaseUrl"]
-            ?? "https://api.cloudhealthoffice.com/fhir/r4";
+            ?? "https://api.HealthCoreX.com/fhir/r4";
         _logger = logger;
     }
 

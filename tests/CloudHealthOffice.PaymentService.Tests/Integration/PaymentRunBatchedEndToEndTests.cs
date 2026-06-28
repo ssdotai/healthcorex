@@ -9,7 +9,7 @@ using PaymentService.Repositories;
 using PaymentService.Services;
 using Xunit;
 
-namespace CloudHealthOffice.PaymentService.Tests.Integration;
+namespace HealthCoreX.PaymentService.Tests.Integration;
 
 /// <summary>
 /// End-to-end exercise of the 5.10 batched PaymentRun flow with the

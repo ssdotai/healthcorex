@@ -78,7 +78,7 @@ The controller runs the following engines in sequence via DI:
 | 2. verify-coverage | coverage-service | 3, 4 | No active coverage → CARC 26 |
 | 3. validate-provider | provider-service | 2, 4 | Not credentialed → CARC 185 |
 | 4. validate-codes | reference-data-service | 2, 3 | Invalid codes → CARC 11 |
-| 5. check-prior-auth | authorization-service | — (depends on 2, 4) | Auth required but missing → CARC 197 |
+| 5. check-prior-auth | authorization-service | — (depends on 2, 4) | Auth required but missing, expired, inactive, or not valid for the procedure when authorization-service has evidence → CARC 197 |
 | 6. adjudicate | benefit-plan-service | — (depends on 2, 3, 5) | See engine pipeline below |
 | 7. update-claim | claims-service | — | — |
 
@@ -148,8 +148,8 @@ Step 3: Merge → AdjudicationResponse
 
 | Engine | Status | Path |
 |--------|--------|------|
-| RiskAdjustmentEngine | Production-ready | Post-adjudication (encounter submission) |
-| EncounterEngine | Production-ready | Post-adjudication (encounter submission) |
+| RiskAdjustmentEngine | Implemented; validation pending | Post-adjudication (encounter submission) |
+| EncounterEngine | Implemented; validation pending | Post-adjudication (encounter submission) |
 
 ---
 

@@ -8,10 +8,10 @@ canonical namespace CHO owns.
 
 CHO publishes its FHIR profile artifacts under:
 
-- `http://fhir.cloudhealthoffice.com/StructureDefinition/{id}` — profiles and extensions
-- `http://fhir.cloudhealthoffice.com/CodeSystem/{id}` — CHO-local code systems
-- `http://fhir.cloudhealthoffice.com/ValueSet/{id}` — CHO-local value sets
-- `http://fhir.cloudhealthoffice.com/OperationDefinition/{id}` — custom operations
+- `http://fhir.HealthCoreX.com/StructureDefinition/{id}` — profiles and extensions
+- `http://fhir.HealthCoreX.com/CodeSystem/{id}` — CHO-local code systems
+- `http://fhir.HealthCoreX.com/ValueSet/{id}` — CHO-local value sets
+- `http://fhir.HealthCoreX.com/OperationDefinition/{id}` — custom operations
 
 These URLs are permanent. Once a FHIR resource claims conformance to
 one of them via `meta.profile`, the URL cannot change without
@@ -134,7 +134,7 @@ via the conformance-resource endpoints listed above.
 1. Hand-author the artifact JSON in this directory. Follow HL7's
    file-naming convention: `{resourceType}-{id}.json`.
 2. Use the CHO canonical namespace: every `url` under
-   `http://fhir.cloudhealthoffice.com/`.
+   `http://fhir.HealthCoreX.com/`.
 3. Include this sentence in the `description`: "Authored by Cloud
    Health Office under its own canonical namespace; does not claim
    conformance to any external Implementation Guide."
@@ -142,7 +142,7 @@ via the conformance-resource endpoints listed above.
 5. If the artifact should be advertised in CapabilityStatement, update
    `MetadataController`.
 6. Add artifact-validity and controller tests under
-   `tests/CloudHealthOffice.FhirService.Tests/FhirArtifacts/`.
+   `tests/HealthCoreX.FhirService.Tests/FhirArtifacts/`.
 7. Generate the snapshot hash — run the test suite; on first failure
    the `ArtifactSnapshotTests` failure message includes a mechanical
    `echo <hash> > <file>` command to register the snapshot.

@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.JSInterop
 @using Microsoft.AspNetCore.Components.Authorization
-@using CloudHealthOffice.Portal.Services
+@using HealthCoreX.Portal.Services
 @using Stripe
 @inject HttpClient Http
 @inject NavigationManager Navigation
@@ -26,7 +26,7 @@
 <div class="signup-container">
     <div class="signup-card">
         <div class="logo-section">
-            <img src="/images/logo-cloudhealthoffice-sentinel-primary.svg" alt="Cloud Health Office" class="signup-logo" />
+            <img src="/images/logo-HealthCoreX-sentinel-primary.svg" alt="Cloud Health Office" class="signup-logo" />
             <h1>Cloud Health Office</h1>
             <p class="tagline">Azure-Native Multi-Payer EDI Platform</p>
         </div>
@@ -88,7 +88,7 @@
                         </div>
 
                         <div class="tier-card @(signupModel.SubscriptionTier == "professional" ? "selected" : "")" @onclick="@(() => SelectTier("professional"))">
-                            <h3>CloudHealthOffice Managed SaaS</h3>
+                            <h3>HealthCoreX Managed SaaS</h3>
                             <ul>
       
                                 <li>Full Core Admin Platform</li>
@@ -101,7 +101,7 @@
                             <h3>Self Hosted</h3>
                             <p class="price">Custom Sales</p>
                             <ul>
-                                <li>sales@cloudhealthoffice.com</li>
+                                <li>sales@HealthCoreX.com</li>
                             </ul>
                           
                         </div>
@@ -244,7 +244,7 @@
             var stripePublishableKey = Configuration["Stripe:PublishableKey"];
             if (string.IsNullOrEmpty(stripePublishableKey))
             {
-                _stripeInitError = "Payment system is not configured. Please contact support@cloudhealthoffice.com.";
+                _stripeInitError = "Payment system is not configured. Please contact support@HealthCoreX.com.";
                 Logger.LogError("Stripe:PublishableKey is not configured");
                 StateHasChanged();
                 return;

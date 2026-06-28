@@ -1,7 +1,7 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Generators;
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.Generators;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.ReferenceData;
+namespace HealthCoreX.BenchmarkClaimGenerator.ReferenceData;
 
 /// <summary>
 /// In-memory reference data provider using hardcoded code sets.

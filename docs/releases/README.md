@@ -1,6 +1,6 @@
-# CloudHealthOffice Release Documentation
+# HealthCoreX Release Documentation
 
-This directory contains comprehensive release documentation for CloudHealthOffice versions.
+This directory contains comprehensive release documentation for HealthCoreX versions.
 
 ---
 
@@ -42,7 +42,7 @@ Complete CMS-0057-F compliance with production-ready FHIR R4 APIs.
 
 ### v1.0.0 — The Sentinel Has Awakened (November 2025)
 
-First production release of CloudHealthOffice.
+First production release of HealthCoreX.
 
 | Document | Description |
 |----------|-------------|
@@ -84,8 +84,8 @@ Release announcements and executive communications.
 | **What's New** | [WHATS-NEW.md](../../WHATS-NEW.md) |
 | **Features Matrix** | [FEATURES.md](../../FEATURES.md) |
 | **Quick Start** | [QUICKSTART.md](../../QUICKSTART.md) |
-| **GitHub Issues** | [Issues](https://github.com/aurelianware/cloudhealthoffice/issues) |
-| **Discussions** | [Discussions](https://github.com/aurelianware/cloudhealthoffice/discussions) |
+| **GitHub Issues** | [Issues](https://github.com/aurelianware/HealthCoreX/issues) |
+| **Discussions** | [Discussions](https://github.com/aurelianware/HealthCoreX/discussions) |
 
 ---
 
@@ -99,4 +99,4 @@ Release announcements and executive communications.
 
 ---
 
-*BSL 1.1 • CloudHealthOffice*
+*BSL 1.1 • HealthCoreX*

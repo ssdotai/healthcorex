@@ -1,7 +1,7 @@
-using CloudHealthOffice.RiskAdjustmentEngine.Data;
-using CloudHealthOffice.RiskAdjustmentEngine.Domain;
+using HealthCoreX.RiskAdjustmentEngine.Data;
+using HealthCoreX.RiskAdjustmentEngine.Domain;
 
-namespace CloudHealthOffice.RiskAdjustmentEngine.Services;
+namespace HealthCoreX.RiskAdjustmentEngine.Services;
 
 /// <summary>
 /// Applies CMS-published hierarchy rules to suppress less-severe HCCs when

@@ -76,7 +76,7 @@ For local development without Key Vault, you can use `appsettings.Development.js
   },
   "CosmosDb": {
     "Endpoint": "https://your-cosmos-account.documents.azure.com:443/",
-    "DatabaseName": "cloudhealthoffice",
+    "DatabaseName": "HealthCoreX",
     "MembersContainer": "Members",
     "ProvidersContainer": "ProviderDirectory",
     "BenefitPlansContainer": "BenefitPlans",
@@ -88,7 +88,7 @@ For local development without Key Vault, you can use `appsettings.Development.js
     "SubscriptionId": "your-azure-subscription-id",
     "RoutingKeyName": "backend-routing",
     "BackendSystemId": "backend-backend",
-    "CloudHealthOfficeBackendId": "cloudhealthoffice-backend"
+    "HealthCoreXBackendId": "HealthCoreX-backend"
   }
 }
 ```
@@ -225,7 +225,7 @@ The migration wizard connects to the following SOAP endpoints:
                             │  backend-routing       │
                             │  ↓                     │
                             │  backend-backend →        │
-                            │  cloudhealthoffice-    │
+                            │  HealthCoreX-    │
                             │  backend               │
                             └────────────────────────┘
 ```

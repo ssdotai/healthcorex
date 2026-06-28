@@ -156,8 +156,8 @@ for bundle authoring conventions.
 `ServiceCategoryResolver` produces a `ServiceTypeCode`. The benefit
 calculation engine joins it to the plan's `Benefit.ServiceCategory`
 (free-text plan-author label) at
-[`BenefitCalculationEngine.cs:317`](../../src/engines/CloudHealthOffice.BenefitEngine/Services/BenefitCalculationEngine.cs#L317)
-and `:428`, via [`Providers.cs:114`](../../src/engines/CloudHealthOffice.BenefitEngine/Services/Providers.cs#L114)
+[`BenefitCalculationEngine.cs:317`](../../src/engines/HealthCoreX.BenefitEngine/Services/BenefitCalculationEngine.cs#L317)
+and `:428`, via [`Providers.cs:114`](../../src/engines/HealthCoreX.BenefitEngine/Services/Providers.cs#L114)
 (`plan.GetCategory(serviceTypeCode)`). At
 [`ChoBenefitPlanProvider.cs:39`](../../src/services/benefit-plan-service/Services/ChoBenefitPlanProvider.cs#L39),
 `Benefit.ServiceCategory` flows directly into the

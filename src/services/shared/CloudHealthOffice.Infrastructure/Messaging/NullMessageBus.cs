@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Infrastructure.Messaging;
+namespace HealthCoreX.Infrastructure.Messaging;
 
 /// <summary>
 /// No-op <see cref="IMessageBus"/>. Accepts sends and schedules silently

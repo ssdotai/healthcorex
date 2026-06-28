@@ -1,486 +1,321 @@
-# Cloud Health Office - Quick Start Guide
+# Cloud Health Office Quick Start
 
-Get started with the #1 source-available Azure-native multi-payer EDI platform in **5 minutes**.
+This guide is the source-repository quick start for Cloud Health Office. It
+focuses on what is currently usable and verifiable:
 
-## 🌐 Self-Service Signup (Fastest - 5 minutes)
+- run the platform locally with Docker Compose or Docker Desktop Kubernetes
+- submit and adjudicate claims against local services
+- run a scored Million Claim Challenge validation
+- inspect the Mass Adjudication console
+- compare your results with the published 100,000-claim local evidence
 
-The easiest way to get started is through our production portal:
+Cloud Health Office is source-available software that you can download and run
+in your own environment. The public hosted portal and public hosted API domains
+are not currently deployed as self-service products, so this guide does not
+depend on `portal.HealthCoreX.com` or `api.HealthCoreX.com`.
 
-### Step 1: Visit the Portal
+## Current Evidence Snapshot
 
-Navigate to **[portal.cloudhealthoffice.com](https://portal.cloudhealthoffice.com)**
+The latest published benchmark proof is Episode 008 of the Million Claim
+Challenge:
 
-### Step 2: Sign In with Azure AD
+- 100,000 local Docker Desktop Kubernetes claims processed
+- 0 platform failures
+- 0 scoreable workflow mismatches
+- 0 unexpected pends across the scoreable non-pend sweep
+- 2,000/2,000 comparable payments within $0.01
+- $0.00 average and maximum payment delta
+- 56.15 claims/second during the timed claim-processing phase
+- 358 ms P95 and 451 ms P99 latency
 
-Click **Sign In** and authenticate with any Microsoft account:
-- Personal Microsoft account (Outlook.com, Hotmail.com)
-- Work or school account (Office 365, Azure AD)
-- GitHub account linked to Microsoft
+Scope matters: this is local engineering evidence, not a production cloud
+capacity claim and not the full one-million-claim target. The full Kubernetes
+job took about 128 minutes because large run-scoped fixture preparation
+dominated the lifecycle before the timed processing phase.
 
-**What happens**: Azure AD multi-tenant authentication validates your identity and extracts tenant information from your account claims.
+Read the artifacts:
 
-### Step 3: Select Your Tier
+- [Episode 008 benchmark results](../million-claim-challenge/podcast/episode-008/benchmark-results.txt)
+- [Episode 008 article draft](../million-claim-challenge/podcast/episode-008/article.txt)
+- [Million Claim Challenge notes](../million-claim-challenge/README.txt)
+- [Public evidence archive](https://HealthCoreX.com/docs/million-claim-challenge/evidence#episode-008)
 
-Choose the plan that fits your needs:
+## Option 1: Docker Compose Core Stack
 
-| Tier | Price | Claims/Month | Modules | Support | Trial |
-|------|-------|--------------|---------|---------|-------|
-| **Starter** | [Contact sales](mailto:sales@cloudhealthoffice.com) | 10,000 | EDI + Claims Adjudication | Community + Email | 14 days |
-| **Professional** | [Contact sales](mailto:sales@cloudhealthoffice.com) | 50,000 | All + FHIR + Analytics | Priority + Slack | 14 days |
-| **Enterprise** | Custom | Unlimited | White-label + SLA | 24/7 + Dedicated CSM | Custom |
-
-**Note**: All tiers include a **14-day free trial**. Cancel anytime before Feb 23, 2026 (trial end).
-
-### Step 4: Enter Payment Details
-
-Provide credit card information via **Stripe** (PCI DSS compliant):
-- Credit card (Visa, Mastercard, Amex, Discover)
-- ACH Direct Debit (US customers)
-- SEPA Direct Debit (EU customers)
-
-**Security**: Stripe handles all payment processing. Cloud Health Office never stores your payment information.
-
-### Step 5: Choose Modules
-
-Select the EDI modules you need:
-- ✅ **EDI Transactions** - 270/271 (Eligibility), 275 (Attachments), 276/277 (Claim Status), 278 (Authorization), 837 (Claims)
-- ✅ **Claims Adjudication** - <500ms workflow processing
-- ✅ **Provider Network** - 13 specialties, contracted rates
-- ✅ **FHIR Integration** - X12 → FHIR R4 mapping (Professional+)
-
-### Step 6: Start Free Trial
-
-Click **Start Free Trial** to complete signup.
-
-**What gets auto-provisioned:**
-- ✅ Cosmos DB tenant partition (`tenantId`)
-- ✅ SFTP credentials for clearinghouse integration
-- ✅ Azure AD application for API access
-- ✅ Stripe subscription with 14-day trial
-- ✅ Welcome email with credentials and access URLs
-
-### Step 7: Access Your Tenant
-
-After signup, you can immediately access:
-
-- **Portal**: [https://portal.cloudhealthoffice.com](https://portal.cloudhealthoffice.com) - Manage subscription, view claims, configure settings
-- **API**: [https://api.cloudhealthoffice.com](https://api.cloudhealthoffice.com) - RESTful endpoints with OpenAPI docs
-- **Docs**: [https://docs.cloudhealthoffice.com](https://docs.cloudhealthoffice.com) - Integration guides and API reference
-
-**Trial Details:**
-- Starts: Today
-- Ends: Feb 23, 2026 (14 days)
-- No credit card charge until trial ends
-- Cancel anytime via Portal → Subscription → Cancel
-
-### Enterprise Customers
-
-Need custom pricing, SLAs, or white-labeling?
-
-👉 **[Contact Sales](https://portal.cloudhealthoffice.com/contact-sales)** for:
-- Unlimited claims processing
-- Dedicated customer success manager
-- Custom SLA (99.95%+ uptime)
-- White-label portal and branding
-- On-premise or hybrid deployment
-- BAA and compliance support
-
----
-
-## 🚀 Self-Hosted Deployment (Advanced)
-
-For customers requiring on-premise or Azure-hosted deployment:
-
-### One-Click Azure Deployment
-
-Deploy a complete sandbox environment with a single click:
-
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Faurelianware%2Fcloudhealthoffice%2Fmain%2Fazuredeploy.json)
-
-#### What Gets Deployed
-
-**Note**: For most users, we recommend the **[SaaS platform at portal.cloudhealthoffice.com](#self-service-signup-fastest---5-minutes)** instead of self-hosted deployment.
-
-The Azure Deploy button creates a self-hosted environment:
-
-- ✅ **Kubernetes Cluster (AKS)** - Container orchestration
-- ✅ **Argo Workflows** - Cloud-native workflow engine
-- ✅ **Azure Storage Gen2** - HIPAA-compliant data lake
-- ✅ **Service Bus Namespace** - Event-driven messaging
-- ✅ **C# X12 Services** - X12 EDI parsing and encoding (runs on AKS)
-- ✅ **Cosmos DB** - Multi-tenant data isolation
-- ✅ **Application Insights** - Monitoring and telemetry
-
-**Estimated cost**: ~$300-500/month for production environment ([Contact sales](mailto:sales@cloudhealthoffice.com) for SaaS tier pricing)
-
-## 📋 Prerequisites
-
-- Azure subscription with Contributor access
-- Azure CLI installed ([Download](https://docs.microsoft.com/cli/azure/install-azure-cli))
-- PowerShell 7+ or Bash
-- Git
-- Node.js 20+ (for workflow deployment)
-
-## 🎯 Deployment Steps
-
-### Step 1: Deploy Infrastructure (2 minutes)
-
-Click the **Deploy to Azure** button above and configure:
-
-| Parameter | Description | Example |
-|-----------|-------------|---------|
-| **baseName** | Unique name for resources | `myhealthplan` |
-| **location** | Azure region | `eastus` |
-| **sftpHost** | Clearinghouse SFTP host | `sftp.clearinghouse.example.com` |
-| **sftpUsername** | SFTP username | `demo` |
-| **deploymentEnvironment** | Environment type | `sandbox` |
-
-Click **Review + Create** → **Create** (deployment takes ~3-4 minutes)
-
-### Step 2: Clone and Deploy to Kubernetes (3 minutes)
+Use Docker Compose when you want the quickest local service loop without
+Kubernetes.
 
 ```bash
-# Clone repository
-git clone https://github.com/aurelianware/cloudhealthoffice.git
-cd cloudhealthoffice
+git clone https://github.com/aurelianware/HealthCoreX.git
+cd HealthCoreX
 
-# Connect to AKS cluster
-az aks get-credentials --resource-group your-rg --name your-aks-cluster
+docker compose --profile core up -d
 
-# Deploy Argo Workflows
-kubectl apply -f argo-workflows/
-
-# Deploy microservices
-kubectl apply -f k8s/
-kubectl apply -f services/*/k8s/
-
-# Verify deployment
-kubectl get workflows -n cho-workflows
-kubectl get pods -n cloudhealthoffice
+curl http://localhost:5001/health/live
 ```
 
-### Step 3: Configure X12 Integration (Optional)
+Notes:
 
-X12 EDI parsing is handled by C# microservices running on AKS (no Azure Integration Account needed). Configuration is via Kubernetes ConfigMaps:
+- `docker compose up -d` with no profile starts only infrastructure such as
+  MongoDB and Redis.
+- `--profile core` starts the core adjudication services.
+- Additional profiles are documented at the top of
+  [`docker-compose.yml`](../../docker-compose.yml).
+- For the broader development stack, use
+  [`docker-compose.development.yml`](../../docker-compose.development.yml).
+
+Common local ports:
+
+| Service | Local URL |
+| --- | --- |
+| Claims service | `http://localhost:5001` |
+| Benefit plan service | `http://localhost:5002` |
+| Member service | `http://localhost:5003` |
+| Provider service | `http://localhost:5004` |
+| MongoDB | `localhost:27017` |
+
+## Option 2: Local Kubernetes
+
+Use Docker Desktop Kubernetes when you want the production-shaped local
+environment used by the Million Claim Challenge work.
+
+Prerequisites:
+
+- Docker Desktop 4.x+
+- Kubernetes enabled in Docker Desktop
+- `kubectl`
+- `bash`
+- `curl`
+- `jq` optional, but useful
+
+Recommended Docker Desktop allocation:
+
+- small runs: at least 6 CPU and 16 GB memory
+- 100K validation: 18 CPU and about 24 GB memory
+
+Deploy:
 
 ```bash
-# Apply X12 configuration
-kubectl apply -f infrastructure/argo-workflows/config/x12-settings.yaml -n cloudhealthoffice
+git clone https://github.com/aurelianware/HealthCoreX.git
+cd HealthCoreX
+
+kubectl config current-context
+kubectl cluster-info
+
+bash ./scripts/deploy-local.sh
 ```
 
-**Note**: The SaaS platform includes pre-configured X12 processing.
+The deploy script builds local images, creates the `HealthCoreX`
+namespace, deploys MongoDB and Redis, creates local secrets, applies service
+manifests, and waits for core services. The first run can take 15-30 minutes
+depending on Docker cache and CPU.
 
-### Step 4: Test Your Deployment (&lt;1 minute)
+For repeat deploys after images are already built:
 
 ```bash
-# Run end-to-end tests with Argo Workflows
-kubectl create -f tests/e2e-workflows/test-claim-workflow.yaml -n cho-workflows
-
-# Monitor execution
-kubectl get workflows -n cho-workflows -w
-
-# View results
-cat tests/E2E-TEST-RESULTS.md
+bash ./scripts/deploy-local.sh --skip-build
 ```
 
-## ✨ New Capabilities (Post v1.0.0)
-
-### Interactive Onboarding Wizard
-
-For a guided configuration experience with zero-code payer onboarding:
+Verify:
 
 ```bash
-# Start interactive wizard
-npm run generate -- interactive --output my-config.json --generate
+kubectl get deployments -n HealthCoreX
+kubectl get pods -n HealthCoreX
 ```
 
-The wizard will guide you through:
-1. Basic payer information
-2. Trading partner configuration
-3. Module selection (Attachments, Authorizations, Appeals, ECS)
-4. Infrastructure settings
-5. Monitoring preferences
-
-Then automatically generate your deployment package!
-
-**Features:**
-- 30+ Handlebars template helpers for customization
-- Complete Argo workflow YAML generation
-- Bicep infrastructure templates with parameters
-- Payer-specific documentation auto-generated
-- Validated with 23-test comprehensive suite
-
-**Documentation:** [CONFIG-TO-WORKFLOW-GENERATOR.md](./docs/CONFIG-TO-WORKFLOW-GENERATOR.md)
-
-### FHIR R4 Integration
-
-Transform X12 EDI data to modern FHIR resources:
-
-```typescript
-import { mapX12270ToFhirEligibility } from './src/fhir/fhirEligibilityMapper';
-
-// X12 270 eligibility inquiry
-const x12Data = {
-  inquiryId: 'INQ001',
-  subscriber: { memberId: 'MEM123', firstName: 'John', lastName: 'Doe' }
-};
-
-// Convert to FHIR R4
-const { patient, eligibility } = mapX12270ToFhirEligibility(x12Data);
-```
-
-**Compliance:**
-- ✅ CMS Patient Access API (CMS-9115-F)
-- ✅ US Core Patient profile v3.1.1
-- ✅ HIPAA X12 270: 005010X279A1
-- ✅ HL7 FHIR R4: v4.0.1
-
-**Documentation:** [FHIR-INTEGRATION.md](./docs/FHIR-INTEGRATION.md)
-
-### ValueAdds277 Enhanced Claim Status
-
-Premium ECS features for comprehensive claim intelligence:
+Open local access in separate terminals:
 
 ```bash
-# Enable in configuration
-"ecsModule": {
-  "enabled": true,
-  "valueAdds277": {
-    "enabled": true,
-    "claimFields": {
-      "financial": true,    // 8 fields: BILLED, ALLOWED, PAID, etc.
-      "clinical": true,     // 4 fields: diagnosis, procedures, dates
-      "demographics": true, // Patient, subscriber, providers
-      "remittance": true    // Check/EFT details
-    },
-    "integrationFlags": {
-      "eligibleForAppeal": true,        // Link to appeals module
-      "eligibleForAttachment": true,    // Send 275 attachments
-      "eligibleForCorrection": true,    // Resubmit claims
-      "eligibleForRemittanceViewer": true  // View 835 data
-    }
-  }
-}
+kubectl port-forward -n HealthCoreX svc/portal 8080:80
+kubectl port-forward -n HealthCoreX svc/claims-service 5001:80
+kubectl port-forward -n HealthCoreX svc/benefit-plan-service 5002:80
+kubectl port-forward -n HealthCoreX svc/payment-service 5006:80
+kubectl port-forward -n HealthCoreX svc/fhir-service 5080:80
 ```
 
-**Benefits:**
-- Provider time savings: 7-21 minutes per claim lookup
-- 60+ enhanced response fields
-- Cross-module integration workflows
-- Additional $10k/year revenue per payer
+Then open:
 
-**Documentation:** [VALUEADDS277-IMPLEMENTATION-COMPLETE.md](./VALUEADDS277-IMPLEMENTATION-COMPLETE.md)
+- Portal: `http://localhost:8080`
+- Mass Adjudication console: `http://localhost:8080/mass-adjudication-runs`
+- Claims Swagger: `http://localhost:5001/swagger`
 
-### Security Hardening (9/10 Score)
+API calls to the seeded local tenant use:
 
-Production-ready security controls for PHI workloads:
+```text
+X-Tenant-ID: demo
+```
+
+The website version of this walkthrough is maintained at
+[HealthCoreX.com/docs/quickstart](https://HealthCoreX.com/docs/quickstart),
+with deeper Kubernetes notes at
+[HealthCoreX.com/docs/quickstart-kubernetes](https://HealthCoreX.com/docs/quickstart-kubernetes).
+
+## Seed and Smoke-Test Claims
+
+After port-forwarding the claims and benefit-plan services:
 
 ```bash
-# Deploy security modules
-az deployment group create \
-  --resource-group "payer-attachments-prod-rg" \
-  --template-file infra/modules/keyvault.bicep
-  
-az deployment group create \
-  --resource-group "payer-attachments-prod-rg" \
-  --template-file infra/modules/networking.bicep
-  
-az deployment group create \
-  --resource-group "payer-attachments-prod-rg" \
-  --template-file infra/modules/private-endpoints.bicep
+CLAIMS_URL=http://localhost:5001 \
+BENEFIT_URL=http://localhost:5002 \
+./scripts/seed-local.sh --tenant demo
 ```
 
-**Implemented Controls:**
-- Premium Key Vault with HSM-backed keys (FIPS 140-2 Level 2)
-- Private endpoints for Storage, Service Bus, Key Vault
-- PHI masking in Application Insights with DCR transformation
-- Customer-managed keys (optional BYOK)
-- 7-year data retention with automated lifecycle management
-- 365-day audit log retention
+The script seeds local reference data, submits a professional claim, runs
+adjudication, and prints the claim ID, allowed amount, plan payment, and member
+responsibility.
 
-**Cost Optimization:** 94% storage savings ($463/mo → $29/mo) with lifecycle policies
+## Run a Scored MCC Validation
 
-**Documentation:** [SECURITY-HARDENING.md](./SECURITY-HARDENING.md)
-
-### Gated Release Strategy
-
-Secure deployment approvals for UAT and PROD:
-
-**Features:**
-- Pre-approval security validation (TruffleHog, PII/PHI scanning)
-- Automated audit logging and compliance reporting
-- Communication/notification strategy for stakeholders
-- Emergency hotfix procedures
-- Rollback automation
-
-**Approval Requirements:**
-- **UAT**: 1-2 approvers, triggers on `release/*` branches
-- **PROD**: 2-3 approvers, manual workflow dispatch only
-
-**Documentation:** [DEPLOYMENT-GATES-GUIDE.md](./DEPLOYMENT-GATES-GUIDE.md)
-
-## 🧪 Testing
-
-### Generate Test Data
+Start small. A 1,000-claim run is enough to verify the pipeline, result
+publishing, workflow scoring, pend observation, and payment gate.
 
 ```bash
-# Generate synthetic 837 claims (PHI-safe test data)
-node dist/scripts/utils/generate-837-claims.js 837P 10 ./test-data
-
-# Generate 837I institutional claims
-node dist/scripts/utils/generate-837-claims.js 837I 5 ./test-data
+CLAIMS=1000 \
+MAX_CLAIMS=1000 \
+PARALLELISM=10 \
+PROGRESS_EVERY=100 \
+JOB_NAME=mcc-quickstart-1k \
+./scripts/run-mcc-local-k8s.sh
 ```
 
-### Run Workflow Tests
+The validator generates deterministic synthetic claims, prepares run-scoped
+fixtures, submits and adjudicates claims, observes expected pends, checks for
+unexpected pends in scoreable non-pend scenarios, scores workflow outcomes,
+checks comparable payments, and publishes the run summary to claims-service.
 
-```powershell
-# Test 275 attachment ingestion
-./test-workflows.ps1 -TestInbound275
+A clean run should report:
 
-# Test 277 RFAI outbound
-./test-workflows.ps1 -TestOutbound277
+- 0 platform failures
+- 0 workflow mismatches
+- 0 observation timeouts
+- 0 unexpected pends
+- 0 payment mismatches
 
-# Full end-to-end workflow
-./test-workflows.ps1 -TestFullWorkflow
-```
+Unsupported scenarios are reported separately. They are named product gaps, not
+passes and not platform failures.
 
-### Health Check
-
-```powershell
-# Comprehensive health check with report
-./scripts/test-e2e.ps1 `
-  -ResourceGroup "your-rg" `
-  -AksCluster "your-aks" `
-  -ServiceBusNamespace "your-sb" `
-  -ReportPath "./health-report.json"
-```
-
-## 📊 Monitoring
-
-### Application Insights
-
-Access telemetry at:
-```
-https://portal.azure.com/#@yourtenant/resource/subscriptions/{sub-id}/resourceGroups/{rg}/providers/microsoft.insights/components/{app-insights-name}
-```
-
-Key metrics to monitor:
-- **Workflow Run Success Rate**: Target &gt;99%
-- **Processing Latency**: Target &lt;5 seconds (275 ingestion)
-- **Error Rate**: Target &lt;1%
-
-### View Logs
+Inspect the job directly if needed:
 
 ```bash
-# Recent Argo workflow logs
-kubectl logs -n cho-workflows -l workflows.argoproj.io/workflow --tail=100
-
-# Service Bus metrics
-az monitor metrics list \
-  --resource /subscriptions/{sub-id}/resourceGroups/{rg}/providers/Microsoft.ServiceBus/namespaces/{sb-name} \
-  --metric-names "IncomingMessages,OutgoingMessages"
+kubectl get job -n HealthCoreX mcc-quickstart-1k
+kubectl logs -n HealthCoreX job/mcc-quickstart-1k
 ```
 
-## 🔒 HIPAA Compliance
+Inspect the published run in the portal:
 
-Cloud Health Office implements comprehensive HIPAA controls:
-
-### PHI Redaction
-
-All logging automatically redacts Protected Health Information:
-
-```typescript
-import { redactPHI, createHIPAALogger } from './src/security/hipaaLogger';
-
-// Redact PHI before logging
-const safeData = redactPHI({ patientName: 'John Doe', ssn: '123-45-6789' });
-console.log(safeData); // { patientName: 'J**n D*e', ssn: '1********9' }
+```text
+http://localhost:8080/mass-adjudication-runs
 ```
 
-### Audit Logging
+Use the console to review:
 
-```typescript
-import { createHIPAALogger } from './src/security/hipaaLogger';
+- processed claim count
+- claims/second
+- P95 and P99 latency
+- paid, pended, and business-denial outcome mix
+- platform failures
+- matched, mismatched, unsupported, and timed-out workflow checks
+- expected-pend and unexpected-pend evidence
+- payment gate results
+- retained claim-level evidence
 
-const logger = createHIPAALogger('user@healthplan.com', '192.168.1.1');
-logger.logDataAccess('Patient', 'PAT-12345', 'VIEW');
+## Scale Up Carefully
+
+Use 10K as a confidence gate before attempting 100K.
+
+```bash
+CLAIMS=10000 MAX_CLAIMS=10000 PARALLELISM=10 PROGRESS_EVERY=1000 \
+JOB_NAME=mcc-quickstart-10k ./scripts/run-mcc-local-k8s.sh
 ```
 
-### Compliance Checklist
+Only attempt 100K after smaller runs are clean and the portal can load the
+published run:
 
-Before production deployment:
+```bash
+CLAIMS=100000 MAX_CLAIMS=100000 PARALLELISM=10 PROGRESS_EVERY=5000 \
+JOB_NAME=mcc-quickstart-100k ./scripts/run-mcc-local-k8s.sh
+```
 
-- [ ] Enable Application Insights with PHI redaction
-- [ ] Configure Azure Monitor for audit logs
-- [ ] Set log retention to 6+ years (HIPAA requirement)
-- [ ] Enable encryption at rest (Azure Storage)
-- [ ] Enable encryption in transit (TLS 1.2+)
-- [ ] Configure RBAC for data access
-- [ ] Set up BAA (Business Associate Agreement) with Microsoft
-- [ ] Enable Azure Security Center recommendations
+Do not calculate claims/second from total Kubernetes job duration. The validator
+separates timed claim processing from fixture generation and seeding. For the
+published clean 100K result, timed processing finished in under 30 minutes, but
+the full Kubernetes job took more than two hours because fixture preparation
+dominated the lifecycle.
 
-## 🛠️ Troubleshooting
+## Deployment Posture
 
-### Common Issues
+There is no currently supported one-click Azure deployment from this quick
+start. Older docs referenced a root `azuredeploy.json`, but that artifact is not
+present in the current repository.
 
-**Issue**: Argo workflows not visible after deployment
+Current practical paths:
 
-**Solution**: Wait 1-2 minutes for workflow pods to initialize, then check with `kubectl get workflows -n cho-workflows`
+- run locally with Docker Compose
+- run locally with Docker Desktop Kubernetes
+- adapt the Kubernetes manifests and deployment scripts for your own
+  non-production environment
+- use the source-available APIs and services in an environment you control
 
----
+Azure infrastructure templates and operational references live under
+[`infrastructure/`](../../infrastructure/), but production deployment requires
+environment-specific review: identity, ingress, TLS, secrets, monitoring,
+backup/restore, PHI logging controls, data retention, and payer-specific
+integration configuration.
 
-**Issue**: SFTP connection test fails
+For commercial evaluation or a guided pilot, use:
 
-**Solution**: 
-1. Verify SFTP credentials in Key Vault
-2. Check network connectivity (may need VNet integration)
-3. Validate SFTP host allows Azure IP ranges
+- [Contact](https://HealthCoreX.com/contact)
+- [Book a product demo](https://HealthCoreX.com/demo)
+- [Positioning and evidence notes](../POSITIONING.md)
 
----
+## What This Guide Does Not Claim
 
-**Issue**: X12 decode fails
+This guide does not claim:
 
-**Solution**:
-1. Verify the C# X12 service pod is running (`kubectl get pods -n cloudhealthoffice -l app=x12-parser`)
-2. Check X12 configuration in ConfigMap
-3. Validate EDI file format (ISA/GS segments)
+- a hosted SaaS portal is available for self-service signup
+- public `portal.HealthCoreX.com` or `api.HealthCoreX.com` endpoints
+  are deployed
+- the clean 100K local result is a production-cloud capacity claim
+- the full one-million-claim challenge has been completed
+- every edge-case scenario is scoreable today
 
----
+The current proof ladder is evidence-first: make outcomes observable, keep
+unsupported scenarios separate from failures and wins, publish raw benchmark
+artifacts, and increase volume only after correctness gates remain clean.
 
-**Issue**: Service Bus messages not processing
+## Troubleshooting
 
-**Solution**:
-1. Check workflow is enabled and running
-2. Verify managed identity has Service Bus Data Receiver role
-3. Check dead-letter queue for failed messages
+Check cluster health:
 
-### Get Help
+```bash
+kubectl get pods -n HealthCoreX
+kubectl describe pod -n HealthCoreX <pod-name>
+kubectl logs -n HealthCoreX deploy/claims-service --tail=100
+```
 
-- 📖 [Full Documentation](./ONBOARDING.md)
-- 🐛 [Report Issues](https://github.com/aurelianware/cloudhealthoffice/issues)
-- 💬 [Community Discussions](https://github.com/aurelianware/cloudhealthoffice/discussions)
-- 📧 Email: support@aurelianware.com
+Restart a service:
 
-## 🎓 Next Steps
+```bash
+kubectl rollout restart deployment/claims-service -n HealthCoreX
+kubectl rollout status deployment/claims-service -n HealthCoreX
+```
 
-After successful deployment:
+Common issues:
 
-1. **Configure Trading Partners**: Set up clearinghouse credentials and X12 agreements
-2. **Enable Production Features**: Scale AKS node pools and configure production Argo workflow parameters
-3. **Set Up CI/CD**: Configure GitHub Actions for automated deployments
-4. **Customize Workflows**: Extend templates for payer-specific requirements
-5. **Train Your Team**: Review HIPAA compliance and operational procedures
+| Symptom | Check |
+| --- | --- |
+| Portal cannot load runs | Confirm claims-service port-forward or in-cluster service is healthy |
+| Claims API 401/tenant errors | Include `X-Tenant-ID: demo` for direct local API calls |
+| MCC job finishes but no console run appears | Check `PUBLISH_DASHBOARD` defaults and claims-service connectivity in job logs |
+| Slow 100K lifecycle | Separate fixture preparation duration from timed processing duration |
+| Payment mismatches | Inspect expected payment, actual payment, tolerance, and line adjudication |
 
-## 📚 Additional Resources
+## Additional Resources
 
-- [Architecture Documentation](./ARCHITECTURE.md)
-- [Deployment Guide](./DEPLOYMENT.md)
-- [Security Best Practices](./SECURITY.md)
-- [HIPAA Compliance Matrix](./docs/HIPAA-COMPLIANCE-MATRIX.md)
-- [API Reference](./docs/API-REFERENCE.md)
-
----
-
-**Cloud Health Office** – The Future of Healthcare EDI Integration
-
-*Source-Available | Azure-Native | Production-Grade | HIPAA-Compliant*
+- [Repository README](../../README.md)
+- [Website Quick Start](https://HealthCoreX.com/docs/quickstart)
+- [Kubernetes Reference](https://HealthCoreX.com/docs/quickstart-kubernetes)
+- [Architecture overview](../architecture/ARCHITECTURE.md)
+- [Deployment guide](DEPLOYMENT.md)
+- [Million Claim Challenge evidence archive](https://HealthCoreX.com/docs/million-claim-challenge/evidence)
+- [Episode 008 benchmark results](../million-claim-challenge/podcast/episode-008/benchmark-results.txt)

@@ -35,7 +35,7 @@ defaults.
 
 - **Simplified workflow**: Single production deployment on main branch
 - **No environment drift**: DEV/UAT workflows disabled
-- **Single resource group**: `rg-cloudhealthoffice-prod`
+- **Single resource group**: `rg-HealthCoreX-prod`
 
 ## Prerequisites
 
@@ -62,12 +62,12 @@ defaults.
 
 **With Secure Defaults** (optional):
 
-- `AZURE_RG_NAME` - Default: `rg-cloudhealthoffice-prod`
-- `BASE_NAME` - Default: `cloudhealthoffice`
+- `AZURE_RG_NAME` - Default: `rg-HealthCoreX-prod`
+- `BASE_NAME` - Default: `HealthCoreX`
 - `AZURE_LOCATION` - Default: `eastus`
 - `AZURE_CONNECTOR_LOCATION` - Default: `eastus`
 - `IA_NAME` - Default: `prod-integration-account`
-- `SERVICE_BUS_NAME` - Default: `cloudhealthoffice-sb`
+- `SERVICE_BUS_NAME` - Default: `HealthCoreX-sb`
 - `STORAGE_SKU` - Default: `Standard_LRS`
 
 ## Deployment Process
@@ -84,7 +84,7 @@ az login
 az account set --subscription "YOUR_SUBSCRIPTION_ID"
 
 # 3. Create app registration
-./scripts/ensure-app-registration.sh "cloudhealthoffice-prod"
+./scripts/ensure-app-registration.sh "HealthCoreX-prod"
 
 # Output will include:
 # - Application (Client) ID
@@ -106,7 +106,7 @@ az account set --subscription "YOUR_SUBSCRIPTION_ID"
 Add the following secrets in GitHub repository settings (Settings → Secrets
 and variables → Actions):
 
-1. Go to `https://github.com/aurelianware/cloudhealthoffice/settings/secrets/actions`
+1. Go to `https://github.com/aurelianware/HealthCoreX/settings/secrets/actions`
 2. Add secrets:
    - `AZURE_CLIENT_ID`: Application ID from Step 1.3
    - `AZURE_TENANT_ID`: Tenant ID from Step 1.3
@@ -165,17 +165,17 @@ The deployment includes these stages:
 
 **Created if missing**:
 
-- Display Name: `cloudhealthoffice-prod`
+- Display Name: `HealthCoreX-prod`
 - Sign-in Audience: Multi-tenant (`AzureADMultipleOrgs`)
 - Redirect URIs:
-  - `https://cloudhealthoffice.com/.auth/login/aad/callback`
+  - `https://HealthCoreX.com/.auth/login/aad/callback`
   - `https://kind-wave-053ff9e1e.azurestaticapps.net/.auth/login/aad/callback`
   - `http://localhost:3000/.auth/login/aad/callback` (dev)
 - API Permissions:
   - Microsoft Graph: User.Read, openid, profile, email
 - Federated Credentials:
-  - GitHub Actions (main branch): `repo:aurelianware/cloudhealthoffice:ref:refs/heads/main`
-  - GitHub Actions (pull requests): `repo:aurelianware/cloudhealthoffice:pull_request`
+  - GitHub Actions (main branch): `repo:aurelianware/HealthCoreX:ref:refs/heads/main`
+  - GitHub Actions (pull requests): `repo:aurelianware/HealthCoreX:pull_request`
 
 ### Service Principal
 
@@ -183,7 +183,7 @@ The deployment includes these stages:
 
 - Based on app registration above
 - RBAC Roles:
-  - **Contributor** on resource group `rg-cloudhealthoffice-prod`
+  - **Contributor** on resource group `rg-HealthCoreX-prod`
   - **Website Contributor** on Static Web App (if exists)
   - **Key Vault Secrets User** on deployment Key Vault (if exists)
 
@@ -191,7 +191,7 @@ The deployment includes these stages:
 
 **Deployed by infrastructure**:
 
-- Name: `cloudhealthoffice-deploy-kv`
+- Name: `HealthCoreX-deploy-kv`
 - SKU: Premium (HIPAA-compliant with HSM-backed keys)
 - Soft Delete: Enabled (90-day retention)
 - Purge Protection: Enabled
@@ -210,21 +210,21 @@ These are automatically managed by the provisioning scripts
 (`ensure-app-registration.sh` and `ensure-service-principal.sh`):
 
 - `app-registration-name`: Azure AD app registration display name
-  (default: `cloudhealthoffice-prod`)
+  (default: `HealthCoreX-prod`)
 - `github-repository`: GitHub repository for OIDC federated credentials
-  (default: `aurelianware/cloudhealthoffice`)
+  (default: `aurelianware/HealthCoreX`)
 - `oidc-issuer`: OIDC token issuer for GitHub Actions
   (default: `https://token.actions.githubusercontent.com`)
 - `redirect-uri-production`: Production domain redirect URI
-  (default: `https://cloudhealthoffice.com/.auth/login/aad/callback`)
+  (default: `https://HealthCoreX.com/.auth/login/aad/callback`)
 - `redirect-uri-azure`: Azure Static Web App redirect URI
   (default: `https://kind-wave-053ff9e1e.azurestaticapps.net/.auth/login/aad/callback`)
 - `redirect-uri-local`: Local development redirect URI
   (default: `http://localhost:3000/.auth/login/aad/callback`)
 - `resource-group-name`: Azure resource group name
-  (default: `rg-cloudhealthoffice-prod`)
+  (default: `rg-HealthCoreX-prod`)
 - `base-name`: Base name for all Azure resources
-  (default: `cloudhealthoffice`)
+  (default: `HealthCoreX`)
 
 **How it works**:
 
@@ -238,7 +238,7 @@ These are automatically managed by the provisioning scripts
 ### Three-Tier Fallback
 
 ```text
-Priority 1: Azure Key Vault (cloudhealthoffice-deploy-kv)
+Priority 1: Azure Key Vault (HealthCoreX-deploy-kv)
     ↓ (if not found or empty)
 Priority 2: GitHub Secrets
     ↓ (if not configured)
@@ -255,7 +255,7 @@ Priority 3: Secure Defaults (placeholders for non-production)
 
 ```bash
 # Set Key Vault name
-KV_NAME="cloudhealthoffice-deploy-kv"
+KV_NAME="HealthCoreX-deploy-kv"
 
 # Add SFTP secrets
 az keyvault secret set --vault-name "$KV_NAME" --name sftp-host \
@@ -346,7 +346,7 @@ The Static Web App is configured for multi-tenant Azure AD authentication:
 
 After deployment, configure the Static Web App in Azure Portal:
 
-1. Navigate to Static Web App: `cloudhealthoffice-swa`
+1. Navigate to Static Web App: `HealthCoreX-swa`
 2. Go to Configuration → Application settings
 3. Add settings:
    - `AZURE_AD_CLIENT_ID`: Application ID from app registration
@@ -354,16 +354,16 @@ After deployment, configure the Static Web App in Azure Portal:
 
 ## Deployed Resources
 
-### Resource Group: rg-cloudhealthoffice-prod
+### Resource Group: rg-HealthCoreX-prod
 
 | Resource | Type | Purpose |
 | -------- | ---- | ------- |
-| `cloudhealthoffice-deploy-kv` | Key Vault | Deployment secrets storage |
+| `HealthCoreX-deploy-kv` | Key Vault | Deployment secrets storage |
 | `stagingXXXXXXXX` | Storage Account | HIPAA attachments (ADLS Gen2) |
-| `cloudhealthoffice-sb` | Service Bus | EDI transaction messaging |
+| `HealthCoreX-sb` | Service Bus | EDI transaction messaging |
 | AKS cluster (`cho-aks`) | Azure Kubernetes Service | Argo Workflows EDI orchestration |
-| `cloudhealthoffice-swa` | Static Web App | Portal frontend |
-| `cloudhealthoffice-ai` | Application Insights | Monitoring and telemetry |
+| `HealthCoreX-swa` | Static Web App | Portal frontend |
+| `HealthCoreX-ai` | Application Insights | Monitoring and telemetry |
 | C# EDI microservices (on AKS) | Kubernetes Deployments | X12 EDI parsing/generation |
 
 ## Troubleshooting
@@ -405,7 +405,7 @@ az ad sp create --id "YOUR_APP_CLIENT_ID"
 #### Issue: Key Vault secrets not found
 
 ```text
-Warning: Key Vault 'cloudhealthoffice-deploy-kv' not found
+Warning: Key Vault 'HealthCoreX-deploy-kv' not found
 ```
 
 **Solution**: This is expected on first deployment. The workflow will use
@@ -426,8 +426,8 @@ Error: Unable to retrieve deployment token
 ```bash
 # Get deployment token from Azure
 az staticwebapp secrets list \
-  --name "cloudhealthoffice-swa" \
-  --resource-group "rg-cloudhealthoffice-prod" \
+  --name "HealthCoreX-swa" \
+  --resource-group "rg-HealthCoreX-prod" \
   --query "properties.apiKey" -o tsv
 ```
 
@@ -456,12 +456,12 @@ The workflow automatically performs health checks:
 
 ```bash
 # Set variables
-RG_NAME="rg-cloudhealthoffice-prod"
-BASE_NAME="cloudhealthoffice"
+RG_NAME="rg-HealthCoreX-prod"
+BASE_NAME="HealthCoreX"
 
 # Check AKS cluster and Argo Workflows
 kubectl get nodes
-kubectl get workflows -n cloudhealthoffice
+kubectl get workflows -n HealthCoreX
 
 # Check Static Web App
 az staticwebapp show -n "${BASE_NAME}-swa" -g "$RG_NAME" \
@@ -507,7 +507,7 @@ git push origin main
 
 If automation fails, use Azure Portal:
 
-1. Navigate to resource group `rg-cloudhealthoffice-prod`
+1. Navigate to resource group `rg-HealthCoreX-prod`
 2. Select "Deployments" in left menu
 3. Find last successful deployment
 4. Click "Redeploy"
@@ -528,7 +528,7 @@ If automation fails, use Azure Portal:
 | `redirect-uri-azure` | Config | Azure redirect | `https://...` | Auto |
 | `redirect-uri-local` | Config | Local redirect | `http://...` | Auto |
 | `resource-group-name` | Config | Resource group | `rg-...prod` | Auto |
-| `base-name` | Config | Base name | `cloudhealthoffice` | Auto |
+| `base-name` | Config | Base name | `HealthCoreX` | Auto |
 
 \* Required for production use. Pipeline will use defaults if not set.  
 Auto = Automatically populated by provisioning scripts on first run.
@@ -536,7 +536,7 @@ Auto = Automatically populated by provisioning scripts on first run.
 ### How to Populate Required Secrets
 
 ```bash
-KV_NAME="cloudhealthoffice-deploy-kv"
+KV_NAME="HealthCoreX-deploy-kv"
 
 # Production SFTP credentials (required)
 az keyvault secret set --vault-name "$KV_NAME" --name sftp-host \

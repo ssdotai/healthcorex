@@ -1,10 +1,10 @@
 using ClaimsService.Models;
 using ClaimsService.Services.Adjudication.Mapping;
 using ClaimsService.Services.Resolution;
-using EngineModels = CloudHealthOffice.ClaimsScrubEngine.Models;
+using EngineModels = HealthCoreX.ClaimsScrubEngine.Models;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Services.Adjudication.Mapping;
+namespace HealthCoreX.ClaimsService.Tests.Services.Adjudication.Mapping;
 
 /// <summary>
 /// Capability 5.4 — verifies that <see cref="ClaimToX12837Mapper"/>

@@ -701,7 +701,7 @@ setInterval(() => {
 
 For questions, issues, or feature requests:
 
-- **GitHub Issues**: https://github.com/aurelianware/cloudhealthoffice/issues
+- **GitHub Issues**: https://github.com/aurelianware/HealthCoreX/issues
 - **Documentation**: See /docs directory
 - **Email**: support@aurelianware.com
 

@@ -1,6 +1,6 @@
 using ClaimsExaminerService.Models;
-using CloudHealthOffice.Events;
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.Events;
+using HealthCoreX.Infrastructure.Messaging;
 
 namespace ClaimsExaminerService.Services.Events;
 

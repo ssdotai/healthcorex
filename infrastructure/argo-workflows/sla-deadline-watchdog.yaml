@@ -4,7 +4,7 @@ metadata:
   name: sla-deadline-watchdog
   namespace: cho-workflows
   labels:
-    app: cloudhealthoffice
+    app: HealthCoreX
     component: authorization-service
     function: sla-watchdog
   annotations:
@@ -27,9 +27,9 @@ spec:
     arguments:
       parameters:
       - name: authorization-service-url
-        value: "http://authorization-service.cloudhealthoffice"
+        value: "http://authorization-service.HealthCoreX"
       - name: kafka-bootstrap
-        value: "kafka.cloudhealthoffice:9092"
+        value: "kafka.HealthCoreX:9092"
       - name: kafka-topic
         value: "sla-escalation"
       - name: min-level
@@ -87,7 +87,7 @@ spec:
           factor: 2
           maxDuration: "5m"
       container:
-        image: ghcr.io/aurelianware/cloudhealthoffice-kafka-publisher:latest
+        image: ghcr.io/aurelianware/HealthCoreX-kafka-publisher:latest
         command: [sh, -c]
         args:
           - |

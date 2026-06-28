@@ -18,8 +18,8 @@ permissions:
   contents: read
 
 env:
-  IMAGE_NAME: cloudhealthoffice-api-docs
-  RESOURCE_GROUP: rg-cloudhealthoffice-prod
+  IMAGE_NAME: HealthCoreX-api-docs
+  RESOURCE_GROUP: rg-HealthCoreX-prod
   AKS_CLUSTER: cho-aks
 
 jobs:
@@ -29,10 +29,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Azure login via OIDC
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -70,11 +70,11 @@ jobs:
           # Update image to the new SHA-tagged version
           kubectl set image deployment/api-docs \
             api-docs="${IMAGE_TAG}" \
-            -n cloudhealthoffice
+            -n HealthCoreX
 
           # Wait for rollout
           kubectl rollout status deployment/api-docs \
-            -n cloudhealthoffice \
+            -n HealthCoreX \
             --timeout=120s
 
           # Apply KEDA HTTP ScaledObject only if the CRD is present
@@ -90,6 +90,6 @@ jobs:
           echo "Verifying api-docs pod is ready..."
           kubectl wait --for=condition=ready pod \
             -l app=api-docs \
-            -n cloudhealthoffice \
+            -n HealthCoreX \
             --timeout=60s
           echo "✅ API Docs pod is ready"

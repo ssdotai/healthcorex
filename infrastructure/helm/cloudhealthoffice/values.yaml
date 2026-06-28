@@ -17,28 +17,28 @@ global:
 # Namespace configuration
 namespace:
   create: true
-  name: cloudhealthoffice
+  name: HealthCoreX
 
 # Container images
 images:
   x12Parser:
-    repository: cloudhealthoffice/x12-parser
+    repository: HealthCoreX/x12-parser
     tag: "latest"
     pullPolicy: IfNotPresent
   x12Encoder:
-    repository: cloudhealthoffice/x12-encoder
+    repository: HealthCoreX/x12-encoder
     tag: "latest"
     pullPolicy: IfNotPresent
   sftpFetcher:
-    repository: cloudhealthoffice/sftp-fetcher
+    repository: HealthCoreX/sftp-fetcher
     tag: "latest"
     pullPolicy: IfNotPresent
   metadataExtractor:
-    repository: cloudhealthoffice/metadata-extractor
+    repository: HealthCoreX/metadata-extractor
     tag: "latest"
     pullPolicy: IfNotPresent
   kafkaPublisher:
-    repository: cloudhealthoffice/kafka-publisher
+    repository: HealthCoreX/kafka-publisher
     tag: "latest"
     pullPolicy: IfNotPresent
 
@@ -283,15 +283,15 @@ vault:
   hashicorp:
     # Internal address if Vault is deployed in the same cluster
     # Use HTTPS for production deployments (TLS required for PHI compliance)
-    address: "https://vault.cloudhealthoffice.svc:8200"
+    address: "https://vault.HealthCoreX.svc:8200"
     # External address for Vault outside the cluster
     # address: "https://vault.example.com"
     
     # Kubernetes auth method role
-    role: "cloudhealthoffice"
+    role: "HealthCoreX"
     
     # Path to secrets in Vault KV v2
-    secretPath: "cloudhealthoffice/data"
+    secretPath: "HealthCoreX/data"
     
     # Enable Vault Agent Injector for automatic secret injection
     agentInject:
@@ -299,23 +299,23 @@ vault:
       # Secrets to inject into pods
       secrets:
         - name: sftp
-          path: "cloudhealthoffice/data/sftp"
+          path: "HealthCoreX/data/sftp"
           template: |
-            {{- with secret "cloudhealthoffice/data/sftp" -}}
+            {{- with secret "HealthCoreX/data/sftp" -}}
             SFTP_USERNAME={{ .Data.data.username }}
             SFTP_PASSWORD={{ .Data.data.password }}
             {{- end -}}
         - name: backend
-          path: "cloudhealthoffice/data/backend"
+          path: "HealthCoreX/data/backend"
           template: |
-            {{- with secret "cloudhealthoffice/data/backend" -}}
+            {{- with secret "HealthCoreX/data/backend" -}}
             CLAIMS_BACKEND_API_TOKEN={{ .Data.data.apiToken }}
             claims backend_BASE_URL={{ .Data.data.baseUrl }}
             {{- end -}}
         - name: kafka
-          path: "cloudhealthoffice/data/kafka"
+          path: "HealthCoreX/data/kafka"
           template: |
-            {{- with secret "cloudhealthoffice/data/kafka" -}}
+            {{- with secret "HealthCoreX/data/kafka" -}}
             KAFKA_SASL_USERNAME={{ .Data.data.saslUsername }}
             KAFKA_SASL_PASSWORD={{ .Data.data.saslPassword }}
             {{- end -}}

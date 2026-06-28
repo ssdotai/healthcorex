@@ -3,11 +3,11 @@ FROM ${REGISTRY}/dotnet/sdk:8.0 AS build
 WORKDIR /repo
 
 COPY src/services/consent-service/consent-service.csproj src/services/consent-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
 RUN dotnet restore src/services/consent-service/consent-service.csproj
 
 COPY src/services/consent-service/ src/services/consent-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
 RUN dotnet build src/services/consent-service/consent-service.csproj -c Release --no-restore
 
 FROM build AS publish

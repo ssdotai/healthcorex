@@ -2,11 +2,11 @@ using System.Diagnostics;
 using Hl7.Fhir.Model;
 using FhirService.Models;
 using Microsoft.Extensions.Options;
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;  // ← NEW
-using CloudHealthOffice.ProviderEnrollmentService.Models;        // ← NEW
-using CloudHealthOffice.PriorAuthRuleEngine.Abstractions;        // ← NEW
-using CloudHealthOffice.PriorAuthRuleEngine.Domain;              // ← NEW
-using CloudHealthOffice.PriorAuthRuleEngine.Models;              // ← NEW
+using HealthCoreX.ProviderEnrollmentService.Abstractions;  // ← NEW
+using HealthCoreX.ProviderEnrollmentService.Models;        // ← NEW
+using HealthCoreX.PriorAuthRuleEngine.Abstractions;        // ← NEW
+using HealthCoreX.PriorAuthRuleEngine.Domain;              // ← NEW
+using HealthCoreX.PriorAuthRuleEngine.Models;              // ← NEW
 
 namespace FhirService.Services;
 
@@ -339,13 +339,13 @@ public class PasAutoAdjudicator : IPasAutoAdjudicator
     /// Map FHIR-layer PaLineOfBusiness to the enrollment service's LineOfBusiness flags.
     /// The enrollment service uses [Flags] enum; PaLineOfBusiness is a plain enum.
     /// </summary>
-    private static CloudHealthOffice.ProviderEnrollmentService.Models.LineOfBusiness
+    private static HealthCoreX.ProviderEnrollmentService.Models.LineOfBusiness
         MapToPaEnrollmentLob(PaLineOfBusiness lob) => lob switch
     {
-        PaLineOfBusiness.Medicaid  => CloudHealthOffice.ProviderEnrollmentService.Models.LineOfBusiness.Medicaid,
-        PaLineOfBusiness.Exchange  => CloudHealthOffice.ProviderEnrollmentService.Models.LineOfBusiness.Marketplace,
-        PaLineOfBusiness.Medicare  => CloudHealthOffice.ProviderEnrollmentService.Models.LineOfBusiness.Medicare,
-        _                          => CloudHealthOffice.ProviderEnrollmentService.Models.LineOfBusiness.None
+        PaLineOfBusiness.Medicaid  => HealthCoreX.ProviderEnrollmentService.Models.LineOfBusiness.Medicaid,
+        PaLineOfBusiness.Exchange  => HealthCoreX.ProviderEnrollmentService.Models.LineOfBusiness.Marketplace,
+        PaLineOfBusiness.Medicare  => HealthCoreX.ProviderEnrollmentService.Models.LineOfBusiness.Medicare,
+        _                          => HealthCoreX.ProviderEnrollmentService.Models.LineOfBusiness.None
     };
 
     // ── Decision factories (unchanged) ────────────────────────────

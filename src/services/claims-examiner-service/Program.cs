@@ -3,10 +3,10 @@ using ClaimsExaminerService.Services.Anthropic;
 using ClaimsExaminerService.Services.Events;
 using ClaimsExaminerService.Services.Examiner;
 using ClaimsExaminerService.Services.Kafka;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.Extensions;
-using CloudHealthOffice.Infrastructure.Messaging;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Extensions;
+using HealthCoreX.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,7 +77,7 @@ app.UseChoObservability();
 // Shared middleware pipeline
 app.UseChoInfrastructure(builder.Configuration);
 
-app.UseMiddleware<CloudHealthOffice.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
+app.UseMiddleware<HealthCoreX.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
 app.MapControllers();
 
 app.Run();

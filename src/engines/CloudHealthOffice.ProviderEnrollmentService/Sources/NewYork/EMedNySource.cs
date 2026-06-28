@@ -1,9 +1,9 @@
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Cache;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Cache;
+using HealthCoreX.ProviderEnrollmentService.Models;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Sources.NewYork;
+namespace HealthCoreX.ProviderEnrollmentService.Sources.NewYork;
 
 /// <summary>
 /// New York eMedNY (Medicaid Management Information System).

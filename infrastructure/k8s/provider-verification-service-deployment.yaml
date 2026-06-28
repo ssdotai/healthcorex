@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: provider-verification-service-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 data:
   ASPNETCORE_ENVIRONMENT: "Production"
   ProviderVerification__NppesApiBaseUrl: "https://npiregistry.cms.hhs.gov/api/"
@@ -12,7 +12,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: provider-verification-service-secrets
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 type: Opaque
 stringData:
   ProviderVerification__SamGovApiKey: ""
@@ -21,7 +21,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: provider-verification-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: provider-verification-service
     version: v1
@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
       - name: provider-verification-service
-        image: ghcr.io/aurelianware/cloudhealthoffice-provider-verification-service:latest
+        image: ghcr.io/aurelianware/HealthCoreX-provider-verification-service:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -89,7 +89,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: provider-verification-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: provider-verification-service
 spec:

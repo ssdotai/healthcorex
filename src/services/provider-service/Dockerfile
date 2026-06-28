@@ -4,12 +4,12 @@ WORKDIR /repo
 
 # Copy csproj files and restore (preserves layer caching)
 COPY src/services/provider-service/provider-service.csproj src/services/provider-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
 RUN dotnet restore src/services/provider-service/provider-service.csproj
 
 # Copy source code and build
 COPY src/services/provider-service/ src/services/provider-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
 RUN dotnet build src/services/provider-service/provider-service.csproj -c Release --no-restore
 
 # Publish stage

@@ -32,7 +32,7 @@ public class CapitationContractRepository : ICapitationContractRepository
         IHttpContextAccessor httpContextAccessor,
         ILogger<CapitationContractRepository> logger)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         _container = cosmosClient.GetContainer(databaseName, "CapitationContracts");
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;

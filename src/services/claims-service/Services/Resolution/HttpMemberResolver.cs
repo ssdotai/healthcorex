@@ -81,6 +81,9 @@ public class HttpMemberResolver : IMemberResolver
                 EnrollmentStatus = dto.Status,
                 EffectiveDate = dto.EffectiveDate,
                 TerminationDate = dto.TerminationDate,
+                PlanChangeEffectiveDate = dto.PlanChangeEffectiveDate,
+                MedicaidSpendDownLiabilityAmount = dto.MedicaidSpendDownLiabilityAmount,
+                MedicaidSpendDownAmountMet = dto.MedicaidSpendDownAmountMet,
             };
         }
         catch (Exception ex) when (ex is HttpRequestException
@@ -107,5 +110,8 @@ public class HttpMemberResolver : IMemberResolver
         public string? Status { get; set; }
         public DateTime? EffectiveDate { get; set; }
         public DateTime? TerminationDate { get; set; }
+        public DateTime? PlanChangeEffectiveDate { get; set; }
+        public decimal? MedicaidSpendDownLiabilityAmount { get; set; }
+        public decimal MedicaidSpendDownAmountMet { get; set; }
     }
 }

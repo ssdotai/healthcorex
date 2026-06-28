@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 
-namespace CloudHealthOffice.E2E;
+namespace HealthCoreX.E2E;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Eligibility (270/271) golden-path E2E test

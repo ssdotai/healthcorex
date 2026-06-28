@@ -3,7 +3,7 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.Infrastructure.Configuration;
+namespace HealthCoreX.Infrastructure.Configuration;
 
 /// <summary>
 /// <see cref="ISecretProvider"/> implementation backed by Azure Key Vault.

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using CloudHealthOffice.NcciEngine.Domain;
+using HealthCoreX.NcciEngine.Domain;
 
-namespace CloudHealthOffice.NcciEngine.Models;
+namespace HealthCoreX.NcciEngine.Models;
 
 // ═══════════════════════════════════════════════════════════════════
 // NCCI ENGINE — REQUEST / RESPONSE MODELS

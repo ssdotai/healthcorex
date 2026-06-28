@@ -1,9 +1,9 @@
-using CloudHealthOffice.FeeScheduleEngine.Domain;
-using CloudHealthOffice.FeeScheduleEngine.Models;
-using CloudHealthOffice.FeeScheduleEngine.Persistence;
+using HealthCoreX.FeeScheduleEngine.Domain;
+using HealthCoreX.FeeScheduleEngine.Models;
+using HealthCoreX.FeeScheduleEngine.Persistence;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.FeeScheduleEngine.Services;
+namespace HealthCoreX.FeeScheduleEngine.Services;
 
 /// <summary>
 /// Core rate resolution engine.

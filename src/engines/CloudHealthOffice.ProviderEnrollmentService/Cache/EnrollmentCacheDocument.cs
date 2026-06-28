@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.ProviderEnrollmentService.Models;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Cache;
+namespace HealthCoreX.ProviderEnrollmentService.Cache;
 
 /// <summary>
 /// Cosmos DB document wrapper for StateEnrollmentRecord.

@@ -299,7 +299,7 @@ When a new health plan signs up:
 4. **Credentials sent** via secure channel (not email!)
 5. **Test connection**:
    ```bash
-   sftp bcbs-florida@sftp.cloudhealthoffice.com
+   sftp bcbs-florida@sftp.HealthCoreX.com
    cd availity/inbound/276
    put test-claim-status-request.edi
    ```

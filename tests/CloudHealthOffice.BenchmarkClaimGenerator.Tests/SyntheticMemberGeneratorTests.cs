@@ -1,9 +1,9 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Configuration;
-using CloudHealthOffice.BenchmarkClaimGenerator.Generators;
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
-using CloudHealthOffice.BenchmarkClaimGenerator.ReferenceData;
+using HealthCoreX.BenchmarkClaimGenerator.Configuration;
+using HealthCoreX.BenchmarkClaimGenerator.Generators;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.ReferenceData;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Tests;
+namespace HealthCoreX.BenchmarkClaimGenerator.Tests;
 
 public class SyntheticMemberGeneratorTests
 {

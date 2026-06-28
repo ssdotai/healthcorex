@@ -4,7 +4,7 @@ using ClaimsExaminerService.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsExaminerService.Tests.Services;
+namespace HealthCoreX.ClaimsExaminerService.Tests.Services;
 
 /// <summary>
 /// Capability 5.9 / Plan-First Decision 16 / D.1 — verifies bounded

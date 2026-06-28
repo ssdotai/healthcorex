@@ -3,7 +3,7 @@ using AttachmentService.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace CloudHealthOffice.Edi.Tests;
+namespace HealthCoreX.Edi.Tests;
 
 /// <summary>
 /// Tests for the 824 Application Advice rejection catalog:

@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using OpenTelemetry;
 
-namespace CloudHealthOffice.Infrastructure.Observability;
+namespace HealthCoreX.Infrastructure.Observability;
 
 /// <summary>
 /// Mandatory PHI-scrubbing SpanProcessor. Runs on <see cref="OnEnd"/> and

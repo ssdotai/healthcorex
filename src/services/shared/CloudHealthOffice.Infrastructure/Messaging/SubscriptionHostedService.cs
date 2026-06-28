@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.Infrastructure.Messaging;
+namespace HealthCoreX.Infrastructure.Messaging;
 
 /// <summary>
 /// Runs an <see cref="IMessageSubscription"/> under the ASP.NET Core host

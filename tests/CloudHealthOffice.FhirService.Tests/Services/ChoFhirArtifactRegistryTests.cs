@@ -2,7 +2,7 @@ using FhirService.Services;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.FhirService.Tests.Services;
+namespace HealthCoreX.FhirService.Tests.Services;
 
 /// <summary>
 /// Unit tests for <see cref="ChoFhirArtifactRegistry"/> — verifies embedded

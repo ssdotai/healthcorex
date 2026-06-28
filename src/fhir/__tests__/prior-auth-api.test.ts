@@ -495,7 +495,7 @@ describe('Prior Authorization API - Da Vinci CRD Integration', () => {
       });
       
       expect(request.hook).toBe('order-sign');
-      expect(request.fhirServer).toBe('https://fhir.cloudhealthoffice.com');
+      expect(request.fhirServer).toBe('https://fhir.HealthCoreX.com');
     });
     
     it('should create appointment-book hook request', () => {
@@ -912,10 +912,10 @@ describe('Prior Authorization API - Orchestration Configuration', () => {
   describe('createOrchestrationConfig', () => {
     
     it('should create orchestration config for dev environment', () => {
-      const config = createOrchestrationConfig('https://dev.cloudhealthoffice.com', 'dev');
+      const config = createOrchestrationConfig('https://dev.HealthCoreX.com', 'dev');
       
-      expect(config.endpoints.submitRequest).toBe('https://dev.cloudhealthoffice.com/api/prior-auth/submit');
-      expect(config.endpoints.checkStatus).toBe('https://dev.cloudhealthoffice.com/api/prior-auth/status');
+      expect(config.endpoints.submitRequest).toBe('https://dev.HealthCoreX.com/api/prior-auth/submit');
+      expect(config.endpoints.checkStatus).toBe('https://dev.HealthCoreX.com/api/prior-auth/status');
       expect(config.serviceBus.requestTopic).toBe('prior-auth-requests-dev');
       expect(config.serviceBus.responseTopic).toBe('prior-auth-responses-dev');
       expect(config.clearinghouse.tradingPartnerId).toBe('CLEARINGHOUSE');
@@ -924,7 +924,7 @@ describe('Prior Authorization API - Orchestration Configuration', () => {
     });
     
     it('should create orchestration config for prod environment', () => {
-      const config = createOrchestrationConfig('https://cloudhealthoffice.com', 'prod');
+      const config = createOrchestrationConfig('https://HealthCoreX.com', 'prod');
       
       expect(config.serviceBus.requestTopic).toBe('prior-auth-requests-prod');
       expect(config.serviceBus.responseTopic).toBe('prior-auth-responses-prod');
@@ -935,11 +935,11 @@ describe('Prior Authorization API - Orchestration Configuration', () => {
     });
     
     it('should create orchestration config for uat environment', () => {
-      const config = createOrchestrationConfig('https://uat.cloudhealthoffice.com', 'uat');
+      const config = createOrchestrationConfig('https://uat.HealthCoreX.com', 'uat');
       
       expect(config.serviceBus.requestTopic).toBe('prior-auth-requests-uat');
-      expect(config.endpoints.submitDocumentation).toBe('https://uat.cloudhealthoffice.com/api/prior-auth/documentation');
-      expect(config.endpoints.cancelAuthorization).toBe('https://uat.cloudhealthoffice.com/api/prior-auth/cancel');
+      expect(config.endpoints.submitDocumentation).toBe('https://uat.HealthCoreX.com/api/prior-auth/documentation');
+      expect(config.endpoints.cancelAuthorization).toBe('https://uat.HealthCoreX.com/api/prior-auth/cancel');
     });
   });
 });

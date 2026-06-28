@@ -1,10 +1,10 @@
-using CloudHealthOffice.BenefitEngine.Domain;
-using CloudHealthOffice.BenefitEngine.Models;
-using CloudHealthOffice.BenefitEngine.Services;
+using HealthCoreX.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Models;
+using HealthCoreX.BenefitEngine.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace CloudHealthOffice.BenefitEngine.Tests;
+namespace HealthCoreX.BenefitEngine.Tests;
 
 /// <summary>
 /// Capability BP 5.10 — contract tests for <see cref="BenefitRuleGate"/>.

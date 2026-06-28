@@ -1,11 +1,11 @@
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.Infrastructure.Tests.Messaging;
+namespace HealthCoreX.Infrastructure.Tests.Messaging;
 
 public class MessagingOptionsAutoResolutionTests
 {

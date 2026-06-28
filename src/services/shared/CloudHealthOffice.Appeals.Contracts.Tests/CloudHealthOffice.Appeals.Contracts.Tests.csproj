@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <RootNamespace>CloudHealthOffice.Appeals.Contracts.Tests</RootNamespace>
+    <RootNamespace>HealthCoreX.Appeals.Contracts.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CloudHealthOffice.Appeals.Contracts\CloudHealthOffice.Appeals.Contracts.csproj" />
+    <ProjectReference Include="..\HealthCoreX.Appeals.Contracts\HealthCoreX.Appeals.Contracts.csproj" />
     <!--
       The drift test reflects over both the Contracts AppealDto and the
       appeals-service domain Appeal to prove the two shapes stay in

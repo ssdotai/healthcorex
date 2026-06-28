@@ -687,13 +687,13 @@ The prompt suggested five missing artifacts; each is evaluated below with an acc
 
 ### `docs/adr/007-shared-contracts-project.md` — ACCEPT
 
-- **Why it should exist:** `CloudHealthOffice.Appeals.Contracts` is now the template for cross-service DTO sharing; the decision should be recorded so that later services copy the pattern rather than re-invent.
+- **Why it should exist:** `HealthCoreX.Appeals.Contracts` is now the template for cross-service DTO sharing; the decision should be recorded so that later services copy the pattern rather than re-invent.
 - **Target layer:** not-layer-specific (cross-cutting)
 - **Proposed outline:**
   - Context: cross-service DTOs were previously duplicated or Newtonsoft-serialized
   - Decision: per-domain `*.Contracts` shared projects under `src/services/shared/` with System.Text.Json as the canonical serializer
   - Consequences: Layer 2 domain rollouts adopt this pattern
-  - References: `src/services/shared/CloudHealthOffice.Appeals.Contracts/`
+  - References: `src/services/shared/HealthCoreX.Appeals.Contracts/`
 - **Scope estimate:** small
 
 ### `docs/deployment/APPEALS-RUNBOOK.md` — ACCEPT

@@ -28,7 +28,7 @@ python containers/x12-276-parser/parse-276.py test-x12-276-claim-status-request.
 
 # Test 276 ingestion workflow
 kubectl create -f argo-workflows/x12-276-ingest.yaml
-argo submit -n cloudhealthoffice --from workflowtemplate/x12-276-ingest
+argo submit -n HealthCoreX --from workflowtemplate/x12-276-ingest
 ```
 
 ### test-x12-277-claim-status-response.edi
@@ -62,7 +62,7 @@ python containers/x12-encoder/generate_277.py \
   --output test-277-output.edi
 
 # Test 277 generation workflow
-argo submit -n cloudhealthoffice --from workflowtemplate/x12-277-claim-status
+argo submit -n HealthCoreX --from workflowtemplate/x12-277-claim-status
 ```
 
 ## Status Codes Reference

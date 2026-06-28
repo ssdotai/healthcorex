@@ -64,8 +64,8 @@ builder.Configuration.AddAzureKeyVault(
   - Rate limiting: 1000 requests/5min per IP
   - Geo-blocking: allow only US/Canada for beta
   - Bot protection: block known malicious user agents
-- [ ] Route Blazor portal through WAF (portal.cloudhealthoffice.com)
-- [ ] Route all API microservices through WAF (api.cloudhealthoffice.com)
+- [ ] Route Blazor portal through WAF (portal.HealthCoreX.com)
+- [ ] Route all API microservices through WAF (api.HealthCoreX.com)
 - [ ] Configure health probe exclusions for `/health` and `/ready` endpoints
 - [ ] Test with OWASP ZAP automated scans
 - [ ] Set up alerts for WAF blocks (threshold: >100 blocks/hour)
@@ -88,8 +88,8 @@ Internet → Azure Front Door/WAF → AKS Ingress → Services
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   tls:
   - hosts:
-    - portal.cloudhealthoffice.com
-    secretName: cloudhealthoffice-tls
+    - portal.HealthCoreX.com
+    secretName: HealthCoreX-tls
   ```
 - [ ] Add HSTS headers in .NET middleware:
   ```csharp
@@ -166,12 +166,12 @@ Internet → Azure Front Door/WAF → AKS Ingress → Services
 - [ ] Penetration testing with OWASP ZAP:
   ```bash
   docker run -t owasp/zap2docker-stable zap-baseline.py \
-    -t https://portal.cloudhealthoffice.com
+    -t https://portal.HealthCoreX.com
   ```
 - [ ] Verify secrets rotation (manually rotate Key Vault secret, confirm pods restart)
 - [ ] Test WAF rules (simulate SQL injection, XSS attacks)
 - [ ] SSL Labs test (https://www.ssllabs.com/ssltest/)
-- [ ] Verify HSTS headers with curl: `curl -I https://portal.cloudhealthoffice.com`
+- [ ] Verify HSTS headers with curl: `curl -I https://portal.HealthCoreX.com`
 - [ ] Test unauthorized access (expect 403 for missing roles)
 
 ### E2E Tests

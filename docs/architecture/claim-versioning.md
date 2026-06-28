@@ -346,7 +346,7 @@ operational pressure justifies it.
 
 ## Tests
 
-`tests/CloudHealthOffice.ClaimsService.Tests/`:
+`tests/HealthCoreX.ClaimsService.Tests/`:
 - `Models/ClaimVersionStateTests.cs` — enum ordering, PR #705
   conventions, JSON wire format pinned.
 - `Services/ClaimVersionEventPublisherTests.cs` — monotonic version,

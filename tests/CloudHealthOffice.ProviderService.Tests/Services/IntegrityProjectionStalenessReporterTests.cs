@@ -1,12 +1,12 @@
-using CloudHealthOffice.Infrastructure.Observability;
-using CloudHealthOffice.ProviderService.Tests.Fakes;
+using HealthCoreX.Infrastructure.Observability;
+using HealthCoreX.ProviderService.Tests.Fakes;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using ProviderService.Models;
 using ProviderService.Repositories;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Services;
+namespace HealthCoreX.ProviderService.Tests.Services;
 
 /// <summary>
 /// Behavior tests for <see cref="IntegrityProjectionStalenessReporter"/>:

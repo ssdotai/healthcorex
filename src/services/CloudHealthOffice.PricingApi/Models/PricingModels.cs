@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.PricingApi.Models;
+namespace HealthCoreX.PricingApi.Models;
 
 // ─────────────────────────────────────────────────────────────
 //  Repricing

@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.ProviderEnrollmentService.Models;
+namespace HealthCoreX.ProviderEnrollmentService.Models;
 
 // ─────────────────────────────────────────────────────────────────
 // Tenant enrollment configuration

@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace CloudHealthOffice.Portal.Services;
+namespace HealthCoreX.Portal.Services;
 
 /// <summary>
 /// Provides the current user's identity, roles, and permissions for RBAC enforcement.
@@ -94,6 +94,37 @@ public class UserContextService : IUserContextService
         {
             _loaded = true;
             return null;
+        }
+
+        if (IsLocalDemoUser(principal))
+        {
+            var localDemoDisplayName = principal.FindFirst("name")?.Value
+                              ?? principal.FindFirst(ClaimTypes.Name)?.Value
+                              ?? email;
+            var roles = new List<string>
+            {
+                "TenantAdmin",
+                "ClaimsSupervisor",
+                "MemberServices",
+                "ProviderRelations",
+                "Finance"
+            };
+
+            _cachedContext = new UserContext
+            {
+                UserId = "local-demo-admin",
+                Email = email,
+                DisplayName = localDemoDisplayName,
+                FirstName = localDemoDisplayName.Split(' ').FirstOrDefault() ?? localDemoDisplayName,
+                LastName = localDemoDisplayName.Split(' ').Skip(1).FirstOrDefault() ?? "",
+                TenantId = _configuration["Authentication:LocalDemo:TenantId"] ?? "demo",
+                Roles = roles,
+                Department = "Local Evaluation",
+                Permissions = ExpandPermissions(roles)
+            };
+
+            _loaded = true;
+            return _cachedContext;
         }
 
         var tenantContext = await _tenantContextService.GetCurrentTenantContextAsync();
@@ -241,6 +272,13 @@ public class UserContextService : IUserContextService
         if (atIndex <= 1) return "***@" + (atIndex >= 0 ? email[(atIndex + 1)..] : "***");
         return email[0] + "***" + email[(atIndex - 1)..];
     }
+
+    private bool IsLocalDemoUser(ClaimsPrincipal principal)
+        => string.Equals(
+                _configuration["Authentication:Mode"],
+                "LocalDemo",
+                StringComparison.OrdinalIgnoreCase)
+            && principal.HasClaim("cho_local_demo", "true");
 
     public bool HasPermission(string permission)
     {

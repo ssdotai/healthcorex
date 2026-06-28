@@ -3,11 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MvcJsonOptions = Microsoft.AspNetCore.Mvc.JsonOptions;
 
-namespace CloudHealthOffice.EligibilityService.Tests;
+namespace HealthCoreX.EligibilityService.Tests;
 
 /// <summary>
 /// Verifies that eligibility-service registers <see cref="JsonStringEnumConverter"/>
-/// via the shared <c>AddCloudHealthOfficeJsonOptions()</c> helper. Portal clients
+/// via the shared <c>AddHealthCoreXJsonOptions()</c> helper. Portal clients
 /// and sibling services expect enums as strings; the framework default (integer)
 /// has bitten us before (PRs #656, #657).
 /// </summary>

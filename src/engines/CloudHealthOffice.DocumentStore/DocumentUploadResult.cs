@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.DocumentStore;
+namespace HealthCoreX.DocumentStore;
 
 /// <summary>
 /// Metadata returned after a successful document upload.

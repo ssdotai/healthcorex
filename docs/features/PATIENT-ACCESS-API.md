@@ -39,7 +39,7 @@ A per-member throttle protects downstream systems:
 
 ## Data Sources
 
-All FHIR resources are materialised via Cosmos DB queries against the existing `cloudhealthoffice` database:
+All FHIR resources are materialised via Cosmos DB queries against the existing `HealthCoreX` database:
 
 - `Members` container → Patient & Coverage resources (US Core profiles).
 - `Claims` container → Claim resources.

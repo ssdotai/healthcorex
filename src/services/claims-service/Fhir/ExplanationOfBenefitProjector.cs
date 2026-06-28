@@ -88,7 +88,7 @@ public sealed class ExplanationOfBenefitProjector : IExplanationOfBenefitProject
             ["created"] = claim.SubmittedDate.ToString("o"),
             ["insurer"] = new JsonObject
             {
-                ["display"] = "CloudHealthOffice"
+                ["display"] = "HealthCoreX"
             },
             ["provider"] = new JsonObject
             {

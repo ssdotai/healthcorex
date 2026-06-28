@@ -7,7 +7,7 @@ using PaymentService.Models;
 using PaymentService.Repositories;
 using Xunit;
 
-namespace CloudHealthOffice.PaymentService.Tests;
+namespace HealthCoreX.PaymentService.Tests;
 
 public class EraEnvelopesControllerTests : IClassFixture<PaymentApiFactory>
 {

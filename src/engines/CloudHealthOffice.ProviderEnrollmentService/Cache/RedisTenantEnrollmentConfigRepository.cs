@@ -1,9 +1,9 @@
-using CloudHealthOffice.Infrastructure.Caching;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.Infrastructure.Caching;
+using HealthCoreX.ProviderEnrollmentService.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace CloudHealthOffice.ProviderEnrollmentService.Cache;
+namespace HealthCoreX.ProviderEnrollmentService.Cache;
 
 /// <summary>
 /// Read-through cache decorator for <see cref="ITenantEnrollmentConfigRepository"/>

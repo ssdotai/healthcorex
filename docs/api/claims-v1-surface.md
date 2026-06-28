@@ -280,7 +280,7 @@ Capability source: 5.10, 5.12b. See
 Both services serve Swagger UI in development environments:
 
 - **claims-service** — registered via shared `AddChoInfrastructure`
-  helper (`CloudHealthOffice.Infrastructure.Extensions`). Service
+  helper (`HealthCoreX.Infrastructure.Extensions`). Service
   metadata: `ServiceName = "Claims Service"`. Swagger UI at
   `/swagger` (default route prefix preserved).
 - **payment-service** — registered via direct `AddSwaggerGen`

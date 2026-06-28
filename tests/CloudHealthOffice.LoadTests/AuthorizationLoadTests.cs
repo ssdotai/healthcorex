@@ -3,7 +3,7 @@ using NBomber.Contracts;
 using NBomber.CSharp;
 using NBomber.Http.CSharp;
 
-namespace CloudHealthOffice.LoadTests;
+namespace HealthCoreX.LoadTests;
 
 /// <summary>
 /// Load tests for the authorization service (278 prior auth processing).

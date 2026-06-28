@@ -1,6 +1,6 @@
-using CloudHealthOffice.RiskAdjustmentEngine.Domain;
+using HealthCoreX.RiskAdjustmentEngine.Domain;
 
-namespace CloudHealthOffice.RiskAdjustmentEngine.Services;
+namespace HealthCoreX.RiskAdjustmentEngine.Services;
 
 /// <summary>
 /// Orchestrates the full risk adjustment pipeline:

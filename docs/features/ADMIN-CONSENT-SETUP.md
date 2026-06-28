@@ -76,7 +76,7 @@ https://login.microsoftonline.com/{TENANT_ID}/adminconsent?client_id={PORTAL_CLI
 Create and run this PowerShell script:
 
 ```powershell
-# Grant-CloudHealthOfficeAdminConsent.ps1
+# Grant-HealthCoreXAdminConsent.ps1
 
 param(
     [Parameter(Mandatory=$true)]
@@ -134,7 +134,7 @@ Disconnect-MgGraph
 
 **Run the script**:
 ```powershell
-.\Grant-CloudHealthOfficeAdminConsent.ps1 `
+.\Grant-HealthCoreXAdminConsent.ps1 `
     -TenantId "32177734-051b-4fdc-9568-cc35530191b1" `
     -ApiClientId "cfada1ac-f251-48ea-9330-39212aa4c862" `
     -PortalClientId "YOUR_PORTAL_CLIENT_ID"
@@ -174,7 +174,7 @@ After granting consent, verify it worked:
 5. Verify status shows "Granted"
 
 ### Method 2: Test Login
-1. Open the portal: https://portal.cloudhealthoffice.com
+1. Open the portal: https://portal.HealthCoreX.com
 2. Sign in with a regular user account
 3. Should successfully authenticate without the AADSTS650052 error
 

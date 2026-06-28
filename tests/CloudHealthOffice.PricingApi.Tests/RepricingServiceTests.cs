@@ -1,11 +1,11 @@
-using CloudHealthOffice.PricingApi.Data;
-using CloudHealthOffice.PricingApi.Models;
-using CloudHealthOffice.PricingApi.Services;
+using HealthCoreX.PricingApi.Data;
+using HealthCoreX.PricingApi.Models;
+using HealthCoreX.PricingApi.Services;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
-namespace CloudHealthOffice.PricingApi.Tests;
+namespace HealthCoreX.PricingApi.Tests;
 
 public class RepricingServiceTests
 {

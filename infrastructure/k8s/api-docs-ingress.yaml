@@ -1,11 +1,11 @@
 ---
 # Ingress for API Documentation (Swagger UI + OpenAPI specs)
-# Serves api.cloudhealthoffice.com and sandbox.cloudhealthoffice.com
+# Serves api.HealthCoreX.com and sandbox.HealthCoreX.com
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: api-docs-ingress
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: api-docs
     component: documentation
@@ -22,11 +22,11 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - api.cloudhealthoffice.com
-    - sandbox.cloudhealthoffice.com
+    - api.HealthCoreX.com
+    - sandbox.HealthCoreX.com
     secretName: api-docs-tls-secret
   rules:
-  - host: api.cloudhealthoffice.com
+  - host: api.HealthCoreX.com
     http:
       paths:
       - path: /
@@ -36,7 +36,7 @@ spec:
             name: api-docs
             port:
               number: 80
-  - host: sandbox.cloudhealthoffice.com
+  - host: sandbox.HealthCoreX.com
     http:
       paths:
       - path: /

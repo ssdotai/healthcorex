@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.EncounterEngine.Domain;
+namespace HealthCoreX.EncounterEngine.Domain;
 
 // ═══════════════════════════════════════════════════════════════════
 // ENUMS

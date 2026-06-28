@@ -1,5 +1,5 @@
 using System.Collections.Concurrent;
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Messaging;
 
 namespace IdCardService.Services;
 

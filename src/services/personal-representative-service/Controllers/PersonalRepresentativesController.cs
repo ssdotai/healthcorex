@@ -470,7 +470,7 @@ public class PersonalRepresentativesController : ControllerBase
             Status = 409,
             Title = "Invalid personal representative transition",
             Detail = ex.Message,
-            Type = "https://cloudhealthoffice.com/problems/personal-rep-transition"
+            Type = "https://HealthCoreX.com/problems/personal-rep-transition"
         };
         problem.Extensions["fromStatus"] = ex.FromStatus.ToString();
         problem.Extensions["toStatus"] = ex.ToStatus.ToString();

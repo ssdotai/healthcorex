@@ -117,7 +117,7 @@ public class MemberClient : IMemberClient
 
     public async Task<MemberDto?> GetAsync(string tenantId, string memberId, CancellationToken ct = default)
     {
-        var baseUrl = _cfg["Services:MemberService"] ?? "http://member-service.cloudhealthoffice/api/v1";
+        var baseUrl = _cfg["Services:MemberService"] ?? "http://member-service.HealthCoreX/api/v1";
         var req = new HttpRequestMessage(HttpMethod.Get, $"{baseUrl}/members/{Uri.EscapeDataString(memberId)}");
         req.Headers.Add("X-Tenant-ID", tenantId);
         using var resp = await _http.CreateClient("IdCardDefault").SendAsync(req, ct);
@@ -144,7 +144,7 @@ public class CoverageClient : ICoverageClient
 
     public async Task<CoverageDto?> GetActiveAsync(string tenantId, string memberId, CancellationToken ct = default)
     {
-        var baseUrl = _cfg["Services:CoverageService"] ?? "http://coverage-service.cloudhealthoffice/api/v1";
+        var baseUrl = _cfg["Services:CoverageService"] ?? "http://coverage-service.HealthCoreX/api/v1";
         var req = new HttpRequestMessage(HttpMethod.Get,
             $"{baseUrl}/coverage/member/{Uri.EscapeDataString(memberId)}/active");
         req.Headers.Add("X-Tenant-ID", tenantId);
@@ -172,7 +172,7 @@ public class SponsorClient : ISponsorClient
 
     public async Task<SponsorDto?> GetAsync(string tenantId, string groupNumber, CancellationToken ct = default)
     {
-        var baseUrl = _cfg["Services:SponsorService"] ?? "http://sponsor-service.cloudhealthoffice/api/v1";
+        var baseUrl = _cfg["Services:SponsorService"] ?? "http://sponsor-service.HealthCoreX/api/v1";
         var req = new HttpRequestMessage(HttpMethod.Get, $"{baseUrl}/sponsors/{Uri.EscapeDataString(groupNumber)}");
         req.Headers.Add("X-Tenant-ID", tenantId);
         using var resp = await _http.CreateClient("IdCardDefault").SendAsync(req, ct);
@@ -198,7 +198,7 @@ public class BenefitPlanClient : IBenefitPlanClient
 
     public async Task<BenefitPlanDto?> GetAsync(string tenantId, string planId, CancellationToken ct = default)
     {
-        var baseUrl = _cfg["Services:BenefitPlanService"] ?? "http://benefit-plan-service.cloudhealthoffice/api/v1";
+        var baseUrl = _cfg["Services:BenefitPlanService"] ?? "http://benefit-plan-service.HealthCoreX/api/v1";
         var req = new HttpRequestMessage(HttpMethod.Get, $"{baseUrl}/plans/{Uri.EscapeDataString(planId)}");
         req.Headers.Add("X-Tenant-ID", tenantId);
         using var resp = await _http.CreateClient("IdCardDefault").SendAsync(req, ct);
@@ -233,7 +233,7 @@ public class MemberDocumentClient : IMemberDocumentClient
     private async Task<string> UploadAsync(string tenantId, string memberId, byte[] body,
         string fileName, string contentType, string category, string? subcategory, string uploadedBy, CancellationToken ct)
     {
-        var baseUrl = _cfg["Services:MemberDocumentService"] ?? "http://member-document-service.cloudhealthoffice/api/v1";
+        var baseUrl = _cfg["Services:MemberDocumentService"] ?? "http://member-document-service.HealthCoreX/api/v1";
         var url = $"{baseUrl}/member-documents";
 
         // Strip control characters from caller-supplied strings before they go
@@ -305,7 +305,7 @@ public class EligibilityClient : IEligibilityClient
 
     public async Task<object?> GetSnapshotAsync(string tenantId, string memberId, string? providerNpi, CancellationToken ct = default)
     {
-        var baseUrl = _cfg["Services:EligibilityService"] ?? "http://eligibility-service.cloudhealthoffice/api";
+        var baseUrl = _cfg["Services:EligibilityService"] ?? "http://eligibility-service.HealthCoreX/api";
         var url = $"{baseUrl}/eligibility/inquiry";
 
         var body = new

@@ -1,7 +1,7 @@
-using CloudHealthOffice.PriorAuthRuleEngine.Domain;
-using CloudHealthOffice.PriorAuthRuleEngine.Models;
+using HealthCoreX.PriorAuthRuleEngine.Domain;
+using HealthCoreX.PriorAuthRuleEngine.Models;
 
-namespace CloudHealthOffice.PriorAuthRuleEngine.Abstractions;
+namespace HealthCoreX.PriorAuthRuleEngine.Abstractions;
 
 // ─────────────────────────────────────────────────────────────────
 // IPaRule — implemented by every rule class

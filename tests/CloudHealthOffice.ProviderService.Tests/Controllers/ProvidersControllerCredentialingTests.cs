@@ -1,4 +1,4 @@
-using CloudHealthOffice.ProviderService.Tests.Fakes;
+using HealthCoreX.ProviderService.Tests.Fakes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -6,7 +6,7 @@ using ProviderService.Controllers;
 using ProviderService.Models;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Controllers;
+namespace HealthCoreX.ProviderService.Tests.Controllers;
 
 /// <summary>
 /// Regression coverage for the legacy

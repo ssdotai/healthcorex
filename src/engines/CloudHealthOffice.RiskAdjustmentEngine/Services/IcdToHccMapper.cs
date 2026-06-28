@@ -1,7 +1,7 @@
-using CloudHealthOffice.RiskAdjustmentEngine.Data;
-using CloudHealthOffice.RiskAdjustmentEngine.Domain;
+using HealthCoreX.RiskAdjustmentEngine.Data;
+using HealthCoreX.RiskAdjustmentEngine.Domain;
 
-namespace CloudHealthOffice.RiskAdjustmentEngine.Services;
+namespace HealthCoreX.RiskAdjustmentEngine.Services;
 
 /// <summary>
 /// Maps ICD-10-CM codes to HCC categories using the embedded crosswalk tables.

@@ -5,7 +5,7 @@ using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ClearExtensions;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Controllers;
+namespace HealthCoreX.ClaimsService.Tests.Controllers;
 
 /// <summary>
 /// Integration tests for the canonical FHIR R4 ExplanationOfBenefit

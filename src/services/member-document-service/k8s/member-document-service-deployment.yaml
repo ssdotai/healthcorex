@@ -2,17 +2,17 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: member-document-service-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 data:
   ASPNETCORE_ENVIRONMENT: "Production"
-  MongoDb__DatabaseName: "cloudhealthoffice"
+  MongoDb__DatabaseName: "HealthCoreX"
   BlobStorage__ContainerName: "member-documents"
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: member-document-service-secret
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 type: Opaque
 stringData:
   BlobStorage__ConnectionString: "UseDevelopmentStorage=true"
@@ -21,7 +21,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: member-document-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: member-document-service
     tier: backend
@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
       - name: member-document-service
-        image: choacrhy6h2vdulfru6.azurecr.io/cloudhealthoffice-member-document-service:latest
+        image: choacrhy6h2vdulfru6.azurecr.io/HealthCoreX-member-document-service:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -96,7 +96,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: member-document-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: member-document-service
 spec:

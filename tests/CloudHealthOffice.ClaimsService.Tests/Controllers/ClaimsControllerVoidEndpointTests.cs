@@ -6,7 +6,7 @@ using ClaimsService.Services;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Controllers;
+namespace HealthCoreX.ClaimsService.Tests.Controllers;
 
 /// <summary>
 /// Capability 5.12b — covers <c>POST /api/claims/{id}/void</c>, the new

@@ -2,7 +2,7 @@ using System.Text;
 using EligibilityService.Models;
 using EligibilityService.Services;
 
-namespace CloudHealthOffice.EligibilityService.Tests;
+namespace HealthCoreX.EligibilityService.Tests;
 
 public class StreamingCsvTests
 {

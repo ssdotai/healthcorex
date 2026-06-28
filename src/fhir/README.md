@@ -311,7 +311,7 @@ When adding features:
 
 ## Support
 
-**Issues**: [GitHub Issues](https://github.com/aurelianware/cloudhealthoffice/issues)  
+**Issues**: [GitHub Issues](https://github.com/aurelianware/HealthCoreX/issues)  
 **License**: BSL 1.1  
 **Version**: 1.0.0
 

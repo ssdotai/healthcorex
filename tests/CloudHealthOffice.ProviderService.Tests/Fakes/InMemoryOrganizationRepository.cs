@@ -2,7 +2,7 @@ using System.Text.Json;
 using ProviderService.Models;
 using ProviderService.Repositories;
 
-namespace CloudHealthOffice.ProviderService.Tests.Fakes;
+namespace HealthCoreX.ProviderService.Tests.Fakes;
 
 /// <summary>
 /// In-memory fake of <see cref="IOrganizationRepository"/> with full

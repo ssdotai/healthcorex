@@ -1,4 +1,4 @@
-using CloudHealthOffice.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Domain;
 
 namespace BenefitPlanService.Repositories;
 

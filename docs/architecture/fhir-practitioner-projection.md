@@ -150,7 +150,7 @@ flow end-to-end.
 
 ## Integrity-score extension URI
 
-`http://fhir.cloudhealthoffice.com/StructureDefinition/provider-integrity-score`,
+`http://fhir.HealthCoreX.com/StructureDefinition/provider-integrity-score`,
 defined by `ChoFhirCanonicalUrls.ProviderIntegrityScoreExt` in
 fhir-service and mirrored as `ChoProviderFhirUrls.ProviderIntegrityScoreExt`
 in provider-service (until a shared FHIR-infrastructure project
@@ -158,7 +158,7 @@ lands). The mirror is intentional and documented in both files —
 provider-service does not reference fhir-service.
 
 The legacy
-`https://cloudhealthoffice.com/fhir/StructureDefinition/provider-verification`
+`https://HealthCoreX.com/fhir/StructureDefinition/provider-verification`
 URL on the NPPES enrichment path is left untouched. It dies with the
 NPPES code in the post-5.8/5.9 cleanup PR.
 

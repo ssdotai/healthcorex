@@ -12,7 +12,7 @@ param appInsightsId string
 // Tags for resource organization
 param tags object = {
   Environment: 'Production'
-  Application: 'CloudHealthOffice'
+  Application: 'HealthCoreX'
   Component: 'Monitoring'
   ManagedBy: 'Bicep'
 }

@@ -11,11 +11,11 @@ from datetime import datetime
 from azure.cosmos import CosmosClient, exceptions
 
 # Configuration
-RESOURCE_GROUP = os.getenv("RESOURCE_GROUP", "prod-cloudhealthoffice-rg")
-COSMOS_ACCOUNT = os.getenv("COSMOS_ACCOUNT", "cloudhealthoffice-cosmos")
+RESOURCE_GROUP = os.getenv("RESOURCE_GROUP", "prod-HealthCoreX-rg")
+COSMOS_ACCOUNT = os.getenv("COSMOS_ACCOUNT", "HealthCoreX-cosmos")
 COSMOS_ENDPOINT = os.getenv("COSMOS_ENDPOINT", "")
 COSMOS_KEY = os.getenv("COSMOS_KEY", "")
-DATABASE_NAME = "CloudHealthOffice"
+DATABASE_NAME = "HealthCoreX"
 CONTAINER_NAME = "TradingPartners"
 
 # Sample trading partners
@@ -170,8 +170,8 @@ def main():
         print("  python3 scripts/seed-trading-partners.py")
         print()
         print("Or get from Azure CLI:")
-        print("  export COSMOS_ENDPOINT=$(az cosmosdb show --name cloudhealthoffice-cosmos --resource-group prod-cloudhealthoffice-rg --query documentEndpoint -o tsv)")
-        print("  export COSMOS_KEY=$(az cosmosdb keys list --name cloudhealthoffice-cosmos --resource-group prod-cloudhealthoffice-rg --query primaryMasterKey -o tsv)")
+        print("  export COSMOS_ENDPOINT=$(az cosmosdb show --name HealthCoreX-cosmos --resource-group prod-HealthCoreX-rg --query documentEndpoint -o tsv)")
+        print("  export COSMOS_KEY=$(az cosmosdb keys list --name HealthCoreX-cosmos --resource-group prod-HealthCoreX-rg --query primaryMasterKey -o tsv)")
         sys.exit(1)
 
     print(f"📦 Endpoint: {COSMOS_ENDPOINT}")
@@ -230,7 +230,7 @@ def main():
 
     if successful > 0:
         print("Verify with:")
-        print(f"  kubectl -n cloudhealthoffice port-forward svc/trading-partner-service 8080:80")
+        print(f"  kubectl -n HealthCoreX port-forward svc/trading-partner-service 8080:80")
         print(f"  curl http://localhost:8080/api/TradingPartners/tenant/bcbs-florida")
         print()
 

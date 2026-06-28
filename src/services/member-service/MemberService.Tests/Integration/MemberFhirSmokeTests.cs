@@ -25,7 +25,7 @@ namespace MemberService.Tests.Integration;
 public class MemberFhirSmokeTests : IClassFixture<MemberFhirSmokeTests.Factory>
 {
     // Match the server's wire format (string enums via JsonStringEnumConverter
-    // registered by AddCloudHealthOfficeJsonOptions).
+    // registered by AddHealthCoreXJsonOptions).
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web)
     {
         Converters = { new JsonStringEnumConverter() }
@@ -45,7 +45,7 @@ public class MemberFhirSmokeTests : IClassFixture<MemberFhirSmokeTests.Factory>
                     // Force the Mongo branch in Program.cs so we never try to contact Cosmos
                     // before our overrides land. The Mongo db registration is replaced below.
                     ["MongoDb:ConnectionString"] = "mongodb://fake-host:27017",
-                    ["MongoDb:DatabaseName"] = "CloudHealthOffice",
+                    ["MongoDb:DatabaseName"] = "HealthCoreX",
                     ["Member:IdentifierEncryption:KeySecretName"] = ""
                 });
             });

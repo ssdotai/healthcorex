@@ -3,15 +3,15 @@ using ClaimsService.Models.Adjudication;
 using ClaimsService.Services.Adjudication;
 using ClaimsService.Services.Adjudication.Stages;
 using ClaimsService.Services.Resolution;
-using EngineModels = CloudHealthOffice.NcciEngine.Models;
-using EngineServices = CloudHealthOffice.NcciEngine.Services;
+using EngineModels = HealthCoreX.NcciEngine.Models;
+using EngineServices = HealthCoreX.NcciEngine.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Services.Adjudication.Stages;
+namespace HealthCoreX.ClaimsService.Tests.Services.Adjudication.Stages;
 
 /// <summary>
 /// Capability 5.7 — behavior coverage for <see cref="NcciEditsStage"/>:

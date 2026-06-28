@@ -13,7 +13,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-NAMESPACE="cloudhealthoffice"
+NAMESPACE="HealthCoreX"
 KAFKA_NAMESPACE="kafka"
 
 # Default values
@@ -222,7 +222,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: comparator
-        image: cloudhealthoffice/kafka-publisher:latest
+        image: HealthCoreX/kafka-publisher:latest
         command: ["/bin/sh", "-c"]
         args:
         - |

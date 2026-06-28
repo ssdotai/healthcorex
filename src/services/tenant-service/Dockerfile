@@ -4,14 +4,14 @@ WORKDIR /repo
 
 # Copy csproj files and restore (preserves layer caching)
 COPY src/services/tenant-service/TenantService.csproj src/services/tenant-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/engines/CloudHealthOffice.OperatingMode/CloudHealthOffice.OperatingMode.csproj src/engines/CloudHealthOffice.OperatingMode/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
+COPY src/engines/HealthCoreX.OperatingMode/HealthCoreX.OperatingMode.csproj src/engines/HealthCoreX.OperatingMode/
 RUN dotnet restore src/services/tenant-service/TenantService.csproj
 
 # Copy source code and build
 COPY src/services/tenant-service/ src/services/tenant-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/engines/CloudHealthOffice.OperatingMode/ src/engines/CloudHealthOffice.OperatingMode/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
+COPY src/engines/HealthCoreX.OperatingMode/ src/engines/HealthCoreX.OperatingMode/
 RUN dotnet build src/services/tenant-service/TenantService.csproj -c Release --no-restore
 
 # Publish stage

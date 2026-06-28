@@ -1,10 +1,10 @@
-using CloudHealthOffice.NcciEngine.Domain;
-using CloudHealthOffice.NcciEngine.Models;
+using HealthCoreX.NcciEngine.Domain;
+using HealthCoreX.NcciEngine.Models;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.NcciEngine.Persistence;
+namespace HealthCoreX.NcciEngine.Persistence;
 
 /// <summary>
 /// Cosmos DB implementation of INcciRepository.
@@ -31,7 +31,7 @@ internal class NcciRepositoryCosmos : INcciRepository
         IConfiguration configuration,
         ILogger<NcciRepositoryCosmos> logger)
     {
-        var db = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var db = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         _pairContainer    = cosmosClient.GetContainer(db, configuration["NcciEngine:PairContainer"]    ?? "NcciPairs");
         _mueContainer     = cosmosClient.GetContainer(db, configuration["NcciEngine:MueContainer"]     ?? "MueEntries");
         _versionContainer = cosmosClient.GetContainer(db, configuration["NcciEngine:VersionContainer"] ?? "NcciVersion");

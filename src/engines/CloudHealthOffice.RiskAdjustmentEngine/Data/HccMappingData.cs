@@ -1,6 +1,6 @@
-using CloudHealthOffice.RiskAdjustmentEngine.Domain;
+using HealthCoreX.RiskAdjustmentEngine.Domain;
 
-namespace CloudHealthOffice.RiskAdjustmentEngine.Data;
+namespace HealthCoreX.RiskAdjustmentEngine.Data;
 
 /// <summary>
 /// Representative subset of the CMS-HCC v28 ICD-10-CM to HCC crosswalk.

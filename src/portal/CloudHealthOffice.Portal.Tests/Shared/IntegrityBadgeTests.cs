@@ -1,8 +1,8 @@
 using Bunit;
-using CloudHealthOffice.Portal.Shared;
+using HealthCoreX.Portal.Shared;
 using MudBlazor.Services;
 
-namespace CloudHealthOffice.Portal.Tests.Shared;
+namespace HealthCoreX.Portal.Tests.Shared;
 
 /// <summary>
 /// bUnit tests for <see cref="IntegrityBadge"/> (capability 5.10).

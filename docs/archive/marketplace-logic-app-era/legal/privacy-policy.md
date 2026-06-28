@@ -269,7 +269,7 @@ California residents have additional rights under the California Consumer Privac
 - **Right to Limit Use**: Right to limit use and disclosure of sensitive personal information (including PHI)
 - **Right to Non-Discrimination**: Right not to receive discriminatory treatment for exercising CCPA/CPRA rights
 
-**How to Exercise Rights**: Email privacy@cloudhealthoffice.com with subject "CCPA/CPRA Request"
+**How to Exercise Rights**: Email privacy@HealthCoreX.com with subject "CCPA/CPRA Request"
 
 **Response Time**: We respond to verified requests within 45 days (may be extended by 45 days if necessary)
 
@@ -302,7 +302,7 @@ If Customer operates in the European Union or processes data of EU residents:
 - Right to object to processing
 - Right not to be subject to automated decision-making (including profiling)
 
-**Data Protection Officer**: For GDPR inquiries, contact dpo@cloudhealthoffice.com
+**Data Protection Officer**: For GDPR inquiries, contact dpo@HealthCoreX.com
 
 ### 10.3 Cross-Border Transfers
 
@@ -342,7 +342,7 @@ The Cloud Health Office website and portal use cookies and similar tracking tech
 You can control cookie preferences through:
 - Browser settings (most browsers allow blocking cookies)
 - Our cookie consent banner (first-time visitors)
-- Cookie preference center: https://cloudhealthoffice.com/cookie-settings
+- Cookie preference center: https://HealthCoreX.com/cookie-settings
 
 **Note**: Disabling essential cookies may impair functionality of the Services.
 
@@ -356,7 +356,7 @@ We honor Do Not Track (DNT) browser signals for analytics and marketing cookies,
 
 We may update this Privacy Policy from time to time. Changes will be:
 
-- Posted on our website at https://cloudhealthoffice.com/legal/privacy-policy with the updated effective date
+- Posted on our website at https://HealthCoreX.com/legal/privacy-policy with the updated effective date
 - Communicated to customers via email for **material changes** at least 30 days before the effective date
 - Effective 30 days after posting (or as otherwise specified)
 
@@ -369,25 +369,25 @@ Your continued use of the Services after changes become effective constitutes ac
 ### Privacy Inquiries
 
 **Cloud Health Office Privacy Office**  
-Email: privacy@cloudhealthoffice.com  
+Email: privacy@HealthCoreX.com  
 Address: [Company Address]
 
 ### HIPAA Compliance
 
 **HIPAA Privacy Officer**  
-Email: hipaa-privacy@cloudhealthoffice.com
+Email: hipaa-privacy@HealthCoreX.com
 
 **HIPAA Security Officer**  
-Email: hipaa-security@cloudhealthoffice.com
+Email: hipaa-security@HealthCoreX.com
 
 ### Data Protection Officer (for GDPR inquiries)
 
-Email: dpo@cloudhealthoffice.com
+Email: dpo@HealthCoreX.com
 
 ### General Support
 
-Email: support@cloudhealthoffice.com  
-Website: https://support.cloudhealthoffice.com
+Email: support@HealthCoreX.com  
+Website: https://support.HealthCoreX.com
 
 ---
 
@@ -411,7 +411,7 @@ Website: https://support.cloudhealthoffice.com
 | Stripe, Inc. | Payment Processing | No | PCI DSS Level 1 | United States |
 | SendGrid (Twilio) | Transactional Email | Yes | SOC 2 Type II | United States |
 
-**Subprocessor Updates**: We will notify customers of any additions or changes to subprocessors with at least **30 days' advance notice**. Customers may object to new subprocessors within 15 days by contacting privacy@cloudhealthoffice.com.
+**Subprocessor Updates**: We will notify customers of any additions or changes to subprocessors with at least **30 days' advance notice**. Customers may object to new subprocessors within 15 days by contacting privacy@HealthCoreX.com.
 
 ---
 

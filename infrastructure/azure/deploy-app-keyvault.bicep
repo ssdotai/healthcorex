@@ -13,7 +13,7 @@
 //
 // Usage:
 //   az deployment group create \
-//     --resource-group rg-cloudhealthoffice-prod \
+//     --resource-group rg-HealthCoreX-prod \
 //     --template-file infrastructure/azure/deploy-app-keyvault.bicep \
 //     --parameters \
 //         aksKubeletIdentityPrincipalId=<kubelet-oid> \
@@ -34,7 +34,7 @@ targetScope = 'resourceGroup'
 @description('Base name prefix. Final vault name will be {baseName}-app-kv.')
 @minLength(3)
 @maxLength(20)
-param baseName string = 'cloudhealthoffice'
+param baseName string = 'HealthCoreX'
 
 @description('Azure region; defaults to the resource group location.')
 param location string = resourceGroup().location
@@ -63,7 +63,7 @@ param logAnalyticsWorkspaceId string = ''
 ])
 param environment string = 'Production'
 
-// cloudhealthoffice (17 chars) + '-app-kv' (7 chars) = 24 chars exactly —
+// HealthCoreX (17 chars) + '-app-kv' (7 chars) = 24 chars exactly —
 // Key Vault names are limited to 3-24 characters globally. Longer baseName
 // values will fail deployment.
 var vaultName = '${baseName}-app-kv'
@@ -94,5 +94,5 @@ output vaultId string = appKeyVault.outputs.keyVaultId
 @description('Name of the provisioned Key Vault.')
 output vaultName string = appKeyVault.outputs.keyVaultName
 
-@description('URI of the provisioned Key Vault (e.g. https://cloudhealthoffice-app-kv.vault.azure.net/). Set this as SecretProvider:AzureKeyVaultUri in runtime config.')
+@description('URI of the provisioned Key Vault (e.g. https://HealthCoreX-app-kv.vault.azure.net/). Set this as SecretProvider:AzureKeyVaultUri in runtime config.')
 output vaultUri string = appKeyVault.outputs.keyVaultUri

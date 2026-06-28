@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using RiskAdjustmentService.Models;
 using RiskAdjustmentService.Repositories;
-using CloudHealthOffice.RiskAdjustmentEngine.Domain;
-using CloudHealthOffice.RiskAdjustmentEngine.Services;
-using EngineRiskAdjustmentEngine = CloudHealthOffice.RiskAdjustmentEngine.Services.RiskAdjustmentEngine;
+using HealthCoreX.RiskAdjustmentEngine.Domain;
+using HealthCoreX.RiskAdjustmentEngine.Services;
+using EngineRiskAdjustmentEngine = HealthCoreX.RiskAdjustmentEngine.Services.RiskAdjustmentEngine;
 using ServiceHccCategory = RiskAdjustmentService.Models.HccCategory;
 
 namespace RiskAdjustmentService.Controllers;

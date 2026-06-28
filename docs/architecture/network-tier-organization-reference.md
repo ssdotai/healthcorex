@@ -234,7 +234,7 @@ material premise corrections that shaped the final scope:
 
 1. **Adjudication does not consult `tier.ProviderNpis`.**
    `AdjudicationController.cs:884`'s `NetworkTier` property is the
-   `CloudHealthOffice.BenefitEngine.Domain.NetworkTier { InNetwork,
+   `HealthCoreX.BenefitEngine.Domain.NetworkTier { InNetwork,
    OutOfNetwork, OutOfArea }` enum, not the embedded class. There is
    no `ProviderNpis.Contains(npi)` site anywhere in `src/`.
 2. **`MemberBenefitView` projection does not consult

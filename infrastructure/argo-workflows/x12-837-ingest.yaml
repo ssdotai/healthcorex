@@ -16,7 +16,7 @@
 #   SFTP /inbound/claims/*.edi → Parse → Claims Service → Kafka → Adjudication Workflow
 #
 # Trigger:
-#   - Manual: argo submit -n cloudhealthoffice --from workflowtemplate/x12-837-ingest
+#   - Manual: argo submit -n HealthCoreX --from workflowtemplate/x12-837-ingest
 #   - Event-driven: Argo Events watching SFTP folder
 #   - Cron: Every 5 minutes
 
@@ -28,7 +28,7 @@ metadata:
   labels:
     app.kubernetes.io/name: x12-837-ingest
     app.kubernetes.io/component: claims-ingestion
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
     hipaa.compliance: "required"
   annotations:
     description: "X12 837 claims ingestion - SFTP to Claims Service to Adjudication"
@@ -59,7 +59,7 @@ spec:
   arguments:
     parameters:
       - name: sftp-host
-        value: "sftp-server.cloudhealthoffice.svc.cluster.local"
+        value: "sftp-server.HealthCoreX.svc.cluster.local"
       - name: sftp-port
         value: "22"
       - name: sftp-folder
@@ -67,9 +67,9 @@ spec:
       - name: file-pattern
         value: "*.edi"
       - name: claims-service-url
-        value: "http://claims-service.cloudhealthoffice.svc.cluster.local:8080"
+        value: "http://claims-service.HealthCoreX.svc.cluster.local:8080"
       - name: kafka-bootstrap-servers
-        value: "cloudhealthoffice-kafka-bootstrap.kafka:9092"
+        value: "HealthCoreX-kafka-bootstrap.kafka:9092"
       - name: kafka-topic
         value: "claims-adjudication"
       - name: tenant-id
@@ -117,7 +117,7 @@ spec:
     # Step 1: Fetch 837 files from SFTP
     - name: fetch-from-sftp
       container:
-        image: cloudhealthoffice/sftp-client:latest
+        image: HealthCoreX/sftp-client:latest
         command: ["/bin/sh", "-c"]
         args:
           - |
@@ -167,7 +167,7 @@ spec:
           - name: edi-files
             path: /work/input
       container:
-        image: cloudhealthoffice/x12-parser:latest
+        image: HealthCoreX/x12-parser:latest
         command: ["/app/parse-837.sh"]
         env:
           - name: INPUT_DIR
@@ -193,7 +193,7 @@ spec:
           - name: parsed-claims
             path: /work/claims
       container:
-        image: cloudhealthoffice/claims-publisher:latest
+        image: HealthCoreX/claims-publisher:latest
         command: ["/app/publish-claims.sh"]
         env:
           - name: CLAIMS_DIR
@@ -235,7 +235,7 @@ spec:
           - name: edi-files
             path: /work/files
       container:
-        image: cloudhealthoffice/sftp-client:latest
+        image: HealthCoreX/sftp-client:latest
         command: ["/bin/sh", "-c"]
         args:
           - |
@@ -278,7 +278,7 @@ metadata:
   labels:
     app.kubernetes.io/name: x12-837-ingest-cron
     app.kubernetes.io/component: claims-ingestion
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
 spec:
   schedule: "*/5 * * * *"  # Every 5 minutes
   timezone: "America/Chicago"

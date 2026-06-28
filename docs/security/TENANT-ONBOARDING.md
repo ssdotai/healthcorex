@@ -4,7 +4,7 @@ This document describes the automated tenant onboarding system for Cloud Health 
 
 ## Overview
 
-When a new health plan signs up at `https://portal.cloudhealthoffice.com/signup`, the system automatically:
+When a new health plan signs up through a local or customer-deployed portal, for example `https://portal.<your-domain>/signup`, the system automatically:
 
 1. Creates tenant record in database
 2. Provisions Cosmos DB containers
@@ -121,8 +121,8 @@ Subject: Welcome to Cloud Health Office
 Your account is ready!
 
 Tenant ID: blue-shield-of-california-a1b2c3
-Portal: https://portal.cloudhealthoffice.com
-API Endpoint: https://api.cloudhealthoffice.com
+Portal: https://portal.<your-domain>
+API Endpoint: https://api.<your-domain>
 
 Credentials:
 - Email: admin@blueshieldca.com
@@ -139,7 +139,7 @@ Next steps:
 4. Set up trading partners
 5. Upload first 834 enrollment file
 
-Need help? support@cloudhealthoffice.com
+Need help? support@HealthCoreX.com
 ```
 
 **Step 9: Enterprise Namespace** (enterprise tier only)
@@ -211,8 +211,8 @@ The workflow requires these Kubernetes secrets in `cho-workflows` namespace:
 ### cosmos-db-credentials
 ```bash
 kubectl create secret generic cosmos-db-credentials -n cho-workflows \
-  --from-literal=account-name=cloudhealthoffice-cosmos \
-  --from-literal=resource-group=prod-cloudhealthoffice-rg
+  --from-literal=account-name=HealthCoreX-cosmos \
+  --from-literal=resource-group=prod-HealthCoreX-rg
 ```
 
 ### azure-service-principal
@@ -268,9 +268,9 @@ kubectl -n cho-workflows get secret azure-service-principal -o yaml
 
 # Verify Azure CLI authentication
 az cosmosdb sql container list \
-  --account-name cloudhealthoffice-cosmos \
-  --resource-group prod-cloudhealthoffice-rg \
-  --database-name CloudHealthOffice
+  --account-name HealthCoreX-cosmos \
+  --resource-group prod-HealthCoreX-rg \
+  --database-name HealthCoreX
 ```
 
 ### Email not sent
@@ -284,7 +284,7 @@ az cosmosdb sql container list \
 argo get -n cho-workflows <workflow-name>
 
 # Manually activate tenant
-curl -X PUT http://tenant-service.cloudhealthoffice/api/v1/tenants/<tenant-id> \
+curl -X PUT http://tenant-service.HealthCoreX/api/v1/tenants/<tenant-id> \
   -H "Content-Type: application/json" \
   -d '{"status": "active"}'
 ```
@@ -295,18 +295,18 @@ If a workflow fails, clean up partial resources:
 
 ```bash
 # Delete tenant record
-curl -X DELETE http://tenant-service.cloudhealthoffice/api/v1/tenants/<tenant-id>
+curl -X DELETE http://tenant-service.HealthCoreX/api/v1/tenants/<tenant-id>
 
 # Delete Cosmos containers (if created)
 az cosmosdb sql container delete \
-  --account-name cloudhealthoffice-cosmos \
-  --resource-group prod-cloudhealthoffice-rg \
-  --database-name CloudHealthOffice \
+  --account-name HealthCoreX-cosmos \
+  --resource-group prod-HealthCoreX-rg \
+  --database-name HealthCoreX \
   --name Members \
   --yes
 
 # Cancel Stripe subscription
-curl -X POST http://tenant-service.cloudhealthoffice/api/v1/billing/tenants/<tenant-id>/cancel
+curl -X POST http://tenant-service.HealthCoreX/api/v1/billing/tenants/<tenant-id>/cancel
 
 # Delete Azure AD user
 az ad user delete --id admin@tenant.com
@@ -421,7 +421,7 @@ Each tenant gets a dedicated SFTP account for file-based X12 EDI exchange.
 ### SFTP Credentials
 
 Provided in welcome email:
-- **Host**: `sftp.cloudhealthoffice.com`
+- **Host**: `sftp.HealthCoreX.com`
 - **Port**: `22`
 - **Username**: `cho-{tenant-id}`
 - **Password**: Generated 24-character password
@@ -434,18 +434,18 @@ Provided in welcome email:
 **With SSH Key** (recommended):
 ```bash
 # Download private key from portal
-# Save as ~/.ssh/cloudhealthoffice_key
+# Save as ~/.ssh/HealthCoreX_key
 
 # Set permissions
-chmod 600 ~/.ssh/cloudhealthoffice_key
+chmod 600 ~/.ssh/HealthCoreX_key
 
 # Connect
-sftp -i ~/.ssh/cloudhealthoffice_key cho-{tenant-id}@sftp.cloudhealthoffice.com
+sftp -i ~/.ssh/HealthCoreX_key cho-{tenant-id}@sftp.HealthCoreX.com
 ```
 
 **With Password**:
 ```bash
-sftp cho-{tenant-id}@sftp.cloudhealthoffice.com
+sftp cho-{tenant-id}@sftp.HealthCoreX.com
 # Enter password when prompted
 ```
 
@@ -455,7 +455,7 @@ sftp cho-{tenant-id}@sftp.cloudhealthoffice.com
 2. File > Site Manager > New Site
 3. Configure:
    - Protocol: **SFTP - SSH File Transfer Protocol**
-   - Host: `sftp.cloudhealthoffice.com`
+   - Host: `sftp.HealthCoreX.com`
    - Port: `22`
    - Logon Type: **Normal** (for password) or **Key file** (for SSH key)
    - User: `cho-{tenant-id}`
@@ -469,7 +469,7 @@ sftp cho-{tenant-id}@sftp.cloudhealthoffice.com
 2. New Site
 3. Configure:
    - File protocol: **SFTP**
-   - Host name: `sftp.cloudhealthoffice.com`
+   - Host name: `sftp.HealthCoreX.com`
    - Port number: `22`
    - User name: `cho-{tenant-id}`
    - Password: (from email)
@@ -484,7 +484,7 @@ import paramiko
 
 # Connect with SSH key
 key = paramiko.Ed25519Key.from_private_key_file('/path/to/key')
-transport = paramiko.Transport(('sftp.cloudhealthoffice.com', 22))
+transport = paramiko.Transport(('sftp.HealthCoreX.com', 22))
 transport.connect(username='cho-{tenant-id}', pkey=key)
 sftp = paramiko.SFTPClient.from_transport(transport)
 
@@ -505,7 +505,7 @@ Add-Type -Path "C:\Program Files (x86)\WinSCP\WinSCPnet.dll"
 
 $sessionOptions = New-Object WinSCP.SessionOptions -Property @{
     Protocol = [WinSCP.Protocol]::Sftp
-    HostName = "sftp.cloudhealthoffice.com"
+    HostName = "sftp.HealthCoreX.com"
     UserName = "cho-{tenant-id}"
     SshPrivateKeyPath = "C:\path\to\key.ppk"
 }
@@ -585,12 +585,12 @@ $session.Dispose()
 # Get SFTP activity log
 curl -H "X-API-Key: {api-key}" \
      -H "X-Tenant-ID: {tenant-id}" \
-     https://api.cloudhealthoffice.com/v1/sftp/activity
+     https://api.<your-domain>/v1/sftp/activity
 
 # Get failed uploads
 curl -H "X-API-Key: {api-key}" \
      -H "X-Tenant-ID: {tenant-id}" \
-     https://api.cloudhealthoffice.com/v1/sftp/failures
+     https://api.<your-domain>/v1/sftp/failures
 ```
 
 ### Security Best Practices
@@ -605,7 +605,7 @@ curl -H "X-API-Key: {api-key}" \
 ### Troubleshooting SFTP
 
 **Connection Refused**:
-- Verify host: `sftp.cloudhealthoffice.com` (not `https://`)
+- Verify host: `sftp.HealthCoreX.com` (not `https://`)
 - Verify port: `22` (not 21 for FTP)
 - Check firewall allows outbound port 22
 
@@ -720,8 +720,8 @@ After clearinghouse connection, add payers:
 
 ## Support
 
-- **Documentation**: https://docs.cloudhealthoffice.com
-- **Email**: support@cloudhealthoffice.com
+- **Documentation**: https://docs.HealthCoreX.com
+- **Email**: support@HealthCoreX.com
 - **Phone**: +1-800-555-HIPAA (business hours)
-- **Community Forum**: https://community.cloudhealthoffice.com
-- **Emergency**: support@cloudhealthoffice.com (24/7 monitoring)
+- **Community Forum**: https://community.HealthCoreX.com
+- **Emergency**: support@HealthCoreX.com (24/7 monitoring)

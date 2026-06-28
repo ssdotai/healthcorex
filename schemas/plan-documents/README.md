@@ -9,7 +9,7 @@ describes.
 
 The codes here drive the `Endpoint.payloadType.coding` slot under the
 CHO CodeSystem
-`http://fhir.cloudhealthoffice.com/CodeSystem/plan-document-type`
+`http://fhir.HealthCoreX.com/CodeSystem/plan-document-type`
 (BP 5.9 Decision 3). Plan-Net IG 1.1.0 does not bind `payloadType`, so
 no standard FHIR CodeSystem covers these.
 

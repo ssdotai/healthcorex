@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Configuration;
+namespace HealthCoreX.BenchmarkClaimGenerator.Configuration;
 
 /// <summary>
 /// Defines the distribution profile for corpus generation, specifying how many claims

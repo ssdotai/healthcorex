@@ -7,7 +7,7 @@ using Moq;
 using Moq.Protected;
 using ProviderService.Adapters;
 
-namespace CloudHealthOffice.ProviderService.Tests.Adapters;
+namespace HealthCoreX.ProviderService.Tests.Adapters;
 
 /// <summary>
 /// Routing tests for <see cref="OrganizationAdapterFactory"/>. Mirrors the

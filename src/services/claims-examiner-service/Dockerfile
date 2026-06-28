@@ -10,14 +10,14 @@ WORKDIR /repo
 # resolved graph silently uses older, vulnerable package versions.
 COPY src/Directory.Build.props src/
 COPY src/services/claims-examiner-service/claims-examiner-service.csproj src/services/claims-examiner-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/services/shared/CloudHealthOffice.Events/CloudHealthOffice.Events.csproj src/services/shared/CloudHealthOffice.Events/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
+COPY src/services/shared/HealthCoreX.Events/HealthCoreX.Events.csproj src/services/shared/HealthCoreX.Events/
 RUN dotnet restore src/services/claims-examiner-service/claims-examiner-service.csproj
 
 # Copy source code and build
 COPY src/services/claims-examiner-service/ src/services/claims-examiner-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/services/shared/CloudHealthOffice.Events/ src/services/shared/CloudHealthOffice.Events/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
+COPY src/services/shared/HealthCoreX.Events/ src/services/shared/HealthCoreX.Events/
 RUN dotnet build src/services/claims-examiner-service/claims-examiner-service.csproj -c Release --no-restore
 
 FROM build AS publish

@@ -11,7 +11,7 @@ kind: Namespace
 metadata:
   name: cho-workflows
   labels:
-    app: cloudhealthoffice
+    app: HealthCoreX
     component: workflows
 ---
 apiVersion: batch/v1

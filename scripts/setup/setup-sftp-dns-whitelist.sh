@@ -42,7 +42,7 @@ echo ""
 read -p "Configure DNS? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    read -p "Domain name (e.g., cloudhealthoffice.com): " DOMAIN_NAME
+    read -p "Domain name (e.g., HealthCoreX.com): " DOMAIN_NAME
     read -p "Subdomain (e.g., sftp): " SUBDOMAIN
     read -p "Azure Resource Group for DNS zone: " DNS_RG
     

@@ -38,16 +38,16 @@ info:
 
   contact:
     name: Aurelianware, Inc.
-    url: https://cloudhealthoffice.com
-    email: api@cloudhealthoffice.com
+    url: https://HealthCoreX.com
+    email: api@HealthCoreX.com
   license:
     name: BSL 1.1 (Business Source License)
-    url: https://github.com/aurelianware/cloudhealthoffice/blob/main/LICENSE
+    url: https://github.com/aurelianware/HealthCoreX/blob/main/LICENSE
 
 servers:
-  - url: https://api.cloudhealthoffice.com/fhir/r4
+  - url: https://api.HealthCoreX.com/fhir/r4
     description: Production
-  - url: https://sandbox.cloudhealthoffice.com/fhir/r4
+  - url: https://sandbox.HealthCoreX.com/fhir/r4
     description: Sandbox (synthetic data for testing)
   - url: http://localhost:3000/fhir/r4
     description: Local development

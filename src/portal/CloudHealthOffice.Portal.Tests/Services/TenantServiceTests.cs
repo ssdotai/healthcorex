@@ -2,9 +2,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using CloudHealthOffice.Portal.Services;
+using HealthCoreX.Portal.Services;
 
-namespace CloudHealthOffice.Portal.Tests.Services;
+namespace HealthCoreX.Portal.Tests.Services;
 
 public class TenantServiceTests
 {

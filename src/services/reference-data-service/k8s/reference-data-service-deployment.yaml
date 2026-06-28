@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: reference-data-service-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 data:
   ASPNETCORE_ENVIRONMENT: "Production"
   ASPNETCORE_URLS: "http://+:8080"
@@ -12,17 +12,17 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: reference-data-service-secret
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 type: Opaque
 stringData:
-  POSTGRES_PASSWORD: "CloudHealthOffice2026!"
+  POSTGRES_PASSWORD: "HealthCoreX2026!"
 ---
 # PostgreSQL StatefulSet
 apiVersion: v1
 kind: Service
 metadata:
   name: postgres-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 spec:
   ports:
   - port: 5432
@@ -35,7 +35,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 spec:
   serviceName: postgres-service
   replicas: 1
@@ -88,7 +88,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reference-data-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 spec:
   replicas: 1
   selector:
@@ -101,7 +101,7 @@ spec:
     spec:
       containers:
       - name: reference-data-service
-        image: ghcr.io/aurelianware/cloudhealthoffice-reference-data-service:latest
+        image: ghcr.io/aurelianware/HealthCoreX-reference-data-service:latest
         ports:
         - containerPort: 8080
         envFrom:
@@ -116,7 +116,7 @@ spec:
               name: database-secret
               key: connectionString
         - name: MongoDb__DatabaseName
-          value: "cloudhealthoffice"
+          value: "HealthCoreX"
         resources:
           requests:
             memory: "256Mi"
@@ -143,7 +143,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: reference-data-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 spec:
   selector:
     app: reference-data-service
@@ -157,7 +157,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: reference-data-service-hpa
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

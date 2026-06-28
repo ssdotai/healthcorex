@@ -21,8 +21,8 @@ metadata:
   labels:
     app.kubernetes.io/name: edi-raw-files
     app.kubernetes.io/component: kafka-topic
-    app.kubernetes.io/part-of: cloudhealthoffice
-    strimzi.io/cluster: cloudhealthoffice-kafka
+    app.kubernetes.io/part-of: HealthCoreX
+    strimzi.io/cluster: HealthCoreX-kafka
 spec:
   topicName: edi-raw-files
   partitions: 3
@@ -43,8 +43,8 @@ metadata:
   labels:
     app.kubernetes.io/name: attachments-in
     app.kubernetes.io/component: kafka-topic
-    app.kubernetes.io/part-of: cloudhealthoffice
-    strimzi.io/cluster: cloudhealthoffice-kafka
+    app.kubernetes.io/part-of: HealthCoreX
+    strimzi.io/cluster: HealthCoreX-kafka
 spec:
   topicName: attachments-in
   partitions: 3
@@ -65,8 +65,8 @@ metadata:
   labels:
     app.kubernetes.io/name: edi-278
     app.kubernetes.io/component: kafka-topic
-    app.kubernetes.io/part-of: cloudhealthoffice
-    strimzi.io/cluster: cloudhealthoffice-kafka
+    app.kubernetes.io/part-of: HealthCoreX
+    strimzi.io/cluster: HealthCoreX-kafka
 spec:
   topicName: edi-278
   partitions: 3
@@ -87,8 +87,8 @@ metadata:
   labels:
     app.kubernetes.io/name: rfai-requests
     app.kubernetes.io/component: kafka-topic
-    app.kubernetes.io/part-of: cloudhealthoffice
-    strimzi.io/cluster: cloudhealthoffice-kafka
+    app.kubernetes.io/part-of: HealthCoreX
+    strimzi.io/cluster: HealthCoreX-kafka
 spec:
   topicName: rfai-requests
   partitions: 3
@@ -109,8 +109,8 @@ metadata:
   labels:
     app.kubernetes.io/name: edi-277-outbound
     app.kubernetes.io/component: kafka-topic
-    app.kubernetes.io/part-of: cloudhealthoffice
-    strimzi.io/cluster: cloudhealthoffice-kafka
+    app.kubernetes.io/part-of: HealthCoreX
+    strimzi.io/cluster: HealthCoreX-kafka
 spec:
   topicName: edi-277-outbound
   partitions: 3
@@ -131,8 +131,8 @@ metadata:
   labels:
     app.kubernetes.io/name: edi-278-replay-requests
     app.kubernetes.io/component: kafka-topic
-    app.kubernetes.io/part-of: cloudhealthoffice
-    strimzi.io/cluster: cloudhealthoffice-kafka
+    app.kubernetes.io/part-of: HealthCoreX
+    strimzi.io/cluster: HealthCoreX-kafka
 spec:
   topicName: edi-278-replay-requests
   partitions: 3
@@ -153,8 +153,8 @@ metadata:
   labels:
     app.kubernetes.io/name: edi-278-replays
     app.kubernetes.io/component: kafka-topic
-    app.kubernetes.io/part-of: cloudhealthoffice
-    strimzi.io/cluster: cloudhealthoffice-kafka
+    app.kubernetes.io/part-of: HealthCoreX
+    strimzi.io/cluster: HealthCoreX-kafka
 spec:
   topicName: edi-278-replays
   partitions: 3
@@ -175,8 +175,8 @@ metadata:
   labels:
     app.kubernetes.io/name: claims-adjudication
     app.kubernetes.io/component: kafka-topic
-    app.kubernetes.io/part-of: cloudhealthoffice
-    strimzi.io/cluster: cloudhealthoffice-kafka
+    app.kubernetes.io/part-of: HealthCoreX
+    strimzi.io/cluster: HealthCoreX-kafka
 spec:
   topicName: claims-adjudication
   partitions: 6
@@ -197,8 +197,8 @@ metadata:
   labels:
     app.kubernetes.io/name: claims-work-queue
     app.kubernetes.io/component: kafka-topic
-    app.kubernetes.io/part-of: cloudhealthoffice
-    strimzi.io/cluster: cloudhealthoffice-kafka
+    app.kubernetes.io/part-of: HealthCoreX
+    strimzi.io/cluster: HealthCoreX-kafka
 spec:
   topicName: claims-work-queue
   partitions: 3
@@ -219,8 +219,8 @@ metadata:
   labels:
     app.kubernetes.io/name: claims-rejected
     app.kubernetes.io/component: kafka-topic
-    app.kubernetes.io/part-of: cloudhealthoffice
-    strimzi.io/cluster: cloudhealthoffice-kafka
+    app.kubernetes.io/part-of: HealthCoreX
+    strimzi.io/cluster: HealthCoreX-kafka
 spec:
   topicName: claims-rejected
   partitions: 3
@@ -241,8 +241,8 @@ metadata:
   labels:
     app.kubernetes.io/name: eligibility-requests
     app.kubernetes.io/component: kafka-topic
-    app.kubernetes.io/part-of: cloudhealthoffice
-    strimzi.io/cluster: cloudhealthoffice-kafka
+    app.kubernetes.io/part-of: HealthCoreX
+    strimzi.io/cluster: HealthCoreX-kafka
 spec:
   topicName: eligibility-requests
   partitions: 3
@@ -263,8 +263,8 @@ metadata:
   labels:
     app.kubernetes.io/name: enrollment-import
     app.kubernetes.io/component: kafka-topic
-    app.kubernetes.io/part-of: cloudhealthoffice
-    strimzi.io/cluster: cloudhealthoffice-kafka
+    app.kubernetes.io/part-of: HealthCoreX
+    strimzi.io/cluster: HealthCoreX-kafka
 spec:
   topicName: enrollment-import
   partitions: 3
@@ -285,8 +285,8 @@ metadata:
   labels:
     app.kubernetes.io/name: dead-letter-queue
     app.kubernetes.io/component: kafka-topic
-    app.kubernetes.io/part-of: cloudhealthoffice
-    strimzi.io/cluster: cloudhealthoffice-kafka
+    app.kubernetes.io/part-of: HealthCoreX
+    strimzi.io/cluster: HealthCoreX-kafka
 spec:
   topicName: dead-letter-queue
   partitions: 3

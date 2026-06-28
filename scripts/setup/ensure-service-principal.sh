@@ -110,11 +110,11 @@ fi
 
 # Get configuration values from vault or use defaults
 if [ "$USE_VAULT" = true ]; then
-    RESOURCE_GROUP=$(get_or_set_vault_config "$KEY_VAULT_NAME" "resource-group-name" "${RESOURCE_GROUP_PARAM:-rg-cloudhealthoffice-prod}" "Azure Resource Group Name")
-    BASE_NAME=$(get_or_set_vault_config "$KEY_VAULT_NAME" "base-name" "${BASE_NAME_PARAM:-cloudhealthoffice}" "Base Name for Resources")
+    RESOURCE_GROUP=$(get_or_set_vault_config "$KEY_VAULT_NAME" "resource-group-name" "${RESOURCE_GROUP_PARAM:-rg-HealthCoreX-prod}" "Azure Resource Group Name")
+    BASE_NAME=$(get_or_set_vault_config "$KEY_VAULT_NAME" "base-name" "${BASE_NAME_PARAM:-HealthCoreX}" "Base Name for Resources")
 else
-    RESOURCE_GROUP="${RESOURCE_GROUP_PARAM:-rg-cloudhealthoffice-prod}"
-    BASE_NAME="${BASE_NAME_PARAM:-cloudhealthoffice}"
+    RESOURCE_GROUP="${RESOURCE_GROUP_PARAM:-rg-HealthCoreX-prod}"
+    BASE_NAME="${BASE_NAME_PARAM:-HealthCoreX}"
     echo -e "${YELLOW}⚠️  Using hardcoded defaults (no Key Vault)${NC}"
 fi
 
@@ -164,7 +164,7 @@ if ! az group show --name "$RESOURCE_GROUP" &>/dev/null; then
     
     az group create --name "$RESOURCE_GROUP" --location "$LOCATION" --tags \
         "Environment=Production" \
-        "ManagedBy=CloudHealthOffice" \
+        "ManagedBy=HealthCoreX" \
         "Purpose=HIPAACompliance"
     
     echo -e "${GREEN}✅ Resource group created: $RESOURCE_GROUP${NC}"

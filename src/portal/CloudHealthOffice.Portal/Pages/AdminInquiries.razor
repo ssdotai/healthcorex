@@ -1,7 +1,7 @@
 @page "/admin/inquiries"
 @page "/platform/inquiries"
 @using Microsoft.AspNetCore.Authorization
-@using CloudHealthOffice.Portal.Services
+@using HealthCoreX.Portal.Services
 @attribute [Authorize]
 @inject ISalesInquiryService SalesInquiryService
 @inject ILogger<AdminInquiries> Logger
@@ -15,7 +15,7 @@
         Sales Inquiries
     </MudText>
     <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mb-4">
-        Contact form submissions from cloudhealthoffice.com
+        Contact form submissions from HealthCoreX.com
     </MudText>
 
     @if (_serviceError != null)

@@ -6,7 +6,7 @@ using ClaimsService.Services;
 using NSubstitute;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Controllers;
+namespace HealthCoreX.ClaimsService.Tests.Controllers;
 
 public class ClaimsControllerFinalizationTests : IClassFixture<ClaimsApiFactory>
 {

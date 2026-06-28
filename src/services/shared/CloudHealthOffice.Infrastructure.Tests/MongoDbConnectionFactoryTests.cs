@@ -1,9 +1,9 @@
-using CloudHealthOffice.Infrastructure.Data;
+using HealthCoreX.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.Infrastructure.Tests;
+namespace HealthCoreX.Infrastructure.Tests;
 
 public class MongoDbConnectionFactoryTests
 {
@@ -44,18 +44,18 @@ public class MongoDbConnectionFactoryTests
     }
 
     [Fact]
-    public void GetDatabase_DefaultDatabaseName_UsesCloudHealthOffice()
+    public void GetDatabase_DefaultDatabaseName_UsesHealthCoreX()
     {
         var mockClient = new Mock<IMongoClient>();
         var mockDb = new Mock<IMongoDatabase>();
-        mockClient.Setup(c => c.GetDatabase("CloudHealthOffice", null)).Returns(mockDb.Object);
+        mockClient.Setup(c => c.GetDatabase("HealthCoreX", null)).Returns(mockDb.Object);
 
         var factory = CreateFactory(client: mockClient.Object);
 
         var db = factory.GetDatabase();
 
         db.Should().BeSameAs(mockDb.Object);
-        mockClient.Verify(c => c.GetDatabase("CloudHealthOffice", null), Times.Once);
+        mockClient.Verify(c => c.GetDatabase("HealthCoreX", null), Times.Once);
     }
 
     [Fact]

@@ -259,6 +259,20 @@ public class Claim
     public string? ReferralNumber { get; set; }
 
     /// <summary>
+    /// Related-causes code (AA=Auto Accident, EM=Employment, OA=Other Accident).
+    /// Null when the service is unrelated to any accident/injury liability.
+    /// 837: CLM11-1 (2300 loop)
+    /// </summary>
+    [StringLength(2)]
+    public string? RelatedCausesCode { get; set; }
+
+    /// <summary>
+    /// Accident date. Set only when <see cref="RelatedCausesCode"/> is set.
+    /// 837: DTP*439 (2300 loop)
+    /// </summary>
+    public DateTime? AccidentDate { get; set; }
+
+    /// <summary>
     /// Claim notes/comments
     /// 837: NTE segment
     /// </summary>
@@ -761,7 +775,7 @@ public class PendDetails
 {
     /// <summary>
     /// Short pend reason code consumed by the work queue categorizer.
-    /// Recognized values: NCCI, MUE, AUTH, NOAUTH, OON, NOCONTRACT, COB, MEDREVIEW, CLINICAL.
+    /// Recognized values: NCCI, MUE, AUTH, NOAUTH, OON, NOCONTRACT, COB, MEDREVIEW, CLINICAL, RETROELIG, SUBRO, SPENDDOWN.
     /// </summary>
     [Required]
     [StringLength(20)]
@@ -786,7 +800,7 @@ public class PendDetails
 
 /// <summary>
 /// Claim-service-local snapshot of an NCCI engine edit failure. Mirrors
-/// CloudHealthOffice.NcciEngine.Models.NcciEditFailure but lives here so the
+/// HealthCoreX.NcciEngine.Models.NcciEditFailure but lives here so the
 /// claims-service does not take a hard reference on the engine assembly.
 /// </summary>
 [BsonIgnoreExtraElements]

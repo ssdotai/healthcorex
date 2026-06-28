@@ -85,7 +85,7 @@ echo "=========================================="
 echo ""
 
 # Port-forward to claims service
-kubectl -n cloudhealthoffice port-forward svc/claims-service 18081:80 > /dev/null 2>&1 &
+kubectl -n HealthCoreX port-forward svc/claims-service 18081:80 > /dev/null 2>&1 &
 CLAIMS_PF_PID=$!
 sleep 2
 
@@ -499,5 +499,5 @@ echo ""
 echo "Next steps:"
 echo "  - Review 277 response: cat /tmp/test-277-${TEST_ID}.edi"
 echo "  - Check Kafka events: kubectl logs -n cho-workflows -l app=kafka --tail 50"
-echo "  - Query claim in UI: https://portal.cloudhealthoffice.com/claims"
+echo "  - Query claim in UI: ${PORTAL_BASE_URL:-http://localhost:5026}/claims"
 echo ""

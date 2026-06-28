@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Server.AspNetCore;
 
-namespace CloudHealthOffice.SmartAuth.Tests;
+namespace HealthCoreX.SmartAuth.Tests;
 
 /// <summary>
 /// xUnit class fixture that starts an EphemeralMongo runner (in-process MongoDB 7)

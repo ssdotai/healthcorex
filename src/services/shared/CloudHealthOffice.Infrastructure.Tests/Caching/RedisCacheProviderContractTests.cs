@@ -1,9 +1,9 @@
-using CloudHealthOffice.Infrastructure.Caching;
+using HealthCoreX.Infrastructure.Caching;
 using Microsoft.Extensions.Logging.Abstractions;
 using StackExchange.Redis;
 using Xunit;
 
-namespace CloudHealthOffice.Infrastructure.Tests.Caching;
+namespace HealthCoreX.Infrastructure.Tests.Caching;
 
 /// <summary>
 /// Real-Redis contract fixture. Skipped unless

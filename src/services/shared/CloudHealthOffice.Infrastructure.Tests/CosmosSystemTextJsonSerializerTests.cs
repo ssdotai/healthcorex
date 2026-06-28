@@ -1,8 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using CloudHealthOffice.Infrastructure.Serialization;
+using HealthCoreX.Infrastructure.Serialization;
 
-namespace CloudHealthOffice.Infrastructure.Tests;
+namespace HealthCoreX.Infrastructure.Tests;
 
 public class CosmosSystemTextJsonSerializerTests
 {

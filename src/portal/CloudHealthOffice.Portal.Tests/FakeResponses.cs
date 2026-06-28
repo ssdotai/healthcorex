@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace CloudHealthOffice.Portal.Tests;
+namespace HealthCoreX.Portal.Tests;
 
 /// <summary>
 /// Static helpers for building common JSON response bodies used with FakeHandler.

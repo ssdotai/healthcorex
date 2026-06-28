@@ -162,7 +162,7 @@ Database: cho-dev
 
 **Option B: Single Database with Environment Field**
 ```
-Database: CloudHealthOffice
+Database: HealthCoreX
   Containers: 
     Authorizations (partition: /environment_tenantId)
       - Composite key: "prod_bcbs-florida"

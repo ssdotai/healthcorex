@@ -5,11 +5,11 @@ using EligibilityService.Adapters;
 using EligibilityService.Middleware;
 using EligibilityService.Repositories;
 using EligibilityService.Services;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.HealthChecks;
-using CloudHealthOffice.Infrastructure.Json;
-using CloudHealthOffice.Infrastructure.Messaging;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
 // Secret provider (Azure Key Vault / none)
@@ -20,7 +20,7 @@ builder.Configuration.AddAzureKeyVaultConfiguration(builder.Configuration);
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<TenantActionFilter>();
-}).AddCloudHealthOfficeJsonOptions();
+}).AddHealthCoreXJsonOptions();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -47,7 +47,7 @@ if (!string.IsNullOrEmpty(mongoConnectionString))
     builder.Services.AddScoped<MongoDB.Driver.IMongoDatabase>(sp =>
     {
         var client = sp.GetRequiredService<MongoDB.Driver.IMongoClient>();
-        var databaseName = builder.Configuration["MongoDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = builder.Configuration["MongoDb:DatabaseName"] ?? "HealthCoreX";
         return client.GetDatabase(databaseName);
     });
 

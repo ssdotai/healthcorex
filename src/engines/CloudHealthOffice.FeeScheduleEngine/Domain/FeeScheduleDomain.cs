@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.FeeScheduleEngine.Domain;
+namespace HealthCoreX.FeeScheduleEngine.Domain;
 
 // ═══════════════════════════════════════════════════════════════════
 // FEE SCHEDULE DOMAIN TYPES

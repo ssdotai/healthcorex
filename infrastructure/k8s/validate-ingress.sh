@@ -12,7 +12,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-NAMESPACE="cloudhealthoffice"
+NAMESPACE="HealthCoreX"
 INGRESS_NAMESPACE="ingress-nginx"
 CERTMANAGER_NAMESPACE="cert-manager"
 EXPECTED_IP="4.149.83.133"
@@ -205,7 +205,7 @@ fi
 # Check DNS (if dig is available)
 echo -e "\n${BLUE}[9/9] Checking DNS Configuration${NC}"
 if command -v dig &> /dev/null; then
-    DOMAINS=("cloudhealthoffice.com" "www.cloudhealthoffice.com" "portal.cloudhealthoffice.com")
+    DOMAINS=("HealthCoreX.com" "www.HealthCoreX.com" "portal.HealthCoreX.com")
     
     for DOMAIN in "${DOMAINS[@]}"; do
         DNS_IP=$(dig +short "$DOMAIN" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' | head -n1)
@@ -243,8 +243,8 @@ echo "4. Check cert-manager logs if issues occur:"
 echo "   → kubectl logs -n cert-manager -l app=cert-manager --tail=50"
 echo ""
 echo "5. Test HTTPS access:"
-echo "   → curl -I https://cloudhealthoffice.com"
-echo "   → curl -I https://portal.cloudhealthoffice.com"
+echo "   → curl -I https://HealthCoreX.com"
+echo "   → curl -I https://portal.HealthCoreX.com"
 echo ""
 
 echo -e "${GREEN}Validation complete!${NC}"

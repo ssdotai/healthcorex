@@ -7,11 +7,11 @@ apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
   name: sftp-sensor
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app.kubernetes.io/name: sftp-sensor
     app.kubernetes.io/component: sensor
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
 spec:
   template:
     serviceAccountName: argo-events-sa
@@ -50,7 +50,7 @@ spec:
               kind: Workflow
               metadata:
                 generateName: x12-275-ingest-
-                namespace: cloudhealthoffice
+                namespace: HealthCoreX
               spec:
                 workflowTemplateRef:
                   name: x12-275-ingest
@@ -83,7 +83,7 @@ spec:
               kind: Workflow
               metadata:
                 generateName: x12-276-ingest-
-                namespace: cloudhealthoffice
+                namespace: HealthCoreX
               spec:
                 workflowTemplateRef:
                   name: x12-276-ingest
@@ -120,7 +120,7 @@ spec:
               kind: Workflow
               metadata:
                 generateName: x12-278-ingest-
-                namespace: cloudhealthoffice
+                namespace: HealthCoreX
               spec:
                 workflowTemplateRef:
                   name: x12-278-ingest

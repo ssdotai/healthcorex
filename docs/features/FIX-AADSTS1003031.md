@@ -258,7 +258,7 @@ After configuration:
    - Should say "Granted for {Your Org}"
 
 3. **Test Login**:
-   - Open portal: https://portal.cloudhealthoffice.com
+   - Open portal: https://portal.HealthCoreX.com
    - Sign in
    - Should successfully authenticate without AADSTS1003031 error
 

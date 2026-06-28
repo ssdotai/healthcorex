@@ -283,7 +283,7 @@ When you run `az deployment group create --template-file infra/main.bicep`:
    ```bash
    az monitor action-group create \
      --resource-group <rg> \
-     --name CloudHealthOffice-Alerts \
+     --name HealthCoreX-Alerts \
      --short-name CHOAlerts \
      --action email ops ops@example.com
    ```

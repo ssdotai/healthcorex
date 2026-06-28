@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Configuration;
+namespace HealthCoreX.BenchmarkClaimGenerator.Configuration;
 
 /// <summary>
 /// The default Million Claim Challenge corpus profile: 1,000,000 claims

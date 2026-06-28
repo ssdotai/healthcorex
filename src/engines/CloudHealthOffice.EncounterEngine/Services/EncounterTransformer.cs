@@ -1,6 +1,6 @@
-using CloudHealthOffice.EncounterEngine.Domain;
+using HealthCoreX.EncounterEngine.Domain;
 
-namespace CloudHealthOffice.EncounterEngine.Services;
+namespace HealthCoreX.EncounterEngine.Services;
 
 /// <summary>
 /// Produces an X12 005010X222A2 (837P) or 005010X223A3 (837I) transaction

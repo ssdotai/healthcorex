@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 
-namespace CloudHealthOffice.Portal.Hubs;
+namespace HealthCoreX.Portal.Hubs;
 
 public class ClaimsHub : Hub
 {

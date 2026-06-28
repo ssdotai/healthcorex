@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Infrastructure.Configuration;
+namespace HealthCoreX.Infrastructure.Configuration;
 
 /// <summary>
 /// Metadata describing a single version of a named secret in the underlying

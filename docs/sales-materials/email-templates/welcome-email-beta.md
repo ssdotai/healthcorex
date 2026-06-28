@@ -1,9 +1,9 @@
 # Welcome Email Template - Beta Launch
 
 **Template Name**: Welcome to Cloud Health Office - Beta Customer  
-**Sender**: Cloud Health Office Team <support@cloudhealthoffice.com>  
-**Reply-To**: support@cloudhealthoffice.com  
-**Subject**: Welcome to Cloud Health Office - Let's Get You Live in < 1 Hour  
+**Sender**: Cloud Health Office Team <support@HealthCoreX.com>  
+**Reply-To**: support@HealthCoreX.com  
+**Subject**: Welcome to Cloud Health Office - Let's Start Your Deployment Validation
 **Template Version**: 1.0  
 **Created**: February 17, 2026  
 **Use Case**: Sent to new Beta customers after contract signature and payment
@@ -13,11 +13,11 @@
 ## Email Template
 
 ```
-Subject: Welcome to Cloud Health Office - Let's Get You Live in <1 Hour
+Subject: Welcome to Cloud Health Office - Let's Start Your Deployment Validation
 
 Hi [Customer Contact Name],
 
-Congratulations on joining Cloud Health Office! We're excited to help you modernize EDI integration and achieve CMS-0057-F compliance.
+Congratulations on joining Cloud Health Office! We're excited to help you modernize EDI integration and validate CMS-0057-F readiness in your environment.
 
 As a Beta customer, you're part of an exclusive group pioneering the future of healthcare interoperability. Let's get you up and running.
 
@@ -27,29 +27,29 @@ As a Beta customer, you're part of an exclusive group pioneering the future of h
 
 Step 1: Activate Your Secure Access
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Your Cloud Health Office tenant has been provisioned. For security, credentials are never sent via email.
+Your Cloud Health Office tenant or evaluation environment has been provisioned. For security, credentials are never sent via email.
 
 📁 SFTP Access:
-   • Host: sftp.cloudhealthoffice.com
+   • Host: sftp.HealthCoreX.com
    • Port: 22
    • Inbound folder: /inbound/
    • Outbound folder: /outbound/
 
 **To set up SFTP credentials:**
-   1. Sign in to the portal: https://portal.cloudhealthoffice.com
+   1. Sign in to your deployed portal: https://portal.<your-domain>
    2. Authenticate with your Azure AD account
    3. Navigate to: Admin → Connectivity → SFTP
    4. Generate your SFTP username and password (one-time secure view in portal)
    5. Store credentials in your organization's secure vault (Azure Key Vault, 1Password, etc.)
 
 🌐 Portal Access:
-   • URL: https://portal.cloudhealthoffice.com
+   • URL: https://portal.<your-domain>
    • Login: Use your Azure AD credentials (SSO)
    • Tenant ID: [tenant-id]
 
 🔑 API Access (for developers):
-   • Base URL: https://api.cloudhealthoffice.com/v1
-   • Documentation: https://docs.cloudhealthoffice.com/api
+   • Base URL: https://api.<your-domain>/v1
+   • Documentation: https://docs.HealthCoreX.com/api
 
 **To obtain API credentials:**
    1. In the portal, go to: Admin → Developers → API Access
@@ -70,18 +70,18 @@ Step 2: Run Your First Transaction Test (< 10 minutes)
 Let's process a test transaction to verify everything works:
 
 Test Option A: 275 Attachment Processing
-1. Download sample file: https://docs.cloudhealthoffice.com/samples/test-275.edi
+1. Download sample file: https://docs.HealthCoreX.com/samples/test-275.edi
 2. Upload to SFTP: /inbound/275/test-275.edi
 3. Check portal for processing status (2-5 minutes)
 4. Verify archival in Data Lake: /hipaa-attachments/raw/275/[date]/
 
 Test Option B: 837 Claim Submission (via API)
-1. Use our interactive API tester: https://portal.cloudhealthoffice.com/api-test
+1. Use the interactive API tester in your deployed portal: https://portal.<your-domain>/api-test
 2. Select "837P - Professional Claim"
 3. Click "Run Test with Sample Data"
 4. View FHIR ExplanationOfBenefit resource in response
 
-📖 Full Testing Guide: https://docs.cloudhealthoffice.com/quickstart/first-test
+📖 Full Testing Guide: https://docs.HealthCoreX.com/quickstart/first-test
 
 
 Step 3: Configure Your Integration (< 30 minutes)
@@ -104,7 +104,7 @@ X12 Trading Partner IDs:
    • X12 Qualifier: [qualifier]
    • Update if needed: Portal → Configuration → Organization
 
-📖 Configuration Guide: https://docs.cloudhealthoffice.com/configuration
+📖 Configuration Guide: https://docs.HealthCoreX.com/configuration
 
 
 Step 4: Schedule Your Onboarding Call (30 minutes)
@@ -127,10 +127,10 @@ Best times: Mon-Fri, 9am-5pm ET
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Documentation:
-• Quickstart Guide: https://docs.cloudhealthoffice.com/quickstart
-• API Reference: https://docs.cloudhealthoffice.com/api
-• Configuration Wizard: https://docs.cloudhealthoffice.com/config-wizard
-• Troubleshooting: https://docs.cloudhealthoffice.com/troubleshooting
+• Quickstart Guide: https://docs.HealthCoreX.com/quickstart
+• API Reference: https://docs.HealthCoreX.com/api
+• Configuration Wizard: https://docs.HealthCoreX.com/config-wizard
+• Troubleshooting: https://docs.HealthCoreX.com/troubleshooting
 
 Video Tutorials:
 • Platform Overview (5 min): https://youtu.be/[VIDEO_ID]
@@ -138,9 +138,9 @@ Video Tutorials:
 • Claims System Integration (15 min): https://youtu.be/[VIDEO_ID]
 
 Community & Support:
-• GitHub Discussions: https://github.com/aurelianware/cloudhealthoffice/discussions
-• Slack Community: https://cloudhealthoffice.slack.com/signup
-• Support Portal: https://support.cloudhealthoffice.com
+• GitHub Discussions: https://github.com/aurelianware/HealthCoreX/discussions
+• Slack Community: https://HealthCoreX.slack.com/signup
+• Support Portal: https://support.HealthCoreX.com
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -148,8 +148,8 @@ Community & Support:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Your Beta Support Team:
-• Email: support@cloudhealthoffice.com (response SLA: [tier-based])
-• Support Portal: https://support.cloudhealthoffice.com
+• Email: support@HealthCoreX.com (response SLA: [tier-based])
+• Support Portal: https://support.HealthCoreX.com
 • Phone (Enterprise only): 1-888-CLOUD-55
 
 Your Dedicated Contacts:
@@ -183,7 +183,7 @@ Included in Your Plan:
 • Support: [response-time] response SLA
 • Uptime: [uptime-percentage]% SLA
 
-View or update subscription: https://portal.cloudhealthoffice.com/billing
+View or update subscription: https://portal.<your-domain>/billing
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -192,7 +192,7 @@ View or update subscription: https://portal.cloudhealthoffice.com/billing
 
 Day 1 (Today):
 ☐ Review this email and attached credentials
-☐ Log in to portal: https://portal.cloudhealthoffice.com
+☐ Log in to portal: https://portal.<your-domain>
 ☐ Run first transaction test (Step 2 above)
 ☐ Schedule onboarding call (Step 4 above)
 
@@ -230,7 +230,7 @@ We'll check in weekly to hear:
 
 Feedback Channels:
 • Weekly check-in calls (scheduled separately)
-• Beta feedback form: https://feedback.cloudhealthoffice.com
+• Beta feedback form: https://feedback.HealthCoreX.com
 • Direct Slack channel (invitation sent separately)
 
 Thank you for being an early adopter! 🙏
@@ -242,11 +242,11 @@ Thank you for being an early adopter! 🙏
 
 Your next step: Log in to the portal and run your first test transaction.
 
-👉 Portal Login: https://portal.cloudhealthoffice.com
+👉 Portal Login: https://portal.<your-domain>
 👉 Schedule Onboarding Call: [CALENDLY_LINK]
-👉 Join Slack Community: https://cloudhealthoffice.slack.com/signup
+👉 Join Slack Community: https://HealthCoreX.slack.com/signup
 
-Questions? Hit reply or email support@cloudhealthoffice.com.
+Questions? Hit reply or email support@HealthCoreX.com.
 
 Welcome aboard!
 
@@ -259,7 +259,7 @@ Cloud Health Office
 
 📧 [engineer-email]
 🗓️ [CALENDLY_LINK]
-🌐 https://cloudhealthoffice.com
+🌐 https://HealthCoreX.com
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -274,7 +274,7 @@ Source-Available (BSL 1.1) | Azure-Native | HIPAA-Compliant | CMS-0057-F Ready
 
 You're receiving this email because you signed up for Cloud Health Office.
 Manage email preferences: [PREFERENCES_LINK]
-Privacy Policy: https://cloudhealthoffice.com/legal/privacy-policy
+Privacy Policy: https://HealthCoreX.com/legal/privacy-policy
 ```
 
 ---

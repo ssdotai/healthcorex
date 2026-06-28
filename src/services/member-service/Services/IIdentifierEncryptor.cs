@@ -2,7 +2,7 @@ namespace MemberService.Services;
 
 /// <summary>
 /// Field-level encryption for PII identifiers (SSN, MBI, Medicaid IDs).
-/// Implementations back the data key with Azure Key Vault via <see cref="CloudHealthOffice.Infrastructure.Configuration.ISecretProvider"/>.
+/// Implementations back the data key with Azure Key Vault via <see cref="HealthCoreX.Infrastructure.Configuration.ISecretProvider"/>.
 /// </summary>
 public interface IIdentifierEncryptor
 {

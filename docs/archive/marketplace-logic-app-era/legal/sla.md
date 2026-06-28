@@ -214,7 +214,7 @@ The SLA does not apply to Downtime caused by:
 
 ### 8.1 Status Page
 
-Provider maintains a public status page at: https://status.cloudhealthoffice.com
+Provider maintains a public status page at: https://status.HealthCoreX.com
 
 - Real-time system status for all components
 - Incident updates every 30 minutes during active incidents
@@ -340,16 +340,16 @@ In the event of conflict between this SLA and other agreements:
 
 ## 14. Contact Information
 
-**Support Portal**: https://support.cloudhealthoffice.com  
-**Status Page**: https://status.cloudhealthoffice.com  
-**Support Email**: support@cloudhealthoffice.com  
-**Enterprise Support**: enterprise-support@cloudhealthoffice.com
+**Support Portal**: https://support.HealthCoreX.com  
+**Status Page**: https://status.HealthCoreX.com  
+**Support Email**: support@HealthCoreX.com  
+**Enterprise Support**: enterprise-support@HealthCoreX.com
 
 ---
 
 ## Appendix A: Historical Uptime
 
-Provider publishes historical uptime metrics at https://status.cloudhealthoffice.com/history
+Provider publishes historical uptime metrics at https://status.HealthCoreX.com/history
 
 ## Appendix B: Regional Availability
 

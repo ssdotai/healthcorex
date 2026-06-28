@@ -49,7 +49,7 @@ Use this streamlined checklist to track progress through the customer onboarding
 - [ ] SaaS tenant created in Cloud Health Office platform
 - [ ] Unique tenant ID assigned: __________________
 - [ ] SFTP account provisioned (credentials generated via portal, not sent via email)
-  - Host: sftp.cloudhealthoffice.com
+  - Host: sftp.HealthCoreX.com
   - Credentials: Customer generates via secure portal
 - [ ] Portal access configured (Azure AD SSO)
 - [ ] API key generation enabled in portal (customer-controlled)
@@ -92,7 +92,7 @@ Use this streamlined checklist to track progress through the customer onboarding
 ## Day 2-3: Configuration & Integration Setup
 
 **Owner**: Cloud Health Office Implementation Team (with customer collaboration)  
-**Location**: Customer portal (https://portal.cloudhealthoffice.com)
+**Location**: Customer-deployed portal (for example, `https://portal.<your-domain>`)
 
 ### Portal Configuration Wizard (Customer Self-Service)
 - [ ] Customer logs into portal successfully
@@ -376,7 +376,7 @@ Date: _______________________________________
 ### Cloud Health Office Contacts
 - **Implementation Engineer:** __________________ | _________________ | _________________
 - **Customer Success Manager:** _________________ | _________________ | _________________
-- **Technical Support:** support@cloudhealthoffice.com | 1-888-CLOUD-55
+- **Technical Support:** support@HealthCoreX.com | 1-888-CLOUD-55
 - **Sales Representative:** __________________ | _________________ | _________________
 
 ---

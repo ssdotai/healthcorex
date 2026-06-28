@@ -4,25 +4,25 @@
 
 **GitHub Actions Workflow:** `.github/workflows/docker-build.yml`  
 **Status:** Triggered and building  
-**Registry:** `ghcr.io/aurelianware/cloudhealthoffice`
+**Registry:** `ghcr.io/aurelianware/HealthCoreX`
 
 ---
 
 ## 📦 Images Being Built
 
 ### Microservices (10)
-1. ✅ **member-service** - `ghcr.io/aurelianware/cloudhealthoffice-member-service:latest`
-2. ✅ **coverage-service** - `ghcr.io/aurelianware/cloudhealthoffice-coverage-service:latest`
-3. ✅ **claims-service** - `ghcr.io/aurelianware/cloudhealthoffice-claims-service:latest`
-4. ✅ **eligibility-service** - `ghcr.io/aurelianware/cloudhealthoffice-eligibility-service:latest`
-5. ✅ **authorization-service** - `ghcr.io/aurelianware/cloudhealthoffice-authorization-service:latest`
-6. ✅ **provider-service** - `ghcr.io/aurelianware/cloudhealthoffice-provider-service:latest`
-7. ✅ **benefit-plan-service** - `ghcr.io/aurelianware/cloudhealthoffice-benefit-plan-service:latest`
-8. ✅ **reference-data-service** - `ghcr.io/aurelianware/cloudhealthoffice-reference-data-service:latest`
-9. ✅ **sponsor-service** - `ghcr.io/aurelianware/cloudhealthoffice-sponsor-service:latest`
+1. ✅ **member-service** - `ghcr.io/aurelianware/HealthCoreX-member-service:latest`
+2. ✅ **coverage-service** - `ghcr.io/aurelianware/HealthCoreX-coverage-service:latest`
+3. ✅ **claims-service** - `ghcr.io/aurelianware/HealthCoreX-claims-service:latest`
+4. ✅ **eligibility-service** - `ghcr.io/aurelianware/HealthCoreX-eligibility-service:latest`
+5. ✅ **authorization-service** - `ghcr.io/aurelianware/HealthCoreX-authorization-service:latest`
+6. ✅ **provider-service** - `ghcr.io/aurelianware/HealthCoreX-provider-service:latest`
+7. ✅ **benefit-plan-service** - `ghcr.io/aurelianware/HealthCoreX-benefit-plan-service:latest`
+8. ✅ **reference-data-service** - `ghcr.io/aurelianware/HealthCoreX-reference-data-service:latest`
+9. ✅ **sponsor-service** - `ghcr.io/aurelianware/HealthCoreX-sponsor-service:latest`
 
 ### Frontend (1)
-10. ✅ **portal** (Blazor Server) - `ghcr.io/aurelianware/cloudhealthoffice-portal:latest`
+10. ✅ **portal** (Blazor Server) - `ghcr.io/aurelianware/HealthCoreX-portal:latest`
 
 ---
 
@@ -47,7 +47,7 @@ Updated deployments to use GitHub Container Registry:
 # Watch GitHub Actions
 gh run watch
 
-# Or visit: https://github.com/aurelianware/cloudhealthoffice/actions
+# Or visit: https://github.com/aurelianware/HealthCoreX/actions
 ```
 
 ### 2. Deploy Real Services
@@ -61,10 +61,10 @@ kubectl apply -f services/benefit-plan-service/k8s/
 kubectl apply -f services/reference-data-service/k8s/
 
 # Watch rollout
-kubectl rollout status deployment -n cloudhealthoffice
+kubectl rollout status deployment -n HealthCoreX
 
 # Verify pods running
-kubectl get pods -n cloudhealthoffice
+kubectl get pods -n HealthCoreX
 ```
 
 ### 3. Re-Run E2E Tests
@@ -141,7 +141,7 @@ docker build -f src/services/member-service/Dockerfile .
    - Minimal runtime image
    - Non-root user (`$APP_UID`)
    - EXPOSE ports 8080, 8081
-   - Production-ready configuration
+   - Runtime configuration suitable for validation deployments
 
 ### Build Optimization
 - ✅ **Layer caching** - GitHub Actions cache
@@ -195,8 +195,8 @@ docker build -t cho-member-service:dev services/member-service/
 docker run -p 8080:8080 cho-member-service:dev
 
 # Push to GHCR
-docker tag cho-member-service:dev ghcr.io/aurelianware/cloudhealthoffice-member-service:latest
-docker push ghcr.io/aurelianware/cloudhealthoffice-member-service:latest
+docker tag cho-member-service:dev ghcr.io/aurelianware/HealthCoreX-member-service:latest
+docker push ghcr.io/aurelianware/HealthCoreX-member-service:latest
 ```
 
 ### Building All Services

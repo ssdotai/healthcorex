@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using BenefitPlanService.Models.Benefits;
-using BenefitRulePredicate = CloudHealthOffice.BenefitEngine.Domain.BenefitRulePredicate;
+using BenefitRulePredicate = HealthCoreX.BenefitEngine.Domain.BenefitRulePredicate;
 
 namespace BenefitPlanService.Models;
 
@@ -589,7 +589,7 @@ public enum LineOfBusiness
 
 /// <summary>
 /// Plan-level family accumulator pooling model (capability 5.7). Mirrors
-/// <see cref="CloudHealthOffice.BenefitEngine.Domain.FamilyAccumulatorModel"/>
+/// <see cref="HealthCoreX.BenefitEngine.Domain.FamilyAccumulatorModel"/>
 /// in the engine; the service-side mirror exists so the persisted plan
 /// document never takes a runtime dependency on the engine's domain
 /// namespace, matching the boundary stance taken for <see cref="PlanType"/>.

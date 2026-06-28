@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace CloudHealthOffice.E2E;
+namespace HealthCoreX.E2E;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Prior Authorization (278) golden-path E2E test

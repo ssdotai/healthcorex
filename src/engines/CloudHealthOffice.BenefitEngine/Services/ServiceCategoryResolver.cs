@@ -1,7 +1,7 @@
-using CloudHealthOffice.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Domain;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.BenefitEngine.Services;
+namespace HealthCoreX.BenefitEngine.Services;
 
 /// <summary>
 /// Resolves a procedure code + context to a benefit service type code.

@@ -26,11 +26,18 @@ public static class UpstreamClientNames
     /// <summary>member-service — capability 5.5 member resolver.</summary>
     public const string MemberService = "MemberService";
 
-    /// <summary>reference-data-service — terminology lookups.</summary>
+    /// <summary>terminology-service — authoritative coding-system display/crosswalk lookups.</summary>
+    public const string TerminologyService = "TerminologyService";
+
+    /// <summary>reference-data-service — fallback coding-system lookups.</summary>
     public const string ReferenceDataService = "ReferenceDataService";
 
     /// <summary>coverage-service — capability 5.8 Coordination of Benefits
     /// /member/{id}/cob lookup driving CHO-primary vs CHO-secondary
     /// detection.</summary>
     public const string CoverageService = "CoverageService";
+
+    /// <summary>authorization-service — prior-authorization validation
+    /// lookup used by adjudication before paying PA-sensitive claims.</summary>
+    public const string AuthorizationService = "AuthorizationService";
 }

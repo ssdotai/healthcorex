@@ -1,8 +1,8 @@
-using CloudHealthOffice.Infrastructure.Caching;
+using HealthCoreX.Infrastructure.Caching;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 
-namespace CloudHealthOffice.Infrastructure.Tests.Caching;
+namespace HealthCoreX.Infrastructure.Tests.Caching;
 
 public class CacheKeyGuardTests
 {

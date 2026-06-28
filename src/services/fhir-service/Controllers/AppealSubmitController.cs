@@ -1,5 +1,5 @@
 using System.Text.Json;
-using CloudHealthOffice.Appeals.Contracts;
+using HealthCoreX.Appeals.Contracts;
 using FhirService.Services;
 using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -296,7 +296,7 @@ public sealed class AppealSubmitController : FhirControllerBase
         [
             new Extension
             {
-                Url = "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-correlation-id",
+                Url = "http://fhir.HealthCoreX.com/StructureDefinition/cho-correlation-id",
                 Value = new FhirString(correlationId)
             }
         ];
@@ -319,7 +319,7 @@ public sealed class AppealSubmitController : FhirControllerBase
             issue.Extension ??= new List<Extension>();
             issue.Extension.Add(new Extension
             {
-                Url = "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-child-ref",
+                Url = "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-child-ref",
                 Value = new FhirString(child.ChildRef)
             });
 
@@ -329,7 +329,7 @@ public sealed class AppealSubmitController : FhirControllerBase
                 [
                     new Extension
                     {
-                        Url = "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-retry-url",
+                        Url = "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-retry-url",
                         Value = new FhirUri(child.RetryUrl)
                     }
                 ];

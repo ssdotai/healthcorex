@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.IdCardService.Tests;
+namespace HealthCoreX.IdCardService.Tests;
 
 public class QnxtReconciliationJobTests
 {

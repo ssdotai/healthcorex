@@ -1,6 +1,6 @@
-using CloudHealthOffice.RiskAdjustmentEngine.Domain;
+using HealthCoreX.RiskAdjustmentEngine.Domain;
 
-namespace CloudHealthOffice.RiskAdjustmentEngine.Services;
+namespace HealthCoreX.RiskAdjustmentEngine.Services;
 
 /// <summary>
 /// Applies CMS hierarchy rules to a set of mapped HCC categories.

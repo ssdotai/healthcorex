@@ -1,4 +1,4 @@
-# CloudHealthOffice.TmppmIngestionService
+# HealthCoreX.TmppmIngestionService
 
 Automated ingestion pipeline for the Texas Medicaid Provider Procedures Manual (TMPPM). Downloads TMPPM chapters from TMHP, extracts prior authorization rules, and persists them to Cosmos DB as `ConceptMapEntry` overrides for the CHO TerminologyService and CRD Server.
 
@@ -36,14 +36,14 @@ TmppmRuleStore ──→ Cosmos DB (MongoDB API)
 - Python 3.9+ with PyMuPDF (`pip3 install PyMuPDF`)
 - Access to CHO Cosmos DB (MongoDB API)
 - Anthropic API key (for LLM-assisted extraction)
-- `kubectl` access to the `cloudhealthoffice` namespace (for secrets)
+- `kubectl` access to the `HealthCoreX` namespace (for secrets)
 
 ## Setup
 
 ### 1. Navigate and restore
 
 ```bash
-cd ~/cloudhealthoffice/tools/CloudHealthOffice.TmppmIngestionService
+cd ~/HealthCoreX/tools/HealthCoreX.TmppmIngestionService
 dotnet restore
 ```
 
@@ -52,7 +52,7 @@ dotnet restore
 Pull the connection string from Kubernetes secrets:
 
 ```bash
-export CHO_TMPPM_MONGODB__CONNECTIONSTRING="$(kubectl get secret mongodb-secret -n cloudhealthoffice -o jsonpath='{.data.connectionString}' | base64 -d)"
+export CHO_TMPPM_MONGODB__CONNECTIONSTRING="$(kubectl get secret mongodb-secret -n HealthCoreX -o jsonpath='{.data.connectionString}' | base64 -d)"
 ```
 
 Or set it directly in `Config/appsettings.json`:
@@ -91,7 +91,7 @@ pip3 install PyMuPDF
 All commands run from the service directory:
 
 ```bash
-cd ~/cloudhealthoffice/tools/CloudHealthOffice.TmppmIngestionService
+cd ~/HealthCoreX/tools/HealthCoreX.TmppmIngestionService
 ```
 
 ### Download TMPPM chapters
@@ -198,7 +198,7 @@ The pipeline automatically:
 ## Project structure
 
 ```
-tools/CloudHealthOffice.TmppmIngestionService/
+tools/HealthCoreX.TmppmIngestionService/
 ├── Config/
 │   └── appsettings.json              # MongoDB + Anthropic config
 ├── Loaders/
@@ -266,7 +266,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: tmppm-ingestion
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 spec:
   schedule: "0 6 1 * *"  # 1st of each month at 6am UTC
   jobTemplate:
@@ -301,7 +301,7 @@ echo $CHO_TMPPM_MONGODB__CONNECTIONSTRING
 ```
 If empty, re-export from Kubernetes:
 ```bash
-export CHO_TMPPM_MONGODB__CONNECTIONSTRING="$(kubectl get secret mongodb-secret -n cloudhealthoffice -o jsonpath='{.data.connectionString}' | base64 -d)"
+export CHO_TMPPM_MONGODB__CONNECTIONSTRING="$(kubectl get secret mongodb-secret -n HealthCoreX -o jsonpath='{.data.connectionString}' | base64 -d)"
 ```
 Or paste it directly into `Config/appsettings.json`.
 

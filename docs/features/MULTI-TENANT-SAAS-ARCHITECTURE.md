@@ -21,7 +21,7 @@ Cloud Health Office is designed as a **multi-tenant SaaS platform** where health
 │  └────────────────────────────────────────────────────────────┘ │
 │                                                                  │
 │  ┌────────────────────────────────────────────────────────────┐ │
-│  │  Core Services (cloudhealthoffice namespace)                        │ │
+│  │  Core Services (HealthCoreX namespace)                        │ │
 │  │  • Eligibility, Benefit, Provider, Reference Data          │ │
 │  │  • Multi-tenant aware (TenantId in all requests)           │ │
 │  │  • Data isolated by partition key                          │ │
@@ -160,7 +160,7 @@ public class BenefitPlansController : ControllerBase
 {
   "AzureAdB2C": {
     "Instance": "https://login.microsoftonline.com/",
-    "Domain": "cloudhealthoffice.onmicrosoft.com",
+    "Domain": "HealthCoreX.onmicrosoft.com",
     "ClientId": "your-client-id",
     "SignUpSignInPolicyId": "B2C_1_SignUpSignIn",
     "TenantClaim": "extension_TenantId"

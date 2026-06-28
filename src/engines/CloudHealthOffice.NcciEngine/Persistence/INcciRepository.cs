@@ -1,7 +1,7 @@
-using CloudHealthOffice.NcciEngine.Domain;
-using CloudHealthOffice.NcciEngine.Models;
+using HealthCoreX.NcciEngine.Domain;
+using HealthCoreX.NcciEngine.Models;
 
-namespace CloudHealthOffice.NcciEngine.Persistence;
+namespace HealthCoreX.NcciEngine.Persistence;
 
 /// <summary>
 /// Persistence abstraction for NCCI edit pairs, MUE entries, and table version metadata.

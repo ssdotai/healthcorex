@@ -1,6 +1,6 @@
-using CloudHealthOffice.PriorAuthRuleEngine.Domain;
+using HealthCoreX.PriorAuthRuleEngine.Domain;
 
-namespace CloudHealthOffice.PriorAuthRuleEngine.Models;
+namespace HealthCoreX.PriorAuthRuleEngine.Models;
 
 // ─────────────────────────────────────────────────────────────────
 // Rule set key — identifies which rules apply to a PA request

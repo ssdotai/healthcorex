@@ -1,6 +1,6 @@
-using CloudHealthOffice.CobEngine.Domain;
+using HealthCoreX.CobEngine.Domain;
 
-namespace CloudHealthOffice.CobEngine.Services;
+namespace HealthCoreX.CobEngine.Services;
 
 /// <summary>
 /// Applies the COB calculation model (complementary or non-duplication) to

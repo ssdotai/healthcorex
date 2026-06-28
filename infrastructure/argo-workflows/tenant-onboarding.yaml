@@ -152,7 +152,7 @@ spec:
             apk add --no-cache curl jq
             
             TENANT_ID="{{workflow.parameters.tenant-id}}"
-            TENANT_SERVICE="http://tenant-service.cloudhealthoffice/api/v1/tenants"
+            TENANT_SERVICE="http://tenant-service.HealthCoreX/api/v1/tenants"
             
             echo "Validating tenant $TENANT_ID..."
             
@@ -180,7 +180,7 @@ spec:
             PARTITION_KEY="{{inputs.parameters.partition-key}}"
             COSMOS_ACCOUNT="${COSMOS_ACCOUNT_NAME}"
             RESOURCE_GROUP="${COSMOS_RESOURCE_GROUP}"
-            DATABASE="CloudHealthOffice"
+            DATABASE="HealthCoreX"
             
             echo "Checking if container $CONTAINER_NAME exists..."
             
@@ -254,7 +254,7 @@ spec:
             echo "SFTP folder structure created (stub - implement with actual SFTP)"
         env:
           - name: SFTP_SERVER_HOST
-            value: "sftp.cloudhealthoffice.com"
+            value: "sftp.HealthCoreX.com"
           - name: SFTP_SERVER_USER
             value: "cho-admin"
     
@@ -408,14 +408,14 @@ spec:
             
             # SFTP connection details
             cat > /work/sftp-config.txt <<EOF
-            SFTP Host: sftp.cloudhealthoffice.com
+            SFTP Host: sftp.HealthCoreX.com
             Port: 22
             Username: cho-$TENANT_ID
             
             Authentication Methods:
             1. SSH Key (recommended):
                - Download private key from portal
-               - Use with sftp -i /path/to/key cho-$TENANT_ID@sftp.cloudhealthoffice.com
+               - Use with sftp -i /path/to/key cho-$TENANT_ID@sftp.HealthCoreX.com
             
             2. Password:
                Password: $SFTP_PASSWORD
@@ -454,7 +454,7 @@ spec:
             apk add --no-cache curl jq
             
             TENANT_ID="{{workflow.parameters.tenant-id}}"
-            BENEFIT_PLAN_SERVICE="http://benefit-plan-service.cloudhealthoffice/api/v1/benefitplans"
+            BENEFIT_PLAN_SERVICE="http://benefit-plan-service.HealthCoreX/api/v1/benefitplans"
             
             echo "Seeding default benefit plans for $TENANT_ID..."
             
@@ -507,7 +507,7 @@ spec:
             ═══════════════════════════════════════════════════════════
             Tenant ID: $TENANT_ID
             Subscription Tier: $TIER
-            Portal: https://portal.cloudhealthoffice.com
+            Portal: https://portal.HealthCoreX.com
             
             ═══════════════════════════════════════════════════════════
             LOGIN CREDENTIALS
@@ -531,7 +531,7 @@ spec:
             
             If you see an error about admin consent, contact your Azure AD
             administrator or follow this guide:
-            https://docs.cloudhealthoffice.com/admin-consent
+            https://docs.HealthCoreX.com/admin-consent
             
             ═══════════════════════════════════════════════════════════
             API ACCESS
@@ -539,28 +539,28 @@ spec:
             Production API Key: $PROD_KEY
             Test API Key: (available in portal)
             
-            API Endpoint: https://api.cloudhealthoffice.com
-            API Documentation: https://api.cloudhealthoffice.com/swagger
+            API Endpoint: https://api.HealthCoreX.com
+            API Documentation: https://api.HealthCoreX.com/swagger
             
             Example API call:
             curl -H "X-API-Key: $PROD_KEY" \\
                  -H "X-Tenant-ID: $TENANT_ID" \\
-                 https://api.cloudhealthoffice.com/v1/claims
+                 https://api.HealthCoreX.com/v1/claims
             
             ═══════════════════════════════════════════════════════════
             SFTP ACCESS
             ═══════════════════════════════════════════════════════════
-            Host: sftp.cloudhealthoffice.com
+            Host: sftp.HealthCoreX.com
             Port: 22
             Username: cho-$TENANT_ID
             Password: $SFTP_PASSWORD
             
             Connect via SFTP:
-            sftp cho-$TENANT_ID@sftp.cloudhealthoffice.com
+            sftp cho-$TENANT_ID@sftp.HealthCoreX.com
             
             Or using FileZilla/WinSCP:
             - Protocol: SFTP
-            - Host: sftp.cloudhealthoffice.com
+            - Host: sftp.HealthCoreX.com
             - Port: 22
             - Username: cho-$TENANT_ID
             - Password: $SFTP_PASSWORD
@@ -583,7 +583,7 @@ spec:
             ═══════════════════════════════════════════════════════════
             
             1. ✓ Log in to portal (first-time admin consent required)
-               https://portal.cloudhealthoffice.com
+               https://portal.HealthCoreX.com
             
             2. ✓ Change your password
                Settings > Account > Change Password
@@ -627,10 +627,10 @@ spec:
             ═══════════════════════════════════════════════════════════
             GETTING STARTED RESOURCES
             ═══════════════════════════════════════════════════════════
-            📚 Documentation: https://docs.cloudhealthoffice.com
-            🎥 Video Tutorials: https://docs.cloudhealthoffice.com/videos
-            💬 Community Forum: https://community.cloudhealthoffice.com
-            📧 Support Email: support@cloudhealthoffice.com
+            📚 Documentation: https://docs.HealthCoreX.com
+            🎥 Video Tutorials: https://docs.HealthCoreX.com/videos
+            💬 Community Forum: https://community.HealthCoreX.com
+            📧 Support Email: support@HealthCoreX.com
             📞 Support Phone: +1-800-555-HIPAA (during business hours)
             
             ═══════════════════════════════════════════════════════════
@@ -649,7 +649,7 @@ spec:
             
             Best regards,
             Cloud Health Office Team
-            https://cloudhealthoffice.co
+            https://HealthCoreX.co
         args:
           - |
             apk add --no-cache curl jq
@@ -687,7 +687,7 @@ spec:
             Account Details:
             - Tenant ID: $TENANT_ID
             - Subscription Tier: $TIER
-            - Portal URL: https://portal.cloudhealthoffice.com
+            - Portal URL: https://portal.HealthCoreX.com
             
             Credentials:
             - Email: $EMAIL
@@ -702,9 +702,9 @@ spec:
             2. Review and sign the Business Associate Agreement (BAA)
             3. Configure your clearinghouse settings
             4. Set up trading partners
-            5. Review the getting started guide: https://docs.cloudhealthoffice.com
+            5. Review the getting started guide: https://docs.HealthCoreX.com
             
-            Need help? Contact support@cloudhealthoffice.com
+            Need help? Contact support@HealthCoreX.com
             
             Best regards,
             Cloud Health Office Team
@@ -742,7 +742,7 @@ spec:
             
             TENANT_ID="{{workflow.parameters.tenant-id}}"
             STATUS="{{inputs.parameters.status}}"
-            TENANT_SERVICE="http://tenant-service.cloudhealthoffice/api/v1/tenants"
+            TENANT_SERVICE="http://tenant-service.HealthCoreX/api/v1/tenants"
             
             echo "Updating tenant $TENANT_ID status to $STATUS..."
             

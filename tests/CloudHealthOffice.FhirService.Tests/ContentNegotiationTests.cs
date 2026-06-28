@@ -5,7 +5,7 @@ using FluentAssertions;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 
-namespace CloudHealthOffice.FhirService.Tests;
+namespace HealthCoreX.FhirService.Tests;
 
 /// <summary>
 /// Integration tests that verify content negotiation behaviour:

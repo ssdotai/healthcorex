@@ -3,7 +3,7 @@ using ProviderService.Models;
 using ProviderService.Repositories;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Fakes;
+namespace HealthCoreX.ProviderService.Tests.Fakes;
 
 /// <summary>
 /// In-memory fake of <see cref="IProviderRepository"/> with full

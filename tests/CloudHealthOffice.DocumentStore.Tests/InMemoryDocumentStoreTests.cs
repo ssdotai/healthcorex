@@ -1,7 +1,7 @@
-using CloudHealthOffice.DocumentStore;
+using HealthCoreX.DocumentStore;
 using Xunit;
 
-namespace CloudHealthOffice.DocumentStore.Tests;
+namespace HealthCoreX.DocumentStore.Tests;
 
 public class InMemoryDocumentStoreTests
 {

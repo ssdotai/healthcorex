@@ -55,10 +55,10 @@ resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
 // =========================
 resource cosmosDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-04-15' = {
   parent: cosmosAccount
-  name: 'cloudhealthoffice'
+  name: 'HealthCoreX'
   properties: {
     resource: {
-      id: 'cloudhealthoffice'
+      id: 'HealthCoreX'
     }
     options: enableServerless ? {} : {
       throughput: throughput

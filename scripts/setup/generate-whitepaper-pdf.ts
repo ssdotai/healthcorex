@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CloudHealthOffice Whitepaper PDF Generator
+ * HealthCoreX Whitepaper PDF Generator
  * 
  * Converts WHITEPAPER-CMS-0057-F-COMPLIANCE.md to PDF using pandoc
  * with weasyprint for high-quality PDF output.
@@ -133,7 +133,7 @@ function generatePDF(): boolean {
         '--to', 'pdf',
         '--pdf-engine=weasyprint',
         `--css="${CSS_FILE}"`,
-        '--metadata', 'title="CloudHealthOffice CMS-0057-F Compliance Whitepaper"',
+        '--metadata', 'title="HealthCoreX CMS-0057-F Compliance Whitepaper"',
         '--metadata', 'author="Aurelianware"',
         '--metadata', 'date="November 2025"',
         '--toc',
@@ -168,7 +168,7 @@ function generatePDF(): boolean {
             '--from', 'markdown+footnotes+pipe_tables+strikeout',
             '--to', 'pdf',
             '--pdf-engine=pdflatex',
-            '--metadata', 'title="CloudHealthOffice CMS-0057-F Compliance Whitepaper"',
+            '--metadata', 'title="HealthCoreX CMS-0057-F Compliance Whitepaper"',
             '--metadata', 'author="Aurelianware"',
             '--metadata', 'date="November 2025"',
             '--toc',
@@ -200,7 +200,7 @@ function generatePDF(): boolean {
  */
 function printUsage(): void {
     console.log(`
-CloudHealthOffice Whitepaper PDF Generator
+HealthCoreX Whitepaper PDF Generator
 ==========================================
 
 This script converts the CMS-0057-F compliance whitepaper from Markdown to PDF.
@@ -234,7 +234,7 @@ Note on Mermaid Diagrams:
  */
 function main(): void {
     console.log('═══════════════════════════════════════════════════════════════');
-    console.log('  CloudHealthOffice Whitepaper PDF Generator');
+    console.log('  HealthCoreX Whitepaper PDF Generator');
     console.log('═══════════════════════════════════════════════════════════════\n');
 
     // Check for help flag

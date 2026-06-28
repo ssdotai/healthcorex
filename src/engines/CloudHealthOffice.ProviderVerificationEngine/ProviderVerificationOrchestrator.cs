@@ -1,8 +1,8 @@
-namespace CloudHealthOffice.ProviderVerificationEngine;
+namespace HealthCoreX.ProviderVerificationEngine;
 
-using CloudHealthOffice.ProviderVerificationEngine.DataSources;
-using CloudHealthOffice.ProviderVerificationEngine.Models;
-using CloudHealthOffice.ProviderVerificationEngine.Scoring;
+using HealthCoreX.ProviderVerificationEngine.DataSources;
+using HealthCoreX.ProviderVerificationEngine.Models;
+using HealthCoreX.ProviderVerificationEngine.Scoring;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

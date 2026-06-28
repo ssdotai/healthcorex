@@ -156,7 +156,7 @@ Applications are evaluated based on:
 ### How to Apply
 
 **Step 1: Submit Application**
-- Complete online application form: [cloudhealthoffice.com/pilot](https://cloudhealthoffice.com/pilot)
+- Complete online application form: [HealthCoreX.com/pilot](https://HealthCoreX.com/pilot)
 - Or email pilots@aurelianware.com with:
   - Organization name and type
   - Member count and geographic coverage
@@ -302,7 +302,7 @@ A: Yes. Annual contracts and multi-year commitments offer additional flexibility
 **Pilot Program Team**
 - Email: pilots@aurelianware.com
 - Phone: 1-888-CHO-PILOT (1-888-246-7456)
-- Web: [cloudhealthoffice.com/pilot](https://cloudhealthoffice.com/pilot)
+- Web: [HealthCoreX.com/pilot](https://HealthCoreX.com/pilot)
 
 ### Application Form
 
@@ -371,6 +371,6 @@ Organizations that achieve CMS compliance early gain:
 
 ---
 
-**Contact**: pilots@aurelianware.com | **Apply**: [cloudhealthoffice.com/pilot](https://cloudhealthoffice.com/pilot)
+**Contact**: pilots@aurelianware.com | **Apply**: [HealthCoreX.com/pilot](https://HealthCoreX.com/pilot)
 
 **Document Version**: 1.0 | **Last Updated**: November 2024

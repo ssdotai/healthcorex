@@ -1,13 +1,13 @@
 using System.Net;
 using System.Text.Json;
-using CloudHealthOffice.ProviderVerificationEngine.DataSources;
-using CloudHealthOffice.ProviderVerificationEngine.DataSources.Nppes;
-using CloudHealthOffice.ProviderVerificationEngine.Models;
+using HealthCoreX.ProviderVerificationEngine.DataSources;
+using HealthCoreX.ProviderVerificationEngine.DataSources.Nppes;
+using HealthCoreX.ProviderVerificationEngine.Models;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Xunit;
 
-namespace CloudHealthOffice.ProviderVerificationEngine.Tests;
+namespace HealthCoreX.ProviderVerificationEngine.Tests;
 
 public class NppesHttpAdapterTests
 {

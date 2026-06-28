@@ -38,7 +38,7 @@ Healthcare providers lose **$262 billion annually** to claim denials:
 
 ```bash
 # Sign up for free tier (100 claims/month)
-curl -X POST https://api.cloudhealthoffice.com/auth/register \
+curl -X POST https://api.HealthCoreX.com/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "email": "your@email.com",
@@ -243,7 +243,7 @@ Response:
 async function submitClaim(claim) {
   // 1. Validate with CHO
   const validation = await fetch(
-    'https://api.cloudhealthoffice.com/scrubbing/v1/claims/validate',
+    'https://api.HealthCoreX.com/scrubbing/v1/claims/validate',
     {
       method: 'POST',
       headers: {
@@ -290,7 +290,7 @@ public class ClaimScrubbingService
     public async Task<ValidationResult> ValidateClaimAsync(Claim claim)
     {
         var request = new HttpRequestMessage(HttpMethod.Post, 
-            "https://api.cloudhealthoffice.com/scrubbing/v1/claims/validate");
+            "https://api.HealthCoreX.com/scrubbing/v1/claims/validate");
         
         request.Headers.Add("X-API-Key", _apiKey);
         request.Content = JsonContent.Create(claim);
@@ -319,7 +319,7 @@ import requests
 class ClaimValidator:
     def __init__(self, api_key):
         self.api_key = api_key
-        self.base_url = "https://api.cloudhealthoffice.com/scrubbing/v1"
+        self.base_url = "https://api.HealthCoreX.com/scrubbing/v1"
     
     def validate_batch(self, claims, payer_id=None):
         """Validate batch of claims before submission"""
@@ -468,7 +468,7 @@ docker run -d \
   -p 3000:3000 \
   -e DATABASE_URL=postgresql://... \
   -e REDIS_URL=redis://... \
-  cloudhealthoffice/claims-scrubbing:latest
+  HealthCoreX/claims-scrubbing:latest
 ```
 
 ### Cloud (Azure)
@@ -509,9 +509,9 @@ export CACHE_TTL=300  # 5 minutes
 ## Resources
 
 - **OpenAPI Spec:** [claims-scrubbing-api.yaml](../openapi/claims-scrubbing-api.yaml)
-- **Live Demo:** https://sandbox.cloudhealthoffice.com/scrubbing-demo
-- **ROI Calculator:** https://cloudhealthoffice.com/roi
-- **Support:** scrubbing-support@cloudhealthoffice.com
+- **Live Demo:** https://sandbox.HealthCoreX.com/scrubbing-demo
+- **ROI Calculator:** https://HealthCoreX.com/roi
+- **Support:** scrubbing-support@HealthCoreX.com
 
 ---
 

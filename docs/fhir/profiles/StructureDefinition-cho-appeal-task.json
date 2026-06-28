@@ -1,7 +1,7 @@
 {
   "resourceType": "StructureDefinition",
   "id": "cho-appeal-task",
-  "url": "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-task",
+  "url": "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-task",
   "version": "1.0.0",
   "name": "ChoAppealTask",
   "title": "CHO Appeal Task",
@@ -12,7 +12,7 @@
   "contact": [
     {
       "name": "Cloud Health Office FHIR Authoring",
-      "telecom": [{ "system": "url", "value": "https://cloudhealthoffice.com" }]
+      "telecom": [{ "system": "url", "value": "https://HealthCoreX.com" }]
     }
   ],
   "description": "Profile on Task representing a post-adjudication claim appeal as a work item. The Task links a Patient (the member) via `for`, the original denied Claim being appealed via `focus`, and the submitting provider via `requester`. The appeal-outcome ClaimResponse, when it exists, links back to the Task via the `cho-appeal-task-reference` extension on ClaimResponse — Draft, Submitted, InReview, and PendingInfo appeals have no appeal-outcome ClaimResponse yet, so Task.focus points at the original Claim (the thing being acted on). Reviewer assignment, appeal-level, line-of-business, and regulatory target-response-date are captured via constrained elements and CHO-local extensions. Note on bindings: Task.status narrows the base R4 required binding to a strict 7-code subset of the 11-code base set; FHIR R4 conformance rules explicitly permit narrowing a required binding to a strict subset. Authored by Cloud Health Office under its own canonical namespace; does not claim conformance to any external Implementation Guide. Post-adjudication appeals are not covered by any stable external FHIR IG at time of authoring; this profile follows Da Vinci profiling conventions.",
@@ -51,7 +51,7 @@
         "type": [
           {
             "code": "Extension",
-            "profile": ["http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-level"]
+            "profile": ["http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-level"]
           }
         ]
       },
@@ -64,7 +64,7 @@
         "type": [
           {
             "code": "Extension",
-            "profile": ["http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-line-of-business"]
+            "profile": ["http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-line-of-business"]
           }
         ]
       },
@@ -77,7 +77,7 @@
         "type": [
           {
             "code": "Extension",
-            "profile": ["http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-target-response-date"]
+            "profile": ["http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-target-response-date"]
           }
         ]
       },
@@ -90,7 +90,7 @@
         "type": [
           {
             "code": "Extension",
-            "profile": ["http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-urgent-flag"]
+            "profile": ["http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-urgent-flag"]
           }
         ]
       },
@@ -101,7 +101,7 @@
         "max": "1",
         "binding": {
           "strength": "required",
-          "valueSet": "http://fhir.cloudhealthoffice.com/ValueSet/cho-appeal-task-status"
+          "valueSet": "http://fhir.HealthCoreX.com/ValueSet/cho-appeal-task-status"
         }
       },
       {
@@ -124,7 +124,7 @@
         "max": "1",
         "binding": {
           "strength": "required",
-          "valueSet": "http://fhir.cloudhealthoffice.com/ValueSet/cho-appeal-type"
+          "valueSet": "http://fhir.HealthCoreX.com/ValueSet/cho-appeal-type"
         }
       },
       {

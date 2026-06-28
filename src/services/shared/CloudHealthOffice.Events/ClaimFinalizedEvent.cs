@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Events;
+namespace HealthCoreX.Events;
 
 /// <summary>
 /// Event payload for claims.finalized.v1. Emitted by claims-service when a claim

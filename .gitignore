@@ -76,6 +76,6 @@ obj/
 /tmp_*
 *.DS_Store
 **/TestResults/
-src/portal/CloudHealthOffice.Portal/appsettings.Development.json
+src/portal/HealthCoreX.Portal/appsettings.Development.json
 .env.local
 tmppm-data/

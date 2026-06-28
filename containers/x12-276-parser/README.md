@@ -14,11 +14,11 @@ Sent by providers/clearinghouses to payers to inquire about claim processing sta
 
 ```bash
 # Build
-docker build -t ghcr.io/aurelianware/cloudhealthoffice-x12-276-parser:latest .
+docker build -t ghcr.io/aurelianware/HealthCoreX-x12-276-parser:latest .
 
 # Run
 docker run -v $(pwd)/test-data:/data \
-  ghcr.io/aurelianware/cloudhealthoffice-x12-276-parser:latest \
+  ghcr.io/aurelianware/HealthCoreX-x12-276-parser:latest \
   /data/test-276.edi --output /data/output-276.json
 ```
 

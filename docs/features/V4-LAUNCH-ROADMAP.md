@@ -360,7 +360,7 @@ Week 1-12:  Legal Docs + Marketing (parallel) ────────┘
 ## Questions?
 
 **Technical:** Create GitHub Discussion or tag @aurelianware  
-**Business:** Email founders@cloudhealthoffice.com  
-**Security:** security@cloudhealthoffice.com (PGP key: [link])
+**Business:** Email founders@HealthCoreX.com  
+**Security:** security@HealthCoreX.com (PGP key: [link])
 
 **Last Updated:** February 6, 2026 by @aurelianware

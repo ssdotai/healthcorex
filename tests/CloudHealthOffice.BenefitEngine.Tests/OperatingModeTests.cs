@@ -1,8 +1,8 @@
 using Xunit;
-using CloudHealthOffice.OperatingMode;
+using HealthCoreX.OperatingMode;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.BenefitEngine.Tests;
+namespace HealthCoreX.BenefitEngine.Tests;
 
 /// <summary>
 /// Tests for the augment/replace operating mode core types:

@@ -23,7 +23,7 @@ metadata:
   labels:
     app.kubernetes.io/name: x12-277-claim-status
     app.kubernetes.io/component: edi-processing
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
     hipaa.compliance: "required"
   annotations:
     description: "X12 277 claim status response generation - answers 276 inquiries"
@@ -76,7 +76,7 @@ spec:
         value: "processed/277"
       # Services
       - name: claims-service-endpoint
-        value: "http://claims-service.cloudhealthoffice.svc.cluster.local/api/claims"
+        value: "http://claims-service.HealthCoreX.svc.cluster.local/api/claims"
       # Kafka
       - name: kafka-topic-outbound
         value: "claim-status-responses"
@@ -293,7 +293,7 @@ spec:
           - name: edi-output
             path: /data/output
       container:
-        image: ghcr.io/aurelianware/cloudhealthoffice-x12-encoder:latest
+        image: ghcr.io/aurelianware/HealthCoreX-x12-encoder:latest
         command: ["/bin/sh"]
         args:
           - -c
@@ -419,7 +419,7 @@ spec:
           - name: topic
           - name: message
       script:
-        image: ghcr.io/aurelianware/cloudhealthoffice-kafka-publisher:latest
+        image: ghcr.io/aurelianware/HealthCoreX-kafka-publisher:latest
         command: [sh]
         source: |
           set -e

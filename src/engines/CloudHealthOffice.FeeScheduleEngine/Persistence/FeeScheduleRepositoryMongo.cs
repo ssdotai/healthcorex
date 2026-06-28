@@ -1,9 +1,9 @@
-using CloudHealthOffice.FeeScheduleEngine.Models;
+using HealthCoreX.FeeScheduleEngine.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.FeeScheduleEngine.Persistence;
+namespace HealthCoreX.FeeScheduleEngine.Persistence;
 
 /// <summary>
 /// MongoDB implementations of IFeeScheduleRepository and IProviderContractRepository.

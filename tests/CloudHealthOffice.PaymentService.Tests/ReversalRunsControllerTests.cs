@@ -8,7 +8,7 @@ using PaymentService.Models;
 using PaymentService.Services;
 using Xunit;
 
-namespace CloudHealthOffice.PaymentService.Tests;
+namespace HealthCoreX.PaymentService.Tests;
 
 /// <summary>
 /// Capability 5.12b — covers <see cref="ReversalRunsController"/>'s

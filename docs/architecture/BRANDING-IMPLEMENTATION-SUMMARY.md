@@ -14,7 +14,7 @@ Global Sentinel branding enforcement has been successfully implemented across th
 
 ### Core Requirements ✅
 
-- [x] **Replace all previous logos** with docs/images/logo-cloudhealthoffice-sentinel-primary.png.svg
+- [x] **Replace all previous logos** with docs/images/logo-HealthCoreX-sentinel-primary.png.svg
   - Created SVG logo with holographic/neon circuit veins aesthetic
   - Added to README.md hero section
   - Integrated into landing page header and hero
@@ -75,12 +75,12 @@ Global Sentinel branding enforcement has been successfully implemented across th
 ## Files Created
 
 ### New Assets
-1. **docs/images/logo-cloudhealthoffice-sentinel-primary.png.svg** (2.1 KB)
+1. **docs/images/logo-HealthCoreX-sentinel-primary.png.svg** (2.1 KB)
    - Holographic/neon circuit veins design
    - Absolute black background
    - Neon cyan and green color scheme
 
-2. **docs/images/logo-cloudhealthoffice-sentinel-primary.png.txt** (787 bytes)
+2. **docs/images/logo-HealthCoreX-sentinel-primary.png.txt** (787 bytes)
    - Logo specification document
    - Design requirements for PNG creation
 
@@ -134,7 +134,7 @@ Global Sentinel branding enforcement has been successfully implemented across th
 ## Branding Specifications Applied
 
 ### Visual Identity
-- **Logo**: docs/images/logo-cloudhealthoffice-sentinel-primary.png.svg
+- **Logo**: docs/images/logo-HealthCoreX-sentinel-primary.png.svg
 - **Dimensions**: 800x400 pixels
 - **Background**: Absolute black (#000000)
 - **Primary Color**: Neon cyan (#00ffff)
@@ -212,7 +212,7 @@ Legacy EDI integration is now optional.
 
 ### Mandatory for All New Content
 
-1. ✅ Use Sentinel logo (docs/images/logo-cloudhealthoffice-sentinel-primary.png.svg)
+1. ✅ Use Sentinel logo (docs/images/logo-HealthCoreX-sentinel-primary.png.svg)
 2. ✅ Absolute black backgrounds (#000000)
 3. ✅ Segoe UI Bold for headings
 4. ✅ Holographic/neon circuit veins aesthetic

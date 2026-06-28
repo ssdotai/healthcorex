@@ -3,14 +3,16 @@ using System.Net.Http.Headers;
 using System.Net.Mail;
 using System.Net;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Identity.Web;
 using MongoDB.Driver;
 using MongoDB.Bson;
 
-namespace CloudHealthOffice.Portal.Services;
+namespace HealthCoreX.Portal.Services;
 
 public class ClaimsService : IClaimsService
 {
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
     private readonly ILogger<ClaimsService> _logger;
@@ -45,13 +47,13 @@ public class ClaimsService : IClaimsService
             // Try by ID first, then fall back to claim number lookup
             var response = await _httpClient.GetAsync($"{baseUrl}/claims/{claimId}");
             if (response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<ClaimDetails>();
+                return await response.Content.ReadFromJsonAsync<ClaimDetails>(JsonOptions);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 var fallback = await _httpClient.GetAsync($"{baseUrl}/claims/number/{claimId}");
                 if (fallback.IsSuccessStatusCode)
-                    return await fallback.Content.ReadFromJsonAsync<ClaimDetails>();
+                    return await fallback.Content.ReadFromJsonAsync<ClaimDetails>(JsonOptions);
                 if (fallback.StatusCode == System.Net.HttpStatusCode.NotFound)
                     return null;
                 fallback.EnsureSuccessStatusCode();
@@ -65,6 +67,135 @@ public class ClaimsService : IClaimsService
             _logger.LogError(ex, "Service unavailable: {ServiceName}", "Claims Service");
             throw new ServiceUnavailableException("Claims Service", ex);
         }
+    }
+
+    public async Task<string?> GetExplanationOfBenefitJsonAsync(string claimId)
+    {
+        try
+        {
+            var baseUrl = GetClaimsServiceRootUrl();
+            using var request = new HttpRequestMessage(
+                HttpMethod.Get,
+                $"{baseUrl}/fhir/ExplanationOfBenefit/{Uri.EscapeDataString(claimId)}");
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/fhir+json"));
+
+            using var response = await _httpClient.SendAsync(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();
+        }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, "Service unavailable: {ServiceName}", "Claims Service");
+            throw new ServiceUnavailableException("Claims Service", ex);
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "Service configuration invalid: {ServiceName}", "Claims Service");
+            throw new ServiceUnavailableException("Claims Service", ex);
+        }
+    }
+
+    public async Task<List<MassAdjudicationRunSummary>> GetMassAdjudicationRunsAsync(int limit = 25)
+    {
+        var baseUrl = _configuration["Services:ClaimsService"];
+        try
+        {
+            using var request = CreateMassAdjudicationRequest(
+                HttpMethod.Get,
+                $"{baseUrl}/mass-adjudication/runs?limit={Math.Clamp(limit, 1, 100)}");
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            return await ReadOptionalJsonAsync<List<MassAdjudicationRunSummary>>(response)
+                ?? new List<MassAdjudicationRunSummary>();
+        }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, "Service unavailable: {ServiceName}", "Claims Service");
+            throw new ServiceUnavailableException("Claims Service", ex);
+        }
+    }
+
+    public async Task<MassAdjudicationRunSummary?> GetMassAdjudicationRunAsync(string runId)
+    {
+        var baseUrl = _configuration["Services:ClaimsService"];
+        try
+        {
+            using var request = CreateMassAdjudicationRequest(
+                HttpMethod.Get,
+                $"{baseUrl}/mass-adjudication/runs/{Uri.EscapeDataString(runId)}");
+            var response = await _httpClient.SendAsync(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
+            response.EnsureSuccessStatusCode();
+            return await ReadOptionalJsonAsync<MassAdjudicationRunSummary>(response);
+        }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, "Service unavailable: {ServiceName}", "Claims Service");
+            throw new ServiceUnavailableException("Claims Service", ex);
+        }
+    }
+
+    public async Task<List<MassAdjudicationClaimResult>> GetMassAdjudicationClaimResultsAsync(
+        string runId,
+        string? outcome = null,
+        int limit = 250,
+        string? validationStatus = null,
+        string? paymentStatus = null)
+    {
+        var baseUrl = _configuration["Services:ClaimsService"];
+        try
+        {
+            var query = $"limit={Math.Clamp(limit, 1, 1000)}";
+            if (!string.IsNullOrWhiteSpace(outcome))
+            {
+                query += $"&outcome={Uri.EscapeDataString(outcome)}";
+            }
+
+            if (!string.IsNullOrWhiteSpace(validationStatus))
+            {
+                query += $"&validationStatus={Uri.EscapeDataString(validationStatus)}";
+            }
+
+            if (!string.IsNullOrWhiteSpace(paymentStatus))
+            {
+                query += $"&paymentStatus={Uri.EscapeDataString(paymentStatus)}";
+            }
+
+            using var request = CreateMassAdjudicationRequest(
+                HttpMethod.Get,
+                $"{baseUrl}/mass-adjudication/runs/{Uri.EscapeDataString(runId)}/claims?{query}");
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            return await ReadOptionalJsonAsync<List<MassAdjudicationClaimResult>>(response)
+                ?? new List<MassAdjudicationClaimResult>();
+        }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, "Service unavailable: {ServiceName}", "Claims Service");
+            throw new ServiceUnavailableException("Claims Service", ex);
+        }
+    }
+
+    private HttpRequestMessage CreateMassAdjudicationRequest(HttpMethod method, string url)
+    {
+        var request = new HttpRequestMessage(method, url);
+        var tenantId = _configuration["Services:ClaimsServiceTenantId"]
+            ?? _configuration["Authentication:LocalDemo:TenantId"];
+        if (!string.IsNullOrWhiteSpace(tenantId))
+        {
+            request.Headers.TryAddWithoutValidation("X-Tenant-ID", tenantId);
+        }
+
+        return request;
     }
 
     public async Task<string> SubmitClaimAsync(SubmitClaimRequest request)
@@ -122,13 +253,33 @@ public class ClaimsService : IClaimsService
         var baseUrl = _configuration["Services:ClaimsService"];
         try
         {
-            return await _httpClient.GetFromJsonAsync<AdjudicationTransparencyData>($"{baseUrl}/claims/{claimId}/adjudication-detail");
+            var response = await _httpClient.GetAsync($"{baseUrl}/claims/{claimId}/adjudication-detail");
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<AdjudicationTransparencyData>(JsonOptions);
         }
         catch (HttpRequestException ex)
         {
             _logger.LogError(ex, "Service unavailable: {ServiceName}", "Claims Service");
             throw new ServiceUnavailableException("Claims Service", ex);
         }
+    }
+
+    private string GetClaimsServiceRootUrl()
+    {
+        var baseUrl = (_configuration["Services:ClaimsService"] ?? string.Empty).TrimEnd('/');
+        if (string.IsNullOrWhiteSpace(baseUrl))
+        {
+            throw new InvalidOperationException("Services:ClaimsService is not configured.");
+        }
+
+        return baseUrl.EndsWith("/api", StringComparison.OrdinalIgnoreCase)
+            ? baseUrl[..^"/api".Length]
+            : baseUrl;
     }
 
     public async Task<EobSearchResponse> SearchClaimsByMemberAsync(string memberId, MemberClaimsFilter filter)
@@ -168,6 +319,158 @@ public class ClaimsService : IClaimsService
     private class SubmitClaimResponse
     {
         public string ClaimId { get; set; } = string.Empty;
+    }
+
+    private static async Task<T?> ReadOptionalJsonAsync<T>(HttpResponseMessage response)
+    {
+        if (response.Content is null)
+        {
+            return default;
+        }
+
+        var body = await response.Content.ReadAsStringAsync();
+        if (string.IsNullOrWhiteSpace(body) || string.Equals(body.Trim(), "null", StringComparison.OrdinalIgnoreCase))
+        {
+            return default;
+        }
+
+        return JsonSerializer.Deserialize<T>(body, JsonOptions);
+    }
+}
+
+public class EdiTransactionsService : IEdiTransactionsService
+{
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
+    private readonly HttpClient _httpClient;
+    private readonly IConfiguration _configuration;
+    private readonly ILogger<EdiTransactionsService> _logger;
+
+    public EdiTransactionsService(HttpClient httpClient, IConfiguration configuration, ILogger<EdiTransactionsService> logger)
+    {
+        _httpClient = httpClient;
+        _configuration = configuration;
+        _logger = logger;
+    }
+
+    public async Task<List<Enrollment834Record>> GetEnrollment834TransactionsAsync(int limit = 100)
+    {
+        var baseUrl = _configuration["Services:EnrollmentImportService"];
+        try
+        {
+            var records = await _httpClient.GetFromJsonAsync<List<Enrollment834Record>>(
+                $"{baseUrl}/v1/enrollment/transactions/recent?limit={Math.Clamp(limit, 1, 500)}", JsonOptions);
+            return records ?? new List<Enrollment834Record>();
+        }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, "Service unavailable: {ServiceName}", "Enrollment Import Service");
+            throw new ServiceUnavailableException("Enrollment Import Service", ex);
+        }
+    }
+
+    public async Task<List<ClaimImportTransactionRecord>> GetClaimImportTransactionsAsync(int limit = 100)
+    {
+        var baseUrl = _configuration["Services:ClaimsService"];
+        try
+        {
+            var records = await _httpClient.GetFromJsonAsync<List<ClaimImportTransactionRecord>>(
+                $"{baseUrl}/v1/claims/import-transactions?limit={Math.Clamp(limit, 1, 500)}", JsonOptions);
+            return records ?? new List<ClaimImportTransactionRecord>();
+        }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, "Service unavailable: {ServiceName}", "Claims Service");
+            throw new ServiceUnavailableException("Claims Service", ex);
+        }
+    }
+}
+
+public sealed class FlexibleClaimTypeJsonConverter : JsonConverter<string>
+{
+    public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        return reader.TokenType switch
+        {
+            JsonTokenType.String => reader.GetString() ?? string.Empty,
+            JsonTokenType.Number when reader.TryGetInt32(out var value) => value switch
+            {
+                1 => "Professional",
+                2 => "Institutional",
+                3 => "Dental",
+                _ => value.ToString()
+            },
+            JsonTokenType.Number => reader.GetDouble().ToString(System.Globalization.CultureInfo.InvariantCulture),
+            JsonTokenType.True => bool.TrueString,
+            JsonTokenType.False => bool.FalseString,
+            JsonTokenType.Null => string.Empty,
+            _ => JsonDocument.ParseValue(ref reader).RootElement.ToString()
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
+    {
+        writer.WriteStringValue(value);
+    }
+}
+
+public sealed class FlexibleClaimStatusJsonConverter : JsonConverter<string>
+{
+    public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        return reader.TokenType switch
+        {
+            JsonTokenType.String => reader.GetString() ?? string.Empty,
+            JsonTokenType.Number when reader.TryGetInt32(out var value) => value switch
+            {
+                1 => "Submitted",
+                2 => "Received",
+                3 => "InAdjudication",
+                4 => "Pended",
+                5 => "Approved",
+                6 => "Denied",
+                7 => "Paid",
+                8 => "Voided",
+                9 => "PartiallyPaid",
+                _ => value.ToString()
+            },
+            JsonTokenType.Number => reader.GetDouble().ToString(System.Globalization.CultureInfo.InvariantCulture),
+            JsonTokenType.True => bool.TrueString,
+            JsonTokenType.False => bool.FalseString,
+            JsonTokenType.Null => string.Empty,
+            _ => JsonDocument.ParseValue(ref reader).RootElement.ToString()
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
+    {
+        writer.WriteStringValue(value);
+    }
+}
+
+public sealed class FlexibleDecimalJsonConverter : JsonConverter<decimal>
+{
+    public override decimal Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        return reader.TokenType switch
+        {
+            JsonTokenType.Number when reader.TryGetDecimal(out var value) => value,
+            JsonTokenType.Number => Convert.ToDecimal(reader.GetDouble()),
+            JsonTokenType.String when decimal.TryParse(
+                reader.GetString(),
+                System.Globalization.NumberStyles.Number,
+                System.Globalization.CultureInfo.InvariantCulture,
+                out var value) => value,
+            JsonTokenType.String => 0m,
+            JsonTokenType.Null => 0m,
+            JsonTokenType.True => 1m,
+            JsonTokenType.False => 0m,
+            _ => 0m
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, decimal value, JsonSerializerOptions options)
+    {
+        writer.WriteNumberValue(value);
     }
 }
 
@@ -563,9 +866,13 @@ public class AuthorizationService : IAuthorizationService
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
     private readonly ILogger<AuthorizationService> _logger;
-    private readonly ITokenAcquisition _tokenAcquisition;
+    private readonly ITokenAcquisition? _tokenAcquisition;
 
-    public AuthorizationService(HttpClient httpClient, IConfiguration configuration, ILogger<AuthorizationService> logger, ITokenAcquisition tokenAcquisition)
+    public AuthorizationService(
+        HttpClient httpClient,
+        IConfiguration configuration,
+        ILogger<AuthorizationService> logger,
+        ITokenAcquisition? tokenAcquisition = null)
     {
         _httpClient = httpClient;
         _configuration = configuration;
@@ -627,10 +934,22 @@ public class AuthorizationService : IAuthorizationService
 
     private async Task SetBearerTokenAsync()
     {
+        if (_tokenAcquisition is null || IsLocalDemoAuth())
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = null;
+            return;
+        }
+
         var scopes = new[] { "api://cfada1ac-f251-48ea-9330-39212aa4c862/Authorization.ReadWrite" };
         var accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(scopes);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
     }
+
+    private bool IsLocalDemoAuth()
+        => string.Equals(
+            _configuration["Authentication:Mode"],
+            "LocalDemo",
+            StringComparison.OrdinalIgnoreCase);
 
     private class SubmitAuthorizationResponse
     {
@@ -1155,9 +1474,13 @@ public class AttachmentService : IAttachmentService
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
     private readonly ILogger<AttachmentService> _logger;
-    private readonly ITokenAcquisition _tokenAcquisition;
+    private readonly ITokenAcquisition? _tokenAcquisition;
 
-    public AttachmentService(HttpClient httpClient, IConfiguration configuration, ILogger<AttachmentService> logger, ITokenAcquisition tokenAcquisition)
+    public AttachmentService(
+        HttpClient httpClient,
+        IConfiguration configuration,
+        ILogger<AttachmentService> logger,
+        ITokenAcquisition? tokenAcquisition = null)
     {
         _httpClient = httpClient;
         _configuration = configuration;
@@ -1240,10 +1563,22 @@ public class AttachmentService : IAttachmentService
 
     private async Task SetBearerTokenAsync()
     {
+        if (_tokenAcquisition is null || IsLocalDemoAuth())
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = null;
+            return;
+        }
+
         var scopes = new[] { "api://cfada1ac-f251-48ea-9330-39212aa4c862/Attachments.ReadWrite" };
         var accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(scopes);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
     }
+
+    private bool IsLocalDemoAuth()
+        => string.Equals(
+            _configuration["Authentication:Mode"],
+            "LocalDemo",
+            StringComparison.OrdinalIgnoreCase);
 
     private class UploadAttachmentResponse
     {
@@ -1457,7 +1792,7 @@ public class TenantService : ITenantService
     public TenantService(IMongoClient mongoClient, IConfiguration configuration, ILogger<TenantService> logger)
     {
         _logger = logger;
-        var databaseName = configuration["MongoDB:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["MongoDB:DatabaseName"] ?? "HealthCoreX";
         var db = mongoClient.GetDatabase(databaseName);
         _tenantsCollection = db.GetCollection<TenantSubscription>(
             configuration["MongoDB:TenantsCollection"] ?? "Tenants");
@@ -1508,7 +1843,7 @@ public class TenantService : ITenantService
                 IsDemo = true,
                 CreatedAt = DateTime.UtcNow.AddMonths(-6),
                 UpdatedAt = DateTime.UtcNow,
-                AdminEmails = new List<string> { "demo@cloudhealthoffice.com" }
+                AdminEmails = new List<string> { "demo@HealthCoreX.com" }
             };
         }
         catch (Exception ex)
@@ -1524,7 +1859,7 @@ public class TenantService : ITenantService
                 IsDemo = true,
                 CreatedAt = DateTime.UtcNow.AddMonths(-6),
                 UpdatedAt = DateTime.UtcNow,
-                AdminEmails = new List<string> { "demo@cloudhealthoffice.com" }
+                AdminEmails = new List<string> { "demo@HealthCoreX.com" }
             };
         }
     }
@@ -1739,7 +2074,7 @@ public class SalesInquiryService : ISalesInquiryService
     {
         _logger = logger;
         _emailNotificationService = emailNotificationService;
-        var databaseName = configuration["MongoDB:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["MongoDB:DatabaseName"] ?? "HealthCoreX";
         var db = mongoClient.GetDatabase(databaseName);
         _inquiriesCollection = db.GetCollection<SalesInquiry>(
             configuration["MongoDB:SalesInquiriesCollection"] ?? "SalesInquiries");
@@ -1886,8 +2221,8 @@ public class SmtpEmailNotificationService : IEmailNotificationService
 
         var smtpPort = int.TryParse(_configuration["Email:SmtpPort"], out var port) ? port : 587;
         var enableSsl = !string.Equals(_configuration["Email:EnableSsl"], "false", StringComparison.OrdinalIgnoreCase);
-        var fromAddress = _configuration["Email:FromAddress"] ?? "noreply@cloudhealthoffice.com";
-        var salesTeamAddress = _configuration["Email:SalesTeamAddress"] ?? "sales@cloudhealthoffice.com";
+        var fromAddress = _configuration["Email:FromAddress"] ?? "noreply@HealthCoreX.com";
+        var salesTeamAddress = _configuration["Email:SalesTeamAddress"] ?? "sales@HealthCoreX.com";
         var username = _configuration["Email:Username"];
         var password = _configuration["Email:Password"];
 
@@ -1979,7 +2314,7 @@ public class SmtpEmailNotificationService : IEmailNotificationService
             $"---------------\n" +
             $"Type:    {inquiry.InquiryType}\n" +
             $"Company: {inquiry.CompanyName}\n\n" +
-            $"If you have urgent questions in the meantime, please email us at sales@cloudhealthoffice.com.\n\n" +
+            $"If you have urgent questions in the meantime, please email us at sales@HealthCoreX.com.\n\n" +
             $"Best regards,\n" +
             $"The Cloud Health Office Sales Team";
 
@@ -2819,7 +3154,7 @@ public class PricingApiService : IPricingApiService
         _logger = logger;
     }
 
-    private string BaseUrl => _configuration["Services:PricingApi"] ?? "http://pricing-api.cloudhealthoffice";
+    private string BaseUrl => _configuration["Services:PricingApi"] ?? "http://pricing-api.HealthCoreX";
     private string AdminSecret => _configuration["PricingApi:AdminSecret"] ?? "";
 
     private HttpRequestMessage CreateAdminRequest(HttpMethod method, string url)
@@ -2964,7 +3299,7 @@ public class CapitationService : ICapitationService
         _logger = logger;
     }
 
-    private string BaseUrl => _configuration["Services:CapitationService"] ?? "http://capitation-service.cloudhealthoffice/api";
+    private string BaseUrl => _configuration["Services:CapitationService"] ?? "http://capitation-service.HealthCoreX/api";
 
     // Contracts
     public async Task<List<CapitationContractSummary>> GetContractsAsync(string? npi = null, string? status = null, string? lob = null)
@@ -3183,7 +3518,7 @@ public class ProviderContractsService : IProviderContractsService
         _logger = logger;
     }
 
-    private string BaseUrl => _configuration["Services:ProviderContractsService"] ?? "http://provider-contracts-service.cloudhealthoffice/api";
+    private string BaseUrl => _configuration["Services:ProviderContractsService"] ?? "http://provider-contracts-service.HealthCoreX/api";
 
     public async Task<List<ProviderContractSummary>> GetContractsAsync(
         string? npi = null, string? lob = null,
@@ -3312,7 +3647,7 @@ public class ArServiceImpl : IArService
         _logger = logger;
     }
 
-    private string BaseUrl => _configuration["Services:ArService"] ?? "http://ar-service.cloudhealthoffice/api";
+    private string BaseUrl => _configuration["Services:ArService"] ?? "http://ar-service.HealthCoreX/api";
 
     // ── GL Accounts ─────────────────────────────────────────────────────
     public async Task<List<GlAccountSummary>> GetAccountsAsync(string? accountType = null, string? lob = null, string? status = null)
@@ -3589,7 +3924,7 @@ public class TerminologyServiceImpl : ITerminologyService
         _logger = logger;
     }
 
-    private string BaseUrl => _configuration["Services:TerminologyService"] ?? "http://terminology-service.cloudhealthoffice";
+    private string BaseUrl => _configuration["Services:TerminologyService"] ?? "http://terminology-service.HealthCoreX";
 
     public async Task<TermTranslateResult> TranslateAsync(string system, string code, string targetSystem,
         string? tenantId = null, int? age = null, string? gender = null, string? state = null)
@@ -3759,10 +4094,10 @@ public class IdCardService : IIdCardService
     }
 
     private string IdCardBaseUrl =>
-        _configuration["Services:IdCardService"] ?? "http://idcard-service.cloudhealthoffice/api/v1";
+        _configuration["Services:IdCardService"] ?? "http://idcard-service.HealthCoreX/api/v1";
 
     private string MemberDocumentBaseUrl =>
-        _configuration["Services:MemberDocumentService"] ?? "http://member-document-service.cloudhealthoffice";
+        _configuration["Services:MemberDocumentService"] ?? "http://member-document-service.HealthCoreX";
 
     public async Task<IdCardOrderView> OrderAsync(string memberId, string? languageCode = null, string? requestedBy = null)
     {

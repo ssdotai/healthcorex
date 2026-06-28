@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.OperatingMode;
+namespace HealthCoreX.OperatingMode;
 
 /// <summary>
 /// Fetches the per-tenant operating mode configuration at runtime.

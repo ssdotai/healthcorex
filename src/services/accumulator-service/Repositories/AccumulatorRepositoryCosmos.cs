@@ -10,7 +10,7 @@ public class AccumulatorRepositoryCosmos : IAccumulatorRepository
 
     public AccumulatorRepositoryCosmos(CosmosClient client)
     {
-        var db = client.GetDatabase("CloudHealthOffice");
+        var db = client.GetDatabase("HealthCoreX");
         _snapshots = db.GetContainer("AccumulatorSnapshots");
         _events = db.GetContainer("AccumulatorEvents");
     }
@@ -119,7 +119,7 @@ public class ProcessedClaimStoreCosmos : IProcessedClaimStore
 
     public ProcessedClaimStoreCosmos(CosmosClient client)
     {
-        var db = client.GetDatabase("CloudHealthOffice");
+        var db = client.GetDatabase("HealthCoreX");
         _col = db.GetContainer("AccumulatorProcessedClaims");
     }
 

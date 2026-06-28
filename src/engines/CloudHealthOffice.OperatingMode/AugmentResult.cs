@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.OperatingMode;
+namespace HealthCoreX.OperatingMode;
 
 /// <summary>
 /// Wraps an engine's output with operating mode context.

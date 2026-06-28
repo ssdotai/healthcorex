@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using MudBlazor.Services;
-using CloudHealthOffice.Portal.Infrastructure;
-using CloudHealthOffice.Portal.Services;
-using CloudHealthOffice.Portal.Hubs;
+using HealthCoreX.Portal.Infrastructure;
+using HealthCoreX.Portal.Services;
+using HealthCoreX.Portal.Hubs;
 using System.Net.Http;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
@@ -12,10 +12,13 @@ using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.HttpOverrides;
 using MongoDB.Driver;
 using MongoDB.Bson.Serialization.Conventions;
-using CloudHealthOffice.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Configuration;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 // Secret provider (Azure Key Vault / none)
@@ -44,14 +47,35 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.KnownProxies.Clear();
 });
 
-// Azure AD Authentication
-// Do not include downstream API scopes in the initial sign-in request.
-// For multi-tenant apps, custom API scopes must be acquired incrementally
-// (on first API call) to avoid AADSTS1003031 at the authorization endpoint.
-var initialScopes = Array.Empty<string>();
+var authMode = builder.Configuration["Authentication:Mode"] ?? "Entra";
+var useLocalDemoAuth = builder.Environment.IsDevelopment()
+    && string.Equals(authMode, "LocalDemo", StringComparison.OrdinalIgnoreCase);
 
-builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(options =>
+if (useLocalDemoAuth)
+{
+    builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options =>
+        {
+            options.LoginPath = "/local-demo/sign-in";
+            options.LogoutPath = "/local-demo/sign-out";
+            options.AccessDeniedPath = "/local-demo/sign-in";
+            options.Cookie.Name = ".HealthCoreX.LocalDemoAuth";
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+            options.Cookie.SameSite = SameSiteMode.Lax;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+        });
+}
+else
+{
+    // Azure AD Authentication
+    // Do not include downstream API scopes in the initial sign-in request.
+    // For multi-tenant apps, custom API scopes must be acquired incrementally
+    // (on first API call) to avoid AADSTS1003031 at the authorization endpoint.
+    var initialScopes = Array.Empty<string>();
+
+    builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+        .AddMicrosoftIdentityWebApp(options =>
     {
         builder.Configuration.Bind("AzureAd", options);
 
@@ -118,6 +142,7 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     })
     .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
     .AddDistributedTokenCaches();
+}
 
 // Configure cookies for reverse proxy (HTTPS behind nginx)
 builder.Services.ConfigureApplicationCookie(options =>
@@ -126,7 +151,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SameSite = SameSiteMode.None;
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
-    options.Cookie.Name = ".CloudHealthOffice.Auth";
+    options.Cookie.Name = ".HealthCoreX.Auth";
 });
 
 builder.Services.AddAuthorization(options =>
@@ -201,10 +226,10 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
 // than registering IXmlRepository in DI — AddDataProtection's internal setup does not
 // reliably pick up a separately-registered IXmlRepository singleton.
 builder.Services.AddDataProtection()
-    .SetApplicationName("CloudHealthOffice.Portal")
+    .SetApplicationName("HealthCoreX.Portal")
     .PersistKeysToFileSystem(new DirectoryInfo(
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "CloudHealthOffice", "DataProtection-Keys")));
+            "HealthCoreX", "DataProtection-Keys")));
 
 if (!builder.Environment.IsDevelopment())
 {
@@ -231,11 +256,12 @@ builder.Services.AddScoped<IMemberNoteService, MemberNoteService>();
 builder.Services.AddScoped<IFamilyRelationshipService, FamilyRelationshipService>();
 builder.Services.AddScoped<ICoverageService, CoverageService>();
 builder.Services.AddScoped<IClaimsService, ClaimsService>();
+builder.Services.AddScoped<IEdiTransactionsService, EdiTransactionsService>();
 builder.Services.AddScoped<IEligibilityService, EligibilityService>();
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 builder.Services.AddScoped<IMemberDocumentService, MemberDocumentService>();
-builder.Services.AddScoped<IIdCardService, CloudHealthOffice.Portal.Services.IdCardService>();
+builder.Services.AddScoped<IIdCardService, HealthCoreX.Portal.Services.IdCardService>();
 builder.Services.AddScoped<IProviderService, ProviderService>();
 builder.Services.AddScoped<IBenefitPlanService, BenefitPlanService>();
 builder.Services.AddScoped<IWorkflowService, WorkflowService>();
@@ -276,13 +302,20 @@ builder.Services.AddSignalR(options =>
     options.EnableDetailedErrors = true;
 });
 
-// Shared distributed cache backed by Redis — required for multi-pod session and MSAL token caches
-var redisConnection = builder.Configuration["Redis:ConnectionString"] ?? "redis-dataprotection.cloudhealthoffice.svc.cluster.local:6379";
-builder.Services.AddStackExchangeRedisCache(options =>
+if (useLocalDemoAuth)
 {
-    options.Configuration = redisConnection;
-    options.InstanceName = "cho:";
-});
+    builder.Services.AddDistributedMemoryCache();
+}
+else
+{
+    // Shared distributed cache backed by Redis — required for multi-pod session and MSAL token caches
+    var redisConnection = builder.Configuration["Redis:ConnectionString"] ?? "redis-dataprotection.HealthCoreX.svc.cluster.local:6379";
+    builder.Services.AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = redisConnection;
+        options.InstanceName = "cho:";
+    });
+}
 
 // Add session state
 builder.Services.AddSession(options =>
@@ -292,7 +325,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     options.Cookie.SameSite = SameSiteMode.Lax;
-    options.Cookie.Name = ".CloudHealthOffice.Session";
+    options.Cookie.Name = ".HealthCoreX.Session";
 });
 
 // Helper: extract tenant ID from Azure AD error messages
@@ -315,9 +348,14 @@ static string BuildAdminConsentErrorUrl(string? tenantId)
     return url;
 }
 
-// Register background tenant seed so it doesn't block startup or health probes
-builder.Services.AddHostedService<TenantSeedService>();
-builder.Services.AddHostedService<TmppmIndexService>();
+// Register background tenant seed so it doesn't block startup or health probes.
+// Local demo auth bypasses tenant subscription lookup and should not require
+// MongoDB just to open the portal.
+if (!useLocalDemoAuth)
+{
+    builder.Services.AddHostedService<TenantSeedService>();
+    builder.Services.AddHostedService<TmppmIndexService>();
+}
 
 var app = builder.Build();
 
@@ -338,6 +376,88 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
+
+if (useLocalDemoAuth)
+{
+    app.MapGet("/local-demo/sign-in", async (HttpContext context) =>
+    {
+        var redirectUri = NormalizeLocalDemoRedirect(
+            context.Request.Query["redirectUri"].FirstOrDefault(),
+            context.Request);
+
+        var email = builder.Configuration["Authentication:LocalDemo:Email"]
+            ?? "local-demo-user";
+        var name = builder.Configuration["Authentication:LocalDemo:DisplayName"]
+            ?? "Local Demo Admin";
+        var tenantId = builder.Configuration["Authentication:LocalDemo:TenantId"]
+            ?? "demo";
+        var azureTenantId = builder.Configuration["Authentication:LocalDemo:AzureTenantId"]
+            ?? "local-demo";
+
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.NameIdentifier, "local-demo-admin"),
+            new(ClaimTypes.Name, name),
+            new(ClaimTypes.Email, email),
+            new("preferred_username", email),
+            new("oid", "local-demo-admin"),
+            new("tid", azureTenantId),
+            new("extension_TenantId", tenantId),
+            new("cho_local_demo", "true"),
+            new(ClaimTypes.Role, "TenantAdmin"),
+            new(ClaimTypes.Role, "ClaimsSupervisor")
+        };
+
+        var identity = new ClaimsIdentity(
+            claims,
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            ClaimTypes.Name,
+            ClaimTypes.Role);
+        var principal = new ClaimsPrincipal(identity);
+
+        await context.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            principal,
+            new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(8)
+            });
+
+        return Results.Redirect(redirectUri);
+    }).WithMetadata(new Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute());
+
+    app.MapGet("/local-demo/sign-out", async (HttpContext context) =>
+    {
+        await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return Results.Redirect("/");
+    }).WithMetadata(new Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute());
+}
+
+static string NormalizeLocalDemoRedirect(string? redirectUri, HttpRequest request)
+{
+    if (string.IsNullOrWhiteSpace(redirectUri))
+    {
+        return "/";
+    }
+
+    if (redirectUri.StartsWith("/", StringComparison.Ordinal)
+        && !redirectUri.StartsWith("//", StringComparison.Ordinal))
+    {
+        return redirectUri;
+    }
+
+    if (Uri.TryCreate(redirectUri, UriKind.Absolute, out var absolute)
+        && string.Equals(absolute.Host, request.Host.Host, StringComparison.OrdinalIgnoreCase)
+        && (!absolute.IsDefaultPort || absolute.Port == request.Host.Port))
+    {
+        return string.IsNullOrEmpty(absolute.PathAndQuery)
+            ? "/"
+            : absolute.PathAndQuery;
+    }
+
+    return "/";
+}
 
 // Health endpoint - anonymous access for Kubernetes probes
 app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }))

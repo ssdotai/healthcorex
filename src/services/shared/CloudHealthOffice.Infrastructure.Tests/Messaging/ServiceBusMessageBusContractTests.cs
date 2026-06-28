@@ -1,8 +1,8 @@
 using Azure.Messaging.ServiceBus;
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Messaging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.Infrastructure.Tests.Messaging;
+namespace HealthCoreX.Infrastructure.Tests.Messaging;
 
 /// <summary>
 /// Runs the shared contract against a real Azure Service Bus namespace.

@@ -1,11 +1,11 @@
-using CloudHealthOffice.Portal.Infrastructure;
-using CloudHealthOffice.Portal.Services;
+using HealthCoreX.Portal.Infrastructure;
+using HealthCoreX.Portal.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.Portal.Tests.Infrastructure;
+namespace HealthCoreX.Portal.Tests.Infrastructure;
 
 public class TenantSeedServiceTests
 {
@@ -192,7 +192,7 @@ public class TenantSeedServiceTests
         try { await task; } catch (OperationCanceledException) { }
 
         // Verify default values were used
-        _mongoClient.Verify(c => c.GetDatabase("CloudHealthOffice", null), Times.Once);
+        _mongoClient.Verify(c => c.GetDatabase("HealthCoreX", null), Times.Once);
         _database.Verify(d => d.GetCollection<TenantSubscription>("Tenants", null), Times.Once);
 
         _collection.Verify(c => c.InsertOneAsync(

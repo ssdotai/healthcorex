@@ -1,8 +1,8 @@
 using System.Reflection;
 using AppealsService.Models;
-using CloudHealthOffice.Appeals.Contracts;
+using HealthCoreX.Appeals.Contracts;
 
-namespace CloudHealthOffice.Appeals.Contracts.Tests;
+namespace HealthCoreX.Appeals.Contracts.Tests;
 
 /// <summary>
 /// Structural drift guard between the domain Appeal aggregate in

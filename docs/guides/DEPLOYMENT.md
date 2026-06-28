@@ -1,50 +1,39 @@
 # Deployment Guide - Cloud Health Office
 
-This guide provides step-by-step instructions for deploying the Cloud Health Office multi-tenant SaaS platform to Azure environments (DEV/UAT/PROD).
+This guide provides step-by-step instructions for deploying the Cloud Health Office source-available platform into a customer-controlled environment.
+
+> **Current availability:** Cloud Health Office is not operated as a public hosted SaaS at `portal.HealthCoreX.com` or `api.HealthCoreX.com`. Download the source, run it locally, or deploy it into your own Azure/Kubernetes environment under the Business Source License (BSL 1.1). Public production use requires a commercial license.
 
 ## 🚀 Quick Start
 
 **New users?** Start here:
 
-### Option 1: Self-Service Signup (Recommended - 5 minutes)
+### Option 1: Local Kubernetes Evaluation (Recommended)
 
-The fastest way to get started is through our production portal:
+The fastest way to evaluate the platform is to run it on Docker Desktop Kubernetes:
 
 ```bash
-# 1. Visit the portal
-open https://portal.cloudhealthoffice.com
-
-# 2. Sign in with Azure AD (any Microsoft account)
-# 3. Select your tier:
-#    - Starter: 10K claims, 14-day trial
-#    - Professional: 50K claims, 14-day trial
-#    - Enterprise: Contact Sales for custom pricing
-#    Pricing: Contact sales@cloudhealthoffice.com
-
-# 4. Enter payment details (Stripe - PCI compliant)
-# 5. Choose modules (EDI, Claims, Provider Network, FHIR)
-# 6. Click "Start Free Trial"
-
-# 7. Access your tenant (auto-provisioned):
-#    - Portal: https://portal.cloudhealthoffice.com
-#    - API: https://api.cloudhealthoffice.com
-#    - Docs: https://docs.cloudhealthoffice.com
+git clone https://github.com/aurelianware/HealthCoreX.git
+cd HealthCoreX
+./scripts/deploy-local.sh
 ```
 
-**What gets auto-provisioned:**
-- ✅ Cosmos DB tenant partition (`tenantId`)
-- ✅ SFTP credentials for clearinghouse integration
-- ✅ Azure AD application for API access
-- ✅ 14-day trial subscription (Stripe)
-- ✅ Welcome email with credentials
+Then follow the local access steps in [QUICKSTART.md](QUICKSTART.md) or the Kubernetes reference in [quickstart-kubernetes-local.md](../quickstart-kubernetes-local.md).
 
-**Enterprise customers:** [Contact Sales](https://portal.cloudhealthoffice.com/contact-sales) for custom SLAs, white-labeling, and dedicated support.
+**What gets created locally:**
+- Kubernetes namespace and service DNS for the platform
+- MongoDB and Redis local services
+- Portal and API services reachable through port-forwarding
+- Demo/reference data for local validation
+- A customer-owned path to connect Azure AD, Stripe, Service Bus, and clearinghouse credentials later
+
+For pilot scoping, commercial licensing, or a customer-owned deployment review, contact [sales@HealthCoreX.com](mailto:sales@HealthCoreX.com).
 
 ---
 
-### Option 2: Self-Hosted Deployment (Advanced)
+### Option 2: Customer-Owned Cloud Deployment (Advanced)
 
-For customers requiring on-premise or Azure-hosted deployment:
+For customers requiring an Azure-hosted or private Kubernetes deployment:
 
 **New to deployment?** Follow these steps:
 1. **GitHub Actions Setup**: See [GITHUB-ACTIONS-SETUP.md](GITHUB-ACTIONS-SETUP.md) for complete OIDC authentication and secrets configuration
@@ -175,9 +164,9 @@ Create Cosmos DB account and containers for multi-tenant data:
 
 ```bash
 # Set variables
-RESOURCE_GROUP="cloudhealthoffice-prod"
-COSMOS_ACCOUNT="cloudhealthoffice-cosmos"
-DATABASE_NAME="CloudHealthOffice"
+RESOURCE_GROUP="HealthCoreX-prod"
+COSMOS_ACCOUNT="HealthCoreX-cosmos"
+DATABASE_NAME="HealthCoreX"
 LOCATION="eastus"
 
 # Create Cosmos DB account
@@ -307,7 +296,7 @@ stripe keys list --live
 ```bash
 # Create stripe-api-keys secret
 kubectl create secret generic stripe-api-keys \
-  --namespace cloudhealthoffice \
+  --namespace HealthCoreX \
   --from-literal=Stripe__PublishableKey="pk_test_..." \
   --from-literal=Stripe__SecretKey="sk_test_..." \
   --from-literal=Stripe__Price__Starter="$STARTER_PRICE_ID" \
@@ -315,10 +304,10 @@ kubectl create secret generic stripe-api-keys \
 
 # Create cosmos-secret
 kubectl create secret generic cosmos-secret \
-  --namespace cloudhealthoffice \
+  --namespace HealthCoreX \
   --from-literal=CosmosDb__Endpoint="$COSMOS_ENDPOINT" \
   --from-literal=CosmosDb__Key="$COSMOS_KEY" \
-  --from-literal=CosmosDb__DatabaseName="CloudHealthOffice" \
+  --from-literal=CosmosDb__DatabaseName="HealthCoreX" \
   --from-literal=CosmosDb__TenantsContainer="Tenants" \
   --from-literal=CosmosDb__MembersContainer="Members" \
   --from-literal=CosmosDb__SalesInquiriesContainer="SalesInquiries"
@@ -339,7 +328,7 @@ kubectl create secret generic cosmos-secret \
   "CosmosDb": {
     "Endpoint": "https://....documents.azure.com:443/",
     "Key": "...",
-    "DatabaseName": "CloudHealthOffice",
+    "DatabaseName": "HealthCoreX",
     "TenantsContainer": "Tenants",
     "MembersContainer": "Members",
     "SalesInquiriesContainer": "SalesInquiries"
@@ -745,7 +734,7 @@ The `.github/workflows/docker-build.yml` workflow automatically builds all conta
 - `site/**` → Builds site
 - `containers/**` → Builds utility containers
 
-**Images pushed to**: `ghcr.io/aurelianware/cloudhealthoffice-*:latest`
+**Images pushed to**: `ghcr.io/aurelianware/HealthCoreX-*:latest`
 
 #### Manual Container Build
 
@@ -754,22 +743,22 @@ If you need to build containers locally:
 ```bash
 # Build all utility containers
 for container in x12-parser claims-publisher kafka-publisher sftp-fetcher x12-encoder metadata-extractor; do
-  docker build -t ghcr.io/aurelianware/cloudhealthoffice-$container:latest containers/$container
-  docker push ghcr.io/aurelianware/cloudhealthoffice-$container:latest
+  docker build -t ghcr.io/aurelianware/HealthCoreX-$container:latest containers/$container
+  docker push ghcr.io/aurelianware/HealthCoreX-$container:latest
 done
 
 # Build microservices
 for service in member coverage claims eligibility authorization provider benefit-plan reference-data sponsor claims-scrubbing; do
-  docker build -t ghcr.io/aurelianware/cloudhealthoffice-$service-service:latest services/$service-service
-  docker push ghcr.io/aurelianware/cloudhealthoffice-$service-service:latest
+  docker build -t ghcr.io/aurelianware/HealthCoreX-$service-service:latest services/$service-service
+  docker push ghcr.io/aurelianware/HealthCoreX-$service-service:latest
 done
 
 # Build portal and site
-docker build -t ghcr.io/aurelianware/cloudhealthoffice-portal:latest portal/CloudHealthOffice.Portal
-docker push ghcr.io/aurelianware/cloudhealthoffice-portal:latest
+docker build -t ghcr.io/aurelianware/HealthCoreX-portal:latest portal/HealthCoreX.Portal
+docker push ghcr.io/aurelianware/HealthCoreX-portal:latest
 
-docker build -t ghcr.io/aurelianware/cloudhealthoffice-site:latest site
-docker push ghcr.io/aurelianware/cloudhealthoffice-site:latest
+docker build -t ghcr.io/aurelianware/HealthCoreX-site:latest site
+docker push ghcr.io/aurelianware/HealthCoreX-site:latest
 ```
 
 #### Verify Images in GHCR
@@ -778,7 +767,7 @@ docker push ghcr.io/aurelianware/cloudhealthoffice-site:latest
 # List all images (requires GitHub CLI)
 gh api /orgs/aurelianware/packages?package_type=container | jq -r '.[].name'
 
-# Or visit: https://github.com/orgs/aurelianware/packages?repo_name=cloudhealthoffice
+# Or visit: https://github.com/orgs/aurelianware/packages?repo_name=HealthCoreX
 ```
 
 #### Deploy Kafka Topics (Required for 837 Pipeline)
@@ -792,10 +781,10 @@ kubectl get kafkatopics -n kafka
 
 # Expected output:
 # NAME                      CLUSTER                PARTITIONS   REPLICATION FACTOR
-# edi-raw-files            cloudhealthoffice      3            3
-# claims-adjudication      cloudhealthoffice      6            3
-# claims-work-queue        cloudhealthoffice      3            3
-# claims-rejected          cloudhealthoffice      3            3
+# edi-raw-files            HealthCoreX      3            3
+# claims-adjudication      HealthCoreX      6            3
+# claims-work-queue        HealthCoreX      3            3
+# claims-rejected          HealthCoreX      3            3
 ```
 
 #### Deploy Argo Workflows
@@ -805,8 +794,8 @@ kubectl get kafkatopics -n kafka
 kubectl apply -f argo-workflows/x12-837-ingest.yaml
 
 # Verify CronWorkflow created
-kubectl get cronworkflows -n cloudhealthoffice
-kubectl get workflows -n cloudhealthoffice
+kubectl get cronworkflows -n HealthCoreX
+kubectl get workflows -n HealthCoreX
 
 # Expected output shows CronWorkflow scheduled to run every 5 minutes
 ```
@@ -826,13 +815,13 @@ kubectl get sensors -n argo-events
 
 ```bash
 # Check portal pods (should use new image)
-kubectl get pods -n cloudhealthoffice -l app=portal
+kubectl get pods -n HealthCoreX -l app=portal
 
 # Check service pods
-kubectl get pods -n cloudhealthoffice
+kubectl get pods -n HealthCoreX
 
 # Verify image versions
-kubectl get pods -n cloudhealthoffice -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'
+kubectl get pods -n HealthCoreX -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'
 ```
 
 **For complete 837 claims pipeline documentation**, see [docs/837-CLAIMS-PIPELINE.md](./docs/837-CLAIMS-PIPELINE.md).
@@ -1551,7 +1540,7 @@ Tested-in: UAT
 ### 1. Validate Argo Workflow YAML
 
 ```bash
-cd /path/to/cloudhealthoffice
+cd /path/to/HealthCoreX
 
 # Validate all Argo workflow YAML files
 WF_PATH="infrastructure/argo-workflows"
@@ -1702,7 +1691,7 @@ Before deploying workflows:
 
 - [ ] AKS cluster provisioned and `kubectl` configured
 - [ ] Argo Workflows controller running (`kubectl get pods -n argo`)
-- [ ] C# microservice pods are healthy (`kubectl get pods -n cloudhealthoffice`)
+- [ ] C# microservice pods are healthy (`kubectl get pods -n HealthCoreX`)
 - [ ] Kubernetes Secrets/ConfigMaps created for SFTP, Service Bus, etc.
 
 #### Deployment Process
@@ -1717,7 +1706,7 @@ kubectl cluster-info
 kubectl get pods -n argo -l app=workflow-controller
 
 # Verify microservice pods
-kubectl get pods -n cloudhealthoffice
+kubectl get pods -n HealthCoreX
 ```
 
 **Step 2: Deploy Workflow Manifests**
@@ -1799,7 +1788,7 @@ kubectl apply -f infrastructure/argo-workflows/ -n cho-workflows
 
 1. Check pod logs: `kubectl logs -n cho-workflows <pod-name>`
 2. Verify secrets exist: `kubectl get secrets -n cho-workflows`
-3. Check microservice health: `kubectl get pods -n cloudhealthoffice`
+3. Check microservice health: `kubectl get pods -n HealthCoreX`
 
 ### Workflow Deployment Timeline
 
@@ -2050,7 +2039,7 @@ For production PHI workloads, deploy comprehensive security controls to achieve 
 
 #### Security Score Impact
 - **Before**: 7/10 (Basic security)
-- **After**: 9/10 (Production-ready for PHI)
+- **After**: 9/10 target posture (requires environment validation before PHI)
 
 #### Deploy Security Modules
 
@@ -2253,8 +2242,8 @@ Argo Workflows on AKS use Kubernetes Secrets and ConfigMaps for service connecti
 
 ```bash
 # Verify secrets are configured
-kubectl get secrets -n cloudhealthoffice
-kubectl get configmaps -n cloudhealthoffice
+kubectl get secrets -n HealthCoreX
+kubectl get configmaps -n HealthCoreX
 ```
 
 **Configure these connections:**

@@ -5,4 +5,4 @@ Disallow: /drafts/
 Disallow: /staging/
 Disallow: /_test/
 
-Sitemap: https://cloudhealthoffice.com/sitemap.xml
+Sitemap: https://HealthCoreX.com/sitemap.xml

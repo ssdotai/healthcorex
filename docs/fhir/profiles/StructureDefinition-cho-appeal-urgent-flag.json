@@ -1,7 +1,7 @@
 {
   "resourceType": "StructureDefinition",
   "id": "cho-appeal-urgent-flag",
-  "url": "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-urgent-flag",
+  "url": "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-urgent-flag",
   "version": "1.0.0",
   "name": "ChoAppealUrgentFlag",
   "title": "CHO Appeal Urgent Flag",
@@ -29,7 +29,7 @@
       {
         "id": "Extension.url",
         "path": "Extension.url",
-        "fixedUri": "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-urgent-flag"
+        "fixedUri": "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-urgent-flag"
       },
       {
         "id": "Extension.value[x]",

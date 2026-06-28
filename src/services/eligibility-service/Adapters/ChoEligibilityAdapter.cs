@@ -72,7 +72,7 @@ public class ChoEligibilityAdapter : IEligibilityAdapter
 
     private async Task<ChoCoverageDto?> GetActiveCoverageAsync(string tenantId, string subscriberId, DateTime serviceDate)
     {
-        var coverageUrl = _configuration["Services:CoverageService"] ?? "http://coverage-service.cloudhealthoffice/api/v1";
+        var coverageUrl = _configuration["Services:CoverageService"] ?? "http://coverage-service.HealthCoreX/api/v1";
         var client = _httpClientFactory.CreateClient("EligibilityDefault");
         var request = new HttpRequestMessage(HttpMethod.Get,
             $"{coverageUrl}/coverage/member/{subscriberId}/active?serviceDate={serviceDate:yyyy-MM-dd}&tenantId={tenantId}");
@@ -92,7 +92,7 @@ public class ChoEligibilityAdapter : IEligibilityAdapter
 
     private async Task<List<EligibilityBenefit>> GetBenefitsAsync(string tenantId, string benefitPlanId, string? serviceType)
     {
-        var benefitUrl = _configuration["Services:BenefitPlanService"] ?? "http://benefit-plan-service.cloudhealthoffice/api/v1";
+        var benefitUrl = _configuration["Services:BenefitPlanService"] ?? "http://benefit-plan-service.HealthCoreX/api/v1";
         var url = $"{benefitUrl}/plans/{benefitPlanId}/benefits?tenantId={tenantId}";
 
         if (!string.IsNullOrEmpty(serviceType))
@@ -137,7 +137,7 @@ public class ChoEligibilityAdapter : IEligibilityAdapter
     {
         try
         {
-            var benefitUrl = _configuration["Services:BenefitPlanService"] ?? "http://benefit-plan-service.cloudhealthoffice/api/v1";
+            var benefitUrl = _configuration["Services:BenefitPlanService"] ?? "http://benefit-plan-service.HealthCoreX/api/v1";
             var client = _httpClientFactory.CreateClient("EligibilityDefault");
             var request = new HttpRequestMessage(HttpMethod.Get,
                 $"{benefitUrl}/plans/{benefitPlanId}/accumulation/{subscriberId}?tenantId={tenantId}");
@@ -163,7 +163,7 @@ public class ChoEligibilityAdapter : IEligibilityAdapter
     {
         try
         {
-            var coverageUrl = _configuration["Services:CoverageService"] ?? "http://coverage-service.cloudhealthoffice/api/v1";
+            var coverageUrl = _configuration["Services:CoverageService"] ?? "http://coverage-service.HealthCoreX/api/v1";
             var client = _httpClientFactory.CreateClient("EligibilityDefault");
             var request = new HttpRequestMessage(HttpMethod.Get,
                 $"{coverageUrl}/coverage/member/{subscriberId}/cob?tenantId={tenantId}");

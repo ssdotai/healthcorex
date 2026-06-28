@@ -16,12 +16,12 @@ Internet (HTTPS) → 4.149.83.133 (NGINX Ingress) → Ingress Resources → Serv
 
 ### Kubernetes Manifests (3 files)
 1. **k8s/site-ingress.yaml** - HTTPS ingress for the website
-   - Domains: cloudhealthoffice.com, www.cloudhealthoffice.com
+   - Domains: HealthCoreX.com, www.HealthCoreX.com
    - TLS certificate: site-tls-secret (auto-managed)
    - Backend: site service (port 80)
 
 2. **k8s/portal-ingress.yaml** - HTTPS ingress for the portal
-   - Domain: portal.cloudhealthoffice.com
+   - Domain: portal.HealthCoreX.com
    - TLS certificate: portal-tls-secret (auto-managed)
    - Backend: portal service (port 80→8080)
 
@@ -47,7 +47,7 @@ Internet (HTTPS) → 4.149.83.133 (NGINX Ingress) → Ingress Resources → Serv
    - Changed: `type: LoadBalancer` → `type: ClusterIP`
    - Reason: Ingress handles external traffic now
 
-2. **portal/CloudHealthOffice.Portal/k8s/portal-deployment.yaml**
+2. **portal/HealthCoreX.Portal/k8s/portal-deployment.yaml**
    - Changed: `type: LoadBalancer` → `type: ClusterIP`
    - Reason: Ingress handles external traffic now
 
@@ -97,34 +97,34 @@ Configure these A records in your DNS provider:
 
 | Domain                         | Type | Value         |
 |--------------------------------|------|---------------|
-| cloudhealthoffice.com          | A    | 4.149.83.133  |
-| www.cloudhealthoffice.com      | A    | 4.149.83.133  |
-| portal.cloudhealthoffice.com   | A    | 4.149.83.133  |
+| HealthCoreX.com          | A    | 4.149.83.133  |
+| www.HealthCoreX.com      | A    | 4.149.83.133  |
+| portal.HealthCoreX.com   | A    | 4.149.83.133  |
 
 **Verify DNS:**
 ```bash
-dig +short cloudhealthoffice.com
+dig +short HealthCoreX.com
 # Should return: 4.149.83.133
 ```
 
 ### Deploy Cloud Health Office with HTTPS
 
 ```bash
-cd /home/runner/work/cloudhealthoffice/cloudhealthoffice
+cd /home/runner/work/HealthCoreX/HealthCoreX
 
 # 1. Deploy cert-manager issuers
 kubectl apply -f k8s/cert-manager-issuer.yaml
 
 # 2. Deploy updated site and portal (ClusterIP services)
 kubectl apply -f site/k8s/site-deployment.yaml
-kubectl apply -f portal/CloudHealthOffice.Portal/k8s/portal-deployment.yaml
+kubectl apply -f portal/HealthCoreX.Portal/k8s/portal-deployment.yaml
 
 # 3. Deploy ingress resources
 kubectl apply -f k8s/site-ingress.yaml
 kubectl apply -f k8s/portal-ingress.yaml
 
 # 4. Watch certificate issuance (takes 1-3 minutes)
-kubectl get certificate -n cloudhealthoffice -w
+kubectl get certificate -n HealthCoreX -w
 # Wait until both show READY=True
 ```
 
@@ -135,8 +135,8 @@ kubectl get certificate -n cloudhealthoffice -w
 bash k8s/validate-ingress.sh
 
 # Test HTTPS access
-curl -I https://cloudhealthoffice.com
-curl -I https://portal.cloudhealthoffice.com
+curl -I https://HealthCoreX.com
+curl -I https://portal.HealthCoreX.com
 ```
 
 ## Expected Behavior
@@ -155,14 +155,14 @@ After applying the ingress resources:
 
 **HTTP Request (port 80):**
 ```
-http://cloudhealthoffice.com
+http://HealthCoreX.com
   → NGINX Ingress Controller
-  → 301 Redirect to https://cloudhealthoffice.com
+  → 301 Redirect to https://HealthCoreX.com
 ```
 
 **HTTPS Request (port 443):**
 ```
-https://cloudhealthoffice.com
+https://HealthCoreX.com
   → NGINX Ingress Controller (4.149.83.133:443)
   → TLS Termination (using site-tls-secret)
   → site-ingress (routes based on host header)
@@ -175,14 +175,14 @@ https://cloudhealthoffice.com
 
 ### Check Ingress Status
 ```bash
-kubectl get ingress -n cloudhealthoffice
+kubectl get ingress -n HealthCoreX
 ```
 
 ### Check Certificate Status
 ```bash
-kubectl get certificate -n cloudhealthoffice
-kubectl describe certificate site-tls-secret -n cloudhealthoffice
-kubectl describe certificate portal-tls-secret -n cloudhealthoffice
+kubectl get certificate -n HealthCoreX
+kubectl describe certificate site-tls-secret -n HealthCoreX
+kubectl describe certificate portal-tls-secret -n HealthCoreX
 ```
 
 ### View Ingress Logs
@@ -202,7 +202,7 @@ kubectl logs -n cert-manager -l app=cert-manager -f
 
 **Check:**
 ```bash
-kubectl describe certificate -n cloudhealthoffice
+kubectl describe certificate -n HealthCoreX
 kubectl logs -n cert-manager -l app=cert-manager --tail=100
 ```
 
@@ -216,9 +216,9 @@ kubectl logs -n cert-manager -l app=cert-manager --tail=100
 
 **Check:**
 ```bash
-kubectl get pods -n cloudhealthoffice -l app=site
-kubectl get pods -n cloudhealthoffice -l app=portal
-kubectl logs -n cloudhealthoffice -l app=site
+kubectl get pods -n HealthCoreX -l app=site
+kubectl get pods -n HealthCoreX -l app=portal
+kubectl logs -n HealthCoreX -l app=site
 ```
 
 **Common causes:**
@@ -231,7 +231,7 @@ kubectl logs -n cloudhealthoffice -l app=site
 
 **Check ingress annotations:**
 ```bash
-kubectl get ingress site-ingress -n cloudhealthoffice -o yaml | grep ssl-redirect
+kubectl get ingress site-ingress -n HealthCoreX -o yaml | grep ssl-redirect
 ```
 
 Should see:
@@ -252,17 +252,17 @@ nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 ### Key Commands
 ```bash
 # Check everything
-kubectl get ingress,certificate,svc -n cloudhealthoffice
+kubectl get ingress,certificate,svc -n HealthCoreX
 
 # Validate configuration
 bash k8s/validate-ingress.sh
 
 # Test HTTPS
-curl -I https://cloudhealthoffice.com
+curl -I https://HealthCoreX.com
 
 # View certificate details
-echo | openssl s_client -servername cloudhealthoffice.com \
-  -connect cloudhealthoffice.com:443 2>/dev/null | \
+echo | openssl s_client -servername HealthCoreX.com \
+  -connect HealthCoreX.com:443 2>/dev/null | \
   openssl x509 -noout -text
 ```
 
@@ -297,8 +297,8 @@ echo | openssl s_client -servername cloudhealthoffice.com \
 1. **Deploy Prerequisites** - Install NGINX ingress and cert-manager
 2. **Configure DNS** - Point domains to 4.149.83.133
 3. **Apply Manifests** - Deploy ingress resources
-4. **Wait for Certificates** - Monitor with `kubectl get certificate -n cloudhealthoffice -w`
-5. **Test Access** - Verify HTTPS at https://cloudhealthoffice.com
+4. **Wait for Certificates** - Monitor with `kubectl get certificate -n HealthCoreX -w`
+5. **Test Access** - Verify HTTPS at https://HealthCoreX.com
 
 ## Support Resources
 

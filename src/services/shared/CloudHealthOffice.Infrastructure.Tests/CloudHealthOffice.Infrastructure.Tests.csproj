@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj" />
+    <ProjectReference Include="../HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

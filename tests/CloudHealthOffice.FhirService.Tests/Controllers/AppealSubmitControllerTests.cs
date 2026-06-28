@@ -1,10 +1,10 @@
-using CloudHealthOffice.Appeals.Contracts;
+using HealthCoreX.Appeals.Contracts;
 using FhirService.Controllers;
 using FhirService.Services;
 using FluentAssertions;
 using Hl7.Fhir.Model;
 
-namespace CloudHealthOffice.FhirService.Tests.Controllers;
+namespace HealthCoreX.FhirService.Tests.Controllers;
 
 public class AppealSubmitControllerTests
 {
@@ -61,13 +61,13 @@ public class AppealSubmitControllerTests
 
         // Retry URL attached to failed issues as an extension.
         outcome.Issue[1].Extension.Should().ContainSingle(e =>
-            e.Url == "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-retry-url");
+            e.Url == "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-retry-url");
         outcome.Issue[2].Extension.Should().ContainSingle(e =>
-            e.Url == "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-retry-url");
+            e.Url == "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-retry-url");
 
         // Correlation id carried on the outcome itself.
         outcome.Extension.Should().ContainSingle(e =>
-            e.Url == "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-correlation-id");
+            e.Url == "http://fhir.HealthCoreX.com/StructureDefinition/cho-correlation-id");
     }
 
     [Fact]
@@ -227,7 +227,7 @@ public class AppealSubmitControllerTests
                 "FHIRPath location must use EntryIndex, not ChildRef");
 
         outcome.Issue[0].Extension.Should().ContainSingle(e =>
-            e.Url == "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-child-ref" &&
+            e.Url == "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-child-ref" &&
             (e.Value as FhirString)!.Value == "apl-new",
             "cho-appeal-child-ref extension must carry the ChildRef value");
     }

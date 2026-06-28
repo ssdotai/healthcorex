@@ -79,7 +79,7 @@ on:
       # outer gate. Keep it broad to avoid missing legitimate triggers.
       - 'src/services/**'
       - 'src/engines/**'
-      - 'cloudhealthoffice-main.sln'
+      - 'HealthCoreX-main.sln'
       - '.github/workflows/_build-service-image.yml'
       - '.github/workflows/pr-validation.yml'
       - '.github/paths-filter.yml'
@@ -110,7 +110,7 @@ jobs:
   #
   #   [
   #     {"service": "appeals-service"},
-  #     {"service": "CHO.TerminologyService", "image_name": "cloudhealthoffice-terminology-service"}
+  #     {"service": "CHO.TerminologyService", "image_name": "HealthCoreX-terminology-service"}
   #   ]
   #
   # Empty array (`[]`) when no per-service filter matched and no meta
@@ -123,7 +123,7 @@ jobs:
       services: ${{ steps.compute.outputs.services }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Run path filter
         id: filter
@@ -131,9 +131,9 @@ jobs:
         # v4.0.0/v4.0.1 followed in the same window with a Node 24 runtime
         # upgrade). Pinned to v4.0.1 — the latest minor in the v4 line.
         # All other actions in this repo follow the same "current major"
-        # convention (actions/checkout@v4, docker/setup-buildx-action@v3,
-        # docker/build-push-action@v6, docker/metadata-action@v5).
-        uses: dorny/paths-filter@v4.0.1
+        # convention (actions/checkout@v4, docker/setup-buildx-action@v4,
+        # docker/build-push-action@v7, docker/metadata-action@v5).
+        uses: dorny/paths-filter@v4.0.2
         with:
           filters: .github/paths-filter.yml
 
@@ -172,8 +172,8 @@ jobs:
           # Order doesn't matter for matrix correctness; alphabetical for
           # readability. The two PascalCase services carry image_name
           # overrides because the default ${image_prefix}-${service} naming
-          # would produce "cloudhealthoffice-CHO.TerminologyService" instead
-          # of the convention "cloudhealthoffice-terminology-service" that
+          # would produce "HealthCoreX-CHO.TerminologyService" instead
+          # of the convention "HealthCoreX-terminology-service" that
           # k8s manifests and ACR repositories expect.
           FULL_LIST='[
             {"service":"accumulator-service"},
@@ -183,10 +183,10 @@ jobs:
             {"service":"authorization-service"},
             {"service":"benefit-plan-service"},
             {"service":"capitation-service"},
-            {"service":"CHO.TerminologyService","image_name":"cloudhealthoffice-terminology-service"},
+            {"service":"CHO.TerminologyService","image_name":"HealthCoreX-terminology-service"},
             {"service":"claims-examiner-service"},
             {"service":"claims-service"},
-            {"service":"CloudHealthOffice.PricingApi","image_name":"cloudhealthoffice-pricing-api"},
+            {"service":"HealthCoreX.PricingApi","image_name":"HealthCoreX-pricing-api"},
             {"service":"consent-service"},
             {"service":"coverage-service"},
             {"service":"eligibility-service"},
@@ -251,9 +251,9 @@ jobs:
                   | index($name) | not))
               | map(
                   if . == "CHO.TerminologyService" then
-                    {service: ., image_name: "cloudhealthoffice-terminology-service"}
-                  elif . == "CloudHealthOffice.PricingApi" then
-                    {service: ., image_name: "cloudhealthoffice-pricing-api"}
+                    {service: ., image_name: "HealthCoreX-terminology-service"}
+                  elif . == "HealthCoreX.PricingApi" then
+                    {service: ., image_name: "HealthCoreX-pricing-api"}
                   else
                     {service: .}
                   end
@@ -314,6 +314,10 @@ jobs:
       # PR builds neither pollute :latest nor leak per-PR sha tags.
       tag_latest: false
       tag_sha: true
+      # Dependabot PRs do not receive normal repo Actions secrets, and all PR
+      # validation should avoid ACR while Azure deployments are paused. Keep
+      # strict ACR parity only when Azure deploys are explicitly enabled.
+      require_acr_read_token: ${{ github.actor != 'dependabot[bot]' && vars.AZURE_DEPLOYMENTS_ENABLED == 'true' }}
     secrets:
       # PR builds need ACR read access for mirrored .NET base image pulls.
       # AZURE_CLIENT_ID / TENANT / SUBSCRIPTION are deliberately NOT

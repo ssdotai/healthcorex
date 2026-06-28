@@ -156,7 +156,7 @@ curl -X POST "http://localhost:8080/api/v1/billing/tenants/blue-shield-of-califo
 |----------|-------------|---------|
 | `CosmosDb__Endpoint` | Cosmos DB endpoint | - |
 | `CosmosDb__Key` | Cosmos DB key | - |
-| `CosmosDb__DatabaseName` | Database name | `CloudHealthOffice` |
+| `CosmosDb__DatabaseName` | Database name | `HealthCoreX` |
 | `CosmosDb__TenantContainerName` | Container name | `Tenants` |
 | `Stripe__SecretKey` | Stripe API secret key | - |
 | `Stripe__WebhookSecret` | Stripe webhook signing secret | - |
@@ -171,7 +171,7 @@ Create container with partition key `/id`:
 ```bash
 az cosmosdb sql container create \
   --account-name <cosmos-account> \
-  --database-name CloudHealthOffice \
+  --database-name HealthCoreX \
   --name Tenants \
   --partition-key-path "/id" \
   --throughput 400
@@ -182,8 +182,8 @@ az cosmosdb sql container create \
 1. Create Stripe account at https://stripe.com
 2. Get API keys from Dashboard → Developers → API keys
 3. Create products and pricing:
-   - **Starter**: [Contact sales](mailto:sales@cloudhealthoffice.com)
-   - **Professional**: [Contact sales](mailto:sales@cloudhealthoffice.com)
+   - **Starter**: [Contact sales](mailto:sales@HealthCoreX.com)
+   - **Professional**: [Contact sales](mailto:sales@HealthCoreX.com)
    - **Enterprise**: Custom pricing
 4. Set up webhook endpoint: `https://your-domain/api/v1/billing/webhook`
 5. Copy webhook signing secret
@@ -197,11 +197,11 @@ az cosmosdb sql container create \
 kubectl apply -f k8s/tenant-service-deployment.yaml
 
 # Verify deployment
-kubectl get pods -n cloudhealthoffice -l app=tenant-service
-kubectl get svc -n cloudhealthoffice tenant-service
+kubectl get pods -n HealthCoreX -l app=tenant-service
+kubectl get svc -n HealthCoreX tenant-service
 
 # Test health endpoint
-kubectl port-forward -n cloudhealthoffice svc/tenant-service 8080:80
+kubectl port-forward -n HealthCoreX svc/tenant-service 8080:80
 curl http://localhost:8080/health
 ```
 
@@ -209,13 +209,13 @@ curl http://localhost:8080/health
 
 ```bash
 # Build image
-docker build -t ghcr.io/aurelianware/cloudhealthoffice-tenant-service:latest .
+docker build -t ghcr.io/aurelianware/HealthCoreX-tenant-service:latest .
 
 # Run locally
 docker run -p 8080:8080 \
   -e CosmosDb__Endpoint=https://localhost:8081 \
   -e CosmosDb__Key=<key> \
-  ghcr.io/aurelianware/cloudhealthoffice-tenant-service:latest
+  ghcr.io/aurelianware/HealthCoreX-tenant-service:latest
 ```
 
 ## Security Considerations
@@ -264,7 +264,7 @@ var apiKey = Request.Headers["X-API-Key"];
 
 // Validate with Tenant Service
 var response = await httpClient.PostAsync(
-    "http://tenant-service.cloudhealthoffice/api/v1/auth/validate", 
+    "http://tenant-service.HealthCoreX/api/v1/auth/validate", 
     new StringContent(apiKey)
 );
 

@@ -1,6 +1,6 @@
-namespace CloudHealthOffice.ProviderVerificationEngine.Scoring;
+namespace HealthCoreX.ProviderVerificationEngine.Scoring;
 
-using CloudHealthOffice.ProviderVerificationEngine.Models;
+using HealthCoreX.ProviderVerificationEngine.Models;
 using Microsoft.Extensions.Options;
 
 /// <summary>

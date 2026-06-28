@@ -1,4 +1,4 @@
-using CloudHealthOffice.OperatingMode;
+using HealthCoreX.OperatingMode;
 
 namespace BenefitPlanService.Services;
 

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using CloudHealthOffice.OperatingMode;
+using HealthCoreX.OperatingMode;
 
 namespace TenantService.Models;
 

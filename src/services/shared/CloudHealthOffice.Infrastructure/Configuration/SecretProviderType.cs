@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace CloudHealthOffice.Infrastructure.Configuration;
+namespace HealthCoreX.Infrastructure.Configuration;
 
 /// <summary>
 /// Identifies the backing secret store implementation.

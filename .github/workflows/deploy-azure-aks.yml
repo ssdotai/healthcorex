@@ -16,12 +16,16 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  # Automatic Azure deploys are intentionally opt-in. This keeps main green
+  # while the Azure subscription is inactive, without removing the deployment
+  # workflow or the manual recovery path.
+  AZURE_DEPLOYMENTS_ENABLED: ${{ vars.AZURE_DEPLOYMENTS_ENABLED == 'true' || github.event_name == 'workflow_dispatch' }}
   REGISTRY: ${{ vars.ACR_LOGIN_SERVER }}
-  NAMESPACE: cloudhealthoffice
+  NAMESPACE: HealthCoreX
   AKS_NAME: ${{ vars.AKS_NAME || 'cho-aks' }}
   ACA_SITE_NAME: ${{ vars.ACA_SITE_NAME || 'cho-site' }}
-  RESOURCE_GROUP: ${{ vars.AZURE_RG_NAME || 'rg-cloudhealthoffice-prod' }}
-  IMAGE_PREFIX: cloudhealthoffice
+  RESOURCE_GROUP: ${{ vars.AZURE_RG_NAME || 'rg-HealthCoreX-prod' }}
+  IMAGE_PREFIX: HealthCoreX
   # Azure Key Vault secret provider — set these GitHub settings to enable:
   # Repository variable: KEY_VAULT_NAME        Application Key Vault name (empty = use GitHub Secrets only)
   # Repository secret:   AZURE_CLIENT_ID       Workload Identity client ID for OIDC login
@@ -29,6 +33,17 @@ env:
   # Repository secret:   AZURE_SUBSCRIPTION_ID Subscription containing the Key Vault
 
 jobs:
+  deployment-paused:
+    name: Azure deployment paused
+    if: ${{ vars.AZURE_DEPLOYMENTS_ENABLED != 'true' && github.event_name != 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Explain skipped deployment
+        run: |
+          echo "::notice::Azure deployment is paused because vars.AZURE_DEPLOYMENTS_ENABLED is not 'true'."
+          echo "::notice::This is expected while the Azure subscription is inactive."
+          echo "::notice::Set repository variable AZURE_DEPLOYMENTS_ENABLED=true to restore automatic main-branch deploys."
+
   # ─────────────────────────────────────────────────────────────
   # Preflight: mirror .NET base images from MCR into ACR so the
   # Dockerfile `FROM ${REGISTRY}/dotnet/...` lines resolve. Every
@@ -47,13 +62,14 @@ jobs:
   # ─────────────────────────────────────────────────────────────
   ensure-base-images:
     name: Ensure .NET Base Images Mirrored to ACR
+    if: ${{ vars.AZURE_DEPLOYMENTS_ENABLED == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
     steps:
       - name: Azure Login (OIDC)
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -96,10 +112,10 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Azure Login (OIDC)
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -109,13 +125,13 @@ jobs:
         run: az acr login --name ${{ vars.ACR_NAME }}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Build and push portal
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
-          file: ./src/portal/CloudHealthOffice.Portal/Dockerfile
+          file: ./src/portal/HealthCoreX.Portal/Dockerfile
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-portal:latest
@@ -125,7 +141,7 @@ jobs:
           platforms: linux/amd64
 
       - name: Build and push site
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ./src/site
           file: ./src/site/Dockerfile
@@ -146,7 +162,7 @@ jobs:
       max-parallel: 4
       matrix:
         # All 33 .NET services need repo root as context (build_context: '.')
-        # to reach src/services/shared/CloudHealthOffice.Infrastructure/
+        # to reach src/services/shared/HealthCoreX.Infrastructure/
         # and/or src/engines/. Passed inline via the with: block below
         # for every entry — replaces the per-entry include: overrides
         # that previously carried the same value 33 times.
@@ -176,7 +192,7 @@ jobs:
           - ar-service
           - claims-examiner-service
           - CHO.TerminologyService
-          - CloudHealthOffice.PricingApi
+          - HealthCoreX.PricingApi
           - consent-service
           - accumulator-service
           - capitation-service
@@ -189,9 +205,9 @@ jobs:
           # prefixing. All other services fall through to the reusable
           # workflow's default ${image_prefix}-${service} naming.
           - service: CHO.TerminologyService
-            image_name: cloudhealthoffice-terminology-service
-          - service: CloudHealthOffice.PricingApi
-            image_name: cloudhealthoffice-pricing-api
+            image_name: HealthCoreX-terminology-service
+          - service: HealthCoreX.PricingApi
+            image_name: HealthCoreX-pricing-api
     uses: ./.github/workflows/_build-service-image.yml
     with:
       service: ${{ matrix.service }}
@@ -226,10 +242,10 @@ jobs:
           - x12-834-parser
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Azure Login (OIDC)
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -239,20 +255,20 @@ jobs:
         run: az acr login --name ${{ vars.ACR_NAME }}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Check Dockerfile exists
         id: check
         run: |
           if [ -f "./containers/${{ matrix.container }}/Dockerfile" ]; then
-            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "exists=true" >> "$GITHUB_OUTPUT"
           else
-            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Build and push ${{ matrix.container }}
         if: steps.check.outputs.exists == 'true'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ./containers/${{ matrix.container }}
           file: ./containers/${{ matrix.container }}/Dockerfile
@@ -276,10 +292,10 @@ jobs:
     environment: PROD
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Azure Login (OIDC)
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -345,10 +361,10 @@ jobs:
     environment: PROD
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Azure Login (OIDC)
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -453,7 +469,7 @@ jobs:
             MONGO_PASS="${KV_MONGODB_PASSWORD:-${{ secrets.MONGODB_PASSWORD }}}"
             : "${MONGO_USER:=admin}"
             : "${MONGO_PASS:=admin}"
-            CONN="mongodb://${MONGO_USER}:${MONGO_PASS}@mongodb.cloudhealthoffice.svc.cluster.local:27017"
+            CONN="mongodb://${MONGO_USER}:${MONGO_PASS}@mongodb.HealthCoreX.svc.cluster.local:27017"
             echo "No COSMOS_DB_CONNECTION_STRING set — using standalone MongoDB"
           fi
 
@@ -584,8 +600,8 @@ jobs:
           ACR="${{ env.REGISTRY }}"
           SHA="sha-${{ github.sha }}"
           sed \
-            -e "s|ghcr.io/aurelianware/cloudhealthoffice-portal:latest|${ACR}/cloudhealthoffice-portal:${SHA}|g" \
-            src/portal/CloudHealthOffice.Portal/k8s/portal-deployment.yaml \
+            -e "s|ghcr.io/aurelianware/HealthCoreX-portal:latest|${ACR}/HealthCoreX-portal:${SHA}|g" \
+            src/portal/HealthCoreX.Portal/k8s/portal-deployment.yaml \
             | kubectl apply -f -
 
       - name: Apply backend service manifests
@@ -595,8 +611,8 @@ jobs:
           for manifest in src/services/*/k8s/*.yaml; do
             echo "Applying ${manifest}..."
             sed \
-              -e "s|choacrhy6h2vdulfru6.azurecr.io/cloudhealthoffice-|${ACR}/cloudhealthoffice-|g" \
-              -e "s|ghcr.io/aurelianware/cloudhealthoffice-|${ACR}/cloudhealthoffice-|g" \
+              -e "s|choacrhy6h2vdulfru6.azurecr.io/HealthCoreX-|${ACR}/HealthCoreX-|g" \
+              -e "s|ghcr.io/aurelianware/HealthCoreX-|${ACR}/HealthCoreX-|g" \
               -e "s|:latest|:${SHA}|g" \
               "$manifest" \
               | kubectl apply -f -
@@ -617,7 +633,7 @@ jobs:
             echo "KEDA HTTP CRDs not found – skipping api-docs-scaledobject.yaml apply."
           fi
 
-      - name: Apply portal ingress (portal.cloudhealthoffice.com)
+      - name: Apply portal ingress (portal.HealthCoreX.com)
         run: kubectl apply -f infrastructure/k8s/portal-ingress.yaml
 
       - name: Rollout restart portal
@@ -676,6 +692,6 @@ jobs:
           echo "Portal ingress IP: $PORTAL_IP"
           echo ""
           echo "DNS to configure:"
-          echo "  portal.cloudhealthoffice.com      →  A  $PORTAL_IP"
-          echo "  api.cloudhealthoffice.com          →  A  $PORTAL_IP"
-          echo "  sandbox.cloudhealthoffice.com      →  A  $PORTAL_IP"
+          echo "  portal.HealthCoreX.com      →  A  $PORTAL_IP"
+          echo "  api.HealthCoreX.com          →  A  $PORTAL_IP"
+          echo "  sandbox.HealthCoreX.com      →  A  $PORTAL_IP"

@@ -1,7 +1,7 @@
-using CloudHealthOffice.Infrastructure.Middleware;
+using HealthCoreX.Infrastructure.Middleware;
 using Microsoft.AspNetCore.Http;
 
-namespace CloudHealthOffice.Infrastructure.Tests;
+namespace HealthCoreX.Infrastructure.Tests;
 
 public class HttpContextExtensionsTests
 {

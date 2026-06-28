@@ -3,7 +3,7 @@ using Hl7.Fhir.Model;
 using FhirService.Services;
 using Microsoft.Extensions.Configuration;
 
-namespace CloudHealthOffice.FhirService.Tests;
+namespace HealthCoreX.FhirService.Tests;
 
 /// <summary>
 /// Unit tests for FhirBundleBuilder — validates Bundle structure, pagination links,

@@ -38,7 +38,7 @@ The deployment pipeline was experiencing multiple failures:
   - Sets up web redirect URIs for Static Web App
   - Configures Microsoft Graph API permissions (User.Read, OpenID)
   - Creates federated credentials for GitHub Actions OIDC
-- **Usage**: `./scripts/ensure-app-registration.sh "cloudhealthoffice-prod"`
+- **Usage**: `./scripts/ensure-app-registration.sh "HealthCoreX-prod"`
 - **Output**: Application (Client) ID
 
 #### `scripts/ensure-service-principal.sh`
@@ -60,7 +60,7 @@ The deployment pipeline was experiencing multiple failures:
 **Three-Tier Secret Fallback Strategy**:
 
 ```text
-Priority 1: Azure Key Vault (cloudhealthoffice-deploy-kv)
+Priority 1: Azure Key Vault (HealthCoreX-deploy-kv)
     ↓ (if not found or empty)
 Priority 2: GitHub Secrets
     ↓ (if not configured)
@@ -76,8 +76,8 @@ Priority 3: Secure Defaults (placeholders)
 
 **Default Values**:
 
-- `BASE_NAME`: `cloudhealthoffice`
-- `AZURE_RESOURCE_GROUP`: `rg-cloudhealthoffice-prod`
+- `BASE_NAME`: `HealthCoreX`
+- `AZURE_RESOURCE_GROUP`: `rg-HealthCoreX-prod`
 - `LOCATION`: `eastus`
 - `SFTP_HOST`: `sftp.example.com` (placeholder)
 - `SFTP_USERNAME`: `logicapp` (placeholder)
@@ -153,7 +153,7 @@ Priority 3: Secure Defaults (placeholders)
 
 **Key Vault Features**:
 
-- Name: `cloudhealthoffice-deploy-kv`
+- Name: `HealthCoreX-deploy-kv`
 - Public network access: Enabled (for GitHub Actions)
 - Diagnostic logging: Configured (when Log Analytics available)
 - Expected secrets: `sftp-host`, `sftp-username`, `sftp-password`
@@ -232,8 +232,8 @@ All acceptance criteria from the problem statement have been met:
 - [x] ✅ Static Web App deployment succeeds (with retry logic)
 - [x] ✅ Production deployment workflow succeeds
 - [x] ✅ DEV/UAT/Test environments disabled
-- [x] ✅ Single resource group: `rg-cloudhealthoffice-prod`
-- [x] ✅ Base name defaults to `cloudhealthoffice`
+- [x] ✅ Single resource group: `rg-HealthCoreX-prod`
+- [x] ✅ Base name defaults to `HealthCoreX`
 - [x] ✅ All secrets stored in Azure Key Vault (with migration path)
 - [x] ✅ GitHub Secrets reduced to minimum (OIDC credentials only)
 - [x] ✅ Deployment verification with retries implemented

@@ -3,21 +3,21 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fhir-service-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 data:
   ASPNETCORE_ENVIRONMENT: "Production"
   Fhir__ServerName: "CHO FHIR Server"
   Fhir__ServerVersion: "1.0.0"
   Fhir__DefaultPageSize: "20"
   Fhir__MaxPageSize: "100"
-  Fhir__ServerBaseUrl: "https://api.cloudhealthoffice.com/fhir/r4"
+  Fhir__ServerBaseUrl: "https://api.HealthCoreX.com/fhir/r4"
 
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: fhir-service-secrets
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 type: Opaque
 stringData:
   # Sprint 3: add CHO service URLs and credentials when real adapters land
@@ -30,7 +30,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: fhir-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: fhir-service
     component: fhir-layer
@@ -47,7 +47,7 @@ spec:
     spec:
       containers:
         - name: fhir-service
-          image: choacrhy6h2vdulfru6.azurecr.io/cloudhealthoffice-fhir-service:latest
+          image: choacrhy6h2vdulfru6.azurecr.io/HealthCoreX-fhir-service:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -63,7 +63,7 @@ spec:
                   name: database-secret
                   key: connectionString
             - name: MongoDb__DatabaseName
-              value: "cloudhealthoffice"
+              value: "HealthCoreX"
           resources:
             requests:
               memory: "256Mi"
@@ -89,7 +89,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: fhir-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 spec:
   type: ClusterIP
   selector:
@@ -104,7 +104,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: fhir-service-hpa
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -122,19 +122,19 @@ spec:
 
 ---
 # Ingress — exposes /fhir/r4/* through the existing portal ingress controller.
-# The FHIR base path is api.cloudhealthoffice.com/fhir/r4.
+# The FHIR base path is api.HealthCoreX.com/fhir/r4.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: fhir-service-ingress
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   rules:
-    - host: api.cloudhealthoffice.com
+    - host: api.HealthCoreX.com
       http:
         paths:
           - path: /fhir/r4(/|$)(.*)

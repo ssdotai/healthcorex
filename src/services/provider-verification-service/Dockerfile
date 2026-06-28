@@ -3,20 +3,20 @@ FROM ${REGISTRY}/dotnet/sdk:8.0 AS build
 WORKDIR /repo
 
 # Copy csproj files and restore (preserves layer caching)
-COPY src/services/provider-verification-service/CloudHealthOffice.ProviderVerificationService.csproj src/services/provider-verification-service/
-COPY src/engines/CloudHealthOffice.ProviderVerificationEngine/CloudHealthOffice.ProviderVerificationEngine.csproj src/engines/CloudHealthOffice.ProviderVerificationEngine/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
-RUN dotnet restore src/services/provider-verification-service/CloudHealthOffice.ProviderVerificationService.csproj
+COPY src/services/provider-verification-service/HealthCoreX.ProviderVerificationService.csproj src/services/provider-verification-service/
+COPY src/engines/HealthCoreX.ProviderVerificationEngine/HealthCoreX.ProviderVerificationEngine.csproj src/engines/HealthCoreX.ProviderVerificationEngine/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
+RUN dotnet restore src/services/provider-verification-service/HealthCoreX.ProviderVerificationService.csproj
 
 # Copy source code and build
 COPY src/services/provider-verification-service/ src/services/provider-verification-service/
-COPY src/engines/CloudHealthOffice.ProviderVerificationEngine/ src/engines/CloudHealthOffice.ProviderVerificationEngine/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
-RUN dotnet build src/services/provider-verification-service/CloudHealthOffice.ProviderVerificationService.csproj -c Release --no-restore
+COPY src/engines/HealthCoreX.ProviderVerificationEngine/ src/engines/HealthCoreX.ProviderVerificationEngine/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
+RUN dotnet build src/services/provider-verification-service/HealthCoreX.ProviderVerificationService.csproj -c Release --no-restore
 
 # Publish stage
 FROM build AS publish
-RUN dotnet publish src/services/provider-verification-service/CloudHealthOffice.ProviderVerificationService.csproj -c Release -o /app/publish /p:UseAppHost=false --no-restore --no-build
+RUN dotnet publish src/services/provider-verification-service/HealthCoreX.ProviderVerificationService.csproj -c Release -o /app/publish /p:UseAppHost=false --no-restore --no-build
 
 # Runtime stage
 FROM ${REGISTRY}/dotnet/aspnet:8.0 AS runtime
@@ -37,4 +37,4 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:8080/health/live || exit 1
 
-ENTRYPOINT ["dotnet", "CloudHealthOffice.ProviderVerificationService.dll"]
+ENTRYPOINT ["dotnet", "HealthCoreX.ProviderVerificationService.dll"]

@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Appeals.Contracts;
+namespace HealthCoreX.Appeals.Contracts;
 
 /// <summary>
 /// Wire shape for the `$cho-appeal-submit` FHIR operation's Bundle input

@@ -92,7 +92,7 @@ CHO operates four product lines, each with distinct unit economics: **Public Too
 
 *All rows are forward-looking targets, not present-state. Pre-pilot status disclosed above.*
 
-**Unit Economics**: LTV:CAC 25:1 | CAC Payback: 6 months | NRR: 115-125%
+**Unit Economics** (modeled targets, pre-revenue - not yet realized with a production customer): LTV:CAC 25:1 | CAC Payback: 6 months | NRR: 115-125%
 
 ---
 
@@ -146,9 +146,9 @@ Experienced leadership in healthcare IT, Azure platform architecture, and SaaS s
 
 | Channel | Contact |
 |---------|---------|
-| Website | cloudhealthoffice.com |
+| Website | HealthCoreX.com |
 | Investors | investors@aurelianware.com |
-| GitHub | github.com/aurelianware/cloudhealthoffice |
+| GitHub | github.com/aurelianware/HealthCoreX |
 
 ---
 

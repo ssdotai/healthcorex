@@ -250,7 +250,7 @@ See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for the full Code of Conduct.
 
 ### Enforcement Process
 
-1. **Report**: Issues reported to conduct@cloudhealthoffice.dev
+1. **Report**: Issues reported to conduct@HealthCoreX.dev
 2. **Review**: Steering Committee reviews within 48 hours
 3. **Investigation**: Fact-finding with all parties (confidential)
 4. **Decision**: Committee determines appropriate response
@@ -280,10 +280,10 @@ Committee members must recuse themselves from enforcement decisions where they h
 
 ## Contact
 
-- **General Questions**: Open a [GitHub Discussion](https://github.com/aurelianware/cloudhealthoffice/discussions)
-- **Code of Conduct**: conduct@cloudhealthoffice.dev
+- **General Questions**: Open a [GitHub Discussion](https://github.com/aurelianware/HealthCoreX/discussions)
+- **Code of Conduct**: conduct@HealthCoreX.dev
 - **Security Issues**: See [SECURITY.md](SECURITY.md)
-- **Steering Committee**: steering@cloudhealthoffice.dev
+- **Steering Committee**: steering@HealthCoreX.dev
 
 ---
 

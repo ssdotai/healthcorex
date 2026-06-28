@@ -4,7 +4,7 @@ using System.Text.Json;
 using NSubstitute;
 using EligibilityService.Models;
 
-namespace CloudHealthOffice.EligibilityService.Tests;
+namespace HealthCoreX.EligibilityService.Tests;
 
 public class EligibilityControllerTests : IClassFixture<EligibilityApiFactory>
 {

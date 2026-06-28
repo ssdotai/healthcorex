@@ -2,15 +2,15 @@
 
 ## Available Files
 
-### logo-cloudhealthoffice-sentinel-primary.png
+### logo-HealthCoreX-sentinel-primary.png
 **Status**: ⚠️ Placeholder (needs final design)  
 **Format**: PNG  
 **Dimensions**: 800x400 pixels  
 **Usage**: Primary logo for all documentation, README, marketing materials
 
-This is currently a placeholder PNG file. The final logo should be created according to the specifications in `logo-cloudhealthoffice-sentinel-primary.png.txt`.
+This is currently a placeholder PNG file. The final logo should be created according to the specifications in `logo-HealthCoreX-sentinel-primary.png.txt`.
 
-### logo-cloudhealthoffice-sentinel-primary.png.svg
+### logo-HealthCoreX-sentinel-primary.png.svg
 **Status**: ✅ Complete  
 **Format**: SVG (vector)  
 **Dimensions**: 800x400 viewBox  
@@ -24,7 +24,7 @@ This SVG file contains the complete Sentinel brand design with:
 - "SENTINEL" subtext
 - "Just emerged from the void" tagline
 
-### logo-cloudhealthoffice-sentinel-primary.png.txt
+### logo-HealthCoreX-sentinel-primary.png.txt
 **Status**: ✅ Complete  
 **Format**: Text specification  
 **Usage**: Design guidelines for creating the final PNG
@@ -40,7 +40,7 @@ Contains detailed specifications for creating the final PNG logo, including:
 
 The placeholder PNG should be replaced with a professionally designed logo. Follow these steps:
 
-1. **Review the specifications** in `logo-cloudhealthoffice-sentinel-primary.png.txt`
+1. **Review the specifications** in `logo-HealthCoreX-sentinel-primary.png.txt`
 2. **Use the SVG as reference** for layout, colors, and style
 3. **Create in design software**:
    - Adobe Photoshop

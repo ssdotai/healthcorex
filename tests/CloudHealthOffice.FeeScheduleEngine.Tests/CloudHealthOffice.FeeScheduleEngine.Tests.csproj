@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\engines\CloudHealthOffice.FeeScheduleEngine\CloudHealthOffice.FeeScheduleEngine.csproj" />
+    <ProjectReference Include="..\..\src\engines\HealthCoreX.FeeScheduleEngine\HealthCoreX.FeeScheduleEngine.csproj" />
   </ItemGroup>
 
   <ItemGroup>

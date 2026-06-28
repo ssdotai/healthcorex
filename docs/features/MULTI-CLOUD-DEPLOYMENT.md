@@ -43,22 +43,22 @@ helm repo update
 ### 2. Create Namespace
 
 ```bash
-kubectl create namespace cloudhealthoffice
+kubectl create namespace HealthCoreX
 ```
 
 ### 3. Deploy with Helm
 
 ```bash
-cd helm/cloudhealthoffice
+cd helm/HealthCoreX
 
 # Install with default values (uses embedded Kafka and MinIO)
-helm install cloudhealthoffice . \
-  --namespace cloudhealthoffice \
+helm install HealthCoreX . \
+  --namespace HealthCoreX \
   --values values.yaml
 
 # Or install with external services
-helm install cloudhealthoffice . \
-  --namespace cloudhealthoffice \
+helm install HealthCoreX . \
+  --namespace HealthCoreX \
   --set kafka.external.enabled=true \
   --set kafka.external.bootstrapServers="kafka.example.com:9092" \
   --set minio.enabled=false \
@@ -70,14 +70,14 @@ helm install cloudhealthoffice . \
 ```bash
 # Create SFTP credentials secret
 kubectl create secret generic clearinghouse-sftp-secret \
-  --namespace cloudhealthoffice \
+  --namespace HealthCoreX \
   --from-literal=username=your-sftp-user \
   --from-literal=password=your-sftp-password \
   --from-literal=privateKey="$(cat ~/.ssh/sftp_key)"
 
 # Create backend API secret
 kubectl create secret generic claims-backend-api-secret \
-  --namespace cloudhealthoffice \
+  --namespace HealthCoreX \
   --from-literal=token=your-api-token \
   --from-literal=baseUrl=https://backend.api.example.com
 ```
@@ -93,13 +93,13 @@ kubectl apply -f infrastructure/argo-workflows/
 
 ```bash
 # Check pod status
-kubectl get pods -n cloudhealthoffice
+kubectl get pods -n HealthCoreX
 
 # Check Argo Workflows
-kubectl get workflows -n cloudhealthoffice
+kubectl get workflows -n HealthCoreX
 
 # Access Argo UI
-kubectl port-forward svc/argo-server -n cloudhealthoffice 2746:2746
+kubectl port-forward svc/argo-server -n HealthCoreX 2746:2746
 # Open: https://localhost:2746
 ```
 
@@ -110,8 +110,8 @@ kubectl port-forward svc/argo-server -n cloudhealthoffice 2746:2746
 ```bash
 # Create AKS cluster with recommended settings
 az aks create \
-  --resource-group cloudhealthoffice-rg \
-  --name cloudhealthoffice-aks \
+  --resource-group HealthCoreX-rg \
+  --name HealthCoreX-aks \
   --node-count 3 \
   --node-vm-size Standard_D4s_v3 \
   --enable-managed-identity \
@@ -120,8 +120,8 @@ az aks create \
 
 # Get credentials
 az aks get-credentials \
-  --resource-group cloudhealthoffice-rg \
-  --name cloudhealthoffice-aks
+  --resource-group HealthCoreX-rg \
+  --name HealthCoreX-aks
 ```
 
 ### Amazon EKS
@@ -129,7 +129,7 @@ az aks get-credentials \
 ```bash
 # Create EKS cluster (using eksctl)
 eksctl create cluster \
-  --name cloudhealthoffice-eks \
+  --name HealthCoreX-eks \
   --region us-east-1 \
   --nodegroup-name standard-workers \
   --node-type m5.large \
@@ -141,7 +141,7 @@ eksctl create cluster \
 
 ```bash
 # Create GKE cluster
-gcloud container clusters create cloudhealthoffice-gke \
+gcloud container clusters create HealthCoreX-gke \
   --zone us-central1-a \
   --num-nodes 3 \
   --machine-type e2-standard-4 \
@@ -184,12 +184,12 @@ helm repo update
 
 # Deploy Vault in dev mode (for testing)
 helm install vault hashicorp/vault \
-  --namespace cloudhealthoffice \
+  --namespace HealthCoreX \
   --set "server.dev.enabled=true"
 
 # Deploy Vault in HA mode (for production)
 helm install vault hashicorp/vault \
-  --namespace cloudhealthoffice \
+  --namespace HealthCoreX \
   --values vault-values.yaml
 ```
 
@@ -266,66 +266,66 @@ ui:
 
 ```bash
 # Initialize Vault (first time only)
-kubectl exec -it vault-0 -n cloudhealthoffice -- vault operator init
+kubectl exec -it vault-0 -n HealthCoreX -- vault operator init
 
 # Store unseal keys and root token securely!
 # Unseal Vault (required after restart)
-kubectl exec -it vault-0 -n cloudhealthoffice -- vault operator unseal
+kubectl exec -it vault-0 -n HealthCoreX -- vault operator unseal
 
 # Enable Kubernetes authentication
-kubectl exec -it vault-0 -n cloudhealthoffice -- vault auth enable kubernetes
+kubectl exec -it vault-0 -n HealthCoreX -- vault auth enable kubernetes
 
 # Configure Kubernetes auth
-kubectl exec -it vault-0 -n cloudhealthoffice -- vault write auth/kubernetes/config \
+kubectl exec -it vault-0 -n HealthCoreX -- vault write auth/kubernetes/config \
   kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"
 
 # Enable KV secrets engine
-kubectl exec -it vault-0 -n cloudhealthoffice -- vault secrets enable -path=cloudhealthoffice kv-v2
+kubectl exec -it vault-0 -n HealthCoreX -- vault secrets enable -path=HealthCoreX kv-v2
 
 # Store secrets
-kubectl exec -it vault-0 -n cloudhealthoffice -- vault kv put cloudhealthoffice/sftp \
+kubectl exec -it vault-0 -n HealthCoreX -- vault kv put HealthCoreX/sftp \
   username=sftp-user \
   password=sftp-password
 
-kubectl exec -it vault-0 -n cloudhealthoffice -- vault kv put cloudhealthoffice/backend \
+kubectl exec -it vault-0 -n HealthCoreX -- vault kv put HealthCoreX/backend \
   apiToken=your-api-token \
   baseUrl=https://backend.api.example.com
 
-kubectl exec -it vault-0 -n cloudhealthoffice -- vault kv put cloudhealthoffice/kafka \
+kubectl exec -it vault-0 -n HealthCoreX -- vault kv put HealthCoreX/kafka \
   saslUsername=kafka-user \
   saslPassword=kafka-password
 
 # Create policy for Cloud Health Office workloads
-kubectl exec -it vault-0 -n cloudhealthoffice -- vault policy write cloudhealthoffice - <<EOF
-path "cloudhealthoffice/data/*" {
+kubectl exec -it vault-0 -n HealthCoreX -- vault policy write HealthCoreX - <<EOF
+path "HealthCoreX/data/*" {
   capabilities = ["read", "list"]
 }
 EOF
 
 # Create role for Kubernetes service account
-kubectl exec -it vault-0 -n cloudhealthoffice -- vault write auth/kubernetes/role/cloudhealthoffice \
+kubectl exec -it vault-0 -n HealthCoreX -- vault write auth/kubernetes/role/HealthCoreX \
   bound_service_account_names=argo-workflow-sa \
-  bound_service_account_namespaces=cloudhealthoffice \
-  policies=cloudhealthoffice \
+  bound_service_account_namespaces=HealthCoreX \
+  policies=HealthCoreX \
   ttl=24h
 ```
 
 #### Update Helm Values for Vault Integration
 
 ```yaml
-# In helm/cloudhealthoffice/values.yaml
+# In helm/HealthCoreX/values.yaml
 vault:
   enabled: true
   type: hashicorp  # Options: hashicorp, azure-keyvault, aws-secrets-manager
-  address: "https://vault.cloudhealthoffice.svc:8200"  # Use HTTPS for PHI compliance
-  role: "cloudhealthoffice"
-  secretPath: "cloudhealthoffice/data"
+  address: "https://vault.HealthCoreX.svc:8200"  # Use HTTPS for PHI compliance
+  role: "HealthCoreX"
+  secretPath: "HealthCoreX/data"
   # For Vault Agent Injector annotations
   annotations:
     vault.hashicorp.com/agent-inject: "true"
-    vault.hashicorp.com/role: "cloudhealthoffice"
-    vault.hashicorp.com/agent-inject-secret-sftp: "cloudhealthoffice/data/sftp"
-    vault.hashicorp.com/agent-inject-secret-backend: "cloudhealthoffice/data/backend"
+    vault.hashicorp.com/role: "HealthCoreX"
+    vault.hashicorp.com/agent-inject-secret-sftp: "HealthCoreX/data/sftp"
+    vault.hashicorp.com/agent-inject-secret-backend: "HealthCoreX/data/backend"
 ```
 
 #### Using Vault Secrets in Workflows
@@ -342,7 +342,7 @@ spec:
   templates:
     - name: sftp-fetch
       container:
-        image: cloudhealthoffice/sftp-fetcher:latest
+        image: HealthCoreX/sftp-fetcher:latest
         volumeMounts:
           - name: vault-secrets
             mountPath: /vault/secrets
@@ -411,7 +411,7 @@ kubectl apply -f k8s/audit-policies/
 - **Argo Workflows Docs**: https://argo-workflows.readthedocs.io/
 - **Kubernetes Issues**: [k8s/TROUBLESHOOTING.md](../k8s/TROUBLESHOOTING.md)
 - **HashiCorp Vault Docs**: https://developer.hashicorp.com/vault/docs
-- **Community Support**: [GitHub Discussions](https://github.com/aurelianware/cloudhealthoffice/discussions)
+- **Community Support**: [GitHub Discussions](https://github.com/aurelianware/HealthCoreX/discussions)
 
 ---
 

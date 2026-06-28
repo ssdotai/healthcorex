@@ -1,11 +1,11 @@
-using CloudHealthOffice.Infrastructure.Licensing;
+using HealthCoreX.Infrastructure.Licensing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.Infrastructure.Tests;
+namespace HealthCoreX.Infrastructure.Tests;
 
 public class LicenseCheckMiddlewareTests
 {
@@ -20,7 +20,7 @@ public class LicenseCheckMiddlewareTests
 
         var configValues = new Dictionary<string, string?>();
         if (licenseKey is not null)
-            configValues["CloudHealthOffice:LicenseKey"] = licenseKey;
+            configValues["HealthCoreX:LicenseKey"] = licenseKey;
 
         var config = new ConfigurationBuilder()
             .AddInMemoryCollection(configValues)

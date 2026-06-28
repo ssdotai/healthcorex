@@ -237,7 +237,7 @@ Creates configuration for AKS microservices.
 
 ```typescript
 const config = createOrchestrationConfig(
-  'http://prior-auth-service.cloudhealthoffice',
+  'http://prior-auth-service.HealthCoreX',
   'prod'
 );
 ```
@@ -331,7 +331,7 @@ import {
 
 async function submitPriorAuth(x12Request) {
   const config = createOrchestrationConfig(
-    'http://prior-auth-service.cloudhealthoffice', 'prod'
+    'http://prior-auth-service.HealthCoreX', 'prod'
   );
 
   // Validate
@@ -456,7 +456,7 @@ async function submitAttachment(authNumber, pdfData, patientId) {
   
   // Submit to documentation endpoint using config
   const config = createOrchestrationConfig(
-    'http://prior-auth-service.cloudhealthoffice', 'prod'
+    'http://prior-auth-service.HealthCoreX', 'prod'
   );
   const response = await fetch(config.endpoints.submitDocumentation, {
     method: 'POST',
@@ -629,7 +629,7 @@ console.log(JSON.stringify(fhirClaim, null, 2));
 
 - **Issues**: GitHub Issues
 - **Discussions**: Cloud Health Office Community
-- **Security**: security@cloudhealthoffice.com
+- **Security**: security@HealthCoreX.com
 
 ---
 

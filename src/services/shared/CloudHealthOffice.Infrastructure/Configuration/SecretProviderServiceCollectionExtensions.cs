@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.Infrastructure.Configuration;
+namespace HealthCoreX.Infrastructure.Configuration;
 
 /// <summary>
 /// Extension methods for registering the secret provider in the DI container.
@@ -37,7 +37,7 @@ public static class SecretProviderServiceCollectionExtensions
 
             case SecretProviderType.HashiCorpVault:
                 throw new NotSupportedException(
-                    "HashiCorp Vault secret provider requires the CloudHealthOffice.HashiCorpVault package (planned for v4.1). " +
+                    "HashiCorp Vault secret provider requires the HealthCoreX.HashiCorpVault package (planned for v4.1). " +
                     "Use SecretProviderType.AzureKeyVault or SecretProviderType.None.");
 
             case SecretProviderType.None:

@@ -1,4 +1,4 @@
-using CloudHealthOffice.Appeals.Contracts;
+using HealthCoreX.Appeals.Contracts;
 using Hl7.Fhir.Model;
 using FhirTask = Hl7.Fhir.Model.Task;
 
@@ -13,37 +13,37 @@ namespace FhirService.Services;
 /// seam lives in <see cref="IFhirAppealAdapter"/>, and the FHIR-semantics
 /// seam lives here. All mapping is deterministic; drift in the DTO
 /// shape is caught by the structural test in
-/// <c>CloudHealthOffice.Appeals.Contracts.Tests</c>.
+/// <c>HealthCoreX.Appeals.Contracts.Tests</c>.
 /// </summary>
 public sealed class FhirAppealMapper
 {
     // ── Canonical URLs ───────────────────────────────────────────────────
     public const string TaskProfileUrl =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-task";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-task";
     public const string CommunicationProfileUrl =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-communication";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-communication";
     public const string DocumentReferenceProfileUrl =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-document-reference";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-document-reference";
     public const string ClaimResponseProfileUrl =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-claim-response";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-claim-response";
 
     public const string AppealLevelExtensionUrl =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-level";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-level";
     public const string AppealLineOfBusinessExtensionUrl =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-line-of-business";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-line-of-business";
     public const string AppealTargetResponseDateExtensionUrl =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-target-response-date";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-target-response-date";
     public const string AppealUrgentFlagExtensionUrl =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-urgent-flag";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-urgent-flag";
     public const string AppealTaskReferenceExtensionUrl =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-task-reference";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-task-reference";
     public const string AppealX12ControlNumberExtensionUrl =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-x12-275-control-number";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-x12-275-control-number";
     public const string AppealX12TransmissionCodeExtensionUrl =
-        "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-x12-275-transmission-code";
+        "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-x12-275-transmission-code";
 
     public const string AppealClosureReasonCodeSystem =
-        "http://fhir.cloudhealthoffice.com/CodeSystem/cho-appeal-closure-reason";
+        "http://fhir.HealthCoreX.com/CodeSystem/cho-appeal-closure-reason";
 
     // ── Task (core appeal work item) ────────────────────────────────────
 
@@ -60,7 +60,7 @@ public sealed class FhirAppealMapper
             Status = MapTaskStatus(appeal),
             Intent = FhirTask.TaskIntent.Order,
             Code = new CodeableConcept(
-                "http://fhir.cloudhealthoffice.com/CodeSystem/cho-appeal-type",
+                "http://fhir.HealthCoreX.com/CodeSystem/cho-appeal-type",
                 appeal.AppealType.ToString()),
             Description = $"Appeal {appeal.AppealNumber} for Claim {appeal.ClaimNumber}",
             AuthoredOn = appeal.SubmittedDate.ToString("o"),
@@ -206,7 +206,7 @@ public sealed class FhirAppealMapper
             Category =
             [
                 new CodeableConcept(
-                    "http://fhir.cloudhealthoffice.com/CodeSystem/cho-appeal-note-category",
+                    "http://fhir.HealthCoreX.com/CodeSystem/cho-appeal-note-category",
                     note.IsInternal ? "internal" : "external")
             ]
         };
@@ -232,7 +232,7 @@ public sealed class FhirAppealMapper
             Subject = new ResourceReference($"Patient/{memberId}"),
             Date = att.UploadedAt,
             Type = new CodeableConcept(
-                "http://fhir.cloudhealthoffice.com/CodeSystem/cho-275-attachment-type",
+                "http://fhir.HealthCoreX.com/CodeSystem/cho-275-attachment-type",
                 att.AttachmentTypeCode,
                 att.AttachmentTypeDescription),
             Content =
@@ -301,7 +301,7 @@ public sealed class FhirAppealMapper
                 Status = DocumentReferenceStatus.Current,
                 Subject = new ResourceReference($"Patient/{appeal.MemberId}"),
                 Type = new CodeableConcept(
-                    "http://fhir.cloudhealthoffice.com/CodeSystem/cho-275-attachment-type",
+                    "http://fhir.HealthCoreX.com/CodeSystem/cho-275-attachment-type",
                     doc.DocumentType),
                 Description = doc.Summary,
                 Content =

@@ -1,6 +1,6 @@
 # Custom Domain Configuration Template
 
-Use this template to configure your own custom domain instead of cloudhealthoffice.com.
+Use this template to configure your own custom domain instead of HealthCoreX.com.
 
 ## Step 1: Update Domain Names
 
@@ -12,13 +12,13 @@ export CUSTOM_DOMAIN="yourdomain.com"
 export CUSTOM_IP="4.149.83.133"  # Your LoadBalancer IP
 
 # Update site ingress
-sed -i "s/cloudhealthoffice\.com/${CUSTOM_DOMAIN}/g" k8s/site-ingress.yaml
+sed -i "s/HealthCoreX\.com/${CUSTOM_DOMAIN}/g" k8s/site-ingress.yaml
 
 # Update portal ingress (portal subdomain)
-sed -i "s/portal\.cloudhealthoffice\.com/portal.${CUSTOM_DOMAIN}/g" k8s/portal-ingress.yaml
+sed -i "s/portal\.HealthCoreX\.com/portal.${CUSTOM_DOMAIN}/g" k8s/portal-ingress.yaml
 
 # Update cert-manager email
-sed -i "s/admin@cloudhealthoffice\.com/admin@${CUSTOM_DOMAIN}/g" k8s/cert-manager-issuer.yaml
+sed -i "s/admin@HealthCoreX\.com/admin@${CUSTOM_DOMAIN}/g" k8s/cert-manager-issuer.yaml
 ```
 
 ### Option B: Manual Edit
@@ -184,7 +184,7 @@ kubectl apply -f k8s/site-ingress.yaml
 kubectl apply -f k8s/portal-ingress.yaml
 
 # Wait for certificates
-kubectl get certificate -n cloudhealthoffice -w
+kubectl get certificate -n HealthCoreX -w
 
 # Test (will show certificate warning - expected for staging)
 curl -k -I https://yourdomain.com
@@ -199,8 +199,8 @@ annotations:
 
 ```bash
 # Delete staging certificates
-kubectl delete certificate -n cloudhealthoffice --all
-kubectl delete secret -n cloudhealthoffice site-tls-secret portal-tls-secret
+kubectl delete certificate -n HealthCoreX --all
+kubectl delete secret -n HealthCoreX site-tls-secret portal-tls-secret
 
 # Reapply with production issuer
 kubectl apply -f k8s/site-ingress.yaml
@@ -210,21 +210,21 @@ kubectl apply -f k8s/portal-ingress.yaml
 ## Step 5: Deploy
 
 ```bash
-cd /path/to/cloudhealthoffice
+cd /path/to/HealthCoreX
 
 # Apply cert-manager issuer (with your custom email)
 kubectl apply -f k8s/cert-manager-issuer.yaml
 
 # Deploy site and portal
 kubectl apply -f site/k8s/site-deployment.yaml
-kubectl apply -f portal/CloudHealthOffice.Portal/k8s/portal-deployment.yaml
+kubectl apply -f portal/HealthCoreX.Portal/k8s/portal-deployment.yaml
 
 # Deploy ingress resources (with your custom domains)
 kubectl apply -f k8s/site-ingress.yaml
 kubectl apply -f k8s/portal-ingress.yaml
 
 # Monitor certificate issuance
-kubectl get certificate -n cloudhealthoffice -w
+kubectl get certificate -n HealthCoreX -w
 ```
 
 ## Step 6: Verify HTTPS

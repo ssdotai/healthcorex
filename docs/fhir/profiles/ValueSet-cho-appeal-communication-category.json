@@ -1,7 +1,7 @@
 {
   "resourceType": "ValueSet",
   "id": "cho-appeal-communication-category",
-  "url": "http://fhir.cloudhealthoffice.com/ValueSet/cho-appeal-communication-category",
+  "url": "http://fhir.HealthCoreX.com/ValueSet/cho-appeal-communication-category",
   "version": "1.0.0",
   "name": "ChoAppealCommunicationCategoryVS",
   "title": "CHO Appeal Communication Category Value Set",
@@ -12,7 +12,7 @@
   "description": "All concepts from CodeSystem cho-appeal-communication-category. Authored by Cloud Health Office under its own canonical namespace; does not claim conformance to any external Implementation Guide.",
   "compose": {
     "include": [
-      { "system": "http://fhir.cloudhealthoffice.com/CodeSystem/cho-appeal-communication-category" }
+      { "system": "http://fhir.HealthCoreX.com/CodeSystem/cho-appeal-communication-category" }
     ]
   }
 }

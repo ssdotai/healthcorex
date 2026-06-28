@@ -2,9 +2,9 @@ using System.Net;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using CloudHealthOffice.Portal.Services;
+using HealthCoreX.Portal.Services;
 
-namespace CloudHealthOffice.Portal.Tests.Services;
+namespace HealthCoreX.Portal.Tests.Services;
 
 public class ClaimsServiceTests
 {
@@ -16,7 +16,8 @@ public class ClaimsServiceTests
         _configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["Services:ClaimsService"] = "http://localhost:5000"
+                ["Services:ClaimsService"] = "http://localhost:5000",
+                ["Authentication:LocalDemo:TenantId"] = "demo"
             })
             .Build();
     }
@@ -25,6 +26,19 @@ public class ClaimsServiceTests
     {
         httpClient ??= new HttpClient(new FakeHandler(HttpStatusCode.InternalServerError));
         return new ClaimsService(httpClient, _configuration, _logger.Object);
+    }
+
+    private ClaimsService CreateService(HttpClient httpClient, string claimsServiceBaseUrl)
+    {
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["Services:ClaimsService"] = claimsServiceBaseUrl,
+                ["Authentication:LocalDemo:TenantId"] = "demo"
+            })
+            .Build();
+
+        return new ClaimsService(httpClient, configuration, _logger.Object);
     }
 
     // ── GetRecentClaimsAsync ──
@@ -53,6 +67,28 @@ public class ClaimsServiceTests
         var sut = CreateService();
         var ex = await Assert.ThrowsAsync<ServiceUnavailableException>(
             () => sut.GetClaimByIdAsync("CLM-2026-00001"));
+        ex.ServiceName.Should().Be("Claims Service");
+    }
+
+    // ── GetMassAdjudicationRunsAsync ──
+
+    [Fact]
+    public async Task GetMassAdjudicationRunsAsync_WhenApiFails_ThrowsServiceUnavailableException()
+    {
+        var sut = CreateService();
+        var ex = await Assert.ThrowsAsync<ServiceUnavailableException>(
+            () => sut.GetMassAdjudicationRunsAsync());
+        ex.ServiceName.Should().Be("Claims Service");
+    }
+
+    // ── GetMassAdjudicationRunAsync ──
+
+    [Fact]
+    public async Task GetMassAdjudicationRunAsync_WhenApiFails_ThrowsServiceUnavailableException()
+    {
+        var sut = CreateService();
+        var ex = await Assert.ThrowsAsync<ServiceUnavailableException>(
+            () => sut.GetMassAdjudicationRunAsync("run-001"));
         ex.ServiceName.Should().Be("Claims Service");
     }
 
@@ -107,6 +143,16 @@ public class ClaimsServiceTests
         var ex = await Assert.ThrowsAsync<ServiceUnavailableException>(
             () => sut.GetAdjudicationDataAsync("CLM-2026-00001"));
         ex.Message.Should().Contain("Claims Service");
+    }
+
+    [Fact]
+    public async Task GetAdjudicationDataAsync_WhenApiReturns404_ReturnsNull()
+    {
+        var sut = CreateService(new HttpClient(new FakeHandler(HttpStatusCode.NotFound)));
+
+        var result = await sut.GetAdjudicationDataAsync("CLM-NO-DETAIL");
+
+        result.Should().BeNull();
     }
 
     // ════════════════════════════════════════════════════════════════
@@ -215,6 +261,105 @@ public class ClaimsServiceTests
     }
 
     [Fact]
+    public async Task GetClaimByIdAsync_WhenApiReturnsMassAdjudicationClaimShape_DeserializesSafely()
+    {
+        const string json = """
+        {
+          "id": "4ff4516a-9e97-4038-80c1-3a2cd6e5d952",
+          "claimNumber": "MCC-D-0000004",
+          "memberId": "MBR-7242385",
+          "subscriberId": "SUB-7242385",
+          "subscriberFirstName": "Sandra",
+          "subscriberLastName": "Anderson",
+          "patientFirstName": "Sandra",
+          "patientLastName": "Anderson",
+          "patientRelationship": "Self",
+          "billingProviderNPI": "1141521249",
+          "billingProviderName": "Thomas White",
+          "renderingProviderNPI": "1681064964",
+          "renderingProviderName": "Susan Moore",
+          "placeOfServiceCode": "11",
+          "claimType": 3,
+          "status": 5,
+          "totalChargeAmount": 100,
+          "allowedAmount": null,
+          "paidAmount": null,
+          "serviceDateFrom": "2026-06-15T07:00:00Z",
+          "serviceDateTo": "2026-06-15T07:00:00Z",
+          "submittedDate": "2026-07-09T22:03:53Z",
+          "receivedDate": "2026-07-09T22:03:53Z",
+          "adjudicatedDate": "2026-07-09T22:03:55.045Z",
+          "diagnosisCodes": [
+            {
+              "code": "K05.10",
+              "codeQualifier": "ABK",
+              "pointerNumber": 1
+            }
+          ],
+          "adjudicationResult": {
+            "allowedAmount": 80,
+            "deductibleAmount": 10,
+            "coinsuranceAmount": 5,
+            "copayAmount": 3,
+            "patientResponsibility": 18,
+            "payerPayment": 62
+          },
+          "claimLines": [
+            {
+              "lineNumber": 1,
+              "procedureCode": "D0150",
+              "procedureDescription": "Comprehensive oral evaluation — new or established patient",
+              "modifiers": [],
+              "units": 1,
+              "chargeAmount": 100,
+              "serviceDateFrom": "2026-06-15T07:00:00Z",
+              "serviceDateTo": "2026-06-15T07:00:00Z",
+              "placeOfServiceCode": "11",
+              "diagnosisPointers": [1],
+              "adjustments": null,
+              "mpipMultiplierApplied": null,
+              "adjudicationResult": {
+                "allowedAmount": 80,
+                "paidAmount": 62,
+                "patientResponsibility": 18
+              },
+              "lineStatus": null
+            }
+          ],
+          "auditTrail": null
+        }
+        """;
+
+        var sut = CreateService(new HttpClient(new FakeHandler(HttpStatusCode.OK, json)));
+
+        var result = await sut.GetClaimByIdAsync("4ff4516a-9e97-4038-80c1-3a2cd6e5d952");
+
+        result.Should().NotBeNull();
+        result!.ClaimId.Should().Be("4ff4516a-9e97-4038-80c1-3a2cd6e5d952");
+        result.Status.Should().Be("Approved");
+        result.ClaimType.Should().Be("Dental");
+        result.TotalChargeAmount.Should().Be(100m);
+        result.AllowedAmount.Should().Be(80m);
+        result.PaidAmount.Should().Be(62m);
+        result.DeductibleAmount.Should().Be(10m);
+        result.CoinsuranceAmount.Should().Be(5m);
+        result.CopayAmount.Should().Be(3m);
+        result.PatientResponsibility.Should().Be(18m);
+        result.DiagnosisCodes.Should().ContainSingle()
+            .Which.Code.Should().Be("K05.10");
+        result.AuditTrail.Should().BeEmpty();
+        result.ServiceLines.Should().ContainSingle();
+        result.ServiceLines[0].ProcedureCode.Should().Be("D0150");
+        result.ServiceLines[0].AllowedAmount.Should().Be(80m);
+        result.ServiceLines[0].PaidAmount.Should().Be(62m);
+        result.ServiceLines[0].PatientResponsibility.Should().Be(18m);
+        result.ServiceLines[0].Modifiers.Should().BeEmpty();
+        result.ServiceLines[0].DiagnosisPointers.Should().ContainSingle()
+            .Which.Should().Be(1);
+        result.ServiceLines[0].Adjustments.Should().BeEmpty();
+    }
+
+    [Fact]
     public async Task GetClaimByIdAsync_WhenApiReturnsNull_ReturnsNull()
     {
         var sut = CreateService(new HttpClient(
@@ -223,6 +368,288 @@ public class ClaimsServiceTests
         var result = await sut.GetClaimByIdAsync("CLM-NONE");
 
         result.Should().BeNull();
+    }
+
+    // ── GetExplanationOfBenefitJsonAsync ──
+
+    [Fact]
+    public async Task GetExplanationOfBenefitJsonAsync_StripsApiPrefixAndReturnsRawFhirJson()
+    {
+        const string eobJson = """
+        {"resourceType":"ExplanationOfBenefit","id":"claim-1","status":"active"}
+        """;
+        var handler = new FakeHandler(HttpStatusCode.OK, eobJson);
+        var sut = CreateService(new HttpClient(handler), "http://localhost:5000/api");
+
+        var result = await sut.GetExplanationOfBenefitJsonAsync("claim-1");
+
+        result.Should().Be(eobJson);
+        handler.CapturedRequests.Should().ContainSingle();
+        var request = handler.CapturedRequests.Single();
+        request.RequestUri!.AbsoluteUri.Should()
+            .Be("http://localhost:5000/fhir/ExplanationOfBenefit/claim-1");
+        request.Headers.Accept.Should().Contain(h => h.MediaType == "application/fhir+json");
+    }
+
+    [Fact]
+    public async Task GetExplanationOfBenefitJsonAsync_WhenApiReturns404_ReturnsNull()
+    {
+        var sut = CreateService(new HttpClient(new FakeHandler(HttpStatusCode.NotFound)));
+
+        var result = await sut.GetExplanationOfBenefitJsonAsync("missing-claim");
+
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetExplanationOfBenefitJsonAsync_WhenClaimsServiceBaseUrlMissing_ThrowsServiceUnavailableWithoutRequest()
+    {
+        var handler = new FakeHandler(HttpStatusCode.OK, "{}");
+        var sut = CreateService(new HttpClient(handler), "");
+
+        var ex = await Assert.ThrowsAsync<ServiceUnavailableException>(
+            () => sut.GetExplanationOfBenefitJsonAsync("claim-1"));
+
+        ex.ServiceName.Should().Be("Claims Service");
+        ex.InnerException.Should().BeOfType<InvalidOperationException>();
+        handler.CapturedRequests.Should().BeEmpty();
+    }
+
+    // ── GetMassAdjudicationRunsAsync ──
+
+    [Fact]
+    public async Task GetMassAdjudicationRunsAsync_WhenApiReturns200_DeserializesRunsList()
+    {
+        var json = JsonSerializer.Serialize(new[]
+        {
+            new
+            {
+                id = "run-001",
+                run = new
+                {
+                    tenantId = "tenant-a",
+                    requestedClaims = 100,
+                    seed = 42,
+                    parallelism = 8,
+                    claimsUrl = "https://claims",
+                    benefitUrl = "https://benefit",
+                    memberUrl = "https://member",
+                    coverageUrl = "https://coverage",
+                    providerUrl = "https://provider",
+                    seedMembers = true,
+                    seedProviders = true,
+                    skipClaimUpdate = false,
+                    lineOfBusiness = 3,
+                    startedAtUtc = "2026-07-01T00:00:00Z",
+                    completedAtUtc = "2026-07-01T00:01:00Z"
+                },
+                totalClaims = 100,
+                processed = 100,
+                paid = 97,
+                pended = 1,
+                businessDenials = 2,
+                observationTimeouts = 0,
+                platformFailures = 1,
+                workflowScenarios = 12,
+                workflowMatches = 10,
+                workflowMismatches = 1,
+                workflowUnsupported = 1,
+                workflowObservationTimeouts = 0,
+                throughputClaimsPerSecond = 15.5,
+                averagePaymentDelta = 59.36m,
+                workflowScenarioBreakdown = new[]
+                {
+                    new
+                    {
+                        scenario = "EdgeCase:CobSecondaryPayer",
+                        total = 10,
+                        matches = 9,
+                        mismatches = 1,
+                        unsupported = 0,
+                        observationTimeouts = 0,
+                        unspecified = 0
+                    }
+                },
+                createdAtUtc = "2026-07-01T00:01:05Z"
+            }
+        }, JsonOpts);
+
+        var handler = new FakeHandler(HttpStatusCode.OK, json);
+        var sut = CreateService(new HttpClient(handler));
+
+        var result = await sut.GetMassAdjudicationRunsAsync();
+
+        handler.CapturedRequests.Should().ContainSingle();
+        handler.CapturedRequests[0].Headers.GetValues("X-Tenant-ID").Should().ContainSingle("demo");
+        result.Should().ContainSingle();
+        result[0].Id.Should().Be("run-001");
+        result[0].Run.TenantId.Should().Be("tenant-a");
+        result[0].Run.MemberUrl.Should().Be("https://member");
+        result[0].Run.CoverageUrl.Should().Be("https://coverage");
+        result[0].Run.SeedMembers.Should().BeTrue();
+        result[0].Run.LineOfBusiness.Should().Be(3);
+        result[0].Processed.Should().Be(100);
+        result[0].Pended.Should().Be(1);
+        result[0].WorkflowUnsupported.Should().Be(1);
+        result[0].AveragePaymentDelta.Should().Be(59.36m);
+        result[0].WorkflowScenarioBreakdown.Should().ContainSingle(s =>
+            s.Scenario == "EdgeCase:CobSecondaryPayer"
+            && s.Matches == 9
+            && s.Mismatches == 1);
+        result[0].PlatformFailures.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task GetMassAdjudicationRunsAsync_WhenApiReturnsNull_ReturnsEmptyList()
+    {
+        var sut = CreateService(new HttpClient(new FakeHandler(HttpStatusCode.OK, "null")));
+
+        var result = await sut.GetMassAdjudicationRunsAsync();
+
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetMassAdjudicationRunsAsync_WhenApiReturnsEmptyBody_ReturnsEmptyList()
+    {
+        var sut = CreateService(new HttpClient(new FakeHandler(HttpStatusCode.OK, string.Empty)));
+
+        var result = await sut.GetMassAdjudicationRunsAsync();
+
+        result.Should().BeEmpty();
+    }
+
+    // ── GetMassAdjudicationRunAsync ──
+
+    [Fact]
+    public async Task GetMassAdjudicationRunAsync_WhenApiReturns200_DeserializesRun()
+    {
+        var json = JsonSerializer.Serialize(new
+        {
+            id = "run-002",
+            run = new
+            {
+                tenantId = "tenant-b",
+                requestedClaims = 25,
+                seed = 7,
+                parallelism = 4,
+                claimsUrl = "https://claims",
+                benefitUrl = "https://benefit",
+                providerUrl = "https://provider",
+                seedProviders = false,
+                skipClaimUpdate = true,
+                startedAtUtc = "2026-07-02T12:00:00Z",
+                completedAtUtc = "2026-07-02T12:00:10Z"
+            },
+            totalClaims = 25,
+            processed = 24,
+            paid = 24,
+            businessDenials = 0,
+            platformFailures = 0,
+            createdAtUtc = "2026-07-02T12:00:11Z"
+        }, JsonOpts);
+
+        var sut = CreateService(new HttpClient(new FakeHandler(HttpStatusCode.OK, json)));
+
+        var result = await sut.GetMassAdjudicationRunAsync("run-002");
+
+        result.Should().NotBeNull();
+        result!.Id.Should().Be("run-002");
+        result.Run.TenantId.Should().Be("tenant-b");
+        result.Run.SkipClaimUpdate.Should().BeTrue();
+        result.TotalClaims.Should().Be(25);
+    }
+
+    [Fact]
+    public async Task GetMassAdjudicationRunAsync_WhenApiReturnsNull_ReturnsNull()
+    {
+        var sut = CreateService(new HttpClient(new FakeHandler(HttpStatusCode.OK, "null")));
+
+        var result = await sut.GetMassAdjudicationRunAsync("run-none");
+
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetMassAdjudicationRunAsync_WhenApiReturnsEmptyBody_ReturnsNull()
+    {
+        var sut = CreateService(new HttpClient(new FakeHandler(HttpStatusCode.OK, string.Empty)));
+
+        var result = await sut.GetMassAdjudicationRunAsync("run-empty");
+
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetMassAdjudicationRunAsync_WhenApiReturns404_ReturnsNull()
+    {
+        var sut = CreateService(new HttpClient(new FakeHandler(HttpStatusCode.NotFound, "{}")));
+
+        var result = await sut.GetMassAdjudicationRunAsync("run-missing");
+
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetMassAdjudicationClaimResultsAsync_WhenApiReturns200_DeserializesClaimResults()
+    {
+        var json = JsonSerializer.Serialize(new[]
+        {
+            new
+            {
+                id = "result-001",
+                runId = "run-001",
+                tenantId = "tenant-a",
+                generatedClaimId = "GEN-001",
+                submittedClaimId = "CLM-001",
+                claimType = 1,
+                validationScenario = "TxStarInpatientNoAuth",
+                expectedOutcome = "BusinessDenial",
+                expectedBusinessDenialCode = "PRIOR_AUTH_REQUIRED",
+                validationStatus = "Matched",
+                outcome = "BusinessDenial",
+                adjudicationSuccess = true,
+                actualPlanPayment = 95.25m,
+                expectedPlanPayment = 95.25m,
+                paymentDelta = 0m,
+                elapsedMilliseconds = 250.5,
+                submitMilliseconds = 50.0,
+                adjudicationMilliseconds = 125.0,
+                writebackMilliseconds = 75.5,
+                createdAtUtc = "2026-07-03T00:00:00Z"
+            }
+        }, JsonOpts);
+
+        var sut = CreateService(new HttpClient(new FakeHandler(HttpStatusCode.OK, json)));
+
+        var result = await sut.GetMassAdjudicationClaimResultsAsync("run-001");
+
+        result.Should().ContainSingle();
+        result[0].GeneratedClaimId.Should().Be("GEN-001");
+        result[0].ClaimType.Should().Be("Professional");
+        result[0].ValidationScenario.Should().Be("TxStarInpatientNoAuth");
+        result[0].ValidationStatus.Should().Be("Matched");
+        result[0].Outcome.Should().Be("BusinessDenial");
+    }
+
+    [Fact]
+    public async Task GetMassAdjudicationClaimResultsAsync_VerifyUrlContainsEscapedQueryParameters()
+    {
+        var handler = new FakeHandler(HttpStatusCode.OK, "[]");
+        var sut = CreateService(new HttpClient(handler));
+
+        await sut.GetMassAdjudicationClaimResultsAsync("run/001", "Business Denial", 5000, "Unsupported", "Mismatched");
+
+        handler.CapturedUrls.Should().ContainSingle()
+            .Which.Should().Be("http://localhost:5000/mass-adjudication/runs/run%2F001/claims?limit=1000&outcome=Business%20Denial&validationStatus=Unsupported&paymentStatus=Mismatched");
+    }
+
+    [Fact]
+    public void FlexibleClaimStatusJsonConverter_WhenApiReturnsNumericValue_DeserializesStatusName()
+    {
+        JsonSerializer.Deserialize<IdCardOrderView>(
+            """{"status":7}""",
+            JsonOpts)!.Status.Should().Be("Paid");
     }
 
     // ── SubmitClaimAsync ──

@@ -53,10 +53,10 @@ jobs:
       duration_ms: ${{ steps.results.outputs.duration_ms }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '8.0.x'
 
@@ -72,7 +72,7 @@ jobs:
           )
 
           # Also include the CapitationService tests which contain smoke test methods
-          for proj in tests/CloudHealthOffice.CapitationService.Tests/*.csproj; do
+          for proj in tests/HealthCoreX.CapitationService.Tests/*.csproj; do
             [ -f "$proj" ] && SMOKE_PROJECTS+=("$proj")
           done
 
@@ -118,13 +118,15 @@ jobs:
             TOTAL=$((TOTAL + t)); PASSED=$((PASSED + p)); FAILED=$((FAILED + f))
           done
 
-          echo "test_count=$TOTAL" >> "$GITHUB_OUTPUT"
-          echo "pass_count=$PASSED" >> "$GITHUB_OUTPUT"
-          echo "fail_count=$FAILED" >> "$GITHUB_OUTPUT"
-          echo "duration_ms=${{ steps.run.outputs.duration_ms }}" >> "$GITHUB_OUTPUT"
+          {
+            echo "test_count=$TOTAL"
+            echo "pass_count=$PASSED"
+            echo "fail_count=$FAILED"
+            echo "duration_ms=${{ steps.run.outputs.duration_ms }}"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Upload smoke results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: smoke-test-results
@@ -142,7 +144,7 @@ jobs:
       pass_count: ${{ steps.results.outputs.pass_count }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Run structural validation
         id: results
@@ -224,10 +226,10 @@ jobs:
       duration_ms: ${{ steps.results.outputs.duration_ms }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '8.0.x'
 
@@ -260,9 +262,9 @@ jobs:
           START_MS=$(date +%s%3N)
           mkdir -p E2EResults
 
-          dotnet restore tests/CloudHealthOffice.E2E/CloudHealthOffice.E2E.csproj
-          dotnet build tests/CloudHealthOffice.E2E/CloudHealthOffice.E2E.csproj --no-restore
-          dotnet test tests/CloudHealthOffice.E2E/CloudHealthOffice.E2E.csproj --no-build \
+          dotnet restore tests/HealthCoreX.E2E/HealthCoreX.E2E.csproj
+          dotnet build tests/HealthCoreX.E2E/HealthCoreX.E2E.csproj --no-restore
+          dotnet test tests/HealthCoreX.E2E/HealthCoreX.E2E.csproj --no-build \
             --logger "trx;LogFileName=e2e-results.trx" \
             --results-directory ./E2EResults \
             --verbosity normal 2>&1 || true
@@ -282,10 +284,12 @@ jobs:
             TOTAL=$((TOTAL + t)); PASSED=$((PASSED + p)); FAILED=$((FAILED + f))
           done
 
-          echo "test_count=$TOTAL" >> "$GITHUB_OUTPUT"
-          echo "pass_count=$PASSED" >> "$GITHUB_OUTPUT"
-          echo "fail_count=$FAILED" >> "$GITHUB_OUTPUT"
-          echo "duration_ms=${{ steps.run.outputs.duration_ms }}" >> "$GITHUB_OUTPUT"
+          {
+            echo "test_count=$TOTAL"
+            echo "pass_count=$PASSED"
+            echo "fail_count=$FAILED"
+            echo "duration_ms=${{ steps.run.outputs.duration_ms }}"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Capture service logs on failure
         if: failure()
@@ -298,7 +302,7 @@ jobs:
         run: docker compose down -v 2>/dev/null || true
 
       - name: Upload E2E results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: e2e-test-results
@@ -319,10 +323,10 @@ jobs:
       duration_ms: ${{ steps.results.outputs.duration_ms }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '8.0.x'
 
@@ -338,9 +342,9 @@ jobs:
           START_MS=$(date +%s%3N)
           mkdir -p LoadResults
 
-          dotnet restore tests/CloudHealthOffice.LoadTests/CloudHealthOffice.LoadTests.csproj 2>&1 || true
-          dotnet build tests/CloudHealthOffice.LoadTests/CloudHealthOffice.LoadTests.csproj --no-restore 2>&1 || true
-          dotnet test tests/CloudHealthOffice.LoadTests/CloudHealthOffice.LoadTests.csproj --no-build \
+          dotnet restore tests/HealthCoreX.LoadTests/HealthCoreX.LoadTests.csproj 2>&1 || true
+          dotnet build tests/HealthCoreX.LoadTests/HealthCoreX.LoadTests.csproj --no-restore 2>&1 || true
+          dotnet test tests/HealthCoreX.LoadTests/HealthCoreX.LoadTests.csproj --no-build \
             --logger "trx;LogFileName=load-results.trx" \
             --results-directory ./LoadResults \
             --verbosity normal 2>&1 || true
@@ -365,7 +369,7 @@ jobs:
         run: docker compose down -v 2>/dev/null || true
 
       - name: Upload load test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: load-test-results
@@ -430,27 +434,33 @@ jobs:
           }
           EOF
 
-          echo "## Quality Gate Report" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Category | Total | Passed | Failed | Duration |" >> "$GITHUB_STEP_SUMMARY"
-          echo "|----------|-------|--------|--------|----------|" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Smoke Tests | $SMOKE_TOTAL | $SMOKE_PASS | $SMOKE_FAIL | ${SMOKE_DURATION}ms |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Sanity Checks | $SANITY_TOTAL | $SANITY_PASS | $((SANITY_TOTAL - SANITY_PASS)) | — |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| E2E Tests | $E2E_TOTAL | $E2E_PASS | $E2E_FAIL | ${E2E_DURATION}ms |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Load Tests | $LOAD_SCENARIOS scenarios | — | — | ${LOAD_DURATION}ms |" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "## Quality Gate Report"
+            echo ""
+            echo "| Category | Total | Passed | Failed | Duration |"
+            echo "|----------|-------|--------|--------|----------|"
+            echo "| Smoke Tests | $SMOKE_TOTAL | $SMOKE_PASS | $SMOKE_FAIL | ${SMOKE_DURATION}ms |"
+            echo "| Sanity Checks | $SANITY_TOTAL | $SANITY_PASS | $((SANITY_TOTAL - SANITY_PASS)) | — |"
+            echo "| E2E Tests | $E2E_TOTAL | $E2E_PASS | $E2E_FAIL | ${E2E_DURATION}ms |"
+            echo "| Load Tests | $LOAD_SCENARIOS scenarios | — | — | ${LOAD_DURATION}ms |"
+          } >> "$GITHUB_STEP_SUMMARY"
 
           # Gate: fail if any smoke tests failed
           if [ "$SMOKE_FAIL" -gt 0 ]; then
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "> **Quality Gate FAILED**: $SMOKE_FAIL smoke test(s) failed" >> "$GITHUB_STEP_SUMMARY"
+            {
+              echo ""
+              echo "> **Quality Gate FAILED**: $SMOKE_FAIL smoke test(s) failed"
+            } >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
 
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "> **Quality Gate PASSED**" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo ""
+            echo "> **Quality Gate PASSED**"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload quality report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: quality-report

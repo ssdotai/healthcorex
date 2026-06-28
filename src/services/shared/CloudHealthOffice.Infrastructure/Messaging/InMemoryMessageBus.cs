@@ -1,11 +1,11 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Channels;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.Infrastructure.Messaging;
+namespace HealthCoreX.Infrastructure.Messaging;
 
 /// <summary>
 /// In-process <see cref="IMessageBus"/> backed by
@@ -100,6 +100,8 @@ public sealed class InMemoryMessageBus : IMessageBus, IAsyncDisposable
             queueOrTopic,
             channel,
             env => handler((T)env.Message, env.ToContext(), env.CancellationToken),
+            Math.Max(1, options?.MaxConcurrentCalls ?? 1),
+            options?.RequiredProperties,
             _logger);
         _subscriptions.Add(new WeakReference<InMemorySubscription>(sub));
         return sub;
@@ -191,10 +193,12 @@ public sealed class InMemoryMessageBus : IMessageBus, IAsyncDisposable
         private readonly string _queueOrTopic;
         private readonly Channel<Envelope> _channel;
         private readonly Func<Envelope, Task> _dispatch;
+        private readonly int _maxConcurrentCalls;
+        private readonly IReadOnlyDictionary<string, string>? _requiredProperties;
         private readonly ILogger _logger;
         private readonly CancellationTokenSource _internalCts = new();
         private CancellationTokenSource? _linkedCts;
-        private Task? _pump;
+        private Task[]? _pumps;
         private int _started;
         private int _disposed;
 
@@ -202,11 +206,15 @@ public sealed class InMemoryMessageBus : IMessageBus, IAsyncDisposable
             string queueOrTopic,
             Channel<Envelope> channel,
             Func<Envelope, Task> dispatch,
+            int maxConcurrentCalls,
+            IReadOnlyDictionary<string, string>? requiredProperties,
             ILogger logger)
         {
             _queueOrTopic = queueOrTopic;
             _channel = channel;
             _dispatch = dispatch;
+            _maxConcurrentCalls = maxConcurrentCalls;
+            _requiredProperties = requiredProperties;
             _logger = logger;
         }
 
@@ -216,20 +224,22 @@ public sealed class InMemoryMessageBus : IMessageBus, IAsyncDisposable
             if (Interlocked.Exchange(ref _started, 1) == 1) return Task.CompletedTask;
             _linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_internalCts.Token, ct);
             var pumpToken = _linkedCts.Token;
-            _pump = Task.Run(() => PumpAsync(pumpToken), pumpToken);
+            _pumps = Enumerable.Range(0, _maxConcurrentCalls)
+                .Select(_ => Task.Run(() => PumpAsync(pumpToken), pumpToken))
+                .ToArray();
             return Task.CompletedTask;
         }
 
         public async Task StopAsync(CancellationToken ct)
         {
-            if (_pump is null) return;
+            if (_pumps is null) return;
             try { _internalCts.Cancel(); }
             catch (ObjectDisposedException) { return; }
             try
             {
                 // Honour the caller's cancellation — don't let a hung handler
                 // block StopAsync past the provided token's lifetime.
-                await _pump.WaitAsync(ct).ConfigureAwait(false);
+                await Task.WhenAll(_pumps).WaitAsync(ct).ConfigureAwait(false);
             }
             catch (OperationCanceledException) { /* expected on stop or caller cancel */ }
         }
@@ -244,6 +254,14 @@ public sealed class InMemoryMessageBus : IMessageBus, IAsyncDisposable
 
         private async Task DispatchAsync(Envelope envelope, CancellationToken ct)
         {
+            if (!MatchesRequiredProperties(envelope.Properties))
+            {
+                _logger.LogDebug(
+                    "InMemoryMessageBus ignored {Queue} message {MessageId}: subscription property filter did not match",
+                    _queueOrTopic, envelope.MessageId);
+                return;
+            }
+
             ActivityContext parentCtx = default;
             var hasParent = envelope.Properties.TryGetValue(TraceparentPropertyName, out var tp) &&
                 ActivityContext.TryParse(tp, null, out parentCtx);
@@ -271,6 +289,22 @@ public sealed class InMemoryMessageBus : IMessageBus, IAsyncDisposable
                     _queueOrTopic, envelope.MessageId);
                 // In-memory has no DLQ; rethrow would kill the pump — swallow after logging.
             }
+        }
+
+        private bool MatchesRequiredProperties(IReadOnlyDictionary<string, string> properties)
+        {
+            if (_requiredProperties is null || _requiredProperties.Count == 0) return true;
+
+            foreach (var (key, expectedValue) in _requiredProperties)
+            {
+                if (!properties.TryGetValue(key, out var actualValue) ||
+                    !string.Equals(actualValue, expectedValue, StringComparison.Ordinal))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public async ValueTask DisposeAsync()

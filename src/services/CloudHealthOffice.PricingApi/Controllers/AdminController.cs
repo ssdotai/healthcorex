@@ -1,11 +1,11 @@
 using System.Security.Cryptography;
-using CloudHealthOffice.PricingApi.Data;
-using CloudHealthOffice.PricingApi.Models;
-using CloudHealthOffice.PricingApi.Services;
+using HealthCoreX.PricingApi.Data;
+using HealthCoreX.PricingApi.Models;
+using HealthCoreX.PricingApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.PricingApi.Controllers;
+namespace HealthCoreX.PricingApi.Controllers;
 
 /// <summary>
 /// Admin API for managing API keys and usage.

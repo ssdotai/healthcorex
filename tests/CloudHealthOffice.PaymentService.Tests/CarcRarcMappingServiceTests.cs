@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using PaymentService.Services;
 using Xunit;
 
-namespace CloudHealthOffice.PaymentService.Tests;
+namespace HealthCoreX.PaymentService.Tests;
 
 public class CarcRarcMappingServiceTests
 {

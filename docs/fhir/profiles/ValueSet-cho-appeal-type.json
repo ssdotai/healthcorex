@@ -1,7 +1,7 @@
 {
   "resourceType": "ValueSet",
   "id": "cho-appeal-type",
-  "url": "http://fhir.cloudhealthoffice.com/ValueSet/cho-appeal-type",
+  "url": "http://fhir.HealthCoreX.com/ValueSet/cho-appeal-type",
   "version": "1.0.0",
   "name": "ChoAppealTypeVS",
   "title": "CHO Appeal Type Value Set",
@@ -12,7 +12,7 @@
   "description": "All concepts from CodeSystem cho-appeal-type. Authored by Cloud Health Office under its own canonical namespace; does not claim conformance to any external Implementation Guide.",
   "compose": {
     "include": [
-      { "system": "http://fhir.cloudhealthoffice.com/CodeSystem/cho-appeal-type" }
+      { "system": "http://fhir.HealthCoreX.com/CodeSystem/cho-appeal-type" }
     ]
   }
 }

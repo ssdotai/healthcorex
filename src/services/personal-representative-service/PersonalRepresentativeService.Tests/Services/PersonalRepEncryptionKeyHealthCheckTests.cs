@@ -1,4 +1,4 @@
-using CloudHealthOffice.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Configuration;
 using PersonalRepresentativeService.Services;
 using PersonalRepresentativeService.Tests.Fakes;
 using Microsoft.Extensions.Diagnostics.HealthChecks;

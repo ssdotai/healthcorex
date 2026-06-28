@@ -4,12 +4,12 @@ WORKDIR /repo
 
 # Copy csproj files and restore (preserves layer caching)
 COPY src/services/encounter-service/encounter-service.csproj src/services/encounter-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
 RUN dotnet restore src/services/encounter-service/encounter-service.csproj
 
 # Copy source code and build
 COPY src/services/encounter-service/ src/services/encounter-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
 RUN dotnet build src/services/encounter-service/encounter-service.csproj -c Release --no-restore
 
 # Publish stage

@@ -94,7 +94,7 @@ public enum NetworkType
 Every value is explicitly numbered and `Unknown=0` is the default.
 String-only enforcement (rejecting integer enum payloads) is delegated
 to the shared MVC JSON options registered by
-`AddCloudHealthOfficeJsonOptions`, which constructs a
+`AddHealthCoreXJsonOptions`, which constructs a
 `JsonStringEnumConverter(allowIntegerValues: false)`. The new enums in
 this capability deliberately do **not** carry a type-level
 `[JsonConverter(typeof(JsonStringEnumConverter))]` attribute, because
@@ -179,7 +179,7 @@ falls back to `cho`.
 ## Storage
 
 The `Organizations` collection lives alongside `Providers` in the same
-database (`ProviderDB` / `CloudHealthOffice` for Mongo). Mongo indexes:
+database (`ProviderDB` / `HealthCoreX` for Mongo). Mongo indexes:
 
 - `(TenantId, OrganizationId, VersionNumber)` — chain head lookup.
 - `(TenantId, OrganizationId, VersionId)` — exact-version fetch.

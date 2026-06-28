@@ -1,9 +1,10 @@
 # CHO.TerminologyService
 
-FHIR ConceptMap/$translate terminology crosswalk microservice for Cloud Health Office.
+FHIR ConceptMap/$translate and CodeSystem/$lookup terminology microservice for Cloud Health Office.
 
-Translates between SNOMED CT, ICD-10-CM, and CPT code systems — the built-in
-terminology layer that ships with CHO for CMS-0057 compliance.
+Translates between SNOMED CT, ICD-10-CM, and CPT code systems, and provides
+display metadata for known code systems — the built-in terminology layer that
+ships with CHO for CMS-0057 compliance.
 
 ## Why This Exists
 
@@ -30,9 +31,17 @@ with plan-specific override support for state Medicaid rules (TMPPM, etc.).
 │  │ Loader (RF2/CSV) │  │ (MongoDB versioned)  │  │
 │  └─────────────────┘  └──────────┬───────────┘  │
 │  ┌─────────────────┐  ┌──────────▼───────────┐  │
+│  │ CodeSystem      │→ │ Code Display Catalog │  │
+│  │ seed/import     │  │ (MongoDB versioned)  │  │
+│  └─────────────────┘  └──────────┬───────────┘  │
+│  ┌─────────────────┐  ┌──────────▼───────────┐  │
 │  │ FHIR $translate │← │ Context Rule Engine   │  │
 │  │ API endpoint    │  │ (age/gender/state)    │  │
 │  └─────────────────┘  └──────────────────────┘  │
+│  ┌────────────────────────────────────────────┐  │
+│  │ FHIR $lookup API endpoint                  │  │
+│  │ CodeSystem catalog → ConceptMap fallback   │  │
+│  └────────────────────────────────────────────┘  │
 │  ┌────────────────────────────────────────────┐  │
 │  │ Plan-Specific Overrides                    │  │
 │  │ (TMPPM, Medicaid state rules, local codes) │  │
@@ -111,6 +120,36 @@ Content-Type: application/json
 ]
 ```
 
+### Look up code display metadata
+
+```bash
+GET /fhir/CodeSystem/$lookup?system=http://hl7.org/fhir/sid/icd-10-cm&code=E11.65
+```
+
+Response:
+
+```json
+{
+  "result": true,
+  "system": "http://hl7.org/fhir/sid/icd-10-cm",
+  "code": "E11.65",
+  "display": "Type 2 diabetes mellitus with hyperglycemia",
+  "mapVersionId": "mcc-seed-2026",
+  "source": "BuiltInIcd10CmCatalog",
+  "lookedUpAt": "2026-07-15T20:30:00Z"
+}
+```
+
+The lookup path checks the code-system display catalog first. If no display is
+available there, it falls back to display text present on active ConceptMap
+entries. This keeps ICD-10-CM claim displays independent from SNOMED-to-ICD
+crosswalk files, whose target displays may be blank in RF2 source data.
+
+The built-in MCC/demo ICD-10-CM seed uses the shared
+`SyntheticIcd10CmCatalog` reference data also used by claims-service as its
+fail-soft fallback when TerminologyService is unavailable, so the startup seed
+and local fallback do not drift independently.
+
 ### Load a crosswalk map
 
 ```bash
@@ -147,12 +186,12 @@ CHO does not redistribute AMA-copyrighted content.
 ## Kubernetes Deployment
 
 ```bash
-# Deploy to AKS cloudhealthoffice namespace
+# Deploy to AKS HealthCoreX namespace
 kubectl apply -f k8s/deployment.yaml
 
 # Verify
-kubectl -n cloudhealthoffice get pods -l app=terminology-service
-kubectl -n cloudhealthoffice logs -l app=terminology-service --tail=50
+kubectl -n HealthCoreX get pods -l app=terminology-service
+kubectl -n HealthCoreX logs -l app=terminology-service --tail=50
 ```
 
 ## Integration Points

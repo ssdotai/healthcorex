@@ -4,14 +4,14 @@ WORKDIR /repo
 
 # Copy csproj files and restore (preserves layer caching)
 COPY src/services/risk-adjustment-service/risk-adjustment-service.csproj src/services/risk-adjustment-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/engines/CloudHealthOffice.RiskAdjustmentEngine/CloudHealthOffice.RiskAdjustmentEngine.csproj src/engines/CloudHealthOffice.RiskAdjustmentEngine/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
+COPY src/engines/HealthCoreX.RiskAdjustmentEngine/HealthCoreX.RiskAdjustmentEngine.csproj src/engines/HealthCoreX.RiskAdjustmentEngine/
 RUN dotnet restore src/services/risk-adjustment-service/risk-adjustment-service.csproj
 
 # Copy source code and build
 COPY src/services/risk-adjustment-service/ src/services/risk-adjustment-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/engines/CloudHealthOffice.RiskAdjustmentEngine/ src/engines/CloudHealthOffice.RiskAdjustmentEngine/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
+COPY src/engines/HealthCoreX.RiskAdjustmentEngine/ src/engines/HealthCoreX.RiskAdjustmentEngine/
 RUN dotnet build src/services/risk-adjustment-service/risk-adjustment-service.csproj -c Release --no-restore
 
 # Publish stage

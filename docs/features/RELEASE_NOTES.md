@@ -22,7 +22,7 @@ This is the third major release of Cloud Health Office — the source-available,
 ### 🚀 Azure Marketplace Ready
 - **Managed Application**: One-click deployment via Azure Marketplace
 - **Meter-Based Billing**: Per-transaction pricing for 837, 278, 275, FHIR API calls
-- **3-Tier Pricing**: Starter, Professional, Enterprise — [Contact sales](mailto:sales@cloudhealthoffice.com) for pricing
+- **3-Tier Pricing**: Starter, Professional, Enterprise — [Contact sales](mailto:sales@HealthCoreX.com) for pricing
 
 ### 🏗️ Microservices Architecture
 - **Eligibility Service**: Dual X12 270/271 + FHIR interface on Azure Container Apps
@@ -117,23 +117,23 @@ New documentation in v3.0.0:
 
 | PR | Title | Category |
 |----|-------|----------|
-| [#116](https://github.com/aurelianware/cloudhealthoffice/pull/116) | Remove vendor-specific references | Platform |
-| [#115](https://github.com/aurelianware/cloudhealthoffice/pull/115) | Multi-cloud deployment and HashiCorp Vault | Multi-Cloud |
-| [#114](https://github.com/aurelianware/cloudhealthoffice/pull/114) | Container build workflow fix | CI/CD |
-| [#113](https://github.com/aurelianware/cloudhealthoffice/pull/113) | Argo Workflows and Kafka migration | Multi-Cloud |
-| [#112](https://github.com/aurelianware/cloudhealthoffice/pull/112) | VC fundraising strategy | Commercial |
-| [#111](https://github.com/aurelianware/cloudhealthoffice/pull/111) | Commercial launch materials | Commercial |
-| [#110](https://github.com/aurelianware/cloudhealthoffice/pull/110) | CMS-0057-F whitepaper enhancements | Documentation |
-| [#109](https://github.com/aurelianware/cloudhealthoffice/pull/109) | CMS-0057-F compliance whitepaper | Documentation |
-| [#108](https://github.com/aurelianware/cloudhealthoffice/pull/108) | 2026 product roadmap | Roadmap |
-| [#107](https://github.com/aurelianware/cloudhealthoffice/pull/107) | Community governance | Governance |
-| [#106](https://github.com/aurelianware/cloudhealthoffice/pull/106) | Blazor migration wizard | Tools |
-| [#105](https://github.com/aurelianware/cloudhealthoffice/pull/105) | Azure Marketplace offer structure | Marketplace |
-| [#104](https://github.com/aurelianware/cloudhealthoffice/pull/104) | ClaimRiskScorer Azure Function | Microservices |
-| [#103](https://github.com/aurelianware/cloudhealthoffice/pull/103) | Eligibility service (X12 + FHIR) | Microservices |
-| [#102](https://github.com/aurelianware/cloudhealthoffice/pull/102) | CMS-0057-F Compliance Dashboard | Compliance |
-| [#101](https://github.com/aurelianware/cloudhealthoffice/pull/101) | patient_access_api workflow fix | Bug Fix |
-| [#100](https://github.com/aurelianware/cloudhealthoffice/pull/100) | ProviderDirectoryApi and PriorAuthApi | Microservices |
+| [#116](https://github.com/aurelianware/HealthCoreX/pull/116) | Remove vendor-specific references | Platform |
+| [#115](https://github.com/aurelianware/HealthCoreX/pull/115) | Multi-cloud deployment and HashiCorp Vault | Multi-Cloud |
+| [#114](https://github.com/aurelianware/HealthCoreX/pull/114) | Container build workflow fix | CI/CD |
+| [#113](https://github.com/aurelianware/HealthCoreX/pull/113) | Argo Workflows and Kafka migration | Multi-Cloud |
+| [#112](https://github.com/aurelianware/HealthCoreX/pull/112) | VC fundraising strategy | Commercial |
+| [#111](https://github.com/aurelianware/HealthCoreX/pull/111) | Commercial launch materials | Commercial |
+| [#110](https://github.com/aurelianware/HealthCoreX/pull/110) | CMS-0057-F whitepaper enhancements | Documentation |
+| [#109](https://github.com/aurelianware/HealthCoreX/pull/109) | CMS-0057-F compliance whitepaper | Documentation |
+| [#108](https://github.com/aurelianware/HealthCoreX/pull/108) | 2026 product roadmap | Roadmap |
+| [#107](https://github.com/aurelianware/HealthCoreX/pull/107) | Community governance | Governance |
+| [#106](https://github.com/aurelianware/HealthCoreX/pull/106) | Blazor migration wizard | Tools |
+| [#105](https://github.com/aurelianware/HealthCoreX/pull/105) | Azure Marketplace offer structure | Marketplace |
+| [#104](https://github.com/aurelianware/HealthCoreX/pull/104) | ClaimRiskScorer Azure Function | Microservices |
+| [#103](https://github.com/aurelianware/HealthCoreX/pull/103) | Eligibility service (X12 + FHIR) | Microservices |
+| [#102](https://github.com/aurelianware/HealthCoreX/pull/102) | CMS-0057-F Compliance Dashboard | Compliance |
+| [#101](https://github.com/aurelianware/HealthCoreX/pull/101) | patient_access_api workflow fix | Bug Fix |
+| [#100](https://github.com/aurelianware/HealthCoreX/pull/100) | ProviderDirectoryApi and PriorAuthApi | Microservices |
 
 For detailed PR descriptions, see the [Full Changelog](./CHANGELOG.md).
 
@@ -157,4 +157,4 @@ Star ★ the repo if you believe healthcare deserves multi-cloud freedom.
 
 ---
 
-[Full Changelog](./CHANGELOG.md) • [GitHub Releases](https://github.com/aurelianware/cloudhealthoffice/releases)
+[Full Changelog](./CHANGELOG.md) • [GitHub Releases](https://github.com/aurelianware/HealthCoreX/releases)

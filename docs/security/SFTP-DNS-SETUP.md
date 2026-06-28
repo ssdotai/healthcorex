@@ -2,8 +2,8 @@
 
 ## Overview
 
-Production-grade SFTP configuration with:
-- **Custom DNS name** (e.g., `sftp.cloudhealthoffice.com`)
+Customer-owned SFTP configuration with:
+- **Custom DNS name** (e.g., `sftp.HealthCoreX.com`)
 - **IP whitelisting** for clearinghouses and AKS/Argo Workflows
 - **SSL/TLS certificate** (optional, for FTPS)
 
@@ -17,7 +17,7 @@ Production-grade SFTP configuration with:
 # Create DNS zone
 az network dns zone create \
   --resource-group rg-hipaa-aks \
-  --name cloudhealthoffice.com
+  --name HealthCoreX.com
 
 # Get the LoadBalancer IP
 export SFTP_IP=$(kubectl get svc sftp-service -n cho-sftp -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
@@ -26,25 +26,25 @@ echo "SFTP IP: $SFTP_IP"
 # Create A record
 az network dns record-set a add-record \
   --resource-group rg-hipaa-aks \
-  --zone-name cloudhealthoffice.com \
+  --zone-name HealthCoreX.com \
   --record-set-name sftp \
   --ipv4-address $SFTP_IP
 
 # Verify DNS record
 az network dns record-set a show \
   --resource-group rg-hipaa-aks \
-  --zone-name cloudhealthoffice.com \
+  --zone-name HealthCoreX.com \
   --name sftp
 
 # Get nameservers to configure at registrar
 az network dns zone show \
   --resource-group rg-hipaa-aks \
-  --name cloudhealthoffice.com \
+  --name HealthCoreX.com \
   --query nameServers -o table
 ```
 
 **Update your domain registrar:**
-- Point `cloudhealthoffice.com` to Azure DNS nameservers
+- Point `HealthCoreX.com` to Azure DNS nameservers
 - Wait 5-60 minutes for DNS propagation
 
 ### Option B: Existing DNS Provider
@@ -57,17 +57,17 @@ Value: 52.168.45.123  (your LoadBalancer IP)
 TTL:   300
 ```
 
-Result: `sftp.cloudhealthoffice.com` → `52.168.45.123`
+Result: `sftp.HealthCoreX.com` → `52.168.45.123`
 
 ### Verify DNS Resolution
 
 ```bash
 # Check DNS propagation
-dig sftp.cloudhealthoffice.com +short
-nslookup sftp.cloudhealthoffice.com
+dig sftp.HealthCoreX.com +short
+nslookup sftp.HealthCoreX.com
 
 # Test SFTP connection with DNS name
-sftp logicapp@sftp.cloudhealthoffice.com
+sftp logicapp@sftp.HealthCoreX.com
 ```
 
 ---
@@ -193,7 +193,7 @@ kubectl patch svc sftp-service -n cho-sftp -p '{
 
 ```bash
 # From allowed IP - should work
-sftp logicapp@sftp.cloudhealthoffice.com
+sftp logicapp@sftp.HealthCoreX.com
 
 # From non-whitelisted IP - should timeout
 # Connection should be blocked at LoadBalancer level
@@ -210,7 +210,7 @@ Edit `infra/main.parameters.json`:
 ```json
 {
   "sftpHost": {
-    "value": "sftp.cloudhealthoffice.com"
+    "value": "sftp.HealthCoreX.com"
   }
 }
 ```
@@ -220,7 +220,7 @@ Edit `infra/main.parameters.json`:
 ```json
 {
   "sftpHost": {
-    "value": "sftp-prod.cloudhealthoffice.com"
+    "value": "sftp-prod.HealthCoreX.com"
   }
 }
 ```
@@ -229,7 +229,7 @@ For UAT:
 ```json
 {
   "sftpHost": {
-    "value": "sftp-uat.cloudhealthoffice.com"
+    "value": "sftp-uat.HealthCoreX.com"
   }
 }
 ```
@@ -238,7 +238,7 @@ For UAT:
 
 ```bash
 ./scripts/configure-sftp-connection.sh
-# When prompted, use: sftp.cloudhealthoffice.com
+# When prompted, use: sftp.HealthCoreX.com
 ```
 
 **Or manually:**
@@ -248,7 +248,7 @@ az deployment group create \
   --resource-group rg-hipaa-aks \
   --template-file infra/main.bicep \
   --parameters \
-    sftpHost="sftp.cloudhealthoffice.com" \
+    sftpHost="sftp.HealthCoreX.com" \
     sftpUsername="logicapp" \
     sftpPassword="@Microsoft.KeyVault(SecretUri=https://cho-secrets.vault.azure.net/secrets/sftp-logicapp-password/)"
 ```
@@ -306,7 +306,7 @@ kubectl apply -f k8s/sftp-server-deployment.yaml
 ## Production Checklist
 
 ### DNS
-- [ ] DNS A record created (`sftp.cloudhealthoffice.com`)
+- [ ] DNS A record created (`sftp.HealthCoreX.com`)
 - [ ] DNS propagation verified (`dig`/`nslookup`)
 - [ ] SFTP connection works with DNS name
 - [ ] Updated all documentation with DNS name
@@ -352,11 +352,11 @@ done
 
 # Test DNS resolution
 echo "Testing DNS resolution:"
-dig sftp.cloudhealthoffice.com +short
+dig sftp.HealthCoreX.com +short
 
 # Test connection (from whitelisted IP)
 echo "Testing SFTP connection:"
-timeout 5 sftp -v logicapp@sftp.cloudhealthoffice.com <<EOF
+timeout 5 sftp -v logicapp@sftp.HealthCoreX.com <<EOF
 bye
 EOF
 
@@ -391,11 +391,11 @@ az monitor metrics alert create \
 # Check DNS record
 az network dns record-set a show \
   --resource-group rg-hipaa-aks \
-  --zone-name cloudhealthoffice.com \
+  --zone-name HealthCoreX.com \
   --name sftp
 
 # Check TTL (wait for expiration)
-dig sftp.cloudhealthoffice.com +noall +answer
+dig sftp.HealthCoreX.com +noall +answer
 
 # Force DNS refresh (macOS)
 sudo dscacheutil -flushcache
@@ -469,13 +469,13 @@ Create environment-specific DNS records:
 
 ```bash
 # Production
-sftp-prod.cloudhealthoffice.com → 52.168.45.123
+sftp-prod.HealthCoreX.com → 52.168.45.123
 
 # UAT
-sftp-uat.cloudhealthoffice.com → 52.168.45.124
+sftp-uat.HealthCoreX.com → 52.168.45.124
 
 # Development
-sftp-dev.cloudhealthoffice.com → 52.168.45.125
+sftp-dev.HealthCoreX.com → 52.168.45.125
 ```
 
 **Deploy separate SFTP servers:**
@@ -495,10 +495,10 @@ Deploy SFTP servers in multiple regions:
 
 ```bash
 # West US
-sftp-west.cloudhealthoffice.com → LoadBalancer in westus2
+sftp-west.HealthCoreX.com → LoadBalancer in westus2
 
 # East US
-sftp-east.cloudhealthoffice.com → LoadBalancer in eastus2
+sftp-east.HealthCoreX.com → LoadBalancer in eastus2
 
 # Use Azure Traffic Manager for automatic failover
 ```

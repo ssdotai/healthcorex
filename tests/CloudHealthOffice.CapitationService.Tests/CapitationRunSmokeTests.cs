@@ -7,7 +7,7 @@ using CapitationService.Models;
 using CapitationService.Services;
 using Xunit;
 
-namespace CloudHealthOffice.CapitationService.Tests;
+namespace HealthCoreX.CapitationService.Tests;
 
 /// <summary>
 /// Smoke tests for the capitation run lifecycle — exercising the full HTTP pipeline
@@ -22,7 +22,7 @@ public class CapitationRunSmokeTests : IClassFixture<CapitationApiFactory>
     private readonly HttpClient _client;
 
     // Match the server's wire format (string enums via JsonStringEnumConverter
-    // registered by AddCloudHealthOfficeJsonOptions). Without this, deserializing
+    // registered by AddHealthCoreXJsonOptions). Without this, deserializing
     // responses whose DTOs contain enum fields (CapitationRun.Status,
     // CapitationContract.ProviderType, etc.) fails with a JsonException.
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web)

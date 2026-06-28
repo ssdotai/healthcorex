@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using NSubstitute.ClearExtensions;
 
-namespace CloudHealthOffice.IdCardService.Tests;
+namespace HealthCoreX.IdCardService.Tests;
 
 /// <summary>
 /// End-to-end coverage for the order → PDF → DocumentReference flow. The

@@ -1,5 +1,5 @@
 using System.Security.Cryptography;
-using CloudHealthOffice.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Configuration;
 using MemberService.Controllers;
 using MemberService.Models;
 using MemberService.Services;

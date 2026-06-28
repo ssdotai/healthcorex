@@ -536,7 +536,7 @@ public static partial class ProviderDirectoryMapper
         practitioner.Extension ??= new List<FhirExtension>();
         practitioner.Extension.Add(new FhirExtension
         {
-            Url = "https://cloudhealthoffice.com/fhir/StructureDefinition/provider-verification",
+            Url = "https://HealthCoreX.com/fhir/StructureDefinition/provider-verification",
             Extension = new List<FhirExtension>
             {
                 new() { Url = "integrityScore", ValueInteger = verification.IntegrityScore },

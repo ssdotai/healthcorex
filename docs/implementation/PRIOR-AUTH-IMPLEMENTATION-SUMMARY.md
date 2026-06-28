@@ -486,7 +486,7 @@ await submitAttachment(authNumber, binary, docRef);
 
 - **GitHub Issues**: Report bugs and feature requests
 - **Discussions**: Community support and Q&A
-- **Security**: security@cloudhealthoffice.com
+- **Security**: security@HealthCoreX.com
 
 ---
 

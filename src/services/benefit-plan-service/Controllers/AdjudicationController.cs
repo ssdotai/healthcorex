@@ -1,21 +1,22 @@
 using System.Diagnostics;
+using System.Globalization;
 using System.Text.Json.Serialization;
-using CloudHealthOffice.BenefitEngine.Domain;
-using CloudHealthOffice.BenefitEngine.Models;
-using CloudHealthOffice.BenefitEngine.Services;
-using CloudHealthOffice.FeeScheduleEngine.Models;
-using CloudHealthOffice.FeeScheduleEngine.Services;
-using CloudHealthOffice.ClaimsScrubEngine.Models;
-using CloudHealthOffice.ClaimsScrubEngine.Services;
-using CloudHealthOffice.NcciEngine.Models;
-using CloudHealthOffice.NcciEngine.Services;
-using CloudHealthOffice.Infrastructure.Observability;
-using CloudHealthOffice.OperatingMode;
-using CloudHealthOffice.PriorAuthRuleEngine.Abstractions;
-using CloudHealthOffice.PriorAuthRuleEngine.Domain;
-using CloudHealthOffice.PriorAuthRuleEngine.Models;
-using CloudHealthOffice.ProviderEnrollmentService.Abstractions;
-using CloudHealthOffice.ProviderEnrollmentService.Models;
+using HealthCoreX.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Models;
+using HealthCoreX.BenefitEngine.Services;
+using HealthCoreX.FeeScheduleEngine.Models;
+using HealthCoreX.FeeScheduleEngine.Services;
+using HealthCoreX.ClaimsScrubEngine.Models;
+using HealthCoreX.ClaimsScrubEngine.Services;
+using HealthCoreX.NcciEngine.Models;
+using HealthCoreX.NcciEngine.Services;
+using HealthCoreX.Infrastructure.Observability;
+using HealthCoreX.OperatingMode;
+using HealthCoreX.PriorAuthRuleEngine.Abstractions;
+using HealthCoreX.PriorAuthRuleEngine.Domain;
+using HealthCoreX.PriorAuthRuleEngine.Models;
+using HealthCoreX.ProviderEnrollmentService.Abstractions;
+using HealthCoreX.ProviderEnrollmentService.Models;
 using BenefitPlanService.Middleware;
 using BenefitPlanService.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -145,9 +146,26 @@ public class AdjudicationController : ControllerBase
         adjudicationSpan?.SetTag("cho.claim_type", request.ClaimType);
 
         var sw = System.Diagnostics.Stopwatch.StartNew();
+        var stageTimings = new Dictionary<string, double>(StringComparer.Ordinal);
+
+        async Task<T> MeasureStageAsync<T>(string stage, Func<Task<T>> action)
+        {
+            var stageWatch = System.Diagnostics.Stopwatch.StartNew();
+            try
+            {
+                return await action();
+            }
+            finally
+            {
+                stageWatch.Stop();
+                stageTimings[stage] = stageWatch.Elapsed.TotalMilliseconds;
+            }
+        }
 
         // ── Routing decision: determine operating mode for this claim type/LOB ──
-        var operatingModeConfig = await _operatingModeProvider.GetConfigurationAsync(TenantId, ct);
+        var operatingModeConfig = await MeasureStageAsync(
+            "routing",
+            () => _operatingModeProvider.GetConfigurationAsync(TenantId, ct));
         var routingDecision = _claimTypeRouter.Route(
             operatingModeConfig, request.ClaimType, request.LineOfBusiness);
 
@@ -176,7 +194,8 @@ public class AdjudicationController : ControllerBase
                 DenialReasonDescription = $"Claim type {request.ClaimType} routed to legacy system per tenant configuration",
                 OperatingMode = "LegacyOnly",
                 RoutingKey = routingDecision.ResolvedKey,
-                IsAuthoritative = false
+                IsAuthoritative = false,
+                Timings = stageTimings
             });
         }
 
@@ -196,8 +215,9 @@ public class AdjudicationController : ControllerBase
             memberId: request.MemberId))
         {
             var scrubClaim = MapToScrubClaim(request);
-            scrubResponse = await _scrubEngine.ScrubAndRouteAsync(
-                new ClaimsScrubRequest { Claim = scrubClaim }, ct);
+            scrubResponse = await MeasureStageAsync(
+                "scrub",
+                () => _scrubEngine.ScrubAndRouteAsync(new ClaimsScrubRequest { Claim = scrubClaim }, ct));
 
             scrubSpan?.SetTag("cho.scrub.passed", scrubResponse.Result.Routing.Destination == "adjudication");
             scrubSpan?.SetTag("cho.scrub.error_count", scrubResponse.Result.ErrorCount);
@@ -225,6 +245,7 @@ public class AdjudicationController : ControllerBase
                 status = scrubResponse.Result.Status,
                 routing = scrubResponse.Result.Routing,
                 validationResults = scrubResponse.Result.Results.Where(r => !r.Passed).ToList(),
+                timings = stageTimings,
             });
         }
 
@@ -254,7 +275,9 @@ public class AdjudicationController : ControllerBase
                 }).ToList(),
             };
 
-            ncciResult = await _ncciEngine.ScrubAsync(ncciRequest, ct);
+            ncciResult = await MeasureStageAsync(
+                "ncci",
+                () => _ncciEngine.ScrubAsync(ncciRequest, ct));
 
             ncciSpan?.SetTag("cho.ncci.passed", ncciResult.Passed);
             ncciSpan?.SetTag("cho.ncci.failure_count", ncciResult.EditFailures.Count);
@@ -278,6 +301,7 @@ public class AdjudicationController : ControllerBase
                 message = $"Claim failed {ncciResult.EditFailures.Count} NCCI/MUE edit(s). " +
                           "Review edit failures and resubmit or override.",
                 editFailures = ncciResult.EditFailures,
+                timings = stageTimings,
             });
         }
 
@@ -290,14 +314,16 @@ public class AdjudicationController : ControllerBase
             claimType: claimTypeCode,
             memberId: request.MemberId))
         {
-            providerIntegrity = await _providerIntegrityGate.CheckAsync(request.ProviderNpi, ct: ct);
+            providerIntegrity = await MeasureStageAsync(
+                "providerIntegrity",
+                () => _providerIntegrityGate.CheckAsync(request.ProviderNpi, TenantId, ct: ct));
 
             integritySpan?.SetTag("cho.integrity.passed", providerIntegrity.Passed);
             integritySpan?.SetTag("cho.integrity.score", providerIntegrity.IntegrityScore ?? -1);
             integritySpan?.SetTag("cho.integrity.excluded", providerIntegrity.IsExcluded);
         }
 
-        if (!providerIntegrity.Passed)
+        if (providerIntegrity.IsExcluded)
         {
             adjudicationSpan?.SetTag("cho.outcome", "provider_excluded");
             adjudicationSpan?.SetStatus(ActivityStatusCode.Error, "Provider excluded from federal programs");
@@ -317,6 +343,60 @@ public class AdjudicationController : ControllerBase
                 carc = providerIntegrity.DenialCode,
                 integrityScore = providerIntegrity.IntegrityScore,
                 rating = providerIntegrity.Rating,
+                timings = stageTimings,
+            });
+        }
+
+        if (!providerIntegrity.Passed)
+        {
+            // Not a confirmed exclusion -- either RequiresManualReview (verification
+            // unavailable or inconclusive) or a defensive Passed=false with neither
+            // flag set. Either way this must not be reported as PROVIDER_EXCLUDED:
+            // the provider hasn't actually appeared on an exclusion list.
+            adjudicationSpan?.SetTag("cho.outcome", "provider_verification_review_required");
+            adjudicationSpan?.SetStatus(
+                ActivityStatusCode.Error, "Provider integrity could not be confidently verified");
+
+            RecordLatency(sw, claimTypeCode, "provider_verification_review_required");
+
+            _logger.LogWarning(
+                "Claim {ClaimId} pended: provider NPI {Npi} integrity could not be confidently verified",
+                SanitizeForLog(request.ClaimId), SanitizeForLog(request.ProviderNpi));
+
+            return UnprocessableEntity(new
+            {
+                claimId = request.ClaimId,
+                error = providerIntegrity.DenialCode ?? "PROVIDER_VERIFICATION_UNAVAILABLE",
+                message = providerIntegrity.DenialReason
+                    ?? "Provider integrity could not be confidently verified; manual review required",
+                integrityScore = providerIntegrity.IntegrityScore,
+                rating = providerIntegrity.Rating,
+                timings = stageTimings,
+            });
+        }
+
+        if (!IsMemberEligibleForServiceDate(request, out var eligibilityReason))
+        {
+            adjudicationSpan?.SetTag("cho.outcome", "member_not_eligible");
+            adjudicationSpan?.SetStatus(ActivityStatusCode.Error, eligibilityReason);
+
+            RecordLatency(sw, claimTypeCode, "member_not_eligible");
+
+            var serviceDateForLog = SanitizeForLog(
+                request.ServiceDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+
+            _logger.LogWarning(
+                "Claim {ClaimId} denied: member {MemberId} not eligible on service date {ServiceDate}: {Reason}",
+                SanitizeForLog(request.ClaimId), SanitizeForLog(request.MemberId),
+                serviceDateForLog, SanitizeForLog(eligibilityReason));
+
+            return UnprocessableEntity(new
+            {
+                claimId = request.ClaimId,
+                error = "CARC_27",
+                message = eligibilityReason,
+                carc = "27",
+                timings = stageTimings,
             });
         }
 
@@ -336,6 +416,7 @@ public class AdjudicationController : ControllerBase
                 TenantId = TenantId,
                 StateCode = request.StateCode ?? "TX",
                 Lob = MapToPaLineOfBusiness(request.LineOfBusiness),
+                Program = MapToPaProgram(request.LineOfBusiness),
                 RequestingProviderNpi = request.ProviderNpi,
                 ServicingProviderNpi = request.ProviderNpi,
                 ServicingProviderTaxonomy = request.ProviderTaxonomy,
@@ -347,15 +428,17 @@ public class AdjudicationController : ControllerBase
                 EstimatedCost = request.Lines.Sum(l => l.BilledAmount),
             };
 
-            priorAuthDecision = await _priorAuthEngine.EvaluateAsync(paContext, ct);
+            priorAuthDecision = await MeasureStageAsync(
+                "priorAuth",
+                () => _priorAuthEngine.EvaluateAsync(paContext, ct));
 
             paSpan?.SetTag("cho.pa.outcome", priorAuthDecision.Outcome.ToString());
             paSpan?.SetTag("cho.pa.rule_id", priorAuthDecision.FiringRuleId);
         }
 
-        // If PA rule engine says Deny (procedure requires auth and none exists),
+        // If PA rule engine says auth/review is required and no auth exists,
         // deny the claim unless the provider already has an authorization on file.
-        if (priorAuthDecision.Outcome == PaDecisionOutcome.Deny
+        if (priorAuthDecision.IsPriorAuthRequired()
             && string.IsNullOrEmpty(request.PriorAuthorizationNumber))
         {
             adjudicationSpan?.SetTag("cho.outcome", "pa_denied");
@@ -376,21 +459,24 @@ public class AdjudicationController : ControllerBase
                 carc = priorAuthDecision.DenialCode ?? "197",
                 firingRule = priorAuthDecision.FiringRuleName,
                 ruleSetKey = priorAuthDecision.ResolvedRuleSetKey,
+                timings = stageTimings,
             });
         }
 
         // ── Step 0e: Terminology crosswalk (plan-specific code mappings) ──
         // Resolves plan-specific procedure code overrides before pricing.
         // Essential for TX Medicaid rate accuracy where plan codes differ from standard CPT.
-        var crosswalkResults = await _terminologyClient.TranslateBatchAsync(
-            TenantId,
-            request.Lines.Select(l => new CodeCrosswalkRequest
-            {
-                LineNumber = l.LineNumber,
-                ProcedureCode = l.ProcedureCode,
-                CodeType = l.CodeType ?? "CPT"
-            }).ToList(),
-            ct);
+        var crosswalkResults = await MeasureStageAsync(
+            "terminology",
+            () => _terminologyClient.TranslateBatchAsync(
+                TenantId,
+                request.Lines.Select(l => new CodeCrosswalkRequest
+                {
+                    LineNumber = l.LineNumber,
+                    ProcedureCode = l.ProcedureCode,
+                    CodeType = l.CodeType ?? "CPT"
+                }).ToList(),
+                ct));
 
         var crosswalkMap = crosswalkResults.ToDictionary(r => r.LineNumber, r => r.ResolvedCode);
 
@@ -418,7 +504,9 @@ public class AdjudicationController : ControllerBase
                 LineNumber = line.LineNumber
             }).ToList();
 
-            pricingResults = await _rateEngine.ResolveBatchAsync(pricingRequests, ct);
+            pricingResults = await MeasureStageAsync(
+                "rateResolution",
+                () => _rateEngine.ResolveBatchAsync(pricingRequests, ct));
 
             rateSpan?.SetTag("cho.rate.line_count", pricingResults.LineResults.Count);
         }
@@ -475,15 +563,21 @@ public class AdjudicationController : ControllerBase
             };
 
             // Use mode-aware calculation when in Augment mode to capture discrepancies
-            var augmentResult = await _benefitEngine.CalculateWithModeAsync(
-                benefitRequest,
-                routingDecision.OperatingMode,
-                TenantId,
-                legacyResult: null, // Legacy result injected by workflow when available
-                ct);
+            var augmentResult = await MeasureStageAsync(
+                "benefitCalculation",
+                () => _benefitEngine.CalculateWithModeAsync(
+                    benefitRequest,
+                    routingDecision.OperatingMode,
+                    TenantId,
+                    legacyResult: null, // Legacy result injected by workflow when available
+                    ct));
 
             benefitResult = augmentResult.ChoResult;
             augmentDiscrepancies = augmentResult.Discrepancies;
+            foreach (var timing in benefitResult.Timings)
+            {
+                stageTimings[$"benefitCalculation.{timing.Key}"] = timing.Value;
+            }
 
             benefitSpan?.SetTag("cho.benefit.success", benefitResult.Success);
             benefitSpan?.SetTag("cho.benefit.authoritative", augmentResult.Authoritative);
@@ -558,7 +652,8 @@ public class AdjudicationController : ControllerBase
                     AdjustmentReasons = bl.Adjustments
                 };
             }).ToList(),
-            Accumulators = benefitResult.AccumulatorSnapshot
+            Accumulators = benefitResult.AccumulatorSnapshot,
+            Timings = stageTimings
         };
 
         var outcome = benefitResult.Success ? "approved" : "denied";
@@ -611,6 +706,33 @@ public class AdjudicationController : ControllerBase
             SanitizeForLog(request.MemberId), request.BenefitPlanId, request.Lines.Count);
 
         var result = await _benefitEngine.CalculateAsync(request, ct);
+        return Ok(result);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // GET /api/v1/adjudication/provider-integrity/{npi}
+    //
+    // Standalone provider-integrity check, side-effect-free. Exposes
+    // IProviderIntegrityGate.CheckAsync over HTTP so claims-service's
+    // ProviderIntegrityStage can run the same federal-exclusion check
+    // AdjudicationController.Adjudicate already runs internally, without
+    // going through calculate-benefits (which stays exclusion-check-free
+    // by design -- it's also called by portal/preview features that must
+    // not be blocked by a live exclusion check on a hypothetical
+    // calculation). See docs/architecture/integrity-score-consumption.md.
+    // ═══════════════════════════════════════════════════════════════════
+
+    /// <summary>
+    /// Check a provider's federal-exclusion integrity status.
+    /// Read-only; does not affect any claim or provider record.
+    /// </summary>
+    [HttpGet("provider-integrity/{npi}")]
+    [ProducesResponseType(typeof(ProviderIntegrityResult), StatusCodes.Status200OK)]
+    public async Task<ActionResult<ProviderIntegrityResult>> CheckProviderIntegrity(
+        string npi,
+        CancellationToken ct)
+    {
+        var result = await _providerIntegrityGate.CheckAsync(npi, TenantId, ct: ct);
         return Ok(result);
     }
 
@@ -861,6 +983,49 @@ public class AdjudicationController : ControllerBase
         _ => PaLineOfBusiness.Medicaid   // Default to Medicaid for TX MCO tenants
     };
 
+    private static string? MapToPaProgram(int? lob) => lob switch
+    {
+        3 or 4 => "STAR",
+        _ => null
+    };
+
+    private static bool IsMemberEligibleForServiceDate(
+        AdjudicationRequest request,
+        out string reason)
+    {
+        if (request.MemberEffectiveDate is DateOnly effectiveDate
+            && request.ServiceDate < effectiveDate)
+        {
+            reason = "Service date before member coverage effective date";
+            return false;
+        }
+
+        if (request.MemberTerminationDate is DateOnly terminationDate
+            && request.ServiceDate > terminationDate)
+        {
+            reason = "Service date after member coverage termination date";
+            return false;
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.MemberEnrollmentStatus)
+            && !request.MemberEnrollmentStatus.Equals("Active", StringComparison.OrdinalIgnoreCase)
+            && !request.MemberEnrollmentStatus.Equals("Terminated", StringComparison.OrdinalIgnoreCase))
+        {
+            reason = $"Member status is {request.MemberEnrollmentStatus}";
+            return false;
+        }
+
+        if (request.MemberEnrollmentStatus?.Equals("Terminated", StringComparison.OrdinalIgnoreCase) is true
+            && request.MemberTerminationDate is null)
+        {
+            reason = "Member coverage terminated";
+            return false;
+        }
+
+        reason = "Active coverage";
+        return true;
+    }
+
     // ═══════════════════════════════════════════════════════════════════
     // Helper: Map AdjudicationRequest → X12837Claim for scrub engine
     // ═══════════════════════════════════════════════════════════════════
@@ -872,36 +1037,36 @@ public class AdjudicationController : ControllerBase
         TransactionControlNumber = request.ClaimId,
         InterchangeControlNumber = request.ClaimId,
         TransactionDate = request.ServiceDate.ToString("yyyyMMdd"),
-        Submitter = new CloudHealthOffice.ClaimsScrubEngine.Models.ClaimSubmitter
+        Submitter = new HealthCoreX.ClaimsScrubEngine.Models.ClaimSubmitter
         {
             Name = "Adjudication Pipeline",
             IdentificationCode = "ADJ",
             IdentificationQualifier = "46",
         },
-        Receiver = new CloudHealthOffice.ClaimsScrubEngine.Models.ClaimReceiver
+        Receiver = new HealthCoreX.ClaimsScrubEngine.Models.ClaimReceiver
         {
             Name = "Internal",
             IdentificationCode = "INT",
             IdentificationQualifier = "PI",
         },
-        BillingProvider = new CloudHealthOffice.ClaimsScrubEngine.Models.BillingProvider
+        BillingProvider = new HealthCoreX.ClaimsScrubEngine.Models.BillingProvider
         {
             Npi = request.ProviderNpi,
             Name = "Provider",
             EntityType = "2",
-            Address = new CloudHealthOffice.ClaimsScrubEngine.Models.ProviderAddress
+            Address = new HealthCoreX.ClaimsScrubEngine.Models.ProviderAddress
             {
                 Line1 = "", City = "", State = "", PostalCode = "",
             },
         },
-        Subscriber = new CloudHealthOffice.ClaimsScrubEngine.Models.ClaimSubscriber
+        Subscriber = new HealthCoreX.ClaimsScrubEngine.Models.ClaimSubscriber
         {
             MemberId = request.MemberId,
             FirstName = "N/A",
             LastName = "N/A",
             DateOfBirth = "19000101", // Not available from AdjudicationRequest
         },
-        ClaimHeader = new CloudHealthOffice.ClaimsScrubEngine.Models.ClaimHeader
+        ClaimHeader = new HealthCoreX.ClaimsScrubEngine.Models.ClaimHeader
         {
             PatientControlNumber = request.ClaimId,
             TotalChargeAmount = request.Lines.Sum(l => l.BilledAmount),
@@ -909,14 +1074,14 @@ public class AdjudicationController : ControllerBase
             DiagnosisCodes = request.Lines
                 .SelectMany(l => l.DiagnosisCodes)
                 .Distinct()
-                .Select(c => new CloudHealthOffice.ClaimsScrubEngine.Models.DiagnosisCode
+                .Select(c => new HealthCoreX.ClaimsScrubEngine.Models.DiagnosisCode
                 {
                     Code = c,
                     Qualifier = "ABK",
                 })
                 .ToList(),
         },
-        ServiceLines = request.Lines.Select(l => new CloudHealthOffice.ClaimsScrubEngine.Models.ServiceLine
+        ServiceLines = request.Lines.Select(l => new HealthCoreX.ClaimsScrubEngine.Models.ServiceLine
         {
             LineNumber = l.LineNumber,
             ProcedureCode = l.ProcedureCode,
@@ -952,6 +1117,9 @@ public record AdjudicationRequest
     public string SubscriberId { get; init; } = default!;
     public Guid BenefitPlanId { get; init; }
     public DateOnly ServiceDate { get; init; }
+    public DateOnly? MemberEffectiveDate { get; init; }
+    public DateOnly? MemberTerminationDate { get; init; }
+    public string? MemberEnrollmentStatus { get; init; }
     public string ProviderNpi { get; init; } = default!;
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -1071,6 +1239,12 @@ public record AdjudicationResponse
     /// Null when the verification service was not consulted.
     /// </summary>
     public int? ProviderIntegrityScore { get; init; }
+
+    /// <summary>
+    /// Elapsed milliseconds for adjudication sub-steps. Used by local MCC
+    /// benchmarking to identify the next tuning target.
+    /// </summary>
+    public IReadOnlyDictionary<string, double>? Timings { get; init; }
 }
 
 public record AdjudicationTotals

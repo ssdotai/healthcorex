@@ -14,7 +14,7 @@ if (typeof tenantId === "undefined") {
 }
 
 const TENANT_ID = tenantId;
-const choDb = db.getSiblingDB("cloudhealthoffice");
+const choDb = db.getSiblingDB("HealthCoreX");
 const now = new Date();
 const TENANT_PREFIX = TENANT_ID.substring(0, 8);
 

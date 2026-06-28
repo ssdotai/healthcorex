@@ -256,7 +256,7 @@ provisioning required.
 
 ## Testing
 
-Coverage in `tests/CloudHealthOffice.ProviderService.Tests/Services`:
+Coverage in `tests/HealthCoreX.ProviderService.Tests/Services`:
 
 - `NetworkRosterServiceTests` — paging across cursor pages, filter
   composition (LOB + specialty + acceptingNewPatients), `asOfDate`

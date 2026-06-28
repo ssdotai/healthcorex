@@ -1,7 +1,7 @@
-using CloudHealthOffice.Infrastructure.Caching;
+using HealthCoreX.Infrastructure.Caching;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace CloudHealthOffice.Infrastructure.Tests.Caching;
+namespace HealthCoreX.Infrastructure.Tests.Caching;
 
 public class InMemoryCacheProviderTests : CacheProviderContractTests
 {

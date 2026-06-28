@@ -1,13 +1,13 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
-using CloudHealthOffice.PricingApi.Configuration;
-using CloudHealthOffice.PricingApi.Data;
-using CloudHealthOffice.PricingApi.Middleware;
-using CloudHealthOffice.PricingApi.Services;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.Json;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.PricingApi.Configuration;
+using HealthCoreX.PricingApi.Data;
+using HealthCoreX.PricingApi.Middleware;
+using HealthCoreX.PricingApi.Services;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Observability;
 using MongoDB.Driver;
 using Serilog;
 
@@ -58,7 +58,7 @@ try
     // used with camelCaseEnums: true for the string-enum contract; the remaining
     // service-specific overrides are chained in a second AddJsonOptions call.
     builder.Services.AddControllers()
-        .AddCloudHealthOfficeJsonOptions(camelCaseEnums: true)
+        .AddHealthCoreXJsonOptions(camelCaseEnums: true)
         .AddJsonOptions(opts =>
         {
             opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
@@ -71,7 +71,7 @@ try
     {
         c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
         {
-            Title = "CloudHealthOffice Claims Pricing API",
+            Title = "HealthCoreX Claims Pricing API",
             Version = "v1",
             Description = """
                 Vendor-neutral claims repricing API by Aurelianware, Inc.
@@ -83,7 +83,7 @@ try
                 
                 **Getting started:**
                 1. Browse available fee schedules at GET /api/v1/fee-schedules (no auth needed)
-                2. Register for a free API key at https://cloudhealthoffice.com/pricing-api
+                2. Register for a free API key at https://HealthCoreX.com/pricing-api
                 3. Look up a code: GET /api/v1/lookup/99213
                 4. Reprice a claim: POST /api/v1/reprice
                 """,
@@ -91,12 +91,12 @@ try
             {
                 Name = "Aurelianware, Inc.",
                 Email = "markus@aurelianware.com",
-                Url = new Uri("https://cloudhealthoffice.com")
+                Url = new Uri("https://HealthCoreX.com")
             },
             License = new Microsoft.OpenApi.Models.OpenApiLicense
             {
                 Name = "Business Source License 1.1",
-                Url = new Uri("https://github.com/aurelianware/cloudhealthoffice/blob/main/LICENSE")
+                Url = new Uri("https://github.com/aurelianware/HealthCoreX/blob/main/LICENSE")
             }
         });
 
@@ -105,7 +105,7 @@ try
             In = Microsoft.OpenApi.Models.ParameterLocation.Header,
             Name = "X-API-Key",
             Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
-            Description = "API key obtained from https://cloudhealthoffice.com/pricing-api"
+            Description = "API key obtained from https://HealthCoreX.com/pricing-api"
         });
 
         c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
@@ -194,7 +194,7 @@ try
         }
     }
 
-    Log.Information("CloudHealthOffice Pricing API started on {Urls}", string.Join(", ", app.Urls));
+    Log.Information("HealthCoreX Pricing API started on {Urls}", string.Join(", ", app.Urls));
     await app.RunAsync();
 }
 catch (Exception ex)

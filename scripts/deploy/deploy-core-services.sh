@@ -15,7 +15,7 @@
 #
 # Environment variables:
 #   ACR_NAME        — ACR login server (default: choacrhy6h2vdulfru6.azurecr.io)
-#   K8S_NAMESPACE   — Kubernetes namespace (default: cloudhealthoffice)
+#   K8S_NAMESPACE   — Kubernetes namespace (default: HealthCoreX)
 #   IMAGE_TAG       — Image tag (default: latest)
 #   SEED_TENANT_ID  — Tenant ID for seed data (default: dev-tenant)
 #   SEED_GROUP      — Group number for seed data (default: GRP-DEV-2026)
@@ -25,7 +25,7 @@ set -euo pipefail
 # ── Configuration ────────────────────────────────────────────────────────
 
 ACR_NAME="${ACR_NAME:-choacrhy6h2vdulfru6.azurecr.io}"
-K8S_NAMESPACE="${K8S_NAMESPACE:-cloudhealthoffice}"
+K8S_NAMESPACE="${K8S_NAMESPACE:-HealthCoreX}"
 IMAGE_TAG="${IMAGE_TAG:-latest}"
 SEED_TENANT_ID="${SEED_TENANT_ID:-dev-tenant}"
 SEED_GROUP="${SEED_GROUP:-GRP-DEV-2026}"
@@ -68,7 +68,7 @@ if [ "$SKIP_BUILD" = false ]; then
   info "Building Docker images..."
   for svc in "${SERVICES[@]}"; do
     dockerfile="${REPO_ROOT}/src/services/${svc}/Dockerfile"
-    image="${ACR_NAME}/cloudhealthoffice-${svc}:${IMAGE_TAG}"
+    image="${ACR_NAME}/HealthCoreX-${svc}:${IMAGE_TAG}"
 
     if [ ! -f "$dockerfile" ]; then
       fail "Dockerfile not found: ${dockerfile}"
@@ -87,7 +87,7 @@ if [ "$SKIP_BUILD" = false ]; then
 
   info "Pushing images to ACR (${ACR_NAME})..."
   for svc in "${SERVICES[@]}"; do
-    image="${ACR_NAME}/cloudhealthoffice-${svc}:${IMAGE_TAG}"
+    image="${ACR_NAME}/HealthCoreX-${svc}:${IMAGE_TAG}"
     info "  Pushing ${svc}..."
     docker push "$image" --quiet || fail "Push failed: ${svc}"
   done
@@ -122,7 +122,7 @@ for svc in "${SERVICES[@]}"; do
 done
 
 # Apply portal ConfigMap update (service URLs)
-portal_manifest="${REPO_ROOT}/src/portal/CloudHealthOffice.Portal/k8s/portal-deployment.yaml"
+portal_manifest="${REPO_ROOT}/src/portal/HealthCoreX.Portal/k8s/portal-deployment.yaml"
 if [ -f "$portal_manifest" ]; then
   kubectl apply -f "$portal_manifest" -n "$K8S_NAMESPACE"
   ok "  Applied portal (ConfigMap + Deployment)"
@@ -170,12 +170,12 @@ if [ "$SKIP_SEED" = false ]; then
 
     # Run seed scripts
     kubectl exec -n "$K8S_NAMESPACE" "$MONGO_POD" -- \
-      mongosh cloudhealthoffice --quiet \
+      mongosh HealthCoreX --quiet \
       --eval "var tenantId=\"${SEED_TENANT_ID}\", groupNumber=\"${SEED_GROUP}\"" \
       /tmp/seed-demo-data.js
 
     kubectl exec -n "$K8S_NAMESPACE" "$MONGO_POD" -- \
-      mongosh cloudhealthoffice --quiet \
+      mongosh HealthCoreX --quiet \
       --eval "var tenantId=\"${SEED_TENANT_ID}\"" \
       /tmp/seed-demo-users.js
 

@@ -1,7 +1,7 @@
-using CloudHealthOffice.PricingApi.Models;
+using HealthCoreX.PricingApi.Models;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.PricingApi.Data;
+namespace HealthCoreX.PricingApi.Data;
 
 // ─────────────────────────────────────────────────────────────
 //  Interfaces

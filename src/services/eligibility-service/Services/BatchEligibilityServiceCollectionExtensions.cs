@@ -1,5 +1,5 @@
 using Azure.Storage.Blobs;
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Messaging;
 using Microsoft.Azure.Cosmos;
 
 namespace EligibilityService.Services;

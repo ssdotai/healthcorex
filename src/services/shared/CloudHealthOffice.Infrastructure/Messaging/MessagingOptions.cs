@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Infrastructure.Messaging;
+namespace HealthCoreX.Infrastructure.Messaging;
 
 /// <summary>
 /// Binds from the <c>Messaging</c> configuration section.

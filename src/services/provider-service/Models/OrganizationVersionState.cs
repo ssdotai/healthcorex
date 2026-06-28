@@ -6,7 +6,7 @@ namespace ProviderService.Models;
 /// Active → Suspended → Superseded → Terminated state machine.
 ///
 /// <para>String-only / no-integer enforcement is delegated to the shared
-/// MVC JSON options registered by <c>AddCloudHealthOfficeJsonOptions</c>;
+/// MVC JSON options registered by <c>AddHealthCoreXJsonOptions</c>;
 /// declaring a type-level converter here would override that with the lax
 /// default.</para>
 /// </summary>

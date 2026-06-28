@@ -4,7 +4,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Adapters;
+namespace HealthCoreX.ClaimsService.Tests.Adapters;
 
 public class ClaimAdapterFactoryTests
 {

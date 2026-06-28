@@ -35,7 +35,7 @@ spec:
     
     - name: sftp-fetch
       container:
-        image: ghcr.io/aurelianware/cloudhealthoffice-sftp-fetcher:latest
+        image: ghcr.io/aurelianware/HealthCoreX-sftp-fetcher:latest
         env:
         - name: SFTP_HOST
           value: "{{workflow.parameters.sftp-host}}"
@@ -59,7 +59,7 @@ spec:
     
     - name: parse-834
       container:
-        image: ghcr.io/aurelianware/cloudhealthoffice-x12-834-parser:latest
+        image: ghcr.io/aurelianware/HealthCoreX-x12-834-parser:latest
         env:
         - name: INPUT_DIR
           value: "/work/input"
@@ -80,7 +80,7 @@ spec:
             for file in /work/parsed/*.json; do
               echo "Importing $(basename $file)..."
               
-              curl -X POST http://enrollment-import-service.cloudhealthoffice/api/v1/enrollment/import \
+              curl -X POST http://enrollment-import-service.HealthCoreX/api/v1/enrollment/import \
                 -H "Content-Type: application/json" \
                 -H "X-Tenant-ID: {{workflow.parameters.tenant-id}}" \
                 --data-binary "@$file" \
@@ -109,7 +109,7 @@ spec:
     
     - name: sftp-archive
       container:
-        image: ghcr.io/aurelianware/cloudhealthoffice-sftp-publisher:latest
+        image: ghcr.io/aurelianware/HealthCoreX-sftp-publisher:latest
         env:
         - name: SFTP_HOST
           value: "{{workflow.parameters.sftp-host}}"

@@ -1,4 +1,4 @@
-using CloudHealthOffice.ProviderService.Tests.Fakes;
+using HealthCoreX.ProviderService.Tests.Fakes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -6,7 +6,7 @@ using ProviderService.Controllers;
 using ProviderService.Models;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Controllers;
+namespace HealthCoreX.ProviderService.Tests.Controllers;
 
 /// <summary>
 /// Unit-level coverage for <see cref="IntegrityProjectionAdminController"/>'s

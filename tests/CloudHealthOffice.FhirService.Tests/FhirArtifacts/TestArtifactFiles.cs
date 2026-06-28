@@ -1,7 +1,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace CloudHealthOffice.FhirService.Tests.FhirArtifacts;
+namespace HealthCoreX.FhirService.Tests.FhirArtifacts;
 
 /// <summary>
 /// Test helper that locates and reads CHO FHIR artifact source files from

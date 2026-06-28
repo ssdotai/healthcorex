@@ -71,7 +71,7 @@ public class IdCardAdapterFactory
         try
         {
             var tenantUrl = _configuration["Services:TenantService"]
-                ?? "http://tenant-service.cloudhealthoffice/api/v1";
+                ?? "http://tenant-service.HealthCoreX/api/v1";
             var client = _httpClientFactory.CreateClient("IdCardDefault");
             var response = await client.GetAsync($"{tenantUrl}/tenants/{tenantId}", ct);
 

@@ -187,16 +187,16 @@ Authentication Method: ☐ OAuth 2.0  ☐ API Key  ☐ Basic Auth  ☐ Other: __
 By executing this Order Form, Customer agrees to the following documents, which are incorporated by reference:
 
 ☐ **Cloud Health Office Terms of Service** (Version 2.0, Effective March 1, 2026)  
-Available at: https://cloudhealthoffice.com/legal/terms-of-service
+Available at: https://HealthCoreX.com/legal/terms-of-service
 
 ☐ **Business Associate Agreement (BAA)** (Exhibit A to Master Services Agreement)  
 To be executed concurrently with this Order Form
 
 ☐ **Service Level Agreement (SLA)** (Version 1.0)  
-Available at: https://cloudhealthoffice.com/legal/sla
+Available at: https://HealthCoreX.com/legal/sla
 
 ☐ **Privacy Policy** (Version 2.0, Effective March 1, 2026)  
-Available at: https://cloudhealthoffice.com/legal/privacy-policy
+Available at: https://HealthCoreX.com/legal/privacy-policy
 
 ☐ **Master Services Agreement** (if not already executed)
 

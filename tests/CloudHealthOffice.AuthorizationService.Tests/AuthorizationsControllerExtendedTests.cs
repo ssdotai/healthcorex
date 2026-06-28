@@ -6,7 +6,7 @@ using AuthorizationService.Models;
 using NSubstitute;
 using Authorization = AuthorizationService.Models.Authorization;
 
-namespace CloudHealthOffice.AuthorizationService.Tests;
+namespace HealthCoreX.AuthorizationService.Tests;
 
 /// <summary>
 /// Extended tests covering: 278 response processing, validation edge cases,
@@ -267,6 +267,35 @@ public class AuthorizationsControllerExtendedTests : IClassFixture<Authorization
         Assert.True(result.GetProperty("isValid").GetBoolean());
         Assert.Equal(2, result.GetProperty("approvedUnits").GetDecimal());
         Assert.Contains("valid", result.GetProperty("validationMessage").GetString()!.ToLower());
+    }
+
+    [Fact]
+    public async Task Validate_WrongProvider_ReturnsInvalid()
+    {
+        var auth = new Authorization
+        {
+            Id = Guid.NewGuid().ToString(),
+            AuthorizationNumber = "AUTH-PROVIDER",
+            Status = AuthorizationStatus.Approved,
+            ApprovedServiceDateFrom = DateTime.UtcNow.AddDays(-30),
+            ExpirationDate = DateTime.UtcNow.AddDays(60),
+            RequestingProviderNPI = "1234567890",
+            ServicingProviderNPI = "1234567890",
+            RequestedServices = new List<RequestedService>
+            {
+                new() { ProcedureCode = "72148", ServiceStatus = "A1", ApprovedUnits = 1, RequestedUnits = 1 }
+            }
+        };
+
+        _factory.AuthorizationRepository.GetByAuthorizationNumberAsync("AUTH-PROVIDER").Returns(auth);
+
+        var response = await _client.GetAsync(
+            "/api/authorizations/AUTH-PROVIDER/validate?procedureCode=72148&providerNpi=9999999999");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var result = await response.Content.ReadFromJsonAsync<JsonElement>(Json);
+        Assert.False(result.GetProperty("isValid").GetBoolean());
+        Assert.Contains("Provider 9999999999 not approved", result.GetProperty("validationMessage").GetString());
     }
 
     [Fact]

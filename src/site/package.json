@@ -1,8 +1,8 @@
 {
-  "name": "cloudhealthoffice-site",
+  "name": "HealthCoreX-site",
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node scripts/generate-mcc-publications.mjs && node build.mjs"
   }
 }

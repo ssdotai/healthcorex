@@ -62,25 +62,25 @@ echo ""
 echo "Creating/updating Kubernetes secret..."
 
 # Create or update the secret
-kubectl -n cloudhealthoffice create secret generic azure-ad-config \
+kubectl -n HealthCoreX create secret generic azure-ad-config \
   --from-literal=TenantId="$TENANT_ID" \
   --from-literal=ClientId="$CLIENT_ID" \
   --from-literal=ClientSecret="$CLIENT_SECRET" \
   --dry-run=client -o yaml | kubectl apply -f -
 
-echo "✅ Secret 'azure-ad-config' created/updated successfully in namespace 'cloudhealthoffice'"
+echo "✅ Secret 'azure-ad-config' created/updated successfully in namespace 'HealthCoreX'"
 echo ""
 echo "Restarting portal pods to pick up new configuration..."
 
-kubectl -n cloudhealthoffice rollout restart deployment/portal
+kubectl -n HealthCoreX rollout restart deployment/portal
 
 echo "✅ Portal deployment restarted"
 echo ""
 echo "Monitor rollout status with:"
-echo "  kubectl -n cloudhealthoffice rollout status deployment/portal"
+echo "  kubectl -n HealthCoreX rollout status deployment/portal"
 echo ""
 echo "Check logs with:"
-echo "  kubectl -n cloudhealthoffice logs -l app=portal --tail=50 -f"
+echo "  kubectl -n HealthCoreX logs -l app=portal --tail=50 -f"
 echo ""
 echo "=========================================="
 echo "✅ Configuration Complete!"

@@ -153,18 +153,18 @@ resolve_urls() {
       PORTAL_URL="http://localhost:3000"
       ;;
     staging)
-      TENANT_SERVICE_URL="${TENANT_SERVICE_URL:-https://tenant-service.staging.cloudhealthoffice.com}"
-      BENEFIT_PLAN_URL="${BENEFIT_PLAN_URL:-https://benefit-plan-service.staging.cloudhealthoffice.com}"
-      REFERENCE_DATA_URL="${REFERENCE_DATA_URL:-https://reference-data-service.staging.cloudhealthoffice.com}"
-      CLAIMS_SERVICE_URL="${CLAIMS_SERVICE_URL:-https://claims-service.staging.cloudhealthoffice.com}"
-      PORTAL_URL="https://portal.staging.cloudhealthoffice.com"
+      TENANT_SERVICE_URL="${TENANT_SERVICE_URL:-https://tenant-service.staging.HealthCoreX.com}"
+      BENEFIT_PLAN_URL="${BENEFIT_PLAN_URL:-https://benefit-plan-service.staging.HealthCoreX.com}"
+      REFERENCE_DATA_URL="${REFERENCE_DATA_URL:-https://reference-data-service.staging.HealthCoreX.com}"
+      CLAIMS_SERVICE_URL="${CLAIMS_SERVICE_URL:-https://claims-service.staging.HealthCoreX.com}"
+      PORTAL_URL="https://portal.staging.HealthCoreX.com"
       ;;
     prod)
-      TENANT_SERVICE_URL="${TENANT_SERVICE_URL:-https://tenant-service.cloudhealthoffice.com}"
-      BENEFIT_PLAN_URL="${BENEFIT_PLAN_URL:-https://benefit-plan-service.cloudhealthoffice.com}"
-      REFERENCE_DATA_URL="${REFERENCE_DATA_URL:-https://reference-data-service.cloudhealthoffice.com}"
-      CLAIMS_SERVICE_URL="${CLAIMS_SERVICE_URL:-https://claims-service.cloudhealthoffice.com}"
-      PORTAL_URL="https://portal.cloudhealthoffice.com"
+      TENANT_SERVICE_URL="${TENANT_SERVICE_URL:-https://tenant-service.HealthCoreX.com}"
+      BENEFIT_PLAN_URL="${BENEFIT_PLAN_URL:-https://benefit-plan-service.HealthCoreX.com}"
+      REFERENCE_DATA_URL="${REFERENCE_DATA_URL:-https://reference-data-service.HealthCoreX.com}"
+      CLAIMS_SERVICE_URL="${CLAIMS_SERVICE_URL:-https://claims-service.HealthCoreX.com}"
+      PORTAL_URL="https://portal.HealthCoreX.com"
       ;;
   esac
 }
@@ -438,7 +438,7 @@ EOF
     if is_success; then
       SFTP_HOST=$(echo "$RESPONSE_BODY" | grep -o '"sftpHost":"[^"]*"' | head -1 | cut -d'"' -f4)
       SFTP_USER=$(echo "$RESPONSE_BODY" | grep -o '"sftpUsername":"[^"]*"' | head -1 | cut -d'"' -f4)
-      ok "SFTP provisioned: ${SFTP_HOST:-sftp.cloudhealthoffice.com} (user: ${SFTP_USER:-${TENANT_ID}-edi})"
+      ok "SFTP provisioned: ${SFTP_HOST:-sftp.HealthCoreX.com} (user: ${SFTP_USER:-${TENANT_ID}-edi})"
     else
       warn "SFTP provisioning returned HTTP $HTTP_STATUS"
       warn "Response: $(echo "$RESPONSE_BODY" | head -3)"

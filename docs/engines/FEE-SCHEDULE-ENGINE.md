@@ -297,7 +297,7 @@ The fee schedule engine is intended to be consumed by the **adjudication service
 
 | Key | Required | Description |
 |---|---|---|
-| `CosmosDb:DatabaseName` | Cosmos only | Database name (default: `CloudHealthOffice`) |
+| `CosmosDb:DatabaseName` | Cosmos only | Database name (default: `HealthCoreX`) |
 | `CosmosDb:Endpoint` / `CosmosDb:Key` | Cosmos only | Cosmos DB credentials |
 | `MongoDb:ConnectionString` | Mongo only | MongoDB connection string |
 | `MongoDb:DatabaseName` | Mongo only | MongoDB database name |

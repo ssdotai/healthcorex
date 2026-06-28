@@ -1,9 +1,9 @@
-namespace CloudHealthOffice.ProviderVerificationEngine.DataSources.Nppes;
+namespace HealthCoreX.ProviderVerificationEngine.DataSources.Nppes;
 
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using CloudHealthOffice.ProviderVerificationEngine.Models;
+using HealthCoreX.ProviderVerificationEngine.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

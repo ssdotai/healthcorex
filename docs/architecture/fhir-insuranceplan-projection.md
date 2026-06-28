@@ -55,7 +55,7 @@ where two tenants happen to use the same value.
 
 `InsurancePlan.identifier[0]` is `{ system: PlanIdSystem, value: PlanId }`
 under the CHO canonical system
-`http://fhir.cloudhealthoffice.com/plan-id`.
+`http://fhir.HealthCoreX.com/plan-id`.
 
 `meta.versionId` is left absent; FHIR-canonical resource versioning is
 a separate concern from the BP 5.1 plan-version chain. A future
@@ -129,8 +129,8 @@ coinsurance) with 2-element `qualifiers` arrays:
 
 ```json
 "qualifiers": [
-  { "coding": [{ "system": "http://fhir.cloudhealthoffice.com/CodeSystem/insuranceplan-cost-qualifier", "code": "in-network" }] },
-  { "coding": [{ "system": "http://fhir.cloudhealthoffice.com/CodeSystem/insuranceplan-cost-qualifier", "code": "copay" }] }
+  { "coding": [{ "system": "http://fhir.HealthCoreX.com/CodeSystem/insuranceplan-cost-qualifier", "code": "in-network" }] },
+  { "coding": [{ "system": "http://fhir.HealthCoreX.com/CodeSystem/insuranceplan-cost-qualifier", "code": "copay" }] }
 ]
 ```
 
@@ -148,8 +148,8 @@ appeals-domain-specific):
 
 | URL | Source | Type |
 |---|---|---|
-| `http://fhir.cloudhealthoffice.com/StructureDefinition/insuranceplan-family-accumulator-model` | `BenefitPlan.FamilyAccumulatorModel` (BP 5.7) | `valueCode = Embedded \| Aggregate` |
-| `http://fhir.cloudhealthoffice.com/StructureDefinition/insuranceplan-aca-cap-enforced` | `AcaCapEnforcementPolicy.IsEnforced(plan)` | `valueBoolean = true` (only emitted when true) |
+| `http://fhir.HealthCoreX.com/StructureDefinition/insuranceplan-family-accumulator-model` | `BenefitPlan.FamilyAccumulatorModel` (BP 5.7) | `valueCode = Embedded \| Aggregate` |
+| `http://fhir.HealthCoreX.com/StructureDefinition/insuranceplan-aca-cap-enforced` | `AcaCapEnforcementPolicy.IsEnforced(plan)` | `valueBoolean = true` (only emitted when true) |
 
 `AcaCapEnforcementPolicy` is the single source of truth for the
 "is the cap enforced" decision — both this projector AND
@@ -211,7 +211,7 @@ HDHP / etc.) is always accurate because plan authors set it directly.
 | `BenefitPlanService.Tests/Services/AcaCapEnforcementPolicyTests.cs` | Policy delegation + cutoff pinning + parity with BP 5.7 inline rule |
 | `BenefitPlanService.Tests/Services/FhirInsurancePlanProjectorTests.cs` | US Core / Plan-Net structure, network projection, coverage grouping, cost-sharing, ACA-cap emission, deterministic output |
 | `BenefitPlanService.Tests/Controllers/FhirInsurancePlanControllerTests.cs` | Read 200/400/404, search bundle shape, identifier token parsing, name + status filtering, tenant scoping |
-| `tests/CloudHealthOffice.FhirService.Tests/Controllers/InsurancePlanControllerProxyTests.cs` | URL forwarding, query-string passthrough, 4xx verbatim, 5xx → 502 OperationOutcome without body leak, transport faults |
+| `tests/HealthCoreX.FhirService.Tests/Controllers/InsurancePlanControllerProxyTests.cs` | URL forwarding, query-string passthrough, 4xx verbatim, 5xx → 502 OperationOutcome without body leak, transport faults |
 
 ## References
 

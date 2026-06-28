@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Events;
+namespace HealthCoreX.Events;
 
 /// <summary>
 /// Event payload for accumulators.adjusted.v1. Emitted by accumulator-service when

@@ -1,4 +1,4 @@
-# CloudHealthOffice.ProviderVerificationService
+# HealthCoreX.ProviderVerificationService
 
 **Service #29** — Multi-source provider verification and integrity scoring engine.
 
@@ -38,7 +38,7 @@
 
 ```
 src/
-├── CloudHealthOffice.ProviderVerificationEngine/    # Class library (the "engine")
+├── HealthCoreX.ProviderVerificationEngine/    # Class library (the "engine")
 │   ├── Models/
 │   │   └── Entities.cs                              # All entity models
 │   ├── DataSources/
@@ -49,18 +49,18 @@ src/
 │   │   └── IntegrityScoreCalculator.cs              # Composite scoring
 │   └── ProviderVerificationOrchestrator.cs          # Core orchestrator
 │
-├── CloudHealthOffice.ProviderVerificationService/   # ASP.NET microservice
+├── HealthCoreX.ProviderVerificationService/   # ASP.NET microservice
 │   ├── Program.cs                                   # Minimal API + DI
 │   └── appsettings.json                             # Configuration
 │
 └── (future)
-    ├── CloudHealthOffice.ProviderVerificationService.Workers/
+    ├── HealthCoreX.ProviderVerificationService.Workers/
     │   ├── NppesBulkSyncWorker.cs                   # Weekly NPPES V2 file sync
     │   ├── LeieSyncWorker.cs                        # Monthly LEIE download
     │   ├── PecosSyncWorker.cs                       # Monthly PECOS CSV sync
     │   └── OpenPaymentsSyncWorker.cs                # Annual Open Payments sync
     │
-    └── CloudHealthOffice.ProviderVerificationEngine.Tests/
+    └── HealthCoreX.ProviderVerificationEngine.Tests/
         ├── Scoring/IntegrityScoreCalculatorTests.cs
         └── DataSources/NppesHttpAdapterTests.cs
 ```

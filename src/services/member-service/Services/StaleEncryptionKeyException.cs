@@ -5,7 +5,7 @@ namespace MemberService.Services;
 /// <summary>
 /// Thrown when an envelope references a key version that is listed in the
 /// service's <c>AcceptedKeyVersions</c> window but whose underlying secret
-/// cannot be resolved from the <see cref="CloudHealthOffice.Infrastructure.Configuration.ISecretProvider"/>.
+/// cannot be resolved from the <see cref="HealthCoreX.Infrastructure.Configuration.ISecretProvider"/>.
 /// Distinct from a plain <see cref="CryptographicException"/> (which
 /// indicates tampered ciphertext or the wrong key) so that callers can
 /// distinguish "rotation migration failure — page ops" from "possible

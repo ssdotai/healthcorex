@@ -3,7 +3,7 @@ namespace ProviderService.Services;
 /// <summary>
 /// Canonical URLs for FHIR artifacts the provider-service projector
 /// emits. Mirrors the convention in fhir-service's
-/// <c>ChoFhirCanonicalUrls</c> (base <c>http://fhir.cloudhealthoffice.com/</c>);
+/// <c>ChoFhirCanonicalUrls</c> (base <c>http://fhir.HealthCoreX.com/</c>);
 /// the integrity-score extension URL must be byte-identical between the
 /// two services so consumers see one canonical extension regardless of
 /// which service rendered the resource.
@@ -17,7 +17,7 @@ namespace ProviderService.Services;
 /// </summary>
 internal static class ChoProviderFhirUrls
 {
-    public const string Base                    = "http://fhir.cloudhealthoffice.com/";
+    public const string Base                    = "http://fhir.HealthCoreX.com/";
     public const string StructureDefinitionBase = Base + "StructureDefinition/";
 
     /// <summary>

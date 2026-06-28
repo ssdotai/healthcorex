@@ -7,15 +7,15 @@
 #   - Batch file download support
 #   - Kubernetes Secret integration
 #
-# Build: docker build -t cloudhealthoffice/sftp-fetcher:latest .
-# Run: docker run -v /data:/data cloudhealthoffice/sftp-fetcher --host sftp.clearinghouse.example.com --folder /inbound
+# Build: docker build -t HealthCoreX/sftp-fetcher:latest .
+# Run: docker run -v /data:/data HealthCoreX/sftp-fetcher --host sftp.clearinghouse.example.com --folder /inbound
 
 FROM python:3.11-slim
 
 LABEL org.opencontainers.image.title="Cloud Health Office SFTP Fetcher"
 LABEL org.opencontainers.image.description="SFTP client for downloading X12 EDI files from clearinghouse"
 LABEL org.opencontainers.image.vendor="Aurelianware"
-LABEL org.opencontainers.image.source="https://github.com/aurelianware/cloudhealthoffice"
+LABEL org.opencontainers.image.source="https://github.com/aurelianware/HealthCoreX"
 
 # Security: Run as non-root user
 RUN groupadd -r sftpfetcher && useradd -r -g sftpfetcher sftpfetcher

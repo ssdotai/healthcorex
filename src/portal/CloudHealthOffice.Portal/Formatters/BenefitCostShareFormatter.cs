@@ -1,6 +1,6 @@
-using CloudHealthOffice.Portal.Services;
+using HealthCoreX.Portal.Services;
 
-namespace CloudHealthOffice.Portal.Formatters;
+namespace HealthCoreX.Portal.Formatters;
 
 /// <summary>
 /// Formats a <see cref="NetworkTierBenefit"/> into the short string rendered

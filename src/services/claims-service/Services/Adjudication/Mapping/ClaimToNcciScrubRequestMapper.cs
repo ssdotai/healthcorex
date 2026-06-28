@@ -1,11 +1,11 @@
 using ClaimsService.Models;
-using EngineModels = CloudHealthOffice.NcciEngine.Models;
+using EngineModels = HealthCoreX.NcciEngine.Models;
 
 namespace ClaimsService.Services.Adjudication.Mapping;
 
 /// <summary>
 /// Bridges the platform's <see cref="AdapterClaim"/> shape onto
-/// <c>CloudHealthOffice.NcciEngine</c>'s <see cref="EngineModels.NcciScrubRequest"/>
+/// <c>HealthCoreX.NcciEngine</c>'s <see cref="EngineModels.NcciScrubRequest"/>
 /// (capability 5.7, mirrors 5.4's <see cref="ClaimToX12837Mapper"/>).
 ///
 /// <para>

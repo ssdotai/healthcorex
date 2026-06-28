@@ -1,10 +1,10 @@
-using CloudHealthOffice.NcciEngine.Domain;
-using CloudHealthOffice.NcciEngine.Models;
+using HealthCoreX.NcciEngine.Domain;
+using HealthCoreX.NcciEngine.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.NcciEngine.Persistence;
+namespace HealthCoreX.NcciEngine.Persistence;
 
 /// <summary>
 /// MongoDB implementation of INcciRepository.

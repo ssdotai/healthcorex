@@ -17,7 +17,7 @@ public DateTimeOffset? NextVerificationDue { get; set; }
 ```
 
 …but no write path populated them. `ProviderVerificationOrchestrator`
-in `src/engines/CloudHealthOffice.ProviderVerificationEngine` produced a
+in `src/engines/HealthCoreX.ProviderVerificationEngine` produced a
 verification record on a transient object that was never persisted back
 to the entity. Capability 5.4 (Network Roster API) shipped a roster
 that reads `Provider.IntegrityScore` directly — and got `null` for

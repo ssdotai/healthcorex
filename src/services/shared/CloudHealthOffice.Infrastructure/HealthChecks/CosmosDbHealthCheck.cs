@@ -1,7 +1,7 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace CloudHealthOffice.Infrastructure.HealthChecks;
+namespace HealthCoreX.Infrastructure.HealthChecks;
 
 public class CosmosDbHealthCheck : IHealthCheck
 {

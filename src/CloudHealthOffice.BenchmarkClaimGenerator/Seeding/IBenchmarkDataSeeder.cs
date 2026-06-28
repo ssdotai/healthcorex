@@ -1,6 +1,6 @@
-using CloudHealthOffice.BenchmarkClaimGenerator.Models;
+using HealthCoreX.BenchmarkClaimGenerator.Models;
 
-namespace CloudHealthOffice.BenchmarkClaimGenerator.Seeding;
+namespace HealthCoreX.BenchmarkClaimGenerator.Seeding;
 
 /// <summary>
 /// Interface for seeding benchmark data into a backend data store.

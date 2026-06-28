@@ -9,11 +9,11 @@ apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
   name: kafka-events
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app.kubernetes.io/name: kafka-events
     app.kubernetes.io/component: event-source
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
 spec:
   kafka:
     # RFAI Requests Topic - triggers 277 generation
@@ -76,11 +76,11 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kafka-eventsource-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app.kubernetes.io/name: kafka-eventsource-config
     app.kubernetes.io/component: config
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
 data:
   bootstrap-servers: "kafka-cluster-kafka-bootstrap.kafka:9092"
   security-protocol: "SASL_SSL"

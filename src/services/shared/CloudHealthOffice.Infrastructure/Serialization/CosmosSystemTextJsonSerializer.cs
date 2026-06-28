@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Azure.Cosmos;
 
-namespace CloudHealthOffice.Infrastructure.Serialization;
+namespace HealthCoreX.Infrastructure.Serialization;
 
 /// <summary>
 /// Custom Cosmos DB serializer using System.Text.Json with camelCase naming and enum string conversion.

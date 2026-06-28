@@ -3,11 +3,11 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: smart-auth-service-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 data:
   ASPNETCORE_ENVIRONMENT: "Production"
-  SmartAuth__FhirBaseUrl: "https://api.cloudhealthoffice.com/fhir/r4"
-  SmartAuth__Issuer: "https://auth.cloudhealthoffice.com"
+  SmartAuth__FhirBaseUrl: "https://api.HealthCoreX.com/fhir/r4"
+  SmartAuth__Issuer: "https://auth.HealthCoreX.com"
   SmartAuth__AccessTokenLifetimeMinutes: "60"
   SmartAuth__RefreshTokenLifetimeDays: "7"
   SmartAuth__LaunchContextTtlMinutes: "5"
@@ -18,11 +18,11 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: smart-auth-service-secrets
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 type: Opaque
 stringData:
-  MongoDb__ConnectionString: "mongodb://admin:CHANGE_ME@mongodb:27017/CloudHealthOffice"
-  MongoDb__DatabaseName: "CloudHealthOffice"
+  MongoDb__ConnectionString: "mongodb://admin:CHANGE_ME@mongodb:27017/HealthCoreX"
+  MongoDb__DatabaseName: "HealthCoreX"
   # Production: signing/encryption certificates from Azure Key Vault
   # Sprint 3: mount KeyVault secrets here
 
@@ -31,7 +31,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: smart-auth-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: smart-auth-service
     component: auth-server
@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: smart-auth-service
-          image: choacrhy6h2vdulfru6.azurecr.io/cloudhealthoffice-smart-auth-service:latest
+          image: choacrhy6h2vdulfru6.azurecr.io/HealthCoreX-smart-auth-service:latest
           ports:
             - containerPort: 8080
           envFrom:
@@ -81,7 +81,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: smart-auth-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 spec:
   type: ClusterIP
   selector:
@@ -96,7 +96,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: smart-auth-service-hpa
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -113,12 +113,12 @@ spec:
           averageUtilization: 70
 
 ---
-# Exposed at auth.cloudhealthoffice.com — separate subdomain from api.cloudhealthoffice.com
+# Exposed at auth.HealthCoreX.com — separate subdomain from api.HealthCoreX.com
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: smart-auth-ingress
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
@@ -126,15 +126,15 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "1m"
     # Required for OAuth2 cookie handling
     nginx.ingress.kubernetes.io/proxy-cookie-path: "/ /"
-    nginx.ingress.kubernetes.io/proxy-cookie-domain: ".cloudhealthoffice.com"
+    nginx.ingress.kubernetes.io/proxy-cookie-domain: ".HealthCoreX.com"
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - auth.cloudhealthoffice.com
+        - auth.HealthCoreX.com
       secretName: smart-auth-tls-secret
   rules:
-    - host: auth.cloudhealthoffice.com
+    - host: auth.HealthCoreX.com
       http:
         paths:
           - path: /

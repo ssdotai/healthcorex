@@ -22,7 +22,7 @@ metadata:
   labels:
     app.kubernetes.io/name: x12-278-replay
     app.kubernetes.io/component: edi-processing
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
     hipaa.compliance: "required"
   annotations:
     description: "X12 278 replay workflow for reprocessing transactions - HIPAA compliant"
@@ -348,7 +348,7 @@ spec:
           - name: parsed-output
             path: /data/output/parsed.json
       container:
-        image: cloudhealthoffice/x12-parser:latest
+        image: HealthCoreX/x12-parser:latest
         args:
           - "/data/input/*.edi"
           - "--output"
@@ -377,7 +377,7 @@ spec:
           - name: metadata-output
             path: /data/output/metadata.json
       container:
-        image: cloudhealthoffice/metadata-extractor:latest
+        image: HealthCoreX/metadata-extractor:latest
         args:
           - "--input"
           - "/data/input/parsed.json"
@@ -491,7 +491,7 @@ spec:
           - name: replay-reason
           - name: api-result
       container:
-        image: cloudhealthoffice/kafka-publisher:latest
+        image: HealthCoreX/kafka-publisher:latest
         args:
           - "--topic"
           - "edi-278-replays"
@@ -544,7 +544,7 @@ spec:
         parameters:
           - name: error-message
       container:
-        image: cloudhealthoffice/kafka-publisher:latest
+        image: HealthCoreX/kafka-publisher:latest
         args:
           - "--topic"
           - "dead-letter-queue"

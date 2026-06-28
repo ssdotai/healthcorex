@@ -53,7 +53,7 @@ This release represents a significant evolution of Cloud Health Office with **cr
 ## ☁️ Cloud Portability (Feature Branch)
 
 ### Multi-Cloud Infrastructure
-Created `CloudHealthOffice.Infrastructure` package supporting:
+Created `HealthCoreX.Infrastructure` package supporting:
 - **Azure**: Cosmos DB (current production)
 - **DigitalOcean**: MongoDB (65% cost savings)
 
@@ -80,7 +80,7 @@ Created `CloudHealthOffice.Infrastructure` package supporting:
 
 ### SFTP Integration
 - **New Tenant:** clouddentaloffice
-- **Endpoint:** 20.115.193.245:22 (sftp.cloudhealthoffice.com pending DNS)
+- **Endpoint:** 20.115.193.245:22 (sftp.HealthCoreX.com pending DNS)
 - **Password:** Stored in Azure Key Vault
 - **Folder Structure:** /dental-claims/inbound/837/, /outbound/835/, /outbound/277/
 
@@ -103,7 +103,7 @@ Created `CloudHealthOffice.Infrastructure` package supporting:
 
 ### Cloud Health Office Identity
 - **Logo:** The Sentinel (obsidian monolith shield)
-- **Primary Asset:** `docs/images/logo-cloudhealthoffice-sentinel-primary.png`
+- **Primary Asset:** `docs/images/logo-HealthCoreX-sentinel-primary.png`
 - **Colors:** Absolute black background, chromatic circuit highlights
 - **Tone:** Authoritative, future-focused (2047 aesthetic)
 
@@ -132,9 +132,9 @@ Created `CloudHealthOffice.Infrastructure` package supporting:
 4. **deploy-multi-cloud.yml**: 🚧 Feature branch (cloud toggles)
 
 ### Kubernetes Deployments
-- **Namespace:** cloudhealthoffice
+- **Namespace:** HealthCoreX
 - **Cluster:** cho-aks-prod (Azure East US)
-- **Registry:** ghcr.io/aurelianware/cloudhealthoffice-*
+- **Registry:** ghcr.io/aurelianware/HealthCoreX-*
 - **Replicas:** 2 per service (for HA)
 
 ---
@@ -171,7 +171,7 @@ Created `CloudHealthOffice.Infrastructure` package supporting:
 
 ## 🎯 Known Issues
 
-1. **DNS Configuration:** sftp.cloudhealthoffice.com not yet pointed to 20.115.193.245
+1. **DNS Configuration:** sftp.HealthCoreX.com not yet pointed to 20.115.193.245
 2. **Mock Data Fallback:** Portal shows mock data when backend unavailable (configurable via `Portal.UseMockDataFallback`)
 3. **Stripe.net Warning:** NU1603 - Package 46.4.0 not found, resolved to 47.0.0 (non-breaking)
 
@@ -218,10 +218,10 @@ This release was made possible by focused engineering on:
 
 ## 🔗 Links
 
-- **Repository:** https://github.com/aurelianware/cloudhealthoffice
-- **Issues:** https://github.com/aurelianware/cloudhealthoffice/issues
-- **Security:** https://github.com/aurelianware/cloudhealthoffice/security
-- **Portal:** https://portal.cloudhealthoffice.com
+- **Repository:** https://github.com/aurelianware/HealthCoreX
+- **Issues:** https://github.com/aurelianware/HealthCoreX/issues
+- **Security:** https://github.com/aurelianware/HealthCoreX/security
+- **Portal:** https://portal.HealthCoreX.com
 
 ---
 

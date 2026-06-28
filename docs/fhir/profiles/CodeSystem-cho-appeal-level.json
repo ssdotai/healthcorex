@@ -1,7 +1,7 @@
 {
   "resourceType": "CodeSystem",
   "id": "cho-appeal-level",
-  "url": "http://fhir.cloudhealthoffice.com/CodeSystem/cho-appeal-level",
+  "url": "http://fhir.HealthCoreX.com/CodeSystem/cho-appeal-level",
   "version": "1.0.0",
   "name": "ChoAppealLevel",
   "title": "CHO Appeal Level",

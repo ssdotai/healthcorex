@@ -14,7 +14,7 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\engines\CloudHealthOffice.PriorAuthRuleEngine\CloudHealthOffice.PriorAuthRuleEngine.csproj" />
+    <ProjectReference Include="..\..\src\engines\HealthCoreX.PriorAuthRuleEngine\HealthCoreX.PriorAuthRuleEngine.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="Xunit" />

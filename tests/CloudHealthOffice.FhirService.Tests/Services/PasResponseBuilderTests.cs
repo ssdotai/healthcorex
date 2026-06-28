@@ -3,7 +3,7 @@ using FhirService.Models;
 using FhirService.Services;
 using Hl7.Fhir.Model;
 
-namespace CloudHealthOffice.FhirService.Tests.Services;
+namespace HealthCoreX.FhirService.Tests.Services;
 
 public class PasResponseBuilderTests
 {

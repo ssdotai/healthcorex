@@ -1,4 +1,4 @@
-using CloudHealthOffice.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Messaging;
 
 namespace EligibilityService.Services;
 

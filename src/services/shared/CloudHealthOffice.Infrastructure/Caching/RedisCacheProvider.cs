@@ -1,14 +1,14 @@
 using System.Text.Json;
-using CloudHealthOffice.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Json;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
-namespace CloudHealthOffice.Infrastructure.Caching;
+namespace HealthCoreX.Infrastructure.Caching;
 
 /// <summary>
 /// <see cref="ICacheProvider"/> backed by <see cref="IConnectionMultiplexer"/>.
 ///
-/// Values are serialized via <see cref="CloudHealthOfficeJsonOptions.DefaultOptions"/>.
+/// Values are serialized via <see cref="HealthCoreXJsonOptions.DefaultOptions"/>.
 /// Redis tracing from <c>OpenTelemetry.Instrumentation.StackExchangeRedis</c>
 /// (A.7.4) attaches at the multiplexer level, so every operation here
 /// produces a <c>db.system=redis</c> span without any additional wiring.
@@ -50,7 +50,7 @@ internal sealed class RedisCacheProvider : ICacheProvider
 
             try
             {
-                return JsonSerializer.Deserialize<T>(value!, CloudHealthOfficeJsonOptions.DefaultOptions);
+                return JsonSerializer.Deserialize<T>(value!, HealthCoreXJsonOptions.DefaultOptions);
             }
             catch (JsonException ex)
             {
@@ -72,7 +72,7 @@ internal sealed class RedisCacheProvider : ICacheProvider
         try
         {
             var db      = _redis.GetDatabase();
-            var payload = JsonSerializer.Serialize(value, CloudHealthOfficeJsonOptions.DefaultOptions);
+            var payload = JsonSerializer.Serialize(value, HealthCoreXJsonOptions.DefaultOptions);
             await db.StringSetAsync(key, payload, ttl).ConfigureAwait(false);
         }
         catch (RedisException ex)

@@ -2,7 +2,7 @@ using ClaimsService.Adapters;
 using ClaimsService.Models;
 using FluentAssertions;
 
-namespace CloudHealthOffice.ClaimsService.Tests.Adapters;
+namespace HealthCoreX.ClaimsService.Tests.Adapters;
 
 public class StubClaimAdapterTests
 {

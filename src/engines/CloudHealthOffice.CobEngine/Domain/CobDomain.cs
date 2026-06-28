@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.CobEngine.Domain;
+namespace HealthCoreX.CobEngine.Domain;
 
 // ═══════════════════════════════════════════════════════════════════
 // ENUMS

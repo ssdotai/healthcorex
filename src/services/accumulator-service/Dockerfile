@@ -3,13 +3,13 @@ FROM ${REGISTRY}/dotnet/sdk:8.0 AS build
 WORKDIR /repo
 
 COPY src/services/accumulator-service/accumulator-service.csproj src/services/accumulator-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/CloudHealthOffice.Infrastructure.csproj src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/services/shared/CloudHealthOffice.Events/CloudHealthOffice.Events.csproj src/services/shared/CloudHealthOffice.Events/
+COPY src/services/shared/HealthCoreX.Infrastructure/HealthCoreX.Infrastructure.csproj src/services/shared/HealthCoreX.Infrastructure/
+COPY src/services/shared/HealthCoreX.Events/HealthCoreX.Events.csproj src/services/shared/HealthCoreX.Events/
 RUN dotnet restore src/services/accumulator-service/accumulator-service.csproj
 
 COPY src/services/accumulator-service/ src/services/accumulator-service/
-COPY src/services/shared/CloudHealthOffice.Infrastructure/ src/services/shared/CloudHealthOffice.Infrastructure/
-COPY src/services/shared/CloudHealthOffice.Events/ src/services/shared/CloudHealthOffice.Events/
+COPY src/services/shared/HealthCoreX.Infrastructure/ src/services/shared/HealthCoreX.Infrastructure/
+COPY src/services/shared/HealthCoreX.Events/ src/services/shared/HealthCoreX.Events/
 RUN dotnet build src/services/accumulator-service/accumulator-service.csproj -c Release --no-restore
 
 FROM build AS publish

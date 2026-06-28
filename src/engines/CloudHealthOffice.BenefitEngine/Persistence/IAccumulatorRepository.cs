@@ -1,6 +1,6 @@
-using CloudHealthOffice.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Domain;
 
-namespace CloudHealthOffice.BenefitEngine.Persistence;
+namespace HealthCoreX.BenefitEngine.Persistence;
 
 /// <summary>
 /// Low-level storage interface for accumulator documents.

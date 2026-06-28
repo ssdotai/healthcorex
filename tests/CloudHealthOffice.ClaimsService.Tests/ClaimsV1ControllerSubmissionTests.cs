@@ -7,7 +7,7 @@ using NSubstitute;
 using NSubstitute.ClearExtensions;
 using Xunit;
 
-namespace CloudHealthOffice.ClaimsService.Tests;
+namespace HealthCoreX.ClaimsService.Tests;
 
 /// <summary>
 /// Canonical V1 submission endpoint coverage (capability 5.3 —

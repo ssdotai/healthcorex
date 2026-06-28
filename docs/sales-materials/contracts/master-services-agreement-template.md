@@ -21,7 +21,7 @@ Provider and Customer are each referred to individually as a "Party" and collect
 
 ## RECITALS
 
-WHEREAS, Provider operates a cloud-based platform for automating HIPAA-compliant medical attachment processing; and
+WHEREAS, Provider operates a cloud-based platform for automating medical attachment processing for HIPAA-covered workflows; and
 
 WHEREAS, Customer desires to license the Platform to process medical attachments in connection with its healthcare payer operations; and
 
@@ -153,8 +153,8 @@ NOW, THEREFORE, in consideration of the mutual covenants and agreements set fort
 - (d) Regular security assessments and penetration testing;
 - (e) Incident response and breach notification procedures.
 
-**7.3 Compliance Certifications.** Provider represents that it maintains:
-- (a) SOC 2 Type II certification;
+**7.3 Compliance Certifications.** Provider represents that it maintains or is actively pursuing the following compliance certifications and standards:
+- (a) SOC 2 Type II audit in progress (observation period April 1 - September 30, 2026; audit completion targeted December 31, 2026);
 - (b) HIPAA compliance documentation;
 - (c) Regular third-party security audits.
 
@@ -381,7 +381,7 @@ Date: _________________________________
 - Service: Azure cloud infrastructure
 - Purpose: Hosting and compute services
 - Location: United States
-- Certification: SOC 2, ISO 27001, HIPAA-compliant
+- Certification: SOC 2, ISO 27001; eligible for HIPAA workloads when deployed under an appropriate BAA and customer configuration
 
 **2. [Other Subprocessors as Applicable]**
 

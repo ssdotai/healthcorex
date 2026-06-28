@@ -80,7 +80,7 @@ $PHI_PII_PATTERNS = @{
         Description = 'Email Address'
         Severity = 'Medium'
         AllowedFiles = @('*.md', '*.ps1', 'test-*.json', '*-config.json', 'example-*.json', '*.yml', '*.yaml', '*.test.ts', '*.test.js', '*.spec.ts', '*.spec.js', '*test*.ts', '*test*.js', '*.html', '*.cs')
-        ExcludeContext = @('test\.com|example\.com|sample\.com|mock\.|dummy\.|placeholder|@test\.|john@|jane@|user@test|aurelianware\.com|cloudhealthoffice\.com|yourorg\.com')
+        ExcludeContext = @('test\.com|example\.com|sample\.com|mock\.|dummy\.|placeholder|@test\.|john@|jane@|user@test|aurelianware\.com|HealthCoreX\.com|yourorg\.com')
     }
     'PhoneNumber' = @{
         Pattern = '\b(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b'
@@ -138,7 +138,7 @@ $HIPAA_PATTERNS = @{
         Description = 'Unencrypted PHI transmission (should use HTTPS)'
         Severity = 'Critical'
         AllowedFiles = @('*.md', 'scan-for-phi-pii.ps1', '*.test.ts', '*.test.js', '*.spec.ts', '*.spec.js', '*test*.ts', '*test*.js', '*example*', '*Example*', '*.css.map', '*.min.css.map')
-        ExcludeContext = @('hl7\.org', 'fhir\.org', 'terminology\.hl7\.org', 'StructureDefinition', 'CodeSystem', 'ValueSet', 'www\.w3\.org', 'xmlns', 'xml', 'svc\.cluster\.local', 'localhost', '127\.0\.0\.1', 'internal', 'kubernetes', 'cloudhealthoffice')
+        ExcludeContext = @('hl7\.org', 'fhir\.org', 'terminology\.hl7\.org', 'StructureDefinition', 'CodeSystem', 'ValueSet', 'www\.w3\.org', 'xmlns', 'xml', 'svc\.cluster\.local', 'localhost', '127\.0\.0\.1', 'internal', 'kubernetes', 'HealthCoreX')
     }
     'LoggingPHI' = @{
         Pattern = '(?:console\.log|Write-Host|console\.warn|console\.error|logger\.|log\.).*(?:ssn|social.?security|dob|date.?of.?birth|patient|member.?id|mrn|medical.?record)'

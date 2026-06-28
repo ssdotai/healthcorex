@@ -64,7 +64,7 @@ The Cloud Health Office deployment uses a comprehensive automated workflow that:
 │    → See: DEPLOYMENT.md § Argo Workflow Deployment           │
 │                                                               │
 │ 10. Verify Argo Workflow Templates                           │
-│     → Checks: argo template list -n cloudhealthoffice        │
+│     → Checks: argo template list -n HealthCoreX        │
 │     → Time: ~30 seconds                                      │
 └─────────────────────────────────────────────────────────────┘
                               ↓
@@ -315,7 +315,7 @@ az deployment group show \
 **Error**: No workflow runs appearing
 
 **Solution**:
-1. Check Argo event sources/sensors: `kubectl get eventsource,sensor -n cloudhealthoffice`
+1. Check Argo event sources/sensors: `kubectl get eventsource,sensor -n HealthCoreX`
 2. Verify Kubernetes secrets are configured
 3. Check Argo controller logs: `kubectl logs -n argo -l app=workflow-controller`
 4. Check Application Insights for errors

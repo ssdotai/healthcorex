@@ -294,7 +294,7 @@ Write-Host "1. Verify in Azure Portal:" -ForegroundColor Yellow
 Write-Host "   Portal App → API Permissions → Should show Cloud Health Office API" -ForegroundColor White
 Write-Host ""
 Write-Host "2. Test user login:" -ForegroundColor Yellow
-Write-Host "   https://portal.cloudhealthoffice.com" -ForegroundColor White
+Write-Host "   https://portal.HealthCoreX.com" -ForegroundColor White
 Write-Host ""
 Write-Host "3. If issues persist, manually grant consent:" -ForegroundColor Yellow
 Write-Host "   https://portal.azure.com → Portal App → API Permissions → Grant admin consent" -ForegroundColor White

@@ -5,7 +5,7 @@ using ProviderService.Models;
 using ProviderService.Services;
 using Xunit;
 
-namespace CloudHealthOffice.ProviderService.Tests;
+namespace HealthCoreX.ProviderService.Tests;
 
 public class MpipRateServiceTests : IAsyncLifetime
 {

@@ -5,7 +5,7 @@ using IdCardService.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 
-namespace CloudHealthOffice.IdCardService.Tests;
+namespace HealthCoreX.IdCardService.Tests;
 
 public class ChoIdCardAdapterTests
 {

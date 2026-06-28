@@ -1,7 +1,7 @@
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.HealthChecks;
-using CloudHealthOffice.Infrastructure.Json;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Observability;
 using MemberService.HostedServices;
 using MemberService.Middleware;
 using MemberService.Repositories;
@@ -16,7 +16,7 @@ builder.Services.AddSecretProvider(builder.Configuration);
 builder.Configuration.AddAzureKeyVaultConfiguration(builder.Configuration);
 
 builder.Services.AddControllers()
-    .AddCloudHealthOfficeJsonOptions();
+    .AddHealthCoreXJsonOptions();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -41,7 +41,7 @@ if (!string.IsNullOrEmpty(mongoConnectionString))
     builder.Services.AddSingleton<MongoDB.Driver.IMongoDatabase>(sp =>
     {
         var client = sp.GetRequiredService<MongoDB.Driver.IMongoClient>();
-        var databaseName = builder.Configuration["MongoDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = builder.Configuration["MongoDb:DatabaseName"] ?? "HealthCoreX";
         return client.GetDatabase(databaseName);
     });
 
@@ -89,7 +89,7 @@ else
     {
         var cosmosClient = sp.GetRequiredService<CosmosClient>();
         var configuration = sp.GetRequiredService<IConfiguration>();
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         return new MemberRepository(cosmosClient, databaseName);
     });
 
@@ -97,7 +97,7 @@ else
     {
         var cosmosClient = sp.GetRequiredService<CosmosClient>();
         var configuration = sp.GetRequiredService<IConfiguration>();
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         return new MemberEventRepository(
             cosmosClient,
             databaseName,
@@ -109,7 +109,7 @@ else
     {
         var cosmosClient = sp.GetRequiredService<CosmosClient>();
         var configuration = sp.GetRequiredService<IConfiguration>();
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         return new FamilyRelationshipRepository(cosmosClient, databaseName);
     });
 
@@ -117,7 +117,7 @@ else
     {
         var cosmosClient = sp.GetRequiredService<CosmosClient>();
         var configuration = sp.GetRequiredService<IConfiguration>();
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         return new MemberAlertRepository(cosmosClient, databaseName);
     });
 
@@ -125,7 +125,7 @@ else
     {
         var cosmosClient = sp.GetRequiredService<CosmosClient>();
         var configuration = sp.GetRequiredService<IConfiguration>();
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         return new MemberNoteRepository(cosmosClient, databaseName);
     });
 

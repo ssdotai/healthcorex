@@ -100,12 +100,12 @@ fi
 
 # Get configuration values from vault or use defaults
 if [ "$USE_VAULT" = true ]; then
-    APP_NAME=$(get_or_set_vault_config "$KEY_VAULT_NAME" "app-registration-name" "${APP_NAME_PARAM:-cloudhealthoffice-prod}" "Azure AD App Registration Name")
-    GITHUB_REPO=$(get_or_set_vault_config "$KEY_VAULT_NAME" "github-repository" "${GITHUB_REPO_PARAM:-aurelianware/cloudhealthoffice}" "GitHub Repository")
+    APP_NAME=$(get_or_set_vault_config "$KEY_VAULT_NAME" "app-registration-name" "${APP_NAME_PARAM:-HealthCoreX-prod}" "Azure AD App Registration Name")
+    GITHUB_REPO=$(get_or_set_vault_config "$KEY_VAULT_NAME" "github-repository" "${GITHUB_REPO_PARAM:-aurelianware/HealthCoreX}" "GitHub Repository")
     OIDC_ISSUER=$(get_or_set_vault_config "$KEY_VAULT_NAME" "oidc-issuer" "https://token.actions.githubusercontent.com" "OIDC Issuer for GitHub Actions")
 else
-    APP_NAME="${APP_NAME_PARAM:-cloudhealthoffice-prod}"
-    GITHUB_REPO="${GITHUB_REPO_PARAM:-aurelianware/cloudhealthoffice}"
+    APP_NAME="${APP_NAME_PARAM:-HealthCoreX-prod}"
+    GITHUB_REPO="${GITHUB_REPO_PARAM:-aurelianware/HealthCoreX}"
     OIDC_ISSUER="https://token.actions.githubusercontent.com"
     echo -e "${YELLOW}⚠️  Using hardcoded defaults (no Key Vault)${NC}"
 fi
@@ -171,8 +171,8 @@ APP_OBJECT_ID=$(az ad app show --id "$APP_ID" --query "id" -o tsv)
 
 # Try to dynamically determine the SWA hostname
 SWA_HOSTNAME=""
-RG_NAME="${RESOURCE_GROUP_PARAM:-rg-${APP_NAME_PARAM:-cloudhealthoffice}-prod}"
-SWA_NAME="${APP_NAME_PARAM:-cloudhealthoffice}-swa"
+RG_NAME="${RESOURCE_GROUP_PARAM:-rg-${APP_NAME_PARAM:-HealthCoreX}-prod}"
+SWA_NAME="${APP_NAME_PARAM:-HealthCoreX}-swa"
 
 # Attempt to get hostname from Azure (if SWA exists)
 SWA_HOSTNAME=$(az staticwebapp show --name "$SWA_NAME" --resource-group "$RG_NAME" \
@@ -184,7 +184,7 @@ if [ -z "$SWA_HOSTNAME" ]; then
 fi
 
 # Determine production domain from APP_NAME or default
-PROD_DOMAIN="${CUSTOM_DOMAIN:-cloudhealthoffice.com}"
+PROD_DOMAIN="${CUSTOM_DOMAIN:-HealthCoreX.com}"
 
 # Get redirect URIs from Key Vault or set defaults
 if [ "$USE_VAULT" = true ]; then

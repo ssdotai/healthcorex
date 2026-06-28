@@ -1,4 +1,4 @@
-namespace CloudHealthOffice.Events;
+namespace HealthCoreX.Events;
 
 /// <summary>
 /// Event payload for claims.pended.v1. Shared contract between claims-service

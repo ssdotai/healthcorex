@@ -23,7 +23,7 @@ metadata:
   labels:
     app.kubernetes.io/name: x12-275-ingest
     app.kubernetes.io/component: edi-processing
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
     hipaa.compliance: "required"
   annotations:
     description: "X12 275 attachment ingestion workflow - HIPAA compliant"
@@ -184,7 +184,7 @@ spec:
           - name: file-manifest
             path: /data/manifest.json
       container:
-        image: cloudhealthoffice/sftp-fetcher:latest
+        image: HealthCoreX/sftp-fetcher:latest
         args:
           - "--host"
           - "{{inputs.parameters.sftp-host}}"
@@ -236,7 +236,7 @@ spec:
           - name: parsed-output
             path: /data/output/parsed.json
       container:
-        image: cloudhealthoffice/x12-parser:latest
+        image: HealthCoreX/x12-parser:latest
         args:
           - "/data/input/*.edi"
           - "--output"
@@ -266,7 +266,7 @@ spec:
             valueFrom:
               path: /data/output/validation.json
       container:
-        image: cloudhealthoffice/x12-parser:latest
+        image: HealthCoreX/x12-parser:latest
         command: ["python", "-c"]
         args:
           - |
@@ -312,7 +312,7 @@ spec:
           - name: metadata-output
             path: /data/output/metadata.json
       container:
-        image: cloudhealthoffice/metadata-extractor:latest
+        image: HealthCoreX/metadata-extractor:latest
         args:
           - "--input"
           - "/data/input/parsed.json"
@@ -400,7 +400,7 @@ spec:
             valueFrom:
               path: /data/output/publish-result.json
       container:
-        image: cloudhealthoffice/kafka-publisher:latest
+        image: HealthCoreX/kafka-publisher:latest
         args:
           - "--input"
           - "/data/input/metadata.json"
@@ -457,7 +457,7 @@ spec:
           - name: file-list
             path: /data/manifest.json
       container:
-        image: cloudhealthoffice/sftp-fetcher:latest
+        image: HealthCoreX/sftp-fetcher:latest
         command: ["python", "-c"]
         args:
           - |
@@ -516,7 +516,7 @@ spec:
           - name: error-message
           - name: failed-step
       container:
-        image: cloudhealthoffice/kafka-publisher:latest
+        image: HealthCoreX/kafka-publisher:latest
         args:
           - "--topic"
           - "dead-letter-queue"

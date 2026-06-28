@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using CloudHealthOffice.Portal.Services;
+using HealthCoreX.Portal.Services;
 
-namespace CloudHealthOffice.Portal.Tests.Services;
+namespace HealthCoreX.Portal.Tests.Services;
 
 public class SmtpEmailNotificationServiceTests
 {
@@ -89,8 +89,8 @@ public class SmtpEmailNotificationServiceTests
             ["Email:SmtpHost"] = "smtp.invalid.example.test",
             ["Email:SmtpPort"] = "587",
             ["Email:EnableSsl"] = "false",
-            ["Email:FromAddress"] = "noreply@cloudhealthoffice.com",
-            ["Email:SalesTeamAddress"] = "sales@cloudhealthoffice.com"
+            ["Email:FromAddress"] = "noreply@HealthCoreX.com",
+            ["Email:SalesTeamAddress"] = "sales@HealthCoreX.com"
         });
         var sut = new SmtpEmailNotificationService(config, _logger.Object);
 

@@ -2,11 +2,11 @@ using Microsoft.OpenApi.Models;
 using EncounterSubmissionService.KafkaConsumers;
 using EncounterSubmissionService.Services;
 using EncounterSubmissionService.Workers;
-using CloudHealthOffice.Infrastructure.HealthChecks;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.Json;
-using CloudHealthOffice.Infrastructure.Middleware;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Middleware;
+using HealthCoreX.Infrastructure.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
 // Secret provider (Azure Key Vault / none)
@@ -14,7 +14,7 @@ builder.Services.AddSecretProvider(builder.Configuration);
 builder.Configuration.AddAzureKeyVaultConfiguration(builder.Configuration);
 
 builder.Services.AddControllers()
-    .AddCloudHealthOfficeJsonOptions();
+    .AddHealthCoreXJsonOptions();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -39,12 +39,13 @@ builder.Services.AddSingleton<MongoDB.Driver.IMongoClient>(sp =>
 builder.Services.AddScoped<MongoDB.Driver.IMongoDatabase>(sp =>
 {
     var client = sp.GetRequiredService<MongoDB.Driver.IMongoClient>();
-    var databaseName = builder.Configuration["MongoDb:DatabaseName"] ?? "CloudHealthOffice";
+    var databaseName = builder.Configuration["MongoDb:DatabaseName"] ?? "HealthCoreX";
     return client.GetDatabase(databaseName);
 });
 
 // HTTP context accessor (for tenant middleware)
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton(new TenantMiddlewareOptions());
 
 // Inter-service HTTP clients (named client pattern)
 builder.Services.AddHttpClient("ClaimsService", client =>
@@ -112,7 +113,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseMiddleware<CloudHealthOffice.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
+app.UseMiddleware<HealthCoreX.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 // Multi-tenant middleware (extract TenantId from JWT or headers)

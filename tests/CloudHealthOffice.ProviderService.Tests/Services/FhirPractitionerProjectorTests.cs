@@ -3,7 +3,7 @@ using FluentAssertions;
 using ProviderService.Models;
 using ProviderService.Services;
 
-namespace CloudHealthOffice.ProviderService.Tests.Services;
+namespace HealthCoreX.ProviderService.Tests.Services;
 
 /// <summary>
 /// Capability 5.7 — FHIR Practitioner projection unit tests. Mirrors
@@ -272,7 +272,7 @@ public class FhirPractitionerProjectorTests
         var result = _projector.Project(BuildIndividualProvider(), integrity)!;
         var ext = result["extension"]!.AsArray().Single()!.AsObject();
         ext["url"]!.GetValue<string>()
-            .Should().Be("http://fhir.cloudhealthoffice.com/StructureDefinition/provider-integrity-score");
+            .Should().Be("http://fhir.HealthCoreX.com/StructureDefinition/provider-integrity-score");
 
         var inner = ext["extension"]!.AsArray()
             .Select(n => n!.AsObject())

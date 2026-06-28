@@ -1,8 +1,8 @@
-using CloudHealthOffice.Infrastructure.Tests;
+using HealthCoreX.Infrastructure.Tests;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
-namespace CloudHealthOffice.SmartAuth.Tests;
+namespace HealthCoreX.SmartAuth.Tests;
 
 // smart-auth-service exposes its Program under the SmartAuthService namespace
 // (SmartAuthProgram.cs) to disambiguate from the fhir-service Program in the

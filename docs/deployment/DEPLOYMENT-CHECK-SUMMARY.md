@@ -2,10 +2,10 @@
 
 **Date**: February 3, 2026  
 **Investigated by**: GitHub Copilot Agent  
-**Repository**: aurelianware/cloudhealthoffice
+**Repository**: aurelianware/HealthCoreX
 
 ## Investigation Request
-> "Can you check on the deployment for aurelianware/cloudhealthoffice repo"
+> "Can you check on the deployment for aurelianware/HealthCoreX repo"
 
 ## Executive Summary
 
@@ -217,7 +217,7 @@ head: ${{ github.sha }}
 ✅ **Ready for Production**
 
 ### Summary
-The deployment blockage in the aurelianware/cloudhealthoffice repository has been **identified, fixed, and documented**. The issue was a TruffleHog configuration error in the pre-approval security checks workflow that caused BASE and HEAD to resolve to the same commit on push events. The fix changes the configuration to use `github.event.before` and `github.sha`, which are guaranteed to be different commits.
+The deployment blockage in the aurelianware/HealthCoreX repository has been **identified, fixed, and documented**. The issue was a TruffleHog configuration error in the pre-approval security checks workflow that caused BASE and HEAD to resolve to the same commit on push events. The fix changes the configuration to use `github.event.before` and `github.sha`, which are guaranteed to be different commits.
 
 ### Next Action
 **MERGE THIS PR** to unblock all production deployments.

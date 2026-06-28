@@ -3,7 +3,7 @@ using NBomber.Contracts;
 using NBomber.CSharp;
 using NBomber.Http.CSharp;
 
-namespace CloudHealthOffice.LoadTests;
+namespace HealthCoreX.LoadTests;
 
 /// <summary>
 /// Load tests for the eligibility service (270/271 inquiry processing).

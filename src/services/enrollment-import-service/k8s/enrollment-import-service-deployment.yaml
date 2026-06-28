@@ -2,16 +2,16 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: enrollment-import-service-config
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
 data:
   ASPNETCORE_ENVIRONMENT: "Production"
-  MongoDb__DatabaseName: "cloudhealthoffice"
+  MongoDb__DatabaseName: "HealthCoreX"
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: enrollment-import-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: enrollment-import-service
     tier: backend
@@ -28,8 +28,8 @@ spec:
     spec:
       containers:
       - name: enrollment-import-service
-        image: choacrhy6h2vdulfru6.azurecr.io/cloudhealthoffice-enrollment-import-service:latest
-        imagePullPolicy: Always
+        image: choacrhy6h2vdulfru6.azurecr.io/HealthCoreX-enrollment-import-service:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
           name: http
@@ -50,6 +50,14 @@ spec:
             configMapKeyRef:
               name: enrollment-import-service-config
               key: MongoDb__DatabaseName
+        - name: Services__MemberService
+          value: "http://member-service"
+        - name: Services__SponsorService
+          value: "http://sponsor-service"
+        - name: Services__BenefitPlanService
+          value: "http://benefit-plan-service"
+        - name: Services__CoverageService
+          value: "http://coverage-service"
         resources:
           requests:
             cpu: 100m
@@ -76,7 +84,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: enrollment-import-service
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app: enrollment-import-service
 spec:

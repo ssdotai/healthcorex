@@ -1,11 +1,11 @@
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
-using CloudHealthOffice.Portal.Services;
-using CloudHealthOffice.Portal.Shared;
+using HealthCoreX.Portal.Services;
+using HealthCoreX.Portal.Shared;
 using MudBlazor;
 using MudBlazor.Services;
 
-namespace CloudHealthOffice.Portal.Tests.Shared;
+namespace HealthCoreX.Portal.Tests.Shared;
 
 public class PermissionGateTests : TestContext
 {

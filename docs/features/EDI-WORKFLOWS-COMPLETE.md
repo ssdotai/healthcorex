@@ -213,7 +213,7 @@ Update the API URL in each workflow:
 ```yaml
 env:
   - name: BACKEND_API_URL
-    value: "https://api.cloudhealthoffice.com/v1"
+    value: "https://api.HealthCoreX.com/v1"
   - name: BACKEND_API_TOKEN
     valueFrom:
       secretKeyRef:
@@ -396,7 +396,7 @@ kubectl run sftp-test --image=alpine --rm -i --restart=Never -- sh -c "
 # Test API from within cluster
 kubectl run api-test --image=alpine --rm -i --restart=Never -- sh -c "
   apk add curl
-  curl -v http://backend-api.cloudhealthoffice.svc.cluster.local/health
+  curl -v http://backend-api.HealthCoreX.svc.cluster.local/health
 "
 ```
 
@@ -457,8 +457,8 @@ kubectl get events -n cho-workflows --field-selector involvedObject.kind=Pod
 ## Support
 
 - **Documentation**: [docs/](docs/)
-- **Issues**: [GitHub Issues](https://github.com/aurelianware/cloudhealthoffice/issues)
-- **Community**: [Discussions](https://github.com/aurelianware/cloudhealthoffice/discussions)
+- **Issues**: [GitHub Issues](https://github.com/aurelianware/HealthCoreX/issues)
+- **Community**: [Discussions](https://github.com/aurelianware/HealthCoreX/discussions)
 
 ---
 

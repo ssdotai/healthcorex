@@ -1,9 +1,9 @@
-using CloudHealthOffice.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Domain;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.BenefitEngine.Persistence;
+namespace HealthCoreX.BenefitEngine.Persistence;
 
 /// <summary>
 /// Cosmos DB-backed accumulator repository.
@@ -32,7 +32,7 @@ public class AccumulatorRepositoryCosmos : IAccumulatorRepository
         IConfiguration configuration,
         ILogger<AccumulatorRepositoryCosmos> logger)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         var containerName = configuration["BenefitEngine:AccumulatorContainer"] ?? "Accumulators";
         _container = cosmosClient.GetContainer(databaseName, containerName);
         _logger = logger;

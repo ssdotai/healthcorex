@@ -1,9 +1,9 @@
-using CloudHealthOffice.PricingApi.Data;
-using CloudHealthOffice.PricingApi.Models;
-using CloudHealthOffice.PricingApi.Services;
+using HealthCoreX.PricingApi.Data;
+using HealthCoreX.PricingApi.Models;
+using HealthCoreX.PricingApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CloudHealthOffice.PricingApi.Controllers;
+namespace HealthCoreX.PricingApi.Controllers;
 
 /// <summary>
 /// Claims repricing — the core value endpoint.

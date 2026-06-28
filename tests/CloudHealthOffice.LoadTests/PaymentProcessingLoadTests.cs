@@ -3,7 +3,7 @@ using NBomber.Contracts;
 using NBomber.CSharp;
 using NBomber.Http.CSharp;
 
-namespace CloudHealthOffice.LoadTests;
+namespace HealthCoreX.LoadTests;
 
 /// <summary>
 /// Load tests for the payment processing pipeline (835 ERA generation).

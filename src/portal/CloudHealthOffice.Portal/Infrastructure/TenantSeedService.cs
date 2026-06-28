@@ -1,7 +1,7 @@
-using CloudHealthOffice.Portal.Services;
+using HealthCoreX.Portal.Services;
 using MongoDB.Driver;
 
-namespace CloudHealthOffice.Portal.Infrastructure;
+namespace HealthCoreX.Portal.Infrastructure;
 
 /// <summary>
 /// Seeds the MongoDB tenant subscription on startup as a background task.
@@ -34,7 +34,7 @@ public class TenantSeedService : BackgroundService
         try
         {
             var mongoClient = _serviceProvider.GetRequiredService<IMongoClient>();
-            var dbName = _configuration["MongoDB:DatabaseName"] ?? "CloudHealthOffice";
+            var dbName = _configuration["MongoDB:DatabaseName"] ?? "HealthCoreX";
             var collectionName = _configuration["MongoDB:TenantsCollection"] ?? "Tenants";
             var db = mongoClient.GetDatabase(dbName);
             var collection = db.GetCollection<TenantSubscription>(collectionName);

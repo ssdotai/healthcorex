@@ -376,7 +376,7 @@ export AZURE_OPENAI_DEPLOYMENT="gpt-4"
 
 ## Support
 
-- **GitHub Issues**: https://github.com/aurelianware/cloudhealthoffice/issues
+- **GitHub Issues**: https://github.com/aurelianware/HealthCoreX/issues
 - **Email**: support@aurelianware.com
 
 ## License

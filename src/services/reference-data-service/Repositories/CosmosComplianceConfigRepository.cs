@@ -14,7 +14,7 @@ public class CosmosComplianceConfigRepository : IComplianceConfigRepository
 
     public CosmosComplianceConfigRepository(CosmosClient cosmosClient, IConfiguration configuration)
     {
-        var dbName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var dbName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         _container = cosmosClient.GetContainer(dbName, "compliance-configs");
     }
 

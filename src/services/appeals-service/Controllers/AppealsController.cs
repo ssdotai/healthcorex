@@ -597,7 +597,7 @@ public class AppealsController : ControllerBase
                 Status = 409,
                 Title = "Invalid appeal closure reason",
                 Detail = $"Closure reason {reason} is not allowed from status {appeal.Status}.",
-                Type = "https://cloudhealthoffice.com/problems/appeal-closure-reason"
+                Type = "https://HealthCoreX.com/problems/appeal-closure-reason"
             };
             problem.Extensions["fromStatus"] = appeal.Status.ToString();
             problem.Extensions["closureReasonCode"] = reason.ToString();
@@ -840,7 +840,7 @@ public class AppealsController : ControllerBase
             Status = 409,
             Title = "Invalid appeal transition",
             Detail = ex.Message,
-            Type = "https://cloudhealthoffice.com/problems/appeal-transition"
+            Type = "https://HealthCoreX.com/problems/appeal-transition"
         };
         problem.Extensions["fromStatus"] = ex.FromStatus.ToString();
         problem.Extensions["toStatus"] = ex.ToStatus.ToString();

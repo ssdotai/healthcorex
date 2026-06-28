@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using CloudHealthOffice.FeeScheduleEngine.Domain;
+using HealthCoreX.FeeScheduleEngine.Domain;
 
-namespace CloudHealthOffice.FeeScheduleEngine.Models;
+namespace HealthCoreX.FeeScheduleEngine.Models;
 
 // ═══════════════════════════════════════════════════════════════════
 // FEE SCHEDULE DOCUMENTS (persisted in Cosmos/Mongo)

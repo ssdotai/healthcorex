@@ -5,7 +5,7 @@ namespace BenefitPlanService.Services;
 /// emits (capability BP 5.8 — FHIR InsurancePlan Projection). Mirrors the
 /// convention in provider-service's <c>ChoProviderFhirUrls</c> and
 /// fhir-service's <c>ChoFhirCanonicalUrls</c> (base
-/// <c>http://fhir.cloudhealthoffice.com/</c>).
+/// <c>http://fhir.HealthCoreX.com/</c>).
 ///
 /// <para>
 /// CHO custom-extension URIs follow the empirical Provider 5.7/5.8/5.9
@@ -23,7 +23,7 @@ namespace BenefitPlanService.Services;
 /// </summary>
 internal static class ChoBenefitPlanFhirUrls
 {
-    public const string Base                    = "http://fhir.cloudhealthoffice.com/";
+    public const string Base                    = "http://fhir.HealthCoreX.com/";
     public const string StructureDefinitionBase = Base + "StructureDefinition/";
     public const string CodeSystemBase          = Base + "CodeSystem/";
 

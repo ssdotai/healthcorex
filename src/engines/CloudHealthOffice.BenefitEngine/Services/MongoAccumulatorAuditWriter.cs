@@ -1,9 +1,9 @@
-using CloudHealthOffice.BenefitEngine.Domain;
-using CloudHealthOffice.BenefitEngine.Models;
-using CloudHealthOffice.BenefitEngine.Persistence;
+using HealthCoreX.BenefitEngine.Domain;
+using HealthCoreX.BenefitEngine.Models;
+using HealthCoreX.BenefitEngine.Persistence;
 using Microsoft.Extensions.Logging;
 
-namespace CloudHealthOffice.BenefitEngine.Services;
+namespace HealthCoreX.BenefitEngine.Services;
 
 /// <summary>
 /// Writes the durable accumulator audit trail to MongoDB or Cosmos DB.

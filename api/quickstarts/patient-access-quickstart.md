@@ -414,7 +414,7 @@ func importFHIRData() {
 // Export to Google Fit format
 const fhirToGoogleFit = (bundle) => {
   return bundle.entry.map(entry => ({
-    dataSourceId: 'raw:com.cloudhealthoffice:claims',
+    dataSourceId: 'raw:com.HealthCoreX:claims',
     dataTypeName: 'com.google.health.claim',
     value: entry.resource
   }));
@@ -485,14 +485,14 @@ curl "${FHIR_BASE}/Claim?patient=${PATIENT_ID}&_count=20&_page=1"
 ## Resources
 
 - **OpenAPI Spec:** [patient-access-api.yaml](../openapi/patient-access-api.yaml)
-- **Live Demo:** https://sandbox.cloudhealthoffice.com
+- **Live Demo:** https://sandbox.HealthCoreX.com
 - **CMS Rule:** [CMS-9115-F Patient Access](https://www.cms.gov/regulations-and-guidance/guidance/interoperability)
 - **SMART on FHIR:** [docs.smarthealthit.org](https://docs.smarthealthit.org)
 
 ## Support
 
-📧 Email: fhir-support@cloudhealthoffice.com  
-💬 Discord: [#patient-access](https://discord.gg/cloudhealthoffice)  
+📧 Email: fhir-support@HealthCoreX.com  
+💬 Discord: [#patient-access](https://discord.gg/HealthCoreX)  
 📅 Office Hours: Tuesdays 2-3pm ET
 
 ---

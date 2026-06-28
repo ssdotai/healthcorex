@@ -8,11 +8,11 @@ apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
   name: sftp-polling
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app.kubernetes.io/name: sftp-polling
     app.kubernetes.io/component: event-source
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
 spec:
   # Calendar-based trigger
   calendar:
@@ -60,11 +60,11 @@ apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
   name: sftp-file-watcher
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   labels:
     app.kubernetes.io/name: sftp-file-watcher
     app.kubernetes.io/component: event-source
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
 spec:
   generic:
     sftp-new-file:

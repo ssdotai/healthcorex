@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace CloudHealthOffice.OperatingMode;
+namespace HealthCoreX.OperatingMode;
 
 /// <summary>
 /// Per-tenant operating mode configuration for each CHO engine.

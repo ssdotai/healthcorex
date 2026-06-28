@@ -1,7 +1,7 @@
 {
   "resourceType": "StructureDefinition",
   "id": "cho-appeal-claim-response",
-  "url": "http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-claim-response",
+  "url": "http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-claim-response",
   "version": "1.0.0",
   "name": "ChoAppealClaimResponse",
   "title": "CHO Appeal ClaimResponse",
@@ -43,7 +43,7 @@
         "type": [
           {
             "code": "Extension",
-            "profile": ["http://fhir.cloudhealthoffice.com/StructureDefinition/cho-appeal-task-reference"]
+            "profile": ["http://fhir.HealthCoreX.com/StructureDefinition/cho-appeal-task-reference"]
           }
         ]
       },

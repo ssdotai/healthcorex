@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text;
 
-namespace CloudHealthOffice.Portal.Tests;
+namespace HealthCoreX.Portal.Tests;
 
 /// <summary>
 /// A fake HTTP message handler for use in tests. Supports returning a fixed status code,

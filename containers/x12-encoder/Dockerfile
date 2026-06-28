@@ -4,15 +4,15 @@
 # HIPAA Transaction Types Supported:
 #   - 005010X212 (277) - Health Care Claim Status Notification
 #
-# Build: docker build -t cloudhealthoffice/x12-encoder:latest .
-# Run: docker run -v /data:/data cloudhealthoffice/x12-encoder --input /data/claim.json --output /data/277.edi
+# Build: docker build -t HealthCoreX/x12-encoder:latest .
+# Run: docker run -v /data:/data HealthCoreX/x12-encoder --input /data/claim.json --output /data/277.edi
 
 FROM python:3.11-slim
 
 LABEL org.opencontainers.image.title="Cloud Health Office X12 Encoder"
 LABEL org.opencontainers.image.description="HIPAA X12 EDI encoder for 277 RFAI responses"
 LABEL org.opencontainers.image.vendor="Aurelianware"
-LABEL org.opencontainers.image.source="https://github.com/aurelianware/cloudhealthoffice"
+LABEL org.opencontainers.image.source="https://github.com/aurelianware/HealthCoreX"
 
 # Security: Run as non-root user
 RUN groupadd -r x12encoder && useradd -r -g x12encoder x12encoder

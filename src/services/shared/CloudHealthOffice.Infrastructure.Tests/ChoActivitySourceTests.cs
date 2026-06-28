@@ -1,20 +1,20 @@
 using System.Diagnostics;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Observability;
 
-namespace CloudHealthOffice.Infrastructure.Tests;
+namespace HealthCoreX.Infrastructure.Tests;
 
 public class ChoActivitySourceTests
 {
     [Fact]
-    public void Name_IsCloudHealthOffice()
+    public void Name_IsHealthCoreX()
     {
-        ChoActivitySource.Name.Should().Be("CloudHealthOffice");
+        ChoActivitySource.Name.Should().Be("HealthCoreX");
     }
 
     [Fact]
     public void Instance_HasCorrectName()
     {
-        ChoActivitySource.Instance.Name.Should().Be("CloudHealthOffice");
+        ChoActivitySource.Instance.Name.Should().Be("HealthCoreX");
     }
 
     [Fact]

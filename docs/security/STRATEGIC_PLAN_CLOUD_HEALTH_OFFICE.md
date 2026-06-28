@@ -53,7 +53,7 @@ Make healthcare EDI open, seamless, and intelligent—crushing legacy costs, int
 ### Phase 1 (Months 1–3, $0–50K)
 - **Freemium Launch**
   - FREE consulting/demo for first 5 adopters (Calendly/mark@aurelianware.com)
-  - Azure Marketplace listing (free & paid "CHO Pro"—hosted, [contact sales](mailto:sales@cloudhealthoffice.com) for per-transaction pricing)
+  - Azure Marketplace listing (free & paid "CHO Pro"—hosted, [contact sales](mailto:sales@HealthCoreX.com) for per-transaction pricing)
 - **Content Marketing**
   - 3 blog posts/week (Medium, LinkedIn, SEO for “hipaa edi azure”)
   - Pitch HealthIT media for coverage.
@@ -62,9 +62,9 @@ Make healthcare EDI open, seamless, and intelligent—crushing legacy costs, int
 
 ### Phase 2 (Months 3–6, $50K–500K)
 - **Support Tiers**
-  - Community (free), Pro ([contact sales](mailto:sales@cloudhealthoffice.com)), Enterprise ([contact sales](mailto:sales@cloudhealthoffice.com))
+  - Community (free), Pro ([contact sales](mailto:sales@HealthCoreX.com)), Enterprise ([contact sales](mailto:sales@HealthCoreX.com))
 - **Hosted SaaS**
-  - Launch "CHO Cloud" on Azure, [contact sales](mailto:sales@cloudhealthoffice.com) for base + usage pricing; target regional insurers.
+  - Launch "CHO Cloud" on Azure, [contact sales](mailto:sales@HealthCoreX.com) for base + usage pricing; target regional insurers.
 - **Premium Features**
   - Gate AI features behind paywall; offer white-label for resellers.
 

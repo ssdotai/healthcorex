@@ -26,7 +26,7 @@ metadata:
   labels:
     app.kubernetes.io/name: x12-837-claims-scrubbing
     app.kubernetes.io/component: claims-validation
-    app.kubernetes.io/part-of: cloudhealthoffice
+    app.kubernetes.io/part-of: HealthCoreX
     hipaa.compliance: "required"
   annotations:
     description: "X12 837 claims validation workflow - improves first-pass rates"
@@ -223,7 +223,7 @@ spec:
           - name: file-manifest
             path: /data/manifest.json
       container:
-        image: cloudhealthoffice/sftp-fetcher:latest
+        image: HealthCoreX/sftp-fetcher:latest
         args:
           - "--host"
           - "{{inputs.parameters.sftp-host}}"
@@ -275,7 +275,7 @@ spec:
           - name: parsed-claims
             path: /data/output/claims.json
       container:
-        image: cloudhealthoffice/x12-parser:latest
+        image: HealthCoreX/x12-parser:latest
         args:
           - "/data/input/*.edi"
           - "--output"
@@ -312,7 +312,7 @@ spec:
             valueFrom:
               path: /data/output/summary.json
       container:
-        image: cloudhealthoffice/claims-scrubber:latest
+        image: HealthCoreX/claims-scrubber:latest
         command: ["node", "dist/validate-batch.js"]
         args:
           - "--input"
@@ -361,7 +361,7 @@ spec:
             valueFrom:
               path: /data/output/count.txt
       container:
-        image: cloudhealthoffice/claims-router:latest
+        image: HealthCoreX/claims-router:latest
         command: ["python", "-c"]
         args:
           - |
@@ -485,7 +485,7 @@ spec:
             valueFrom:
               path: /data/output/metrics.json
       container:
-        image: cloudhealthoffice/claims-scrubber:latest
+        image: HealthCoreX/claims-scrubber:latest
         command: ["python", "-c"]
         args:
           - |
@@ -548,7 +548,7 @@ spec:
           - name: error-message
           - name: failed-step
       container:
-        image: cloudhealthoffice/kafka-publisher:latest
+        image: HealthCoreX/kafka-publisher:latest
         args:
           - "--topic"
           - "claims-dlq"

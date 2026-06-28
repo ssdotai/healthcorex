@@ -4,7 +4,7 @@
   "metadata": {
     "description": "DEPRECATED: This legacy ARM template is superseded by infrastructure/azure/main.bicep. Use main.bicep for all new deployments. Workflows now run on AKS with Argo Workflows.",
     "author": "Aurelianware",
-    "github": "https://github.com/aurelianware/cloudhealthoffice"
+    "github": "https://github.com/aurelianware/HealthCoreX"
   },
   "parameters": {
     "baseName": {
@@ -121,7 +121,7 @@
         }
       },
       "tags": {
-        "Project": "CloudHealthOffice",
+        "Project": "HealthCoreX",
         "Environment": "[parameters('deploymentEnvironment')]",
         "ManagedBy": "AzureDeploy"
       }
@@ -150,7 +150,7 @@
         "minimumTlsVersion": "1.2"
       },
       "tags": {
-        "Project": "CloudHealthOffice",
+        "Project": "HealthCoreX",
         "Environment": "[parameters('deploymentEnvironment')]"
       }
     },
@@ -205,7 +205,7 @@
         "retentionInDays": 30
       },
       "tags": {
-        "Project": "CloudHealthOffice",
+        "Project": "HealthCoreX",
         "Environment": "[parameters('deploymentEnvironment')]"
       }
     },
@@ -225,7 +225,7 @@
         "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
       ],
       "tags": {
-        "Project": "CloudHealthOffice",
+        "Project": "HealthCoreX",
         "Environment": "[parameters('deploymentEnvironment')]"
       }
     },
@@ -240,7 +240,7 @@
       },
       "properties": {},
       "tags": {
-        "Project": "CloudHealthOffice",
+        "Project": "HealthCoreX",
         "Environment": "[parameters('deploymentEnvironment')]"
       }
     },
@@ -264,7 +264,7 @@
     },
     "nextSteps": {
       "type": "string",
-      "value": "1. Clone repo: git clone https://github.com/aurelianware/cloudhealthoffice && cd cloudhealthoffice && npm install && npm run build\n2. Deploy Argo Workflows to AKS cluster\n3. Configure X12 schemas: ./configure-x12-agreements.ps1\n4. Test: ./test-workflows.ps1 -TestInbound275"
+      "value": "1. Clone repo: git clone https://github.com/aurelianware/HealthCoreX && cd HealthCoreX && npm install && npm run build\n2. Deploy Argo Workflows to AKS cluster\n3. Configure X12 schemas: ./configure-x12-agreements.ps1\n4. Test: ./test-workflows.ps1 -TestInbound275"
     }
   }
 }

@@ -26,7 +26,7 @@ public class CapitationDisbursementRepository : ICapitationDisbursementRepositor
         IConfiguration configuration,
         IHttpContextAccessor httpContextAccessor)
     {
-        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "CloudHealthOffice";
+        var databaseName = configuration["CosmosDb:DatabaseName"] ?? "HealthCoreX";
         _container = cosmosClient.GetContainer(databaseName, "CapitationDisbursements");
         _httpContextAccessor = httpContextAccessor;
     }

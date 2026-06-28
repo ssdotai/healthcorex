@@ -58,7 +58,7 @@ ISecretProvider  ──►  IConfiguration overlay
 
 ```bash
 ./scripts/setup-azure-keyvault.sh \
-  --resource-group rg-cloudhealthoffice-prod \
+  --resource-group rg-HealthCoreX-prod \
   --vault-name cho-app-kv \
   --aks-cluster cho-aks \
   --location eastus \
@@ -124,7 +124,7 @@ gh secret delete STRIPE_SECRET_KEY
 az aks enable-addons \
   --addons azure-keyvault-secrets-provider \
   --name cho-aks \
-  --resource-group rg-cloudhealthoffice-prod
+  --resource-group rg-HealthCoreX-prod
 ```
 
 Verify:
@@ -139,14 +139,14 @@ kubectl get pods -n kube-system -l app=secrets-store-provider-azure
 ```bash
 az aks update \
   --name cho-aks \
-  --resource-group rg-cloudhealthoffice-prod \
+  --resource-group rg-HealthCoreX-prod \
   --enable-oidc-issuer \
   --enable-workload-identity
 
 # Get the OIDC issuer URL (needed for federated credentials)
 AKS_OIDC_ISSUER=$(az aks show \
   --name cho-aks \
-  --resource-group rg-cloudhealthoffice-prod \
+  --resource-group rg-HealthCoreX-prod \
   --query "oidcIssuerProfile.issuerUrl" -o tsv)
 
 echo "OIDC Issuer: $AKS_OIDC_ISSUER"
@@ -159,9 +159,9 @@ Run for **each service** in the table below:
 
 ```bash
 SERVICE_NAME="claims-service"   # ← change per service
-RESOURCE_GROUP="rg-cloudhealthoffice-prod"
+RESOURCE_GROUP="rg-HealthCoreX-prod"
 KEY_VAULT_NAME="cho-app-kv"
-NAMESPACE="cloudhealthoffice"
+NAMESPACE="HealthCoreX"
 
 # 1. Create managed identity
 az identity create \
@@ -214,7 +214,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: ${SERVICE_NAME}-sa
-  namespace: cloudhealthoffice
+  namespace: HealthCoreX
   annotations:
     azure.workload.identity/client-id: "${CLIENT_ID}"
   labels:
@@ -310,13 +310,13 @@ Each service below needs Steps 3-6 completed. Track progress here.
 | 25 | tenant-service | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 26 | trading-partner-service | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 27 | CHO.TerminologyService | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 28 | CloudHealthOffice.PricingApi | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 28 | HealthCoreX.PricingApi | ☐ | ☐ | ☐ | ☐ | ☐ |
 
 ### Blazor Portal (1)
 
 | # | Service | Identity Created | Fed Cred | RBAC | SA Applied | Deployment Updated |
 |---|---------|:---:|:---:|:---:|:---:|:---:|
-| 30 | CloudHealthOffice.Portal | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 30 | HealthCoreX.Portal | ☐ | ☐ | ☐ | ☐ | ☐ |
 
 ### Non-.NET Containers (8) — No Workload Identity Needed
 

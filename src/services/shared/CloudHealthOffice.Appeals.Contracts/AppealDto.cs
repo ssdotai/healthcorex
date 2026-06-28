@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace CloudHealthOffice.Appeals.Contracts;
+namespace HealthCoreX.Appeals.Contracts;
 
 /// <summary>
 /// Cross-service contract for an appeal record. Mirrors

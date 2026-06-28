@@ -5,7 +5,7 @@ using NSubstitute;
 using CapitationService.Repositories;
 using CapitationService.Services;
 
-namespace CloudHealthOffice.CapitationService.Tests;
+namespace HealthCoreX.CapitationService.Tests;
 
 /// <summary>
 /// WebApplicationFactory for capitation-service smoke tests.

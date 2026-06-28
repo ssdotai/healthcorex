@@ -4,12 +4,12 @@ using FhirService.Models;
 using FhirService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using CloudHealthOffice.Infrastructure.HealthChecks;
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.Caching;
-using CloudHealthOffice.Infrastructure.Observability;
-using CloudHealthOffice.ProviderEnrollmentService.Configuration;
-using CloudHealthOffice.PriorAuthRuleEngine.Configuration;
+using HealthCoreX.Infrastructure.HealthChecks;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Caching;
+using HealthCoreX.Infrastructure.Observability;
+using HealthCoreX.ProviderEnrollmentService.Configuration;
+using HealthCoreX.PriorAuthRuleEngine.Configuration;
 using Microsoft.Azure.Cosmos;
 using MongoDB.Driver;
 
@@ -115,9 +115,9 @@ else
 {
     // Local dev / test without Redis+DB: register passthrough implementations
     // so DI resolution of PasAutoAdjudicator doesn't fail.
-    builder.Services.AddSingleton<CloudHealthOffice.ProviderEnrollmentService.Abstractions.IEnrollmentDecisionGate,
-        CloudHealthOffice.ProviderEnrollmentService.Gates.PassthroughEnrollmentGate>();
-    builder.Services.AddSingleton<CloudHealthOffice.PriorAuthRuleEngine.Abstractions.IPriorAuthRuleEngine,
+    builder.Services.AddSingleton<HealthCoreX.ProviderEnrollmentService.Abstractions.IEnrollmentDecisionGate,
+        HealthCoreX.ProviderEnrollmentService.Gates.PassthroughEnrollmentGate>();
+    builder.Services.AddSingleton<HealthCoreX.PriorAuthRuleEngine.Abstractions.IPriorAuthRuleEngine,
         FhirService.Services.NoOpPriorAuthRuleEngine>();
 }
 
@@ -153,7 +153,7 @@ else
         .AddHttpClient(HttpFhirAppealAdapter.HttpClientName, client =>
         {
             var baseUrl = builder.Configuration["Services:AppealsServiceUrl"]
-                ?? "http://appeals-service.cloudhealthoffice/";
+                ?? "http://appeals-service.HealthCoreX/";
             client.BaseAddress = new Uri(baseUrl);
             client.DefaultRequestHeaders.Add("Accept", "application/json");
             client.Timeout = TimeSpan.FromSeconds(30);
@@ -175,21 +175,21 @@ builder.Services.AddHttpClient("AuthorizationService", client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:AuthorizationServiceUrl"]
-            ?? "http://authorization-service.cloudhealthoffice/");
+            ?? "http://authorization-service.HealthCoreX/");
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 builder.Services.AddHttpClient("TerminologyService", client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:TerminologyServiceUrl"]
-            ?? "http://terminology-service.cloudhealthoffice:5010/");
+            ?? "http://terminology-service.HealthCoreX:5010/");
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 builder.Services.AddHttpClient("ProviderVerificationService", client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:ProviderVerificationServiceUrl"]
-            ?? "http://provider-verification-service.cloudhealthoffice:5020/");
+            ?? "http://provider-verification-service.HealthCoreX:5020/");
     client.DefaultRequestHeaders.Add("Accept", "application/json");
     client.Timeout = TimeSpan.FromSeconds(5);
 });
@@ -211,7 +211,7 @@ builder.Services.AddHttpClient("ProviderService", client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:ProviderServiceUrl"]
-            ?? "http://provider-service.cloudhealthoffice/");
+            ?? "http://provider-service.HealthCoreX/");
     client.DefaultRequestHeaders.Add("Accept", "application/fhir+json");
     client.Timeout = TimeSpan.FromSeconds(30);
 })
@@ -230,7 +230,7 @@ builder.Services.AddHttpClient("BenefitPlanService", client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:BenefitPlanServiceUrl"]
-            ?? "http://benefit-plan-service.cloudhealthoffice/");
+            ?? "http://benefit-plan-service.HealthCoreX/");
     client.DefaultRequestHeaders.Add("Accept", "application/fhir+json");
     client.Timeout = TimeSpan.FromSeconds(30);
 })
@@ -248,7 +248,7 @@ builder.Services.AddHttpClient(UpstreamClientNames.ClaimsService, client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:ClaimsServiceUrl"]
-            ?? "http://claims-service.cloudhealthoffice/");
+            ?? "http://claims-service.HealthCoreX/");
     client.DefaultRequestHeaders.Add("Accept", "application/fhir+json");
     client.Timeout = TimeSpan.FromSeconds(30);
 })
@@ -257,13 +257,15 @@ builder.Services.AddHttpClient(UpstreamClientNames.ClaimsService, client =>
 
 // ── Da Vinci CRD / DTR / Bulk ─────────────────────────────────────────────────
 builder.Services.Configure<CrdConfig>(builder.Configuration.GetSection("Cms0057:Crd"));
-builder.Services.AddSingleton<ICrdService, CrdService>();
+builder.Services.AddMemoryCache(options => options.SizeLimit = 1024);
+builder.Services.AddSingleton<ICrdClassificationStore, CrdClassificationStore>();
+builder.Services.AddScoped<ICrdService, CrdService>();
 builder.Services.Configure<DtrConfig>(builder.Configuration.GetSection("Cms0057:Dtr"));
 builder.Services.AddSingleton<IDtrService, DtrService>();
 builder.Services.AddSingleton<IBulkExportService, BulkExportService>();
 
 // ── ASP.NET Core ──────────────────────────────────────────────────────────────
-// NOTE: fhir-service intentionally does NOT call AddCloudHealthOfficeJsonOptions().
+// NOTE: fhir-service intentionally does NOT call AddHealthCoreXJsonOptions().
 // FHIR R4 wire format requires numeric enum coding and its own serialization
 // pipeline via FhirInputFormatter/FhirOutputFormatter; applying the shared
 // JsonStringEnumConverter here would break FHIR conformance.
@@ -293,7 +295,7 @@ var app = builder.Build();
 app.UseChoObservability();
 
 if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
-app.UseMiddleware<CloudHealthOffice.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
+app.UseMiddleware<HealthCoreX.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseAuthentication();

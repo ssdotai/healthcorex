@@ -1,5 +1,5 @@
 using EnrollmentImportService.Models;
-using Microsoft.Azure.Cosmos;
+using MongoDB.Driver;
 
 namespace EnrollmentImportService.Services;
 
@@ -10,53 +10,50 @@ public interface IEnrollmentTransactionRepository
         string tenantId,
         string memberId,
         int limit = 100);
+
+    /// <summary>Most recent transactions for a tenant, newest first — the admin-console read path.</summary>
+    Task<IReadOnlyList<EnrollmentTransaction>> ListRecentAsync(string tenantId, int limit = 100);
 }
 
 /// <summary>
-/// Cosmos DB repository for individual 834 transaction records. Partition key
-/// is <c>/tenantId</c>, consistent with the Members container.
+/// MongoDB repository for individual 834 transaction records. Indexed on
+/// (tenantId, memberId, receivedAt) by <c>EnrollmentIndexInitializer</c>.
 /// </summary>
 public class EnrollmentTransactionRepository : IEnrollmentTransactionRepository
 {
-    private readonly CosmosClient _cosmosClient;
-    private readonly IConfiguration _config;
+    private readonly IMongoCollection<EnrollmentTransaction> _collection;
 
-    public EnrollmentTransactionRepository(CosmosClient cosmosClient, IConfiguration config)
+    public EnrollmentTransactionRepository(IMongoDatabase database)
     {
-        _cosmosClient = cosmosClient;
-        _config = config;
+        _collection = database.GetCollection<EnrollmentTransaction>("enrollment-transactions");
     }
-
-    private Container TransactionsContainer => _cosmosClient.GetContainer(
-        _config["CosmosDb:DatabaseName"] ?? "CloudHealthOffice",
-        _config["CosmosDb:TransactionsContainerName"] ?? "enrollment-transactions");
 
     public async Task<EnrollmentTransaction> CreateAsync(EnrollmentTransaction txn)
     {
         if (string.IsNullOrEmpty(txn.Id)) txn.Id = Guid.NewGuid().ToString();
-        var response = await TransactionsContainer.CreateItemAsync(
-            txn, new PartitionKey(txn.TenantId));
-        return response.Resource;
+        await _collection.InsertOneAsync(txn);
+        return txn;
     }
 
     public async Task<IReadOnlyList<EnrollmentTransaction>> ListByMemberAsync(
         string tenantId, string memberId, int limit = 100)
     {
-        var query = new QueryDefinition(
-            "SELECT TOP @limit * FROM c WHERE c.tenantId = @t AND c.memberId = @m ORDER BY c.receivedAt DESC")
-            .WithParameter("@t", tenantId)
-            .WithParameter("@m", memberId)
-            .WithParameter("@limit", limit);
+        var filter = Builders<EnrollmentTransaction>.Filter.Eq(x => x.TenantId, tenantId) &
+                     Builders<EnrollmentTransaction>.Filter.Eq(x => x.MemberId, memberId);
 
-        var iterator = TransactionsContainer.GetItemQueryIterator<EnrollmentTransaction>(
-            query, requestOptions: new QueryRequestOptions { PartitionKey = new PartitionKey(tenantId) });
+        return await _collection.Find(filter)
+            .SortByDescending(x => x.ReceivedAt)
+            .Limit(limit)
+            .ToListAsync();
+    }
 
-        var results = new List<EnrollmentTransaction>();
-        while (iterator.HasMoreResults)
-        {
-            var page = await iterator.ReadNextAsync();
-            results.AddRange(page);
-        }
-        return results;
+    public async Task<IReadOnlyList<EnrollmentTransaction>> ListRecentAsync(string tenantId, int limit = 100)
+    {
+        var filter = Builders<EnrollmentTransaction>.Filter.Eq(x => x.TenantId, tenantId);
+
+        return await _collection.Find(filter)
+            .SortByDescending(x => x.ReceivedAt)
+            .Limit(limit)
+            .ToListAsync();
     }
 }

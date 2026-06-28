@@ -16,7 +16,7 @@ This deck presents Cloud Health Office (CHO) across all four product lines: Publ
 ## Slide 1: Cover
 
 ### Visual Elements
-- Cloud Health Office Sentinel logo (docs/images/logo-cloudhealthoffice-sentinel-primary.png) centered on absolute black background
+- Cloud Health Office Sentinel logo (docs/images/logo-HealthCoreX-sentinel-primary.png) centered on absolute black background
 - Holographic circuit vein pattern as background texture
 - Chromatic/neon circuit highlights
 
@@ -31,12 +31,12 @@ This deck presents Cloud Health Office (CHO) across all four product lines: Publ
 **Beta Launch - v4.0**
 
 **Contact Information**
-- Website: cloudhealthoffice.com
-- Email: sales@cloudhealthoffice.com
-- GitHub: github.com/aurelianware/cloudhealthoffice
+- Website: HealthCoreX.com
+- Email: sales@HealthCoreX.com
+- GitHub: github.com/aurelianware/HealthCoreX
 
 **Tagline at bottom**
-*Just emerged from the void. Production-ready for new entrants; Layer 2 pathway for established payers.*
+*Source-available and evidence-backed for evaluation; Layer 2 pathway for established payers.*
 
 ---
 
@@ -159,7 +159,7 @@ npm run generate -- interactive --output my-config.json --generate
 |---------|-------------|------------|
 | **Interactive Wizard** | Guided configuration in < 5 minutes | Zero technical expertise required |
 | **Config-to-Workflow Generator** | Automatic Argo Workflow generation | No custom code needed |
-| **FHIR R4 APIs** | Native X12 ↔ FHIR transformation | CMS-0057-F compliant out-of-box |
+| **FHIR R4 APIs** | Native X12 ↔ FHIR transformation | CMS-0057-F readiness surface |
 | **ValueAdds277** | 60+ enhanced claim status fields | Provider satisfaction++, call volume-- |
 | **Security Hardening** | HSM-backed keys, private endpoints, PHI masking | HIPAA-ready from Day 1 |
 
@@ -220,7 +220,7 @@ npm run generate -- interactive --output my-config.json --generate
 
 *Cloud Health Office figures are internal modeled ARPU values for mid-market segment Platform Engagement; specific PMPM ranges per layer are pilot-scoped. See [FINANCIAL-MODEL.md](./FINANCIAL-MODEL.md).*
 
-**Savings**: 83-97% cost reduction vs. alternatives at indicative modeled scale.
+**Savings**: 83-97% cost reduction vs. alternatives at indicative modeled scale (results may vary). *This range is derived directly from the Year 1 cost comparisons in the table above and is a separate, table-specific metric from the general "up to 82%" cost-reduction figure used elsewhere in Cloud Health Office marketing materials.*
 
 ---
 
@@ -266,8 +266,8 @@ npm run generate -- interactive --output my-config.json --generate
 
 ### Competitive Advantages
 
-1. **10-month head start** on CMS compliance (production-ready today)
-2. **85%+ cost reduction** vs. enterprise vendors
+1. **10-month head start** on CMS readiness evidence (implemented for validation today)
+2. **Up to 82% cost reduction** vs. enterprise vendors (results may vary)
 3. **Source-available transparency** eliminates vendor lock-in and security concerns
 4. **Azure Marketplace** enables instant evaluation and procurement
 5. **Community-driven** continuous improvement (GitHub, Slack, Office Hours)
@@ -440,7 +440,7 @@ npm run generate -- interactive --output my-config.json --generate
 | **Layer 2 — Progressive Modernization** | 50% off PMPM for 90 days (per domain activated) |
 | **Layer 3 — Full CAPS Platform** | 50% off PMPM for 90 days; founding-partner terms available |
 
-**After Beta**: Transition to standard PMPM pricing or negotiate annual-commitment terms. Contact [sales@cloudhealthoffice.com](mailto:sales@cloudhealthoffice.com) for details.
+**After Beta**: Transition to standard PMPM pricing or negotiate annual-commitment terms. Contact [sales@HealthCoreX.com](mailto:sales@HealthCoreX.com) for details.
 
 ### Beta Customer Benefits
 
@@ -463,8 +463,8 @@ npm run generate -- interactive --output my-config.json --generate
 ### How to Join
 
 **Step 1**: Schedule intro call with Sales  
-👉 **Email**: sales@cloudhealthoffice.com  
-👉 **Calendly**: https://calendly.com/cloudhealthoffice/beta-intro
+👉 **Email**: sales@HealthCoreX.com  
+👉 **Calendly**: https://calendly.com/HealthCoreX/beta-intro
 
 **Step 2**: Sign BAA + Order Form (provided in 24 hours)
 
@@ -489,7 +489,7 @@ First pilot deployments in motion. We have chosen not to fabricate a customer ro
 
 ### Shipped as the Layer 2 Reference Implementation
 
-- **PR #677** — Four Cloud Health Office-authored FHIR appeal profiles published under `http://fhir.cloudhealthoffice.com/`
+- **PR #677** — Four Cloud Health Office-authored FHIR appeal profiles published under `http://fhir.HealthCoreX.com/`
 - **PR #678** — `appeals-service` modernized with bespoke domain model, state machine, audit trail, field-level PHI encryption, and Kafka event publisher
 - **PR #680** — `fhir-service` exposes appeals via the four FHIR resources plus the `$cho-appeal-submit` operation, using the `IFhirAppealAdapter` pattern
 - **PR #681** — X12 275 Kafka consumer in `appeals-service`, closing the production ingress chain
@@ -511,9 +511,9 @@ This is the precedent that every subsequent Layer 2 domain follows (capitation, 
 
 | Initiative | Status | Impact |
 |------------|--------|--------|
-| **Beta Launch** | ✅ Live | First 10 customers |
+| **Beta Launch** | ✅ Live | Discount offer capped at first 10 customers (signup window closed), not a count of signed customers |
 | **Eligibility Microservice v2.0** | ✅ Complete | 50K req/sec, <100ms latency |
-| **Security Hardening** | ✅ Complete | Zero vulnerabilities (CodeQL) |
+| **Security Hardening** | ✅ Complete | Dependency and CodeQL scan coverage |
 | **Documentation Overhaul** | ✅ Complete | ~94,000 lines of markdown documentation |
 
 ### Q2 2026: Azure Marketplace + AI
@@ -569,10 +569,10 @@ Reference: [ROADMAP-2026.md](../ROADMAP-2026.md)
 |------------|--------|---------|
 | **HIPAA** | ✅ Compliant | BAA included with all subscriptions |
 | **HITECH Act** | ✅ Compliant | Breach notification &lt; 24 hours |
-| **CMS-0057-F** | ✅ 100% Ready | All 4 APIs production-ready |
+| **CMS-0057-F** | ✅ Readiness Surface | All 4 APIs implemented for validation |
 | **State Breach Laws** | ✅ Compliant | 50-state compliance |
-| **SOC 2 Type II** | ✅ Inherited | Via Azure infrastructure |
-| **ISO 27001** | ✅ Inherited | Via Azure infrastructure |
+| **SOC 2 Type II** | ✅ Inherited (Azure datacenter only) | Cloud Health Office's own Type II audit is in progress, not yet complete |
+| **ISO 27001** | ✅ Inherited (Azure datacenter only) | Via Azure infrastructure |
 
 ### Security Architecture
 
@@ -637,7 +637,7 @@ Reference: [ROADMAP-2026.md](../ROADMAP-2026.md)
 **Cloud-Native Tools Now Ready**:
 - **Argo Workflows on AKS**: Cloud-native workflow orchestration for Kubernetes
 - **FHIR R4**: Stable standard (normative 2019)
-- **Da Vinci IGs**: Production-ready (v2.0 released 2023)
+- **Da Vinci IGs**: Implemented readiness target (v2.0 released 2023)
 - **Open Source Momentum**: Healthcare IT embracing OSS (95% of EHRs use Linux)
 
 **Result**: Building blocks exist, but no one assembled them—until now
@@ -667,7 +667,7 @@ Reference: [ROADMAP-2026.md](../ROADMAP-2026.md)
 **Why Now is the Right Time to Invest**:
 
 1. **Market urgency**: Regulatory deadline creates a must-buy event
-2. **Product maturity**: Production-ready, not vaporware
+2. **Product maturity**: Source-available evidence, not vaporware
 3. **Competitive moat**: 10-month lead, source-available community
 4. **Capital efficiency**: Lean team, profitable in 3 years
 5. **Exit potential**: 8-12x ARR exit multiples (SaaS healthcare IT)
@@ -690,13 +690,13 @@ Reference: [ROADMAP-2026.md](../ROADMAP-2026.md)
 - **No long-term commitment** (cancel anytime during Beta)
 
 **What You Get**:
-- ✅ 100% CMS-0057-F compliance
-- ✅ HIPAA BAA included
-- ✅ Production-grade platform
+- ✅ CMS-0057-F readiness evidence
+- ✅ Customer-deployed security model
+- ✅ Evidence-backed platform
 - ✅ Direct access to engineering team
 
 **How to Join**:
-1. **Email** sales@cloudhealthoffice.com with subject "Beta Interest"
+1. **Email** sales@HealthCoreX.com with subject "Beta Interest"
 2. **Schedule** intro call (30 minutes): [Calendly link]
 3. **Sign** BAA + Order Form (provided within 24 hours)
 4. **Go Live** in < 1 week
@@ -733,9 +733,9 @@ Reference: [ROADMAP-2026.md](../ROADMAP-2026.md)
 ### Contact Information
 
 **For Beta Customers**:  
-📧 sales@cloudhealthoffice.com  
+📧 sales@HealthCoreX.com  
 🗓️ Schedule Intro Call: [Calendly link]  
-🌐 https://cloudhealthoffice.com/beta
+🌐 https://HealthCoreX.com/beta
 
 **For Investors**:  
 📧 investors@aurelianware.com  
@@ -743,8 +743,8 @@ Reference: [ROADMAP-2026.md](../ROADMAP-2026.md)
 🗓️ Schedule Pitch: [Calendly link]
 
 **For General Inquiries**:  
-🌐 https://cloudhealthoffice.com  
-💬 GitHub: github.com/aurelianware/cloudhealthoffice  
+🌐 https://HealthCoreX.com  
+💬 GitHub: github.com/aurelianware/HealthCoreX  
 📺 YouTube: [Channel link]  
 👥 LinkedIn: [Company page]
 
@@ -752,7 +752,7 @@ Reference: [ROADMAP-2026.md](../ROADMAP-2026.md)
 
 **Cloud Health Office** – *The inevitable evolution of healthcare EDI*
 
-**Source-Available (BSL 1.1) | Azure-Native | CMS-0057-F Compliant | HIPAA-Ready**
+**Source-Available (BSL 1.1) | Azure-Native | CMS-0057-F Readiness | Customer-Validated**
 
 © 2026 Aurelianware. All rights reserved.
 
@@ -761,22 +761,22 @@ Reference: [ROADMAP-2026.md](../ROADMAP-2026.md)
 ## Appendix: Additional Resources
 
 ### Documentation
-- **Quickstart Guide**: https://docs.cloudhealthoffice.com/quickstart
-- **API Documentation**: https://docs.cloudhealthoffice.com/api
+- **Quickstart Guide**: https://docs.HealthCoreX.com/quickstart
+- **API Documentation**: https://docs.HealthCoreX.com/api
 - **Architecture Overview**: [ARCHITECTURE.md](../../ARCHITECTURE.md)
 - **Roadmap**: [ROADMAP-2026.md](../features/ROADMAP-2026.md)
 
 ### Legal Documents
-- **Terms of Service**: https://cloudhealthoffice.com/legal/terms-of-service
-- **Privacy Policy**: https://cloudhealthoffice.com/legal/privacy-policy
+- **Terms of Service**: https://HealthCoreX.com/legal/terms-of-service
+- **Privacy Policy**: https://HealthCoreX.com/legal/privacy-policy
 - **BAA Template**: [master-services-agreement-template.md](./contracts/master-services-agreement-template.md)
-- **SLA**: https://cloudhealthoffice.com/legal/sla
+- **SLA**: https://HealthCoreX.com/legal/sla
 
 ### Sales Materials
 - **ROI Calculator**: [SALES-ROI-CALCULATOR.md](./SALES-ROI-CALCULATOR.md)
 - **Case Studies**: Coming soon (post-Beta)
 - **Product Demo Video**: [YouTube link]
-- **Pricing Page**: https://cloudhealthoffice.com/pricing
+- **Pricing Page**: https://HealthCoreX.com/pricing
 
 ---
 

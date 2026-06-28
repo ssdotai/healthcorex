@@ -50,9 +50,9 @@ Fully managed SaaS deployment with meter-based billing for EDI transactions.
 **Plans:**
 | Plan | Base Price | 837 Claims Included | Target |
 |------|-----------|-------------------|--------|
-| Starter | [Contact sales](mailto:sales@cloudhealthoffice.com) | 1,000 | Small orgs, dev/test |
-| Professional | [Contact sales](mailto:sales@cloudhealthoffice.com) | 10,000 | Mid-size orgs |
-| Enterprise | [Contact sales](mailto:sales@cloudhealthoffice.com) | 50,000 | Large orgs |
+| Starter | [Contact sales](mailto:sales@HealthCoreX.com) | 1,000 | Small orgs, dev/test |
+| Professional | [Contact sales](mailto:sales@HealthCoreX.com) | 10,000 | Mid-size orgs |
+| Enterprise | [Contact sales](mailto:sales@HealthCoreX.com) | 50,000 | Large orgs |
 
 **Meters:**
 - `edi_837_transactions`: 837 Professional, Institutional, Dental claims

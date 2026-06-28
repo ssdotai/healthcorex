@@ -260,7 +260,7 @@ Each tenant gets one set of SFTP credentials that works across all environments:
 Users navigate to environments via `cd`:
 
 ```bash
-sftp bcbs-florida@sftp.cloudhealthoffice.com
+sftp bcbs-florida@sftp.HealthCoreX.com
 
 # Production
 cd prod/availity/inbound/837

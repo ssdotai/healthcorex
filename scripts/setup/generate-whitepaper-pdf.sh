@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# CloudHealthOffice Whitepaper PDF Generator
+# HealthCoreX Whitepaper PDF Generator
 #
 # Converts WHITEPAPER-CMS-0057-F-COMPLIANCE.md to PDF using pandoc
 # with weasyprint for high-quality PDF output.
@@ -33,7 +33,7 @@ OUTPUT_FILE="$DOCS_DIR/WHITEPAPER-CMS-0057-F-COMPLIANCE.pdf"
 CSS_FILE="$DOCS_DIR/whitepaper-style.css"
 
 echo "═══════════════════════════════════════════════════════════════"
-echo "  CloudHealthOffice Whitepaper PDF Generator"
+echo "  HealthCoreX Whitepaper PDF Generator"
 echo "═══════════════════════════════════════════════════════════════"
 echo ""
 
@@ -98,7 +98,7 @@ PANDOC_CMD="pandoc \"$INPUT_FILE\" \
     --to pdf \
     --pdf-engine=weasyprint \
     --css=\"$CSS_FILE\" \
-    --metadata title=\"CloudHealthOffice CMS-0057-F Compliance Whitepaper\" \
+    --metadata title=\"HealthCoreX CMS-0057-F Compliance Whitepaper\" \
     --metadata author=\"Aurelianware\" \
     --metadata date=\"November 2025\" \
     --toc \
@@ -121,7 +121,7 @@ else
         --from markdown+footnotes+pipe_tables+strikeout \
         --to pdf \
         --pdf-engine=pdflatex \
-        --metadata title=\"CloudHealthOffice CMS-0057-F Compliance Whitepaper\" \
+        --metadata title=\"HealthCoreX CMS-0057-F Compliance Whitepaper\" \
         --metadata author=\"Aurelianware\" \
         --metadata date=\"November 2025\" \
         --toc \

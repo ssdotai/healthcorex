@@ -1,9 +1,9 @@
-using CloudHealthOffice.ProviderVerificationEngine.Models;
-using CloudHealthOffice.ProviderVerificationEngine.Scoring;
+using HealthCoreX.ProviderVerificationEngine.Models;
+using HealthCoreX.ProviderVerificationEngine.Scoring;
 using Microsoft.Extensions.Options;
 using Xunit;
 
-namespace CloudHealthOffice.ProviderVerificationEngine.Tests;
+namespace HealthCoreX.ProviderVerificationEngine.Tests;
 
 public class IntegrityScoreCalculatorTests
 {

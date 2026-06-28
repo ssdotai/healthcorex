@@ -1,7 +1,7 @@
-using CloudHealthOffice.Infrastructure.Configuration;
-using CloudHealthOffice.Infrastructure.Extensions;
-using CloudHealthOffice.Infrastructure.Messaging;
-using CloudHealthOffice.Infrastructure.Observability;
+using HealthCoreX.Infrastructure.Configuration;
+using HealthCoreX.Infrastructure.Extensions;
+using HealthCoreX.Infrastructure.Messaging;
+using HealthCoreX.Infrastructure.Observability;
 using ClaimsService.Adapters;
 using ClaimsService.EDI.Florida;
 using ClaimsService.Fhir;
@@ -14,8 +14,8 @@ using ClaimsService.Services.Adjudication;
 using ClaimsService.Services.Adjudication.Stages;
 using ClaimsService.Services.Migrations;
 using ClaimsService.Services.Resolution;
-using CloudHealthOffice.ClaimsScrubEngine.Configuration;
-using CloudHealthOffice.NcciEngine.Configuration;
+using HealthCoreX.ClaimsScrubEngine.Configuration;
+using HealthCoreX.NcciEngine.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 // Secret provider (Azure Key Vault / none)
@@ -36,7 +36,11 @@ var mongoConnectionString = builder.Configuration["MongoDb:ConnectionString"];
 if (!string.IsNullOrEmpty(mongoConnectionString))
 {
     builder.Services.AddScoped<IClaimRepository, ClaimRepositoryMongo>();
+    builder.Services.AddHostedService<ClaimIndexInitializer>();
     builder.Services.AddScoped<IAiExaminationAuditRepository, AiExaminationAuditRepositoryMongo>();
+    builder.Services.AddScoped<IMassAdjudicationRunRepository, MassAdjudicationRunRepositoryMongo>();
+    builder.Services.AddScoped<IClaimImportTransactionRepository, ClaimImportTransactionRepositoryMongo>();
+    builder.Services.AddHostedService<MassAdjudicationRunIndexInitializer>();
 
     // Claim version event publisher (5.1) — Mongo append-only stream is the
     // system-of-record for the version chain. Mirrors
@@ -68,6 +72,8 @@ else
 
     builder.Services.AddScoped<IClaimRepository, ClaimRepository>();
     builder.Services.AddScoped<IAiExaminationAuditRepository, AiExaminationAuditRepositoryCosmos>();
+    builder.Services.AddSingleton<IMassAdjudicationRunRepository, InMemoryMassAdjudicationRunRepository>();
+    builder.Services.AddSingleton<IClaimImportTransactionRepository, InMemoryClaimImportTransactionRepository>();
 
     // 5.1b — Cosmos partition-key migration tooling. Resolves the source
     // (legacy /memberId Bicep / /Id runtime) and target (canonical
@@ -98,6 +104,8 @@ builder.Services.AddSingleton<IExplanationOfBenefitProjector, ExplanationOfBenef
 
 // 277CA acknowledgment generator
 builder.Services.AddScoped<IClaimAcknowledgmentService, ClaimAcknowledgmentService>();
+builder.Services.AddScoped<IDiagnosisDescriptionLookup, DiagnosisDescriptionLookup>();
+builder.Services.AddScoped<IClaimDiagnosisMetadataEnricher, ClaimDiagnosisMetadataEnricher>();
 
 // 5.10 — claim finalization (Approved/PartiallyPaid → Paid). Owns the
 // idempotent Paid transition with version-event chain advancement and
@@ -132,6 +140,16 @@ builder.Services.AddHttpClient("ReferenceDataService", client =>
     client.BaseAddress = new Uri(
         builder.Configuration["Services:ReferenceDataService"]
         ?? "http://reference-data-service:8080");
+    client.Timeout = TimeSpan.FromSeconds(10);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+}).SetHandlerLifetime(TimeSpan.FromMinutes(5));
+
+builder.Services.AddHttpClient(UpstreamClientNames.TerminologyService, client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["Services:TerminologyServiceUrl"]
+        ?? builder.Configuration["Services:TerminologyService"]
+        ?? "http://terminology-service");
     client.Timeout = TimeSpan.FromSeconds(10);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 }).SetHandlerLifetime(TimeSpan.FromMinutes(5));
@@ -202,15 +220,20 @@ builder.Services.Configure<AdjudicationPipelineOptions>(
 builder.Services.Configure<TenantEnforcementPolicyOptions>(
     builder.Configuration.GetSection(TenantEnforcementPolicyOptions.SectionName));
 
-// Resolution clients — typed HttpClient + caching decorator. 5-second
-// timeout matches ClaimTenantConfigCache and HttpProviderService so a
-// flaky downstream service can't stall the pipeline.
+var benefitPlanServiceTimeoutSeconds = Math.Clamp(
+    builder.Configuration.GetValue<int?>("Services:BenefitPlanServiceTimeoutSeconds") ?? 5,
+    1,
+    300);
+
+// Resolution clients — typed HttpClient + caching decorator. The benefit-plan
+// client also backs the adjudication calculate-benefits shim, so benchmark
+// runners can raise this timeout without changing normal fail-fast defaults.
 builder.Services.AddHttpClient(HttpBenefitPlanResolver.HttpClientName, client =>
 {
     client.BaseAddress = new Uri(
         builder.Configuration["Services:BenefitPlanService"]
         ?? "http://benefit-plan-service:8080");
-    client.Timeout = TimeSpan.FromSeconds(5);
+    client.Timeout = TimeSpan.FromSeconds(benefitPlanServiceTimeoutSeconds);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 }).SetHandlerLifetime(TimeSpan.FromMinutes(5));
 builder.Services.AddScoped<HttpBenefitPlanResolver>();
@@ -243,7 +266,7 @@ builder.Services.AddScoped<IMemberResolver>(sp =>
 // HTTP shim consumes the canonical engine through the same surface
 // portal/preview features already use.
 builder.Services.AddScoped<
-    CloudHealthOffice.BenefitEngine.Services.IBenefitCalculationEngine,
+    HealthCoreX.BenefitEngine.Services.IBenefitCalculationEngine,
     HttpBenefitCalculationEngineClient>();
 
 // Scoped tenant context — the orchestrator pins the tenant id on this
@@ -268,6 +291,14 @@ builder.Services.AddScoped<ICredentialingStatusClient>(sp =>
         sp.GetRequiredService<HttpCredentialingStatusClient>(),
         sp.GetRequiredService<Microsoft.Extensions.Caching.Memory.IMemoryCache>()));
 
+// ProviderIntegrityStage — federal exclusion check via benefit-plan-service's
+// provider-integrity endpoint. No caching decorator here: HttpProviderIntegrityGate
+// already caches on the benefit-plan-service side (1-hour IMemoryCache,
+// never-fail-open contract); a second claims-service-side cache would just
+// add staleness risk without a real latency win, since the upstream is
+// already fast on a cache hit.
+builder.Services.AddScoped<IProviderIntegrityClient, HttpProviderIntegrityClient>();
+
 // 5.4 — Claims Scrub Engine (class library). Default standard rule set;
 // per-tenant rule overrides remain a Phase 2 surface.
 builder.Services.AddClaimsScrubEngine();
@@ -288,11 +319,11 @@ builder.Services.AddNcciEngine().UseRepositoryFromConfiguration(builder.Configur
 // calculation. CoordinationOfBenefitsStage exercises only
 // IPayerOrderService for audit-trail rule labelling.
 builder.Services.AddSingleton<
-    CloudHealthOffice.CobEngine.Services.ICobCalculationService,
-    CloudHealthOffice.CobEngine.Services.CobCalculationService>();
+    HealthCoreX.CobEngine.Services.ICobCalculationService,
+    HealthCoreX.CobEngine.Services.CobCalculationService>();
 builder.Services.AddSingleton<
-    CloudHealthOffice.CobEngine.Services.IPayerOrderService,
-    CloudHealthOffice.CobEngine.Services.PayerOrderService>();
+    HealthCoreX.CobEngine.Services.IPayerOrderService,
+    HealthCoreX.CobEngine.Services.PayerOrderService>();
 
 // 5.8 — CoverageService HTTP client + cached resolution-client triple.
 // 5-minute TTL mirrors network-membership (coverage records can
@@ -314,13 +345,39 @@ builder.Services.AddScoped<ICoverageClient>(sp =>
         sp.GetRequiredService<HttpCoverageClient>(),
         sp.GetRequiredService<Microsoft.Extensions.Caching.Memory.IMemoryCache>()));
 
+// Coverage-to-plan resolver — lets a claim that arrives without a
+// BenefitPlanId (the X12 837 on-ramp; see X12837ClaimMapper) still find the
+// member's active plan before BenefitCalculationStage runs. Reuses the same
+// CoverageService named HttpClient as HttpCoverageClient above.
+builder.Services.AddScoped<HttpCoverageResolver>();
+builder.Services.AddScoped<ICoverageResolver>(sp =>
+    new CachingCoverageResolver(
+        sp.GetRequiredService<HttpCoverageResolver>(),
+        sp.GetRequiredService<Microsoft.Extensions.Caching.Memory.IMemoryCache>()));
+
+// Prior-authorization validation. The stage treats lookup degradation as
+// "not enough evidence to deny" while honoring known invalid auth responses.
+builder.Services.AddHttpClient(UpstreamClientNames.AuthorizationService, client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["Services:AuthorizationService"]
+        ?? "http://authorization-service");
+    client.Timeout = TimeSpan.FromSeconds(5);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+}).SetHandlerLifetime(TimeSpan.FromMinutes(5));
+builder.Services.AddScoped<HttpAuthorizationValidationClient>();
+builder.Services.AddScoped<IAuthorizationValidationClient, HttpAuthorizationValidationClient>();
+
 // Stages — registered as IEnumerable<IClaimAdjudicationStage>. Capabilities
 // 5.4-5.9 each replace one stub registration with the real stage that
 // wraps the corresponding engine. 5.4/5.6/5.7/5.8/5.9 swap the registration
 // in place rather than going through services.RemoveAll<>() — the stub
 // never shipped to production so there's nothing to remove. 6/6 pipeline
-// stages real after 5.9.
+// stages real after 5.9. ProviderIntegrityStage (Order=150) added later,
+// closing a gap the original 5.5 stage scope never covered — see the
+// stage's own doc comment and docs/architecture/claim-adjudication-pipeline.md.
 builder.Services.AddScoped<IClaimAdjudicationStage, ScrubbingStage>();
+builder.Services.AddScoped<IClaimAdjudicationStage, ProviderIntegrityStage>();
 builder.Services.AddScoped<IClaimAdjudicationStage, NetworkCredentialingStage>();
 builder.Services.AddScoped<IClaimAdjudicationStage, BenefitCalculationStage>();
 builder.Services.AddScoped<IClaimAdjudicationStage, NcciEditsStage>();
@@ -329,6 +386,10 @@ builder.Services.AddScoped<IClaimAdjudicationStage, AiExaminationStage>();
 builder.Services.AddScoped<IClaimAdjudicationStage, PersistenceStage>();
 
 builder.Services.AddScoped<IClaimAdjudicationOrchestrator, ClaimAdjudicationOrchestrator>();
+
+var adjudicationMaxConcurrentCalls = Math.Max(
+    1,
+    builder.Configuration.GetValue<int?>("Messaging:AdjudicationMaxConcurrentCalls") ?? 16);
 
 // Subscription hosted service — the orchestrator's Service Bus
 // trigger. Factory shape defers subscription creation to ExecuteAsync
@@ -344,7 +405,13 @@ builder.Services.AddHostedService(sp =>
                     .GetRequiredService<IClaimAdjudicationOrchestrator>();
                 await orchestrator.AdjudicateAsync(msg, ctx, ct);
             },
-            new SubscriptionOptions(SubscriptionName: ClaimVersionEventTopics.AdjudicationSubscriptionName)),
+            new SubscriptionOptions(
+                MaxConcurrentCalls: adjudicationMaxConcurrentCalls,
+                SubscriptionName: ClaimVersionEventTopics.AdjudicationSubscriptionName,
+                RequiredProperties: new Dictionary<string, string>
+                {
+                    [ClaimVersionEventTopics.MessageTypeProperty] = ClaimVersionMessageTypes.Submitted
+                })),
         sp,
         sp.GetRequiredService<ILogger<SubscriptionHostedService>>()));
 
@@ -357,7 +424,7 @@ app.UseChoObservability();
 // Shared middleware pipeline: exception handling, Swagger (dev), tenant middleware, CORS, health checks
 app.UseChoInfrastructure(builder.Configuration);
 
-app.UseMiddleware<CloudHealthOffice.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
+app.UseMiddleware<HealthCoreX.Infrastructure.Middleware.ExceptionHandlingMiddleware>();
 app.MapControllers();
 
 app.Run();

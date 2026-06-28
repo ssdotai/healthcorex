@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CloudHealthOffice.TradingPartnerService.Models;
-using CloudHealthOffice.TradingPartnerService.Services;
+using HealthCoreX.TradingPartnerService.Models;
+using HealthCoreX.TradingPartnerService.Services;
 
-namespace CloudHealthOffice.TradingPartnerService.Controllers;
+namespace HealthCoreX.TradingPartnerService.Controllers;
 
 [Authorize]
 [ApiController]

@@ -7,7 +7,7 @@ using FhirService.Services;
 using FhirService.Models;
 using Microsoft.Extensions.Configuration;
 
-namespace CloudHealthOffice.FhirService.Tests;
+namespace HealthCoreX.FhirService.Tests;
 
 /// <summary>
 /// Unit tests verifying that the MockFhirDataAdapter returns correct results

@@ -1,7 +1,7 @@
-using CloudHealthOffice.PricingApi.Data;
-using CloudHealthOffice.PricingApi.Models;
+using HealthCoreX.PricingApi.Data;
+using HealthCoreX.PricingApi.Models;
 
-namespace CloudHealthOffice.PricingApi.Services;
+namespace HealthCoreX.PricingApi.Services;
 
 public interface IRepricingService
 {

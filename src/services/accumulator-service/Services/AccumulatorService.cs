@@ -1,6 +1,6 @@
 using AccumulatorService.Models;
 using AccumulatorService.Repositories;
-using CloudHealthOffice.Events;
+using HealthCoreX.Events;
 
 namespace AccumulatorService.Services;
 

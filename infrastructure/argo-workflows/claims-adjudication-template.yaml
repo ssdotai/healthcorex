@@ -58,7 +58,7 @@ spec:
         arguments:
           parameters:
           - name: url
-            value: "http://claims-service.cloudhealthoffice/api/claims/{{workflow.parameters.claim-id}}"
+            value: "http://claims-service.HealthCoreX/api/claims/{{workflow.parameters.claim-id}}"
           - name: method
             value: "GET"
           - name: headers
@@ -185,7 +185,7 @@ spec:
         tenant_id = "{{inputs.parameters.tenant-id}}"
         member_id = claim.get('memberId')
         service_date = claim.get('serviceDateFrom')
-        url = f"http://coverage-service.cloudhealthoffice/api/coverage/member/{member_id}/active?serviceDate={service_date}"
+        url = f"http://coverage-service.HealthCoreX/api/coverage/member/{member_id}/active?serviceDate={service_date}"
         req = urllib.request.Request(url)
         req.add_header('X-Tenant-ID', tenant_id)
         req.add_header('Content-Type', 'application/json')
@@ -218,7 +218,7 @@ spec:
         claim = json.loads('''{{inputs.parameters.claim-data}}''')
         tenant_id = "{{inputs.parameters.tenant-id}}"
         billing_npi = claim.get('billingProviderNPI')
-        url = f"http://provider-service.cloudhealthoffice/api/providers/{billing_npi}"
+        url = f"http://provider-service.HealthCoreX/api/providers/{billing_npi}"
         req = urllib.request.Request(url)
         req.add_header('X-Tenant-ID', tenant_id)
         try:
@@ -260,7 +260,7 @@ spec:
         for dx in diagnosis_codes:
             code = dx.get('code')
             try:
-                with urllib.request.urlopen(f"http://reference-data-service.cloudhealthoffice/api/referencedata/icd10/{code}/validate", timeout=3) as r:
+                with urllib.request.urlopen(f"http://reference-data-service.HealthCoreX/api/referencedata/icd10/{code}/validate", timeout=3) as r:
                     result = json.loads(r.read().decode())
                     if not result.get('isValid'): invalid_dx.append(code)
                     elif not result.get('isBillable'): non_billable_dx.append(code)
@@ -270,7 +270,7 @@ spec:
         for line in claim_lines:
             code = line.get('procedureCode')
             try:
-                with urllib.request.urlopen(f"http://reference-data-service.cloudhealthoffice/api/referencedata/cpt/{code}/validate", timeout=3) as r:
+                with urllib.request.urlopen(f"http://reference-data-service.HealthCoreX/api/referencedata/cpt/{code}/validate", timeout=3) as r:
                     result = json.loads(r.read().decode())
                     if not result.get('isValid'): invalid_cpt.append(code)
                     elif result.get('requiresPriorAuth'): requires_auth = True
@@ -302,7 +302,7 @@ spec:
             print(json.dumps({"status": "DENIED", "reason": "Prior authorization required but not provided", "carc": "197"})); sys.exit(0)
         service_date = claim.get('serviceDateFrom')
         cpt = claim.get('claimLines', [{}])[0].get('procedureCode', '')
-        url = f"http://authorization-service.cloudhealthoffice/api/authorizations/{auth_number}/validate?procedureCode={cpt}&serviceDate={service_date}"
+        url = f"http://authorization-service.HealthCoreX/api/authorizations/{auth_number}/validate?procedureCode={cpt}&serviceDate={service_date}"
         req = urllib.request.Request(url)
         req.add_header('X-Tenant-ID', tenant_id)
         try:
@@ -382,7 +382,7 @@ spec:
             } for i, line in enumerate(claim_lines)]
         }
 
-        url = "http://benefit-plan-service.cloudhealthoffice/api/v1/adjudication/adjudicate"
+        url = "http://benefit-plan-service.HealthCoreX/api/v1/adjudication/adjudicate"
         data = json.dumps(request).encode('utf-8')
         req = urllib.request.Request(url, data=data, method='POST')
         req.add_header('X-Tenant-ID', tenant_id)
@@ -442,7 +442,7 @@ spec:
                 "pendReason": adjudication.get('denialReasonDescription') or 'NCCI/MUE edit failure',
                 "editFailures": normalized_edits
             }
-            pend_url = f"http://claims-service.cloudhealthoffice/api/claims/{claim_id}/pend"
+            pend_url = f"http://claims-service.HealthCoreX/api/claims/{claim_id}/pend"
             pend_data = json.dumps(pend_payload).encode('utf-8')
             pend_req = urllib.request.Request(pend_url, data=pend_data, method='PUT')
             pend_req.add_header('X-Tenant-ID', tenant_id)
@@ -472,7 +472,7 @@ spec:
             status = "Approved"
 
         # Write adjudication result to claims-service
-        url = f"http://claims-service.cloudhealthoffice/api/claims/{claim_id}/adjudication"
+        url = f"http://claims-service.HealthCoreX/api/claims/{claim_id}/adjudication"
         data = json.dumps(adjudication).encode('utf-8')
         req = urllib.request.Request(url, data=data, method='PUT')
         req.add_header('X-Tenant-ID', tenant_id)
@@ -482,7 +482,7 @@ spec:
             json.loads(response.read().decode())
 
         # Update claim status
-        status_url = f"http://claims-service.cloudhealthoffice/api/claims/{claim_id}/status"
+        status_url = f"http://claims-service.HealthCoreX/api/claims/{claim_id}/status"
         status_data = json.dumps({"status": status}).encode('utf-8')
         status_req = urllib.request.Request(status_url, data=status_data, method='PUT')
         status_req.add_header('X-Tenant-ID', tenant_id)

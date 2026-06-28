@@ -13,7 +13,7 @@ This pitch deck presents Cloud Health Office (CHO) across all four of its produc
 ## Slide 1: Cover
 
 ### Visual Elements
-- [PLACEHOLDER: Cloud Health Office Sentinel logo (docs/images/logo-cloudhealthoffice-sentinel-primary.png) centered on absolute black background]
+- [PLACEHOLDER: Cloud Health Office Sentinel logo (docs/images/logo-HealthCoreX-sentinel-primary.png) centered on absolute black background]
 - [PLACEHOLDER: Holographic circuit vein pattern as background texture]
 
 ### Content
@@ -25,9 +25,9 @@ This pitch deck presents Cloud Health Office (CHO) across all four of its produc
 ---
 
 **[Contact Information]**
-- Website: cloudhealthoffice.com
+- Website: HealthCoreX.com
 - Email: investors@aurelianware.com
-- GitHub: github.com/aurelianware/cloudhealthoffice
+- GitHub: github.com/aurelianware/HealthCoreX
 
 **[Tagline at bottom]**
 *Just emerged from the void*
@@ -131,18 +131,18 @@ This pitch deck presents Cloud Health Office (CHO) across all four of its produc
 
 ### Platform Overview
 
-**The first source-available, Azure-native EDI platform with complete CMS-0057-F compliance**
+**A source-available, Azure-native EDI platform with inspectable CMS-0057-F readiness evidence**
 
 | Capability | Status |
 |------------|--------|
-| Patient Access API | ✅ Production Ready |
-| Provider Access API | ✅ Production Ready |
+| Patient Access API | ✅ Implemented |
+| Provider Access API | ✅ Implemented |
 | Prior Authorization API | ✅ Automated |
 | Payer-to-Payer API | ✅ Ready |
 | X12 ↔ FHIR R4 Transformation | ✅ 45 Tests Passing |
 | Da Vinci IG Conformance | ✅ PDex, PAS, CRD, DTR |
 
-*Production-ready as Layer 1 CMS-0057-F surface. First pilot deployment in motion; no production reference customer yet. See [POSITIONING.md](../POSITIONING.md) §Layer 3 ("what it honestly is today").*
+*Implemented as a Layer 1 CMS-0057-F readiness surface. First pilot deployment in motion; no production reference customer yet. See [POSITIONING.md](../POSITIONING.md) §Layer 3 ("what it honestly is today").*
 
 ### The Transformation
 
@@ -150,7 +150,7 @@ This pitch deck presents Cloud Health Office (CHO) across all four of its produc
 |--------|---------------------------|-------|
 | Deployment Time | 6-18 months | **Weeks to deploy (Layer 1)** |
 | Implementation Cost | $500K - $2M | **PMPM-based, pilot-custom** |
-| Compliance Readiness | Uncertain | **100%** |
+| Compliance Readiness | Uncertain | **Inspectable evidence** |
 | Source Code Access | None | **Full (BSL 1.1)** |
 
 ---
@@ -162,7 +162,7 @@ This pitch deck presents Cloud Health Office (CHO) across all four of its produc
 
 ### The Appeals Four-PR Sequence
 
-- **PR #677** — Four Cloud Health Office-authored FHIR appeal profiles published under `http://fhir.cloudhealthoffice.com/`
+- **PR #677** — Four Cloud Health Office-authored FHIR appeal profiles published under `http://fhir.HealthCoreX.com/`
 - **PR #678** — `appeals-service` modernized with bespoke domain model, state machine, audit trail, field-level PHI encryption, and Kafka event publisher
 - **PR #680** — `fhir-service` exposes appeals as `Task` / `Communication` / `DocumentReference` / `ClaimResponse` plus the `$cho-appeal-submit` operation, using the `IFhirAppealAdapter` pattern
 - **PR #681** — X12 275 Kafka consumer in `appeals-service`, closing the production ingress chain
@@ -252,12 +252,12 @@ npm run generate -- interactive --output my-config.json --generate
 | **FHIR R4 Native** | Add-on | Planned | Add-on | ✅ Built-in |
 | **Source-Available** | ❌ | ❌ | ❌ | ✅ BSL 1.1 |
 | **Azure Native** | Hybrid | Legacy | Hybrid | ✅ Native |
-| **Annual Cost** | $150K-$500K | $100K-$300K | $200K+ | **[Contact sales](mailto:sales@cloudhealthoffice.com)** |
+| **Annual Cost** | $150K-$500K | $100K-$300K | $200K+ | **[Contact sales](mailto:sales@HealthCoreX.com)** |
 
 ### Competitive Advantages
 
 1. **18-month head start** on CMS compliance
-2. **85%+ cost reduction** vs. enterprise vendors
+2. **Up to 82% cost reduction** vs. enterprise vendors (results may vary)
 3. **Source-available transparency** eliminates vendor lock-in
 4. **Azure Marketplace** enables instant evaluation
 5. **Community-driven** continuous improvement
@@ -334,7 +334,7 @@ npm run generate -- interactive --output my-config.json --generate
 |---------|-------|-----------------|-------------|
 | **Compliance Champion** | VP Compliance | Regulatory risk | "100% CMS-ready" |
 | **Technology Leader** | CIO/CTO | Implementation risk | "< 5 minute deployment" |
-| **Financial Decision Maker** | CFO | Cost control | "85% cost reduction" |
+| **Financial Decision Maker** | CFO | Cost control | "up to 82% cost reduction" |
 
 ---
 
@@ -447,15 +447,15 @@ npm run generate -- interactive --output my-config.json --generate
 | **Contributors** | [PLACEHOLDER] | 30 |
 | **Test Suite** | ~2,800 test methods across 44 test projects | Maintain coverage |
 | **Documentation** | ~94,000 lines of markdown | Maintain coverage |
-| **CMS Compliance** | 100% | Maintained |
+| **CMS Readiness Evidence** | Implemented | Maintained |
 
 ### Product Milestones Achieved
 
-- ✅ Complete CMS-0057-F compliance (Nov 2024)
+- ✅ CMS-0057-F readiness surface (Nov 2024)
 - ✅ FHIR R4 transformation (X12 270/837/278/835)
 - ✅ ValueAdds277 enhanced claim status (60+ fields)
 - ✅ Zero-code payer onboarding
-- ✅ Production-grade security (HIPAA)
+- ✅ Security controls for payer validation
 - ✅ Gated release strategy
 
 ### Pipeline Status
@@ -658,16 +658,16 @@ Reference: [FINANCIAL-MODEL.md](./FINANCIAL-MODEL.md)
 
 | Channel | Contact |
 |---------|---------|
-| **Website** | cloudhealthoffice.com |
+| **Website** | HealthCoreX.com |
 | **Sales** | sales@aurelianware.com |
 | **Investors** | investors@aurelianware.com |
-| **GitHub** | github.com/aurelianware/cloudhealthoffice |
+| **GitHub** | github.com/aurelianware/HealthCoreX |
 
 ---
 
 *Cloud Health Office - The inevitable evolution of healthcare EDI*
 
-*Source-Available (BSL 1.1) | Azure-Native | CMS-0057-F Compliant | HIPAA-Ready*
+*Source-Available (BSL 1.1) | Azure-Native | CMS-0057-F Readiness | Customer-Validated*
 
 ---
 

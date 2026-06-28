@@ -2,7 +2,7 @@ using System.Text;
 using ProviderService.Models;
 using ProviderService.Repositories;
 
-namespace CloudHealthOffice.ProviderService.Tests.Fakes;
+namespace HealthCoreX.ProviderService.Tests.Fakes;
 
 /// <summary>
 /// In-memory fake for <see cref="ICredentialingEventRepository"/> backing

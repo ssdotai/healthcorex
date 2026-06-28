@@ -1533,8 +1533,8 @@ export function createCRDCard(
     indicator,
     source: {
       label: 'Cloud Health Office - Coverage Requirements',
-      url: 'https://cloudhealthoffice.com',
-      icon: 'https://cloudhealthoffice.com/logo.png'
+      url: 'https://HealthCoreX.com',
+      icon: 'https://HealthCoreX.com/logo.png'
     }
   };
   
@@ -1594,7 +1594,7 @@ export function createPriorAuthConsent(
  * 
  * @param hookType Hook type (order-select, order-sign, etc.)
  * @param context Hook context with patient and order details
- * @param fhirServer Optional FHIR server URL (defaults to cloudhealthoffice.com)
+ * @param fhirServer Optional FHIR server URL (defaults to HealthCoreX.com)
  * @returns CDS Hooks request payload
  */
 export function createCDSHooksRequest(
@@ -1606,7 +1606,7 @@ export function createCDSHooksRequest(
     draftOrders?: Bundle;
     selections?: string[];
   },
-  fhirServer: string = 'https://fhir.cloudhealthoffice.com'
+  fhirServer: string = 'https://fhir.HealthCoreX.com'
 ): any {
   // Extract patient ID if it's already in the form "Patient/123"
   const patientId = context.patientId.startsWith('Patient/')
@@ -1739,7 +1739,7 @@ export interface PriorAuthOrchestrationConfig {
 /**
  * Creates default orchestration configuration for AKS microservices
  *
- * @param baseUrl Base URL for AKS service endpoints (e.g., http://prior-auth-service.cloudhealthoffice)
+ * @param baseUrl Base URL for AKS service endpoints (e.g., http://prior-auth-service.HealthCoreX)
  * @param environment Environment name (dev, uat, prod)
  * @returns Orchestration configuration
  */

@@ -243,7 +243,7 @@ public class AppealLifecycleSmokeTests : IClassFixture<AppealsWebApplicationFact
         var root = doc.RootElement;
         root.GetProperty("status").GetInt32().Should().Be(409);
         root.GetProperty("title").GetString().Should().Be("Invalid appeal transition");
-        root.GetProperty("type").GetString().Should().Be("https://cloudhealthoffice.com/problems/appeal-transition");
+        root.GetProperty("type").GetString().Should().Be("https://HealthCoreX.com/problems/appeal-transition");
         root.GetProperty("fromStatus").GetString().Should().Be("Draft");
         root.GetProperty("toStatus").GetString().Should().Be("InReview");
     }

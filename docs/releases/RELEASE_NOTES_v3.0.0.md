@@ -1,6 +1,6 @@
 > **Note:** This document references Azure Logic Apps, which were the original orchestration runtime. CHO has since migrated to Argo Workflows on AKS — see [ADR-004](../adr/004-remove-logic-apps.md) for details.
 
-# CloudHealthOffice v3.0.0 Release Notes
+# HealthCoreX v3.0.0 Release Notes
 
 **Release Date**: December 1, 2025  
 **Codename**: The Open Frontier Release  
@@ -11,7 +11,7 @@
 
 ## 📢 Overview
 
-CloudHealthOffice v3.0.0 marks a transformational release that delivers multi-cloud independence, enterprise-grade microservices architecture, and commercial launch readiness. This release breaks free from single-cloud vendor lock-in while maintaining the security and compliance standards healthcare organizations require.
+HealthCoreX v3.0.0 marks a transformational release that delivers multi-cloud independence, enterprise-grade microservices architecture, and commercial launch readiness. This release breaks free from single-cloud vendor lock-in while maintaining the security and compliance standards healthcare organizations require.
 
 ---
 
@@ -40,7 +40,7 @@ CloudHealthOffice v3.0.0 marks a transformational release that delivers multi-cl
 
 - **Managed Application Plan**: ARM template deploying complete Cloud Health Office stack
 - **SaaS Plan with Meter-Based Billing**: Per-transaction pricing for 837, 278, 275, and FHIR API calls
-- **3-Tier Pricing Structure**: Starter, Professional, Enterprise — [Contact sales](mailto:sales@cloudhealthoffice.com) for pricing
+- **3-Tier Pricing Structure**: Starter, Professional, Enterprise — [Contact sales](mailto:sales@HealthCoreX.com) for pricing
 - **Legal Documentation**: Privacy policy, SLA (99.5%-99.95% uptime), and support terms
 
 ### Commercial Launch Materials
@@ -122,7 +122,7 @@ CloudHealthOffice v3.0.0 marks a transformational release that delivers multi-cl
 
 ### Prerequisites
 
-- CloudHealthOffice v2.5.0 or later
+- HealthCoreX v2.5.0 or later
 - Node.js 18.x or later
 - Azure CLI 2.50+ (for Azure deployments)
 - kubectl 1.28+ (for Kubernetes deployments)
@@ -156,18 +156,18 @@ az deployment group create \
 
 ```bash
 # 1. Install using local Helm chart (from repository clone)
-helm install cloudhealthoffice ./helm/cloudhealthoffice \
-  --namespace cloudhealthoffice \
+helm install HealthCoreX ./helm/HealthCoreX \
+  --namespace HealthCoreX \
   --create-namespace \
   --set vault.enabled=true \
   --set vault.type=hashicorp
 
 # 2. Apply Argo Workflows
-kubectl apply -f argo-workflows/ -n cloudhealthoffice
+kubectl apply -f argo-workflows/ -n HealthCoreX
 
 # 3. Verify deployment
-kubectl get pods -n cloudhealthoffice
-kubectl get workflows -n cloudhealthoffice
+kubectl get pods -n HealthCoreX
+kubectl get workflows -n HealthCoreX
 ```
 
 ### Post-Upgrade Verification
@@ -260,5 +260,5 @@ BSL 1.1 - See [LICENSE](../../LICENSE) for details.
 
 ---
 
-**CloudHealthOffice** – The Open Frontier  
+**HealthCoreX** – The Open Frontier  
 *Multi-Cloud | Open Source | Production-Grade | HIPAA-Compliant*

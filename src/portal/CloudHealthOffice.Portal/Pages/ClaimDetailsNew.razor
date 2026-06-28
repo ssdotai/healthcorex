@@ -1,6 +1,6 @@
 @page "/claims/{ClaimId}"
 @using Microsoft.AspNetCore.Authorization
-@using CloudHealthOffice.Portal.Services
+@using HealthCoreX.Portal.Services
 @attribute [Authorize]
 @inject IClaimsService ClaimsService
 @inject NavigationManager NavigationManager
@@ -266,7 +266,9 @@
                             <MudText Typo="Typo.body2" Style="font-family: monospace; font-weight: 600;">@context.Code</MudText>
                         </MudTd>
                         <MudTd DataLabel="Description">
-                            <MudText Typo="Typo.body2">@context.Description</MudText>
+                            <MudText Typo="Typo.body2">
+                                @(string.IsNullOrWhiteSpace(context.Description) ? "Description unavailable" : context.Description)
+                            </MudText>
                         </MudTd>
                         <MudTd DataLabel="Type">
                             <MudChip Size="Size.Small" Variant="Variant.Outlined">@context.Type</MudChip>
@@ -505,12 +507,23 @@
             <MudButton Variant="Variant.Outlined"
                       Color="Color.Default"
                       StartIcon="@Icons.Material.Filled.ArrowBack"
-                      OnClick="@(() => NavigationManager.NavigateTo("/claims"))">
-                Back to Claims
+                      OnClick="@(() => NavigationManager.NavigateTo(BackHref))">
+                @BackLabel
             </MudButton>
             <MudStack Row="true" Spacing="2">
-                <MudButton Variant="Variant.Outlined" Color="Color.Default" StartIcon="@Icons.Material.Filled.Print">Print</MudButton>
-                <MudButton Variant="Variant.Outlined" Color="Color.Default" StartIcon="@Icons.Material.Filled.Download">Export EOB</MudButton>
+                <MudButton Variant="Variant.Outlined"
+                           Color="Color.Default"
+                           StartIcon="@Icons.Material.Filled.Print"
+                           OnClick="PrintClaimAsync">
+                    Print
+                </MudButton>
+                <MudButton Variant="Variant.Outlined"
+                           Color="Color.Default"
+                           StartIcon="@Icons.Material.Filled.Download"
+                           Disabled="_exportingEob"
+                           OnClick="ExportEobAsync">
+                    @(_exportingEob ? "Exporting..." : "Export EOB")
+                </MudButton>
             </MudStack>
         </MudPaper>
 
@@ -529,7 +542,7 @@
             else if (_adjudicationData == null)
             {
                 <MudAlert Severity="Severity.Info">
-                    Adjudication detail is only available for fully adjudicated claims.
+                    No adjudication pipeline trace was captured for this claim. The claim disposition is shown above; detailed step telemetry may be unavailable for mass adjudication run claims.
                 </MudAlert>
             }
             else
@@ -626,7 +639,7 @@
             else if (_adjudicationData == null)
             {
                 <MudAlert Severity="Severity.Info">
-                    Benefit breakdown is only available for fully adjudicated claims.
+                    No benefit breakdown trace was captured for this claim. The financial summary is shown above; detailed calculation telemetry may be unavailable for mass adjudication run claims.
                 </MudAlert>
             }
             else
@@ -788,9 +801,9 @@
         <MudButton Variant="Variant.Outlined" 
                   Color="Color.Default"
                   StartIcon="@Icons.Material.Filled.ArrowBack"
-                  OnClick="@(() => NavigationManager.NavigateTo("/claims"))"
+                  OnClick="@(() => NavigationManager.NavigateTo(BackHref))"
                   Class="mt-4">
-            Back to Claims
+            @BackLabel
         </MudButton>
     }
 </MudContainer>
@@ -799,6 +812,9 @@
     [Parameter]
     public string ClaimId { get; set; } = string.Empty;
 
+    [SupplyParameterFromQuery(Name = "fromRun")]
+    public string? FromRun { get; set; }
+
     private ClaimDetails? _claim;
     private bool _loading = true;
     private bool _loadingAdjudication = false;
@@ -806,19 +822,45 @@
     private List<BreadcrumbItem> _breadcrumbItems = new();
     private string _noteInput = string.Empty;
     private string? _serviceError;
+    private bool _exportingEob;
+    private string BackHref => string.IsNullOrWhiteSpace(FromRun)
+        ? "/claims"
+        : $"/mass-adjudication-runs?run={Uri.EscapeDataString(FromRun)}";
+    private string BackLabel => string.IsNullOrWhiteSpace(FromRun)
+        ? "Back to Claims"
+        : "Back to Adjudication Run";
 
     protected override async Task OnInitializedAsync()
     {
-        _breadcrumbItems = new List<BreadcrumbItem>
-        {
-            new BreadcrumbItem("Home", href: "/"),
-            new BreadcrumbItem("Claims", href: "/claims"),
-            new BreadcrumbItem($"Claim {ClaimId}", href: null, disabled: true)
-        };
+        BuildBreadcrumbs();
 
         await LoadClaimDetails();
+        BuildBreadcrumbs();
         // Load adjudication data in background (fire-and-forget, non-blocking)
         _ = LoadAdjudicationDataAsync();
+    }
+
+    private void BuildBreadcrumbs()
+    {
+        var currentClaimLabel = _claim?.ClaimNumber is { Length: > 0 }
+            ? $"Claim {_claim.ClaimNumber}"
+            : $"Claim {ClaimId}";
+
+        _breadcrumbItems = new List<BreadcrumbItem>
+        {
+            new("Home", href: "/")
+        };
+
+        if (!string.IsNullOrWhiteSpace(FromRun))
+        {
+            _breadcrumbItems.Add(new BreadcrumbItem("Mass Adjudication", href: BackHref));
+        }
+        else
+        {
+            _breadcrumbItems.Add(new BreadcrumbItem("Claims", href: "/claims"));
+        }
+
+        _breadcrumbItems.Add(new BreadcrumbItem(currentClaimLabel, href: null, disabled: true));
     }
 
     private async Task LoadAdjudicationDataAsync()
@@ -934,6 +976,57 @@
     private void ViewClaimDetails(string claimId)
     {
         NavigationManager.NavigateTo($"/claims/{claimId}");
+    }
+
+    private async Task PrintClaimAsync()
+    {
+        await JS.InvokeVoidAsync("window.print");
+    }
+
+    private async Task ExportEobAsync()
+    {
+        if (_claim == null || _exportingEob) return;
+
+        _exportingEob = true;
+        try
+        {
+            var eobJson = await ClaimsService.GetExplanationOfBenefitJsonAsync(_claim.ClaimId);
+            if (string.IsNullOrWhiteSpace(eobJson))
+            {
+                Snackbar.Add("No Explanation of Benefit is available for this claim.", Severity.Warning);
+                return;
+            }
+
+            var claimNumber = string.IsNullOrWhiteSpace(_claim.ClaimNumber)
+                ? _claim.ClaimId
+                : _claim.ClaimNumber;
+            var fileName = $"EOB_{SanitizeFileName(claimNumber)}.json";
+            var base64 = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(eobJson));
+            await JS.InvokeVoidAsync("downloadBase64File", fileName, "application/fhir+json", base64);
+            Snackbar.Add("EOB exported.", Severity.Success);
+        }
+        catch (ServiceUnavailableException ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error exporting EOB: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _exportingEob = false;
+        }
+    }
+
+    private static string SanitizeFileName(string value)
+    {
+        foreach (var invalid in System.IO.Path.GetInvalidFileNameChars())
+        {
+            value = value.Replace(invalid, '-');
+        }
+
+        return string.IsNullOrWhiteSpace(value) ? "claim" : value;
     }
 
     private async Task ApproveClaimAsync()

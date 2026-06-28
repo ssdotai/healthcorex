@@ -1,6 +1,6 @@
 // seed-demo-users.js
 // MongoDB seed script that populates realistic operations staff user accounts
-// for a given tenant in the CloudHealthOffice database.
+// for a given tenant in the HealthCoreX database.
 //
 // WARNING: This script REPLACES any existing TenantUsers data for the specified
 // tenant. Back up first if you need to preserve data.
@@ -23,7 +23,7 @@ if (typeof tenantId === "undefined") {
 }
 
 const TENANT_ID = tenantId;
-const choDb = db.getSiblingDB("cloudhealthoffice");
+const choDb = db.getSiblingDB("HealthCoreX");
 const now = new Date();
 
 // ---------------------------------------------------------------------------

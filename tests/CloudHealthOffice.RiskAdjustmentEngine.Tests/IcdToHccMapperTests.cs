@@ -1,8 +1,8 @@
-using CloudHealthOffice.RiskAdjustmentEngine.Domain;
-using CloudHealthOffice.RiskAdjustmentEngine.Services;
+using HealthCoreX.RiskAdjustmentEngine.Domain;
+using HealthCoreX.RiskAdjustmentEngine.Services;
 using Xunit;
 
-namespace CloudHealthOffice.RiskAdjustmentEngine.Tests;
+namespace HealthCoreX.RiskAdjustmentEngine.Tests;
 
 public class IcdToHccMapperTests
 {

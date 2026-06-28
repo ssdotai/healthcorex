@@ -34,7 +34,7 @@ public class DtrService : IDtrService
         if (!string.IsNullOrEmpty(mongoConnectionString))
         {
             var client = new MongoClient(mongoConnectionString);
-            var database = client.GetDatabase(appConfig["MongoDb:DatabaseName"] ?? "cloudhealthoffice");
+            var database = client.GetDatabase(appConfig["MongoDb:DatabaseName"] ?? "HealthCoreX");
             _questionnaireCollection = database.GetCollection<BsonDocument>("dtr_questionnaires");
             _responseCollection = database.GetCollection<BsonDocument>("dtr_responses");
             _useMongoDb = true;

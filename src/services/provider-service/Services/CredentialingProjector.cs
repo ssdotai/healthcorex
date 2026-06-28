@@ -1,7 +1,7 @@
 using System.Text.Json;
 using ProviderService.Models;
 using ProviderService.Models.CredentialingPayloads;
-using CloudHealthOffice.Infrastructure.Json;
+using HealthCoreX.Infrastructure.Json;
 
 namespace ProviderService.Services;
 
@@ -193,7 +193,7 @@ public sealed class CredentialingProjector
         {
             return JsonSerializer.Deserialize<T>(
                 evt.Payload.ToJsonString(),
-                CloudHealthOfficeJsonOptions.DefaultOptions);
+                HealthCoreXJsonOptions.DefaultOptions);
         }
         catch (JsonException)
         {
