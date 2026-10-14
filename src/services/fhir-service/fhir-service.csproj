@@ -37,21 +37,21 @@
     <ProjectReference Include="..\shared\HealthCoreX.Appeals.Contracts\HealthCoreX.Appeals.Contracts.csproj" />
     <ProjectReference Include="..\..\engines\HealthCoreX.ProviderEnrollmentService\HealthCoreX.ProviderEnrollmentService.csproj" />
     <ProjectReference Include="..\..\engines\HealthCoreX.PriorAuthRuleEngine\HealthCoreX.PriorAuthRuleEngine.csproj" />
-    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.62.0" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.63.2" />
     <!-- StackExchange.Redis is pulled in transitively via
          HealthCoreX.Infrastructure. fhir-service has no direct
          IConnectionMultiplexer consumer after A.7.2 — the Redis client is
          opened and owned by AddChoCaching. -->
-    <PackageReference Include="Hl7.Fhir.R4" Version="5.10.2" />
-    <PackageReference Include="MongoDB.Driver" Version="3.7.1" />
+    <PackageReference Include="Hl7.Fhir.R4" Version="5.13.4" />
+    <PackageReference Include="MongoDB.Driver" Version="3.12.0" />
     <!-- Standard JWT Bearer validation — tokens issued by smart-auth-service with
          DisableAccessTokenEncryption() are standard RS256-signed JWTs discoverable
          via /.well-known/openid-configuration on the auth server. -->
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
-  <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.32" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.32" />
+  <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.7.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
-  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
+  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.7.3" />
   </ItemGroup>
 
 </Project>
